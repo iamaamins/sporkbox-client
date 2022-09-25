@@ -1,26 +1,69 @@
+:root {
+  --black: #000;
+  --white: #fff;
+  --grey: #666;
+  --almost_white: #fafafa;
+  --border_color: #eaeaea;
+  --shadow_small: 0 5px 10px rgba(0, 0, 0, 0.12);
+  --shadow_medium: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --shadow_large: 0 30px 60px rgba(0, 0, 0, 0.12);
+}
+
+*,
 html,
-body {
+::after,
+::before {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+html,
+body {
+  max-width: 1256px;
+  margin: 0 auto;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--black);
+  font-family: "Inter", sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2 {
+  line-height: 1.5em;
+}
+
+p,
+a,
+li {
+  line-height: 1.7em;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+input,
+select,
+textarea {
+  border: none;
+  border-radius: 0px;
+}
+
+textarea {
+  resize: none;
+  font-family: "Inter", sans-serif;
+}
+
+@media (min-width: 1256px) {
+  html,
   body {
-    color: white;
-    background: black;
+    border-left: 1px solid var(--almost_white);
+    border-right: 1px solid var(--almost_white);
   }
 }
