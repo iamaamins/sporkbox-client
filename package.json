@@ -1,5 +1,5 @@
 {
-  "name": "spork-bytes",
+  "name": "spork-bytes-client",
   "version": "0.1.0",
   "private": true,
   "scripts": {
