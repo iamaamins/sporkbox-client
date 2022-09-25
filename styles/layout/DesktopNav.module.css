@@ -1,0 +1,42 @@
+.desktop_nav {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .desktop_nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    width: 2.25rem;
+  }
+
+  .logo a {
+    display: flex;
+    align-items: center;
+  }
+
+  .navigation {
+    display: flex;
+    align-items: center;
+  }
+
+  .navigation li a {
+    opacity: 0.8;
+    color: var(--grey);
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .github a {
+    display: flex;
+    align-items: center;
+  }
+
+  .github a svg {
+    font-size: 1.75rem;
+    color: var(--black);
+  }
+}
