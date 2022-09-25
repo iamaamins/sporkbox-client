@@ -1,12 +1,12 @@
 import { IMobileMenu } from "types";
 import Link from "next/link";
 import { useEffect } from "react";
-import { MdSpaceDashboard, MdAccountBox, MdGroups } from "react-icons/md";
+import { MdSpaceDashboard, MdGroups } from "react-icons/md";
 import { IoLogIn } from "react-icons/io5";
 import { AiTwotonePhone } from "react-icons/ai";
 import styles from "@styles/layout/MobileMenu.module.css";
 
-export default function MobileMenu({ isOpen }: IMobileMenu) {
+export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenu) {
   const currentYear = new Date().getFullYear();
 
   // Disable body scroll if MobileMenu is open
@@ -19,7 +19,7 @@ export default function MobileMenu({ isOpen }: IMobileMenu) {
   return (
     <div className={`${styles.mobile_menu} ${isOpen && styles.open}`}>
       <ul className={styles.nav_items}>
-        <li>
+        <li onClick={() => setIsOpen(false)}>
           <Link href="/dashboard">
             <a>
               <MdSpaceDashboard /> Dashboard
@@ -27,7 +27,7 @@ export default function MobileMenu({ isOpen }: IMobileMenu) {
           </Link>
         </li>
 
-        <li>
+        <li onClick={() => setIsOpen(false)}>
           <Link href="/register">
             <a>
               <IoLogIn /> Sign up
@@ -35,7 +35,7 @@ export default function MobileMenu({ isOpen }: IMobileMenu) {
           </Link>
         </li>
 
-        <li>
+        <li onClick={() => setIsOpen(false)}>
           <Link href="/contact">
             <a>
               <AiTwotonePhone /> Contact
@@ -43,7 +43,7 @@ export default function MobileMenu({ isOpen }: IMobileMenu) {
           </Link>
         </li>
 
-        <li>
+        <li onClick={() => setIsOpen(false)}>
           <Link href="/about-us">
             <a>
               <MdGroups /> About us

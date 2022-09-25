@@ -10,7 +10,7 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <DesktopNav />
-      <MobileMenu isOpen={isOpen} />
+      <MobileMenu isOpen={isOpen} setIsOpen={setIsOpen} />
       <MobileNav isOpen={isOpen} setIsOpen={setIsOpen} />
     </header>
   );
