@@ -1,0 +1,50 @@
+.footer {
+  background: var(--almost_white);
+  padding: var(--section_padding);
+  border-top: 1px solid var(--border_color);
+}
+
+.logo {
+  width: 2.25rem;
+}
+
+.section {
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+}
+
+.social {
+  margin-top: 0.75rem;
+}
+
+.social a svg {
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+
+.about,
+.items a,
+.items p {
+  font-size: 14px;
+  color: var(--gray);
+}
+
+.items a {
+  margin-bottom: 0.25rem;
+  font-style: normal;
+}
+
+.copyright {
+  font-size: 12px;
+  color: var(--gray);
+  text-align: center;
+}

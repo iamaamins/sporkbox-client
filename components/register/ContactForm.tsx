@@ -12,10 +12,12 @@ export default function ContactForm() {
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
 
+  // Destructure form data and check
+  // If there is an empty field
   const { name, email, password, confirmPassword } = formData;
-
   const hasEmpty = Object.values(formData).some((data) => data === "");
 
+  // Handle change
   function handleChange(e: ChangeEvent) {
     if (!hasEmpty) {
       setDisabled(false);
@@ -27,9 +29,18 @@ export default function ContactForm() {
     }));
   }
 
+  // Handle submit
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
+
     console.log(formData);
+
+    setFormData({
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
   }
 
   return (
@@ -43,7 +54,12 @@ export default function ContactForm() {
 
         <div className={styles.item}>
           <label htmlFor="email">Company email</label>
-          <input type="text" id="email" value={email} onChange={handleChange} />
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={handleChange}
+          />
         </div>
 
         <div className={styles.item}>

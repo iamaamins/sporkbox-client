@@ -9,7 +9,7 @@ export default function DesktopNav() {
       <div className={styles.logo}>
         <Link href="/">
           <a>
-            <Image src={logo} alt="Octib logo" priority />
+            <Image src={logo} alt="Logo" priority />
           </a>
         </Link>
       </div>
