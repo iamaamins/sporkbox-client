@@ -30,13 +30,11 @@
     padding: 0.5rem 1rem;
   }
 
-  .github a {
-    display: flex;
-    align-items: center;
-  }
-
-  .github a svg {
-    font-size: 1.75rem;
-    color: var(--black);
+  .register a {
+    padding: 6px 16px;
+    font-size: 0.9rem;
+    border-radius: 2rem;
+    background: var(--teal);
+    color: var(--almost_white);
   }
 }

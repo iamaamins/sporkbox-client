@@ -28,14 +28,6 @@ export default function MobileMenu({ isOpen }: IMobileMenu) {
         </li>
 
         <li>
-          <Link href="/login">
-            <a>
-              <MdAccountBox /> Log in
-            </a>
-          </Link>
-        </li>
-
-        <li>
           <Link href="/register">
             <a>
               <IoLogIn /> Sign up
