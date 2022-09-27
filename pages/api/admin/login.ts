@@ -14,7 +14,7 @@ export default async function handler(
 
       const { data } = response;
 
-      // Set cookie with jwt token
+      // Set jwt token as cookie to the headers
       res.setHeader(
         "Set-Cookie",
         cookie.serialize("token", JSON.stringify(data.token), {
@@ -26,8 +26,9 @@ export default async function handler(
         })
       );
 
+      // Return the user data
       res.status(200).json(data);
-    } catch (err) {
+    } catch (err: any) {
       console.log(err.response.data.message);
       res.status(401).json({ message: err.response.data.message });
     }

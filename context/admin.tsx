@@ -23,7 +23,7 @@ export default function AdminProvider({ children }: IContextProvider) {
     if (router.isReady) {
       const fetchAdmin = async () => {
         try {
-          const res = await axios.get(`${API_URL}/admin/me`);
+          const res = await axios.get(`/api/admin/me`);
 
           return res;
         } catch (err) {
