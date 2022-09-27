@@ -9,6 +9,7 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     console.log(parse(req.headers.cookie!));
+    res.json("Success");
   } else {
     // If the request isn't a post request
     res.setHeader("Allow", ["GET"]);

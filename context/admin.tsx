@@ -25,15 +25,13 @@ export default function AdminProvider({ children }: IContextProvider) {
         try {
           const res = await axios.get(`/api/admin/me`);
 
-          return res;
+          console.log(res);
         } catch (err) {
           console.log(err);
         }
       };
 
-      const admin = fetchAdmin();
-
-      console.log(admin);
+      fetchAdmin();
     }
   }, [router]);
 
