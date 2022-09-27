@@ -8,4 +8,14 @@ export type ChangeEvent = React.ChangeEvent<
 >;
 
 export type FormEvent = React.FormEvent<HTMLFormElement>;
-export type SetState = React.Dispatch<React.SetStateAction<boolean>>;
+
+export interface IAdmin {
+  _id: string;
+  name: string;
+  email: string;
+  token: string;
+}
+
+export interface IContextProvider {
+  children: React.ReactNode;
+}

@@ -19,9 +19,10 @@
       "@components/*": ["components/*"],
       "@styles/*": ["styles/*"],
       "@public/*": ["public/*"],
+      "@context/*": ["context/*"],
       "@utils/*": ["utils/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "context/admin.js"],
   "exclude": ["node_modules"]
 }

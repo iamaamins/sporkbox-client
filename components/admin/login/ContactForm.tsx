@@ -34,7 +34,7 @@ export default function ContactForm() {
     e.preventDefault();
 
     try {
-      const res = await axios.post(`${API_URL}/admin/login`, formData);
+      const res = await axios.post(`/api/login`, formData);
 
       console.log(res.data);
 
