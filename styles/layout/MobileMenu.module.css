@@ -2,7 +2,7 @@
   position: fixed;
   width: 100vw;
   height: 100vh;
-  top: 56px;
+  top: 58px;
   left: -150%;
   z-index: 11;
   padding: 1rem;
@@ -23,6 +23,10 @@
   gap: 0.75rem;
   margin-top: 0.5rem;
   grid-template-columns: repeat(2, 1fr);
+}
+
+.hide {
+  display: none;
 }
 
 .nav_items li {

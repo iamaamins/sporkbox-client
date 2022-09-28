@@ -4,10 +4,9 @@ import Link from "next/link";
 import { AiFillInstagram, AiOutlineTwitter } from "react-icons/ai";
 import { FaFacebookSquare } from "react-icons/fa";
 import styles from "@styles/layout/Footer.module.css";
+import { currentYear } from "@utils/index";
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
-
   return (
     <footer className={styles.footer}>
       <div className={styles.section}>
