@@ -20,12 +20,15 @@ export default function AdminProvider({ children }: IContextProvider) {
   const [admin, setAdmin] = useState(initialContext);
 
   useEffect(() => {
+    console.log(new Date("2022-10-05T02:02:17.135Z"));
     if (router.isReady) {
       const fetchAdmin = async () => {
         try {
-          const res = await axios.get(`/api/admin/me`);
+          const res = await axios.get(`${API_URL}/admin/me`, {
+            withCredentials: true,
+          });
 
-          console.log(res);
+          console.log(res.data);
         } catch (err) {
           console.log(err);
         }
