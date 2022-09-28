@@ -1,15 +1,21 @@
 import { useState } from "react";
 import axios from "axios";
-import styles from "@styles/admin/login/ContactForm.module.css";
 import { API_URL } from "@utils/index";
+import { useAdmin } from "@context/admin";
+import { useLoader } from "@context/loader";
+import styles from "@styles/admin/login/LoginForm.module.css";
 
-export default function ContactForm() {
+export default function LoginForm() {
+  // Hooks
+  const { setAdmin } = useAdmin();
+  const { setLoading } = useLoader();
+
+  // States
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const [disabled, setDisabled] = useState(true);
-  const [loading, setLoading] = useState(false);
 
   // Destructure form data and check
   // If there is an empty field
@@ -22,6 +28,7 @@ export default function ContactForm() {
       setDisabled(false);
     }
 
+    // Update state
     setFormData((prevData) => ({
       ...prevData,
       [e.target.id]: e.target.value,
@@ -33,18 +40,30 @@ export default function ContactForm() {
     e.preventDefault();
 
     try {
+      // Show the loader
+      setLoading(true);
+
+      // Fetch data
       const res = await axios.post(`${API_URL}/admin/login`, formData, {
         withCredentials: true,
       });
 
-      console.log(res.data);
+      // Update state
+      setAdmin(res.data);
 
-      //   setFormData({
-      //     email: "",
-      //     password: "",
-      //   });
+      // Clear form data
+      setFormData({
+        email: "",
+        password: "",
+      });
+
+      // Remove the loader
+      setLoading(false);
     } catch (err) {
       console.log(err);
+
+      // Remove the loader
+      setLoading(false);
     }
   }
 

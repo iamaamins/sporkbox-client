@@ -2,15 +2,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["components/*"],
       "@styles/*": ["styles/*"],
-      "@store/*": ["store/*"],
       "@public/*": ["public/*"],
-      "@posts/*": ["posts/*"],
-      "@portfolios/*": ["portfolios/*"],
+      "@utils/*": ["utils/*"],
+      "@context/*": ["context/*"],
       "@config/*": ["config/*"],
-      "@data/*": ["data/*"],
-      "@utils/*": ["utils/*"]
+      "@components/*": ["components/*"]
     }
   },
   "exclude": ["node_modules"]
