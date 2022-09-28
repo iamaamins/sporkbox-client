@@ -21,23 +21,44 @@
   align-items: center;
   justify-content: space-between;
   font-weight: 600;
-  background-color: var(--almost_white);
   padding: 0.5rem 1rem;
-  margin-bottom: 1rem;
+  background-color: var(--almost_white);
 }
 
-.title p:nth-child(2),
-.title p:nth-child(3) {
+.orders_title p:nth-child(2),
+.orders_title p:nth-child(4),
+.restaurants_title p:nth-child(2),
+.restaurants_title p:nth-child(3) {
   display: none;
 }
 
-.restaurants {
+.restaurants,
+.companies {
   margin-bottom: 1rem;
 }
 
-.restaurant {
+.order,
+.restaurant,
+.company {
+  color: var(--black);
   padding: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid var(--border_color);
+}
+
+.order p,
+.restaurant p,
+.company p {
+  font-weight: 500;
+}
+
+.order p:nth-child(2),
+.order p:nth-child(3),
+.restaurant p:nth-child(2),
+.company p:nth-child(2),
+.company p:nth-child(3) {
+  color: var(--gray);
+  font-size: 0.9rem;
 }
