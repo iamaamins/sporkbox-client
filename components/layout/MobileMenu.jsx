@@ -1,4 +1,3 @@
-import { IMobileMenu } from "types";
 import Link from "next/link";
 import { useEffect } from "react";
 import { MdSpaceDashboard, MdGroups } from "react-icons/md";
@@ -6,12 +5,12 @@ import { IoLogIn } from "react-icons/io5";
 import { AiTwotonePhone } from "react-icons/ai";
 import styles from "@styles/layout/MobileMenu.module.css";
 
-export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenu) {
+export default function MobileMenu({ isOpen, setIsOpen }) {
   const currentYear = new Date().getFullYear();
 
   // Disable body scroll if MobileMenu is open
   useEffect(() => {
-    const body = document.querySelector("body")!;
+    const body = document.querySelector("body");
 
     isOpen ? (body.style.overflow = "hidden") : (body.style.overflow = "auto");
   });

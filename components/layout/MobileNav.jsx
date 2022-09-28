@@ -1,10 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { IMobileMenu } from "types";
 import logo from "@public/layout/logo.png";
 import styles from "@styles/layout/MobileNav.module.css";
 
-export default function MobileNav({ isOpen, setIsOpen }: IMobileMenu) {
+export default function MobileNav({ isOpen, setIsOpen }) {
   return (
     <nav className={styles.mobile_nav}>
       <div className={styles.logo}>

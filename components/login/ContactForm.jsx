@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { ChangeEvent, FormEvent } from "types";
-import axios from "axios";
-import styles from "@styles/admin/login/ContactForm.module.css";
-import { API_URL } from "@utils/index";
+import styles from "@styles/login/ContactForm.module.css";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -18,7 +16,7 @@ export default function ContactForm() {
   const hasEmpty = Object.values(formData).some((data) => data === "");
 
   // Handle change
-  function handleChange(e: ChangeEvent) {
+  function handleChange(e) {
     if (!hasEmpty) {
       setDisabled(false);
     }
@@ -30,23 +28,15 @@ export default function ContactForm() {
   }
 
   // Handle submit
-  async function handleSubmit(e: FormEvent) {
+  function handleSubmit(e) {
     e.preventDefault();
 
-    try {
-      const res = await axios.post(`${API_URL}/admin/login`, formData, {
-        withCredentials: true,
-      });
+    console.log(formData);
 
-      console.log(res.data);
-
-      //   setFormData({
-      //     email: "",
-      //     password: "",
-      //   });
-    } catch (err) {
-      console.log(err);
-    }
+    setFormData({
+      email: "",
+      password: "",
+    });
   }
 
   return (

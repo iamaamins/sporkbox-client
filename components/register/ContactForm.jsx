@@ -1,22 +1,23 @@
 import { useState } from "react";
-import { ChangeEvent, FormEvent } from "types";
-import styles from "@styles/login/ContactForm.module.css";
+import styles from "@styles/register/ContactForm.module.css";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
 
   // Destructure form data and check
   // If there is an empty field
-  const { email, password } = formData;
+  const { name, email, password, confirmPassword } = formData;
   const hasEmpty = Object.values(formData).some((data) => data === "");
 
   // Handle change
-  function handleChange(e: ChangeEvent) {
+  function handleChange(e) {
     if (!hasEmpty) {
       setDisabled(false);
     }
@@ -28,23 +29,30 @@ export default function ContactForm() {
   }
 
   // Handle submit
-  function handleSubmit(e: FormEvent) {
+  function handleSubmit(e) {
     e.preventDefault();
 
     console.log(formData);
 
     setFormData({
+      name: "",
       email: "",
       password: "",
+      confirmPassword: "",
     });
   }
 
   return (
     <section className={styles.contact_form}>
-      <p className={styles.title}>Sign in to your account</p>
+      <p className={styles.title}>Create your account</p>
       <form onSubmit={handleSubmit}>
         <div className={styles.item}>
-          <label htmlFor="email">Your email</label>
+          <label htmlFor="name">Your name</label>
+          <input type="text" id="name" value={name} onChange={handleChange} />
+        </div>
+
+        <div className={styles.item}>
+          <label htmlFor="email">Company email</label>
           <input
             type="email"
             id="email"
@@ -63,11 +71,21 @@ export default function ContactForm() {
           />
         </div>
 
+        <div className={styles.item}>
+          <label htmlFor="confirmPassword">Confirm password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            value={confirmPassword}
+            onChange={handleChange}
+          />
+        </div>
+
         <button
           type="submit"
           className={`${styles.button} ${!disabled && styles.active}`}
         >
-          Sign in
+          Create account
         </button>
       </form>
     </section>

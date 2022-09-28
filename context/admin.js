@@ -1,44 +1,46 @@
-import { IAdmin, IContextProvider } from "../types";
-import { createContext, useContext, useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import axios from "axios";
+import { useRouter } from "next/router";
 import { API_URL } from "@utils/index";
+import { createContext, useContext, useEffect, useState } from "react";
 
-const initialContext: IAdmin = {
+const initialContext = {
   _id: "",
   name: "",
   email: "",
   token: "",
 };
 
+// Create context
 const AdminContext = createContext(initialContext);
 
+// Create hook
 export const useAdmin = () => useContext(AdminContext);
 
-export default function AdminProvider({ children }: IContextProvider) {
+// Provider function
+export default function AdminProvider({ children }) {
   const router = useRouter();
   const [admin, setAdmin] = useState(initialContext);
 
   useEffect(() => {
-    console.log(new Date("2022-10-05T02:02:17.135Z"));
     if (router.isReady) {
-      const fetchAdmin = async () => {
+      async function getAdmin() {
         try {
           const res = await axios.get(`${API_URL}/admin/me`, {
             withCredentials: true,
           });
 
-          console.log(res.data);
+          // Update state
+          setAdmin(res.data);
         } catch (err) {
           console.log(err);
         }
-      };
+      }
 
-      fetchAdmin();
+      getAdmin();
     }
   }, [router]);
 
   return (
-    <AdminContext.Provider value={admin}>{children}</AdminContext.Provider>
+    <AdminContext.Provider value={{ admin }}>{children}</AdminContext.Provider>
   );
 }
