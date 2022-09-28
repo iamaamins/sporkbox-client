@@ -61,7 +61,9 @@ export default function Dashboard() {
           </Link>
         </div>
 
-        <button>Add restaurant</button>
+        <Link href="/admin/add-restaurant">
+          <a className={styles.button}>Add restaurant</a>
+        </Link>
       </section>
 
       <section className={styles.section}>
@@ -88,7 +90,9 @@ export default function Dashboard() {
           </Link>
         </div>
 
-        <button>Add company</button>
+        <Link href="/admin/add-company">
+          <a className={styles.button}>Add company</a>
+        </Link>
       </section>
     </>
   );
