@@ -8,7 +8,7 @@ export const useLoader = () => useContext(LoaderContext);
 
 // Provider Function
 export default function LoaderProvider({ children }) {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   return (
     <LoaderContext.Provider value={{ loading, setLoading }}>

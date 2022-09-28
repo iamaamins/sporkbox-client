@@ -20,9 +20,6 @@ export default function AdminProvider({ children }) {
     if (router.isReady) {
       async function getAdmin() {
         try {
-          // Show the loader
-          setLoading(true);
-
           // Fetch the data
           const res = await axios.get(`${API_URL}/admin/me`, {
             withCredentials: true,
@@ -43,7 +40,7 @@ export default function AdminProvider({ children }) {
 
       getAdmin();
     }
-  }, [router]);
+  }, [router.isReady]);
 
   return (
     <AdminContext.Provider value={{ admin, setAdmin }}>

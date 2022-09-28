@@ -7,23 +7,14 @@ export default function LoginPage() {
   const { admin } = useAdmin();
   const { loading } = useLoader();
 
-  // If loading then show loader
-  if (loading) {
-    return (
-      <main>
-        <div>Loading...</div>
-      </main>
-    );
-  }
-
-  // If there is no admin then
-  // show the login form
-  if (!admin) {
-    <main>
-      <LoginForm />
-    </main>;
-  }
+  console.log(loading, admin);
 
   // If there is an admin then show the dashboard
-  return <main>{admin && <Dashboard />}</main>;
+  return (
+    <main>
+      {loading && <div>Loading...</div>}
+      {!loading && !admin && <LoginForm />}
+      {!loading && admin && <Dashboard />}
+    </main>
+  );
 }
