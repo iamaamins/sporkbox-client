@@ -25,10 +25,7 @@
   background-color: var(--almost_white);
 }
 
-.orders_title p:nth-child(2),
-.orders_title p:nth-child(4),
-.restaurants_title p:nth-child(2),
-.restaurants_title p:nth-child(3) {
+.hide_on_mobile {
   display: none;
 }
 
@@ -52,13 +49,13 @@
 .restaurant p,
 .company p {
   font-weight: 500;
-}
-
-.order p:nth-child(2),
-.order p:nth-child(3),
-.restaurant p:nth-child(2),
-.company p:nth-child(2),
-.company p:nth-child(3) {
   color: var(--gray);
   font-size: 0.9rem;
+}
+
+.order p:first-child,
+.restaurant p:first-child,
+.company p:first-child {
+  color: var(--black);
+  font-size: 1rem;
 }
