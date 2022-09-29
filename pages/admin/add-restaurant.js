@@ -17,7 +17,6 @@ export default function AddRestaurantPage() {
   return (
     <main>
       {!admin && <h1>Loading...</h1>}
-
       {admin && <AddRestaurant />}
     </main>
   );
