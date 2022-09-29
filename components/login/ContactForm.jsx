@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { ChangeEvent, FormEvent } from "types";
 import styles from "@styles/login/ContactForm.module.css";
 
 export default function ContactForm() {
