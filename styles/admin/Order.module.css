@@ -1,3 +1,42 @@
 .order {
   padding: var(--section_padding);
 }
+
+.details {
+  margin-bottom: 1rem;
+}
+
+.details h2,
+.details p {
+  margin-bottom: 0.5rem;
+}
+
+.details p {
+  font-size: 0.9rem;
+  color: var(--gray);
+}
+
+.details p span {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--black);
+}
+
+.order_details {
+  margin-bottom: 1rem;
+}
+
+.customer_details h2 {
+  font-size: 16px;
+}
+
+.order button {
+  border: none;
+  width: 10rem;
+  height: 2.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 0.25rem;
+  color: var(--almost_white);
+  background: var(--teal);
+}
