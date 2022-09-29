@@ -1,10 +1,10 @@
-import styles from "@styles/admin/AllRestaurants.module.css";
-import { createSlug } from "@utils/index";
 import Link from "next/link";
+import { createSlug } from "@utils/index";
+import styles from "@styles/admin/Restaurants.module.css";
 
-export default function AllRestaurants() {
+export default function Restaurants() {
   return (
-    <section className={styles.all_restaurants}>
+    <section className={styles.section}>
       <h2>All restaurants</h2>
 
       <div className={`${styles.title} ${styles.restaurants_title}`}>

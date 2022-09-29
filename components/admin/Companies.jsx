@@ -1,10 +1,10 @@
-import styles from "@styles/admin/AllCompanies.module.css";
-import { createSlug } from "@utils/index";
 import Link from "next/link";
+import { createSlug } from "@utils/index";
+import styles from "@styles/admin/Companies.module.css";
 
-export default function AllCompanies() {
+export default function Companies() {
   return (
-    <section className={styles.all_companies}>
+    <section className={styles.section}>
       <h2>All companies</h2>
 
       <div className={`${styles.title} ${styles.companies_title}`}>

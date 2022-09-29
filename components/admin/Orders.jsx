@@ -1,10 +1,10 @@
-import styles from "@styles/admin/AllOrders.module.css";
-import { createSlug } from "@utils/index";
 import Link from "next/link";
+import { createSlug } from "@utils/index";
+import styles from "@styles/admin/Orders.module.css";
 
-export default function AllOrders() {
+export default function Orders() {
   return (
-    <section className={styles.all_orders}>
+    <section className={styles.section}>
       <h2>All orders</h2>
 
       <div className={`${styles.title} ${styles.orders_title}`}>
@@ -16,7 +16,7 @@ export default function AllOrders() {
       </div>
 
       <div className={styles.orders}>
-        <Link href={`/admin/restaurants/${createSlug("restaurant-name")}`}>
+        <Link href={`/admin/orders/${createSlug("restaurant-name")}`}>
           <a className={styles.order}>
             <p>Order 1</p>
             <p className={styles.hide_on_mobile}>Sep 28, 2022</p>
@@ -26,7 +26,7 @@ export default function AllOrders() {
           </a>
         </Link>
 
-        <Link href={`/admin/restaurants/${createSlug("restaurant-name")}`}>
+        <Link href={`/admin/orders/${createSlug("restaurant-name")}`}>
           <a className={styles.order}>
             <p>Order 2</p>
             <p className={styles.hide_on_mobile}>Sep 30, 2022</p>

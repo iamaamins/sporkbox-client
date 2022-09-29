@@ -123,7 +123,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
           className={!admin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
-          <Link href="/admin/all-orders">
+          <Link href="/admin/orders">
             <a>
               <MdOutlineRestaurantMenu /> All orders
             </a>
@@ -134,7 +134,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
           className={!admin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
-          <Link href="/admin/all-restaurants">
+          <Link href="/admin/restaurants">
             <a>
               <TbBuildingStore /> All restaurants
             </a>
@@ -145,7 +145,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
           className={!admin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
-          <Link href="/admin/all-companies">
+          <Link href="/admin/companies">
             <a>
               <TbBuildingSkyscraper /> All companies
             </a>

@@ -1,8 +1,8 @@
-.all_restaurants {
+.section {
   padding: var(--section_padding);
 }
 
-.all_restaurants h2 {
+.section h2 {
   font-weight: var(--h2_weight);
   margin-bottom: 0.75rem;
 }
