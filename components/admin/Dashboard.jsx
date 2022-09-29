@@ -93,7 +93,7 @@ export default function Dashboard() {
           </Link>
 
           <Link href={`/admin/companies/${createSlug("restaurant-name")}`}>
-            <a className={styles.order}>
+            <a className={styles.company}>
               <p>Company 2</p>
               <p className={styles.hide_on_mobile}>company2</p>
               <p>$180</p>
