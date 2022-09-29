@@ -1,3 +1,49 @@
 .restaurant {
   padding: var(--section_padding);
 }
+
+.details {
+  margin-bottom: 1rem;
+}
+
+.details h2,
+.details p {
+  margin-bottom: 0.5rem;
+}
+
+.details p {
+  color: var(--gray);
+}
+
+.details p span {
+  font-weight: 500;
+  color: var(--black);
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.buttons button,
+.buttons a {
+  border: none;
+  width: 10rem;
+  height: 2.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--almost_white);
+}
+
+.add_item {
+  background: var(--teal);
+}
+
+.block {
+  background: var(--orange);
+}

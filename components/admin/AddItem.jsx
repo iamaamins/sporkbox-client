@@ -1,20 +1,19 @@
 import { useState } from "react";
 import { hasEmpty } from "@utils/index";
-import styles from "@styles/register/RegistrationForm.module.css";
+import styles from "@styles/admin/AddItem.module.css";
 
-export default function RegistrationForm() {
+export default function AddItem() {
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    description: "",
+    tags: "",
+    price: "",
   });
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
 
   // Destructure form data and check
-  // If there is an empty field
-  const { name, email, password, confirmPassword } = formData;
+  const { name, description, tags, price } = formData;
 
   // Handle change
   function handleChange(e) {
@@ -36,47 +35,42 @@ export default function RegistrationForm() {
 
     setFormData({
       name: "",
-      email: "",
+      description: "",
       password: "",
       confirmPassword: "",
     });
   }
-
   return (
-    <section className={styles.registration_form}>
-      <p className={styles.title}>Create your account</p>
+    <section className={styles.add_item}>
+      <p className={styles.title}>Add an item</p>
+
       <form onSubmit={handleSubmit}>
         <div className={styles.item}>
-          <label htmlFor="name">Your name</label>
-          <input type="text" id="name" value={name} onChange={handleChange} />
+          <label htmlFor="name">Item name</label>
+          <input type="name" id="name" value={name} onChange={handleChange} />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="email">Company email</label>
+          <label htmlFor="tags">Item tags</label>
+          <input type="tags" id="tags" value={tags} onChange={handleChange} />
+        </div>
+
+        <div className={styles.item}>
+          <label htmlFor="price">Item price</label>
           <input
-            type="email"
-            id="email"
-            value={email}
+            type="price"
+            id="price"
+            value={price}
             onChange={handleChange}
           />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className={styles.item}>
-          <label htmlFor="confirmPassword">Confirm password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
+          <label htmlFor="description">Item description</label>
+          <textarea
+            type="description"
+            id="description"
+            value={description}
             onChange={handleChange}
           />
         </div>
@@ -85,7 +79,7 @@ export default function RegistrationForm() {
           type="submit"
           className={`${styles.button} ${!disabled && styles.active}`}
         >
-          Create account
+          Add Item
         </button>
       </form>
     </section>
