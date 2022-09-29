@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { hasEmpty } from "@utils/index";
+import { DayPicker } from "react-day-picker";
 import styles from "@styles/admin/AddItem.module.css";
 
 export default function AddItem() {
@@ -21,6 +22,7 @@ export default function AddItem() {
       setDisabled(false);
     }
 
+    // Update state
     setFormData((prevData) => ({
       ...prevData,
       [e.target.id]: e.target.value,
