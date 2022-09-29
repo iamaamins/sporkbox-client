@@ -8,16 +8,16 @@ import Company from "@components/admin/Company";
 export default function CompanyPage() {
   const router = useRouter();
   const { admin } = useUser();
-  const { loading } = useLoader();
+  const { isLoading } = useLoader();
 
   useEffect(() => {
-    checkAdmin(loading, admin, router);
-  }, [loading, admin]);
+    checkAdmin(isLoading, admin, router);
+  }, [admin]);
 
   return (
     <main>
-      {loading && <div>Loading...</div>}
-      {!loading && admin && <Company />}
+      {!admin && <div>Loading...</div>}
+      {admin && <Company />}
     </main>
   );
 }

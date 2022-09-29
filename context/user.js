@@ -13,18 +13,20 @@ export const useUser = () => useContext(UserContext);
 // Provider function
 export default function UserProvider({ children }) {
   const router = useRouter();
-  const { setLoading } = useLoader();
+  const { setIsLoading } = useLoader();
   const [admin, setAdmin] = useState(null);
   const [vendor, setVendor] = useState(null);
   const [customer, setCustomer] = useState(null);
 
   useEffect(() => {
     // Get admin
-    getUser(router, "admin", setAdmin, setLoading);
+    getUser("admin", setAdmin, setIsLoading);
 
     // Get vendor
+    getUser("vendor", setVendor, setIsLoading);
 
     // Get customer
+    getUser("customer", setCustomer, setIsLoading);
   }, [router.isReady]);
 
   return (

@@ -8,16 +8,16 @@ import Restaurant from "@components/admin/Restaurant";
 export default function RestaurantPage() {
   const router = useRouter();
   const { admin } = useUser();
-  const { loading } = useLoader();
+  const { isLoading } = useLoader();
 
   useEffect(() => {
-    checkAdmin(loading, admin, router);
-  }, [loading, admin]);
+    checkAdmin(isLoading, admin, router);
+  }, [admin]);
 
   return (
     <main>
-      {loading && <div>Loading...</div>}
-      {!loading && admin && <Restaurant />}
+      {!admin && <div>Loading...</div>}
+      {admin && <Restaurant />}
     </main>
   );
 }

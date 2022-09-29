@@ -8,16 +8,16 @@ import AddItem from "@components/admin/AddItem";
 export default function AddItemPage() {
   const router = useRouter();
   const { admin } = useUser();
-  const { loading } = useLoader();
+  const { isLoading } = useLoader();
 
   useEffect(() => {
-    checkAdmin(loading, admin, router);
-  }, [loading, admin]);
+    checkAdmin(isLoading, admin, router);
+  }, [admin]);
 
   return (
     <main>
-      {loading && <div>Loading...</div>}
-      {!loading && admin && <AddItem />}
+      {!admin && <div>Loading...</div>}
+      {admin && <AddItem />}
     </main>
   );
 }

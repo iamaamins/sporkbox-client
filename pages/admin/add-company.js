@@ -8,16 +8,16 @@ import AddCompany from "@components/admin/AddCompany";
 export default function AddCompanyPage() {
   const router = useRouter();
   const { admin } = useUser();
-  const { loading } = useLoader();
+  const { isLoading } = useLoader();
 
   useEffect(() => {
-    checkAdmin(loading, admin, router);
-  }, [loading, admin]);
+    checkAdmin(isLoading, admin, router);
+  }, [admin]);
 
   return (
     <main>
-      {loading && <h1>Loading...</h1>}
-      {!loading && admin && <AddCompany />}
+      {!admin && <h1>Loading...</h1>}
+      {admin && <AddCompany />}
     </main>
   );
 }

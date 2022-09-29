@@ -7,7 +7,6 @@ import LoginForm from "@components/admin/LoginForm";
 export default function LoginPage() {
   const router = useRouter();
   const { admin } = useUser();
-  const { loading } = useLoader();
 
   useEffect(() => {
     if (admin) {
@@ -16,10 +15,5 @@ export default function LoginPage() {
   }, [admin]);
 
   // If there is an admin then show the dashboard
-  return (
-    <main>
-      {loading && <div>Loading...</div>}
-      {!loading && !admin && <LoginForm />}
-    </main>
-  );
+  return <main>{!admin && <LoginForm />}</main>;
 }

@@ -8,16 +8,17 @@ import AddRestaurant from "@components/admin/AddRestaurant";
 export default function AddRestaurantPage() {
   const router = useRouter();
   const { admin } = useUser();
-  const { loading } = useLoader();
+  const { isLoading } = useLoader();
 
   useEffect(() => {
-    checkAdmin(loading, admin, router);
-  }, [loading, admin]);
+    checkAdmin(isLoading, admin, router);
+  }, [admin]);
 
   return (
     <main>
-      {loading && <h1>Loading...</h1>}
-      {!loading && admin && <AddRestaurant />}
+      {!admin && <h1>Loading...</h1>}
+
+      {admin && <AddRestaurant />}
     </main>
   );
 }
