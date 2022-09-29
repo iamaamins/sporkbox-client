@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import {
   MdSpaceDashboard,
   MdGroups,
+  MdLogout,
   MdOutlineRestaurantMenu,
 } from "react-icons/md";
 import { IoLogIn } from "react-icons/io5";
@@ -127,6 +128,37 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
               <MdOutlineRestaurantMenu /> All orders
             </a>
           </Link>
+        </li>
+
+        <li
+          className={!admin ? styles.hide : null}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href="/admin/all-restaurants">
+            <a>
+              <TbBuildingStore /> All restaurants
+            </a>
+          </Link>
+        </li>
+
+        <li
+          className={!admin ? styles.hide : null}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href="/admin/all-companies">
+            <a>
+              <TbBuildingSkyscraper /> All companies
+            </a>
+          </Link>
+        </li>
+
+        <li
+          className={!admin ? styles.hide : null}
+          onClick={() => setIsOpen(false)}
+        >
+          <span>
+            <MdLogout /> Sign out
+          </span>
         </li>
 
         {/* Customer nav items */}
