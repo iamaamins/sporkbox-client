@@ -1,6 +1,6 @@
 import { useState } from "react";
-import styles from "@styles/admin/AddRestaurant.module.css";
 import { hasEmpty } from "@utils/index";
+import styles from "@styles/admin/AddRestaurant.module.css";
 
 export default function AddRestaurant() {
   const [formData, setFormData] = useState({
@@ -43,7 +43,7 @@ export default function AddRestaurant() {
 
   return (
     <section className={styles.add_restaurant}>
-      <p className={styles.title}>Add a new restaurant</p>
+      <p className={styles.title}>Add a restaurant</p>
 
       <form onSubmit={handleSubmit}>
         <p className={styles.form_title}>Owner info</p>

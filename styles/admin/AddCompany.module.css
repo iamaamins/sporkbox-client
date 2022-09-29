@@ -1,0 +1,55 @@
+.add_company {
+  padding: var(--section_padding);
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.add_company form {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow_medium);
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.item label {
+  font-size: 0.9rem;
+  color: var(--gray);
+  margin-bottom: 0.75rem;
+}
+
+.item input {
+  padding: 12px;
+  border-radius: 0.25rem;
+  border: 1px solid var(--border_color);
+}
+
+.item input:focus {
+  outline: none;
+  border: 1px solid var(--teal);
+}
+
+.button {
+  border: none;
+  width: 10rem;
+  height: 2.75rem;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  border-radius: 0.25rem;
+  color: var(--disable_font);
+  background: var(--border_color);
+  transition: all 150ms ease-in-out;
+}
+
+.button.active {
+  background: var(--teal);
+  color: var(--almost_white);
+}
