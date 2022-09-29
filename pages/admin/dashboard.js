@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useAdmin } from "@context/admin";
+import { useUser } from "@context/user";
 import { useLoader } from "@context/loader";
 import { useRouter } from "next/router";
 import Dashboard from "@components/admin/dashboard";
@@ -7,7 +7,7 @@ import { checkAdmin } from "@utils/index";
 
 export default function DashboardPage() {
   const router = useRouter();
-  const { admin } = useAdmin();
+  const { admin } = useUser();
   const { loading } = useLoader();
 
   useEffect(() => {
@@ -16,7 +16,8 @@ export default function DashboardPage() {
 
   return (
     <main>
-      <Dashboard />
+      {loading && <div>Loading...</div>}
+      {!loading && admin && <Dashboard />}
     </main>
   );
 }

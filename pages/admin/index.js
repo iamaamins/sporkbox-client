@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useLoader } from "@context/loader";
-import { useAdmin } from "@context/admin";
+import { useUser } from "@context/user";
 import { useRouter } from "next/router";
 import LoginForm from "@components/admin/login/LoginForm";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { admin } = useAdmin();
+  const { admin } = useUser();
   const { loading } = useLoader();
 
   useEffect(() => {

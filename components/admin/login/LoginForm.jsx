@@ -1,13 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
 import { API_URL } from "@utils/index";
-import { useAdmin } from "@context/admin";
+import { useUser } from "@context/user";
 import { useLoader } from "@context/loader";
 import styles from "@styles/admin/login/LoginForm.module.css";
 
 export default function LoginForm() {
   // Hooks
-  const { setAdmin } = useAdmin();
+  const { setAdmin } = useUser();
   const { setLoading } = useLoader();
 
   // States

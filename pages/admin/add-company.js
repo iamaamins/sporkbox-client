@@ -1,4 +1,4 @@
-import { useAdmin } from "@context/admin";
+import { useUser } from "@context/user";
 import { useLoader } from "@context/loader";
 import { checkAdmin } from "@utils/index";
 import { useRouter } from "next/router";
@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 export default function AddCompanyPage() {
   const router = useRouter();
-  const { admin } = useAdmin();
+  const { admin } = useUser();
   const { loading } = useLoader();
 
   useEffect(() => {

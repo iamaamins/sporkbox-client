@@ -9,13 +9,13 @@ import { IoLogIn } from "react-icons/io5";
 import { TbBuildingStore, TbBuildingSkyscraper } from "react-icons/tb";
 import { BsFillCalendar2DateFill } from "react-icons/bs";
 import { AiTwotonePhone } from "react-icons/ai";
-import { useAdmin } from "@context/admin";
+import { useUser } from "@context/user";
 import { currentYear } from "@utils/index";
 import styles from "@styles/layout/MobileMenu.module.css";
 
 export default function MobileMenu({ isOpen, setIsOpen }) {
   // Hooks
-  const { admin } = useAdmin();
+  const { admin } = useUser();
   // const admin = null;
 
   // Disable body scroll if MobileMenu is open
