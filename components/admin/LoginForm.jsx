@@ -1,9 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
-import { API_URL } from "@utils/index";
+import { API_URL, hasEmpty } from "@utils/index";
 import { useUser } from "@context/user";
 import { useLoader } from "@context/loader";
-import styles from "@styles/admin/login/LoginForm.module.css";
+import styles from "@styles/admin/LoginForm.module.css";
 
 export default function LoginForm() {
   // Hooks
@@ -20,11 +20,10 @@ export default function LoginForm() {
   // Destructure form data and check
   // If there is an empty field
   const { email, password } = formData;
-  const hasEmpty = Object.values(formData).some((data) => data === "");
 
   // Handle change
   function handleChange(e) {
-    if (!hasEmpty) {
+    if (!hasEmpty(formData)) {
       setDisabled(false);
     }
 

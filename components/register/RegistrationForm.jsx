@@ -1,7 +1,8 @@
 import { useState } from "react";
-import styles from "@styles/register/ContactForm.module.css";
+import styles from "@styles/register/RegistrationForm.module.css";
+import { hasEmpty } from "@utils/index";
 
-export default function ContactForm() {
+export default function RegistrationForm() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -14,11 +15,10 @@ export default function ContactForm() {
   // Destructure form data and check
   // If there is an empty field
   const { name, email, password, confirmPassword } = formData;
-  const hasEmpty = Object.values(formData).some((data) => data === "");
 
   // Handle change
   function handleChange(e) {
-    if (!hasEmpty) {
+    if (!hasEmpty(formData)) {
       setDisabled(false);
     }
 
@@ -43,7 +43,7 @@ export default function ContactForm() {
   }
 
   return (
-    <section className={styles.contact_form}>
+    <section className={styles.registration_form}>
       <p className={styles.title}>Create your account</p>
       <form onSubmit={handleSubmit}>
         <div className={styles.item}>

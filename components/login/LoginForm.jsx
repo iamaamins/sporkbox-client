@@ -1,7 +1,8 @@
 import { useState } from "react";
-import styles from "@styles/login/ContactForm.module.css";
+import styles from "@styles/login/LoginForm.module.css";
+import { hasEmpty } from "@utils/index";
 
-export default function ContactForm() {
+export default function LoginForm() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -12,11 +13,10 @@ export default function ContactForm() {
   // Destructure form data and check
   // If there is an empty field
   const { email, password } = formData;
-  const hasEmpty = Object.values(formData).some((data) => data === "");
 
   // Handle change
   function handleChange(e) {
-    if (!hasEmpty) {
+    if (!hasEmpty(formData)) {
       setDisabled(false);
     }
 

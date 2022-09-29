@@ -16,6 +16,10 @@ export function checkAdmin(loading, admin, router) {
   }
 }
 
+// Check if any input field is empty
+export const hasEmpty = (formData) =>
+  Object.values(formData).some((data) => data === "");
+
 // Fetch user from DB
 export function getUser(router, userType, setUser, setLoading) {
   if (router.isReady) {

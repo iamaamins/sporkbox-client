@@ -1,4 +1,4 @@
-import styles from "@styles/admin/dashboard/Dashboard.module.css";
+import styles from "@styles/admin/Dashboard.module.css";
 import { createSlug } from "@utils/index";
 import Link from "next/link";
 

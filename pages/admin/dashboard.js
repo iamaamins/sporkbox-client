@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { useUser } from "@context/user";
 import { useLoader } from "@context/loader";
 import { useRouter } from "next/router";
-import Dashboard from "@components/admin/dashboard";
 import { checkAdmin } from "@utils/index";
+import Dashboard from "@components/admin/Dashboard";
 
 export default function DashboardPage() {
   const router = useRouter();
