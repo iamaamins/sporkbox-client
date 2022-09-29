@@ -17,7 +17,7 @@ export default function Dashboard() {
         </div>
 
         <div className={styles.orders}>
-          <Link href={`/admin/restaurants/${createSlug("restaurant-name")}`}>
+          <Link href={`/admin/all-orders/${createSlug("restaurant-name")}`}>
             <a className={styles.order}>
               <p>Order 1</p>
               <p className={styles.hide_on_mobile}>Sep 28, 2022</p>
@@ -27,7 +27,7 @@ export default function Dashboard() {
             </a>
           </Link>
 
-          <Link href={`/admin/restaurants/${createSlug("restaurant-name")}`}>
+          <Link href={`/admin/all-orders/${createSlug("restaurant-name")}`}>
             <a className={styles.order}>
               <p>Order 2</p>
               <p className={styles.hide_on_mobile}>Sep 30, 2022</p>
@@ -84,7 +84,7 @@ export default function Dashboard() {
         </div>
 
         <div className={styles.companies}>
-          <Link href={`/admin/restaurants/${createSlug("restaurant-name")}`}>
+          <Link href={`/admin/companies/${createSlug("restaurant-name")}`}>
             <a className={styles.company}>
               <p>Company 1</p>
               <p className={styles.hide_on_mobile}>company1</p>
@@ -92,7 +92,7 @@ export default function Dashboard() {
             </a>
           </Link>
 
-          <Link href={`/admin/restaurants/${createSlug("restaurant-name")}`}>
+          <Link href={`/admin/companies/${createSlug("restaurant-name")}`}>
             <a className={styles.order}>
               <p>Company 2</p>
               <p className={styles.hide_on_mobile}>company2</p>
