@@ -60,6 +60,12 @@
   padding: var(--section_padding);
 }
 
+.restaurants_title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
 .restaurant {
   color: var(--black);
   padding: 1rem;
@@ -81,7 +87,7 @@
 }
 
 .submit {
-  margin-top: 1rem;
+  margin-top: 1.25rem;
   color: var(--almost_white);
   background: var(--teal);
 }

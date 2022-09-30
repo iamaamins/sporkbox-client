@@ -68,6 +68,8 @@ export default function SelectRestaurants() {
 
       {restaurants.length > 0 && (
         <section className={styles.restaurants}>
+          <p className={styles.restaurants_title}>Selected restaurants</p>
+
           {restaurants.map((restaurant, index) => (
             <div key={index} className={styles.restaurant}>
               <p>{restaurant.restaurant}</p>
