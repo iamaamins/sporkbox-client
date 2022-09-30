@@ -7,17 +7,17 @@ import AddRestaurant from "@components/admin/AddRestaurant";
 
 export default function AddRestaurantPage() {
   const router = useRouter();
-  const { admin } = useUser();
+  const { isAdmin } = useUser();
   const { isLoading } = useLoader();
 
   useEffect(() => {
-    checkAdmin(isLoading, admin, router);
-  }, [admin]);
+    checkAdmin(isLoading, isAdmin, router);
+  }, [isLoading, isAdmin]);
 
   return (
     <main>
-      {!admin && <h1>Loading...</h1>}
-      {admin && <AddRestaurant />}
+      {isLoading && <h1>Loading...</h1>}
+      {isAdmin && <AddRestaurant />}
     </main>
   );
 }

@@ -14,25 +14,37 @@ export const useUser = () => useContext(UserContext);
 export default function UserProvider({ children }) {
   const router = useRouter();
   const { setIsLoading } = useLoader();
-  const [admin, setAdmin] = useState(null);
-  const [vendor, setVendor] = useState(null);
-  const [customer, setCustomer] = useState(null);
+  const [user, setUser] = useState(null);
+
+  // Check if the user is admin
+  const isAdmin = user?.role === "admin";
 
   useEffect(() => {
-    // Get admin
-    getUser("admin", setAdmin, setIsLoading);
+    async function getUser() {
+      try {
+        // Fetch the data
+        const res = await axios.get(`${API_URL}/user/me`, {
+          withCredentials: true,
+        });
 
-    // Get vendor
-    getUser("vendor", setVendor, setIsLoading);
+        // Update state
+        setUser(res.data);
 
-    // Get customer
-    getUser("customer", setCustomer, setIsLoading);
+        // Remove the loader
+        setIsLoading(false);
+      } catch (err) {
+        console.log(err);
+
+        // Remove the loader
+        setIsLoading(false);
+      }
+    }
+
+    getUser();
   }, [router.isReady]);
 
   return (
-    <UserContext.Provider
-      value={{ admin, setAdmin, vendor, setVendor, customer, setCustomer }}
-    >
+    <UserContext.Provider value={{ setUser, isAdmin }}>
       {children}
     </UserContext.Provider>
   );

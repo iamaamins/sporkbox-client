@@ -2,13 +2,12 @@ import { useState } from "react";
 import axios from "axios";
 import { API_URL, hasEmpty } from "@utils/index";
 import { useUser } from "@context/user";
-import { useLoader } from "@context/loader";
 import styles from "@styles/admin/LoginForm.module.css";
 
 export default function LoginForm() {
   // Hooks
-  const { setAdmin } = useUser();
-  const { setLoading } = useLoader();
+  const { setUser } = useUser();
+  const [isLoading, setIsLoading] = useState(false);
 
   // States
   const [formData, setFormData] = useState({
@@ -40,15 +39,15 @@ export default function LoginForm() {
 
     try {
       // Show the loader
-      setLoading(true);
+      setIsLoading(true);
 
       // Fetch data
-      const res = await axios.post(`${API_URL}/admin/login`, formData, {
+      const res = await axios.post(`${API_URL}/user/login`, formData, {
         withCredentials: true,
       });
 
       // Update state
-      setAdmin(res.data);
+      setUser(res.data);
 
       // Clear form data
       setFormData({
@@ -57,12 +56,12 @@ export default function LoginForm() {
       });
 
       // Remove the loader
-      setLoading(false);
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
 
       // Remove the loader
-      setLoading(false);
+      setIsLoading(false);
     }
   }
 

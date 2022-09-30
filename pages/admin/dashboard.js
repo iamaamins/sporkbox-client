@@ -7,17 +7,17 @@ import Dashboard from "@components/admin/Dashboard";
 
 export default function DashboardPage() {
   const router = useRouter();
-  const { admin } = useUser();
+  const { isAdmin } = useUser();
   const { isLoading } = useLoader();
 
   useEffect(() => {
-    checkAdmin(isLoading, admin, router);
-  }, [admin]);
+    checkAdmin(isLoading, isAdmin, router);
+  }, [isLoading, isAdmin]);
 
   return (
     <main>
-      {!admin && <h1>Loading...</h1>}
-      {admin && <Dashboard />}
+      {isLoading && <h1>Loading...</h1>}
+      {isAdmin && <Dashboard />}
     </main>
   );
 }

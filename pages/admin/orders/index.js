@@ -7,17 +7,17 @@ import Orders from "@components/admin/Orders";
 
 export default function OrdersPage() {
   const router = useRouter();
-  const { admin } = useUser();
+  const { isAdmin } = useUser();
   const { isLoading } = useLoader();
 
   useEffect(() => {
-    checkAdmin(isLoading, admin, router);
-  }, [admin]);
+    checkAdmin(isLoading, isAdmin, router);
+  }, [isLoading, isAdmin]);
 
   return (
     <main>
-      {!admin && <div>Loading...</div>}
-      {admin && <Orders />}
+      {isLoading && <div>Loading...</div>}
+      {isAdmin && <Orders />}
     </main>
   );
 }

@@ -7,17 +7,17 @@ import Restaurant from "@components/admin/Restaurant";
 
 export default function RestaurantPage() {
   const router = useRouter();
-  const { admin } = useUser();
+  const { isAdmin } = useUser();
   const { isLoading } = useLoader();
 
   useEffect(() => {
-    checkAdmin(isLoading, admin, router);
-  }, [admin]);
+    checkAdmin(isLoading, isAdmin, router);
+  }, [isLoading, isAdmin]);
 
   return (
     <main>
-      {!admin && <div>Loading...</div>}
-      {admin && <Restaurant />}
+      {isLoading && <div>Loading...</div>}
+      {isAdmin && <Restaurant />}
     </main>
   );
 }
