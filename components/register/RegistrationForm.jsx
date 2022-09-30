@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { hasEmpty } from "@utils/index";
+import axios from "axios";
+import { useUser } from "@context/user";
+import { API_URL, hasEmpty } from "@utils/index";
 import styles from "@styles/register/RegistrationForm.module.css";
 
 export default function RegistrationForm() {
+  const { setUser } = useUser();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -29,17 +32,21 @@ export default function RegistrationForm() {
   }
 
   // Handle submit
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(formData);
-
-    setFormData({
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+    const res = await axios.post(`${API_URL}/customer/register`, formData, {
+      withCredentials: true,
     });
+
+    setUser(res.data);
+
+    // setFormData({
+    //   name: "",
+    //   email: "",
+    //   password: "",
+    //   confirmPassword: "",
+    // });
   }
 
   return (

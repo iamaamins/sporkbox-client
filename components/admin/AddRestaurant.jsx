@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { hasEmpty } from "@utils/index";
+import { API_URL, hasEmpty } from "@utils/index";
 import styles from "@styles/admin/AddRestaurant.module.css";
+import axios from "axios";
 
 export default function AddRestaurant() {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -15,8 +15,7 @@ export default function AddRestaurant() {
   const [disabled, setDisabled] = useState(true);
 
   const {
-    firstName,
-    lastName,
+    name,
     email,
     password,
     confirmPassword,
@@ -35,10 +34,18 @@ export default function AddRestaurant() {
     }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(formData);
+    try {
+      const res = await axios.post(`${API_URL}/vendor/register`, formData, {
+        withCredentials: true,
+      });
+
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -49,23 +56,8 @@ export default function AddRestaurant() {
         <p className={styles.form_title}>Owner info</p>
 
         <div className={styles.item}>
-          <label htmlFor="firstName">First name</label>
-          <input
-            type="text"
-            id="firstName"
-            value={firstName}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className={styles.item}>
-          <label htmlFor="lastName">Last name</label>
-          <input
-            type="text"
-            id="lastName"
-            value={lastName}
-            onChange={handleChange}
-          />
+          <label htmlFor="name">Name</label>
+          <input type="text" id="name" value={name} onChange={handleChange} />
         </div>
 
         <div className={styles.item}>
