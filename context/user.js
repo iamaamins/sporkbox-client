@@ -22,8 +22,6 @@ export default function UserProvider({ children }) {
   // Check if the user is customer
   const isCustomer = user?.role === "customer";
 
-  console.log(user);
-
   useEffect(() => {
     async function getUser() {
       try {

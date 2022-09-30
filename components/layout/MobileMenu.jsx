@@ -16,7 +16,7 @@ import styles from "@styles/layout/MobileMenu.module.css";
 
 export default function MobileMenu({ isOpen, setIsOpen }) {
   // Hooks
-  const { admin } = useUser();
+  const { isAdmin } = useUser();
   // const admin = null;
 
   // Disable body scroll if MobileMenu is open
@@ -31,7 +31,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
       <ul className={styles.nav_items}>
         {/* Generic nav items */}
         <li
-          className={admin ? styles.hide : null}
+          className={isAdmin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
           <Link href="/dashboard">
@@ -42,7 +42,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
         </li>
 
         <li
-          className={admin ? styles.hide : null}
+          className={isAdmin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
           <Link href="/register">
@@ -53,7 +53,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
         </li>
 
         <li
-          className={admin ? styles.hide : null}
+          className={isAdmin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
           <Link href="/contact">
@@ -64,7 +64,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
         </li>
 
         <li
-          className={admin ? styles.hide : null}
+          className={isAdmin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
           <Link href="/about-us">
@@ -76,7 +76,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
 
         {/* Admin nav items */}
         <li
-          className={!admin ? styles.hide : null}
+          className={!isAdmin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
           <Link href="/admin">
@@ -87,7 +87,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
         </li>
 
         <li
-          className={!admin ? styles.hide : null}
+          className={!isAdmin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
           <Link href="/admin/add-restaurant">
@@ -98,7 +98,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
         </li>
 
         <li
-          className={!admin ? styles.hide : null}
+          className={!isAdmin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
           <Link href="/admin/add-company">
@@ -109,7 +109,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
         </li>
 
         <li
-          className={!admin ? styles.hide : null}
+          className={!isAdmin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
           <Link href="/admin/select-restaurants">
@@ -120,7 +120,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
         </li>
 
         <li
-          className={!admin ? styles.hide : null}
+          className={!isAdmin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
           <Link href="/admin/orders">
@@ -131,7 +131,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
         </li>
 
         <li
-          className={!admin ? styles.hide : null}
+          className={!isAdmin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
           <Link href="/admin/restaurants">
@@ -142,7 +142,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
         </li>
 
         <li
-          className={!admin ? styles.hide : null}
+          className={!isAdmin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
           <Link href="/admin/companies">
@@ -153,7 +153,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
         </li>
 
         <li
-          className={!admin ? styles.hide : null}
+          className={!isAdmin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
           <span>
