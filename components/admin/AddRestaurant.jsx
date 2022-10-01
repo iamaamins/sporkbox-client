@@ -1,9 +1,15 @@
 import { useState } from "react";
-import { API_URL, hasEmpty } from "@utils/index";
-import styles from "@styles/admin/AddRestaurant.module.css";
 import axios from "axios";
+import { useRouter } from "next/router";
+import Loader from "@components/layout/Loader";
+import { API_URL, hasEmpty } from "@utils/index";
+import { useRestaurants } from "@context/restaurants";
+import styles from "@styles/admin/AddRestaurant.module.css";
 
 export default function AddRestaurant() {
+  // Hooks
+  const router = useRouter();
+  const { setRestaurants } = useRestaurants();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -12,7 +18,8 @@ export default function AddRestaurant() {
     restaurantName: "",
     restaurantAddress: "",
   });
-  const [disabled, setDisabled] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     name,
@@ -23,28 +30,46 @@ export default function AddRestaurant() {
     restaurantAddress,
   } = formData;
 
+  // Handle change
   function handleChange(e) {
+    // Check for empty field
     if (!hasEmpty(formData)) {
-      setDisabled(false);
+      setIsDisabled(false);
     }
 
+    // Update state
     setFormData((prevData) => ({
       ...prevData,
       [e.target.id]: e.target.value,
     }));
   }
 
+  // Handle submit
   async function handleSubmit(e) {
     e.preventDefault();
 
     try {
+      // Show loader
+      setIsLoading(true);
+
+      // Post data to backend
       const res = await axios.post(`${API_URL}/vendor/register`, formData, {
         withCredentials: true,
       });
 
-      console.log(res.data);
+      // New restaurant
+      const newRestaurant = res.data;
+
+      // Update state
+      setRestaurants((prevRestaurants) => [...prevRestaurants, newRestaurant]);
+
+      // Remove loader
+      setIsLoading(false);
+      setIsDisabled(true);
     } catch (err) {
       console.log(err);
+      // Remove loader
+      setIsLoading(false);
     }
   }
 
@@ -114,9 +139,9 @@ export default function AddRestaurant() {
 
         <button
           type="submit"
-          className={`${styles.button} ${!disabled && styles.active}`}
+          className={`${styles.button} ${!isDisabled && styles.active}`}
         >
-          Add Restaurant
+          {isLoading ? <Loader /> : "Add Restaurant"}
         </button>
       </form>
     </section>
