@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import { API_URL, getUser } from "@utils/index";
+import { API_URL } from "@utils/index";
 import { createContext, useContext, useEffect, useState } from "react";
 
 // Create context

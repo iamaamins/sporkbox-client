@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { convertDate } from "@utils/index";
-import { useRestaurants } from "@context/restaurants";
+import { useAdminData } from "@context/adminData";
 import styles from "@styles/admin/Restaurants.module.css";
 
 export default function Restaurants() {
-  const { restaurants } = useRestaurants();
+  const { restaurants } = useAdminData();
 
   return (
     <section className={styles.section}>

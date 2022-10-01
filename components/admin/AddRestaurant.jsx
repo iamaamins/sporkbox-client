@@ -3,7 +3,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import Loader from "@components/layout/Loader";
 import { API_URL, hasEmpty } from "@utils/index";
-import { useRestaurants } from "@context/restaurants";
+import { useAdminData } from "@context/adminData";
 import styles from "@styles/admin/AddRestaurant.module.css";
 
 export default function AddRestaurant() {
@@ -19,7 +19,7 @@ export default function AddRestaurant() {
 
   // Hooks
   const router = useRouter();
-  const { setRestaurants } = useRestaurants();
+  const { setRestaurants } = useAdminData();
   const [formData, setFormData] = useState(initialState);
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);

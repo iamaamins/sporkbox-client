@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRestaurants } from "@context/restaurants";
+import { useAdminData } from "@context/adminData";
 import styles from "@styles/admin/Restaurant.module.css";
 import { useEffect, useState } from "react";
 
 export default function Restaurant() {
   const router = useRouter();
-  const { restaurants } = useRestaurants();
+  const { restaurants } = useAdminData();
   const [restaurant, setRestaurant] = useState(null);
 
   useEffect(() => {

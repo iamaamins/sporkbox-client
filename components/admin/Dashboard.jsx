@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { convertDate, createSlug } from "@utils/index";
-import { useRestaurants } from "@context/restaurants";
+import { useAdminData } from "@context/adminData";
 import styles from "@styles/admin/Dashboard.module.css";
 
 export default function Dashboard() {
-  const { restaurants } = useRestaurants();
+  const { restaurants } = useAdminData();
 
-  console.log(restaurants);
+  // console.log(restaurants);
 
   return (
     <>

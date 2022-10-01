@@ -5,7 +5,7 @@ import LoginForm from "@components/login/LoginForm";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { isAdmin, isCustomer } = useUser();
+  const { isLoading, isAdmin, isCustomer } = useUser();
 
   // Push to a page depending on user role
   useEffect(() => {
@@ -18,7 +18,8 @@ export default function LoginPage() {
 
   return (
     <main>
-      <LoginForm />
+      {isLoading && <h1>Loading...</h1>}
+      {!isLoading && <LoginForm />}
     </main>
   );
 }
