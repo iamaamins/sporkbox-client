@@ -1,8 +1,13 @@
-import styles from "@styles/admin/Dashboard.module.css";
-import { createSlug } from "@utils/index";
 import Link from "next/link";
+import { convertDate, createSlug } from "@utils/index";
+import { useRestaurants } from "@context/restaurants";
+import styles from "@styles/admin/Dashboard.module.css";
 
 export default function Dashboard() {
+  const { restaurants } = useRestaurants();
+
+  console.log(restaurants);
+
   return (
     <>
       <section className={styles.section}>
@@ -39,40 +44,41 @@ export default function Dashboard() {
         </div>
       </section>
 
-      <section className={styles.section}>
-        <h2>Restaurants</h2>
+      {restaurants.length > 0 && (
+        <section className={styles.section}>
+          <h2>Restaurants</h2>
 
-        <div className={`${styles.title} ${styles.restaurants_title}`}>
-          <p>Name</p>
-          <p className={styles.hide_on_mobile}>Email</p>
-          <p className={styles.hide_on_mobile}>Registered</p>
-          <p>Status</p>
-        </div>
+          <div className={`${styles.title} ${styles.restaurants_title}`}>
+            <p>Name</p>
+            <p className={styles.hide_on_mobile}>Email</p>
+            <p className={styles.hide_on_mobile}>Registered</p>
+            <p>Status</p>
+          </div>
 
-        <div className={styles.restaurants}>
-          <Link href={`/admin/restaurants/${createSlug("restaurant-name")}`}>
-            <a className={styles.restaurant}>
-              <p>Restaurant 1</p>
-              <p className={styles.hide_on_mobile}>hello@restaurant1.com</p>
-              <p className={styles.hide_on_mobile}>Jun 12, 2022</p>
-              <p>Active</p>
-            </a>
+          <div className={styles.restaurants}>
+            {restaurants.map((restaurant) => (
+              <div key={restaurant._id} className={styles.restaurant}>
+                <Link href={`/admin/restaurants/${restaurant._id}`}>
+                  <a>
+                    <p>{restaurant.name}</p>
+                    <p className={styles.hide_on_mobile}>
+                      {restaurant.owner.email}
+                    </p>
+                    <p className={styles.hide_on_mobile}>
+                      {convertDate(restaurant.createdAt)}
+                    </p>
+                    <p>{restaurant.status}</p>
+                  </a>
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          <Link href="/admin/add-restaurant">
+            <a className={styles.button}>Add restaurant</a>
           </Link>
-
-          <Link href={`/admin/restaurants/${createSlug("restaurant-name")}`}>
-            <a className={styles.restaurant}>
-              <p>Restaurant 2</p>
-              <p className={styles.hide_on_mobile}>hello@restaurant2.com</p>
-              <p className={styles.hide_on_mobile}>Aug 25, 2022</p>
-              <p>Active</p>
-            </a>
-          </Link>
-        </div>
-
-        <Link href="/admin/add-restaurant">
-          <a className={styles.button}>Add restaurant</a>
-        </Link>
-      </section>
+        </section>
+      )}
 
       <section className={styles.section}>
         <h2>Companies</h2>

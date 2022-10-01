@@ -7,17 +7,20 @@ import { useRestaurants } from "@context/restaurants";
 import styles from "@styles/admin/AddRestaurant.module.css";
 
 export default function AddRestaurant() {
-  // Hooks
-  const router = useRouter();
-  const { setRestaurants } = useRestaurants();
-  const [formData, setFormData] = useState({
+  // Initial state
+  const initialState = {
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
     restaurantName: "",
     restaurantAddress: "",
-  });
+  };
+
+  // Hooks
+  const router = useRouter();
+  const { setRestaurants } = useRestaurants();
+  const [formData, setFormData] = useState(initialState);
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -53,7 +56,7 @@ export default function AddRestaurant() {
       setIsLoading(true);
 
       // Post data to backend
-      const res = await axios.post(`${API_URL}/vendor/register`, formData, {
+      const res = await axios.post(`${API_URL}/restaurant/register`, formData, {
         withCredentials: true,
       });
 
@@ -63,9 +66,15 @@ export default function AddRestaurant() {
       // Update state
       setRestaurants((prevRestaurants) => [...prevRestaurants, newRestaurant]);
 
+      // Reset form data
+      setFormData(initialState);
+
       // Remove loader
       setIsLoading(false);
       setIsDisabled(true);
+
+      // Push to dashboard
+      router.push("/admin");
     } catch (err) {
       console.log(err);
       // Remove loader

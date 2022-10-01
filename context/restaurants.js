@@ -18,7 +18,7 @@ export default function RestaurantsProvider({ children }) {
     async function getRestaurants() {
       try {
         // Get all restaurants
-        const res = await axios.get(`${API_URL}/restaurants`, {
+        const res = await axios.get(`${API_URL}/restaurant`, {
           withCredentials: true,
         });
 

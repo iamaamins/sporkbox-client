@@ -34,7 +34,7 @@
 }
 
 .order,
-.restaurant,
+.restaurant a,
 .company {
   color: var(--black);
   padding: 1rem;
