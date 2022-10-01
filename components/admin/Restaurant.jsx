@@ -1,14 +1,12 @@
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import styles from "@styles/admin/Restaurant.module.css";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { API_URL } from "@utils/index";
-import { useUser } from "@context/user";
+import { useEffect, useState } from "react";
+import styles from "@styles/admin/Restaurant.module.css";
 
 export default function Restaurant() {
   const router = useRouter();
-  const { isAdmin } = useUser();
   const [restaurant, setRestaurant] = useState(null);
 
   useEffect(() => {
@@ -24,7 +22,7 @@ export default function Restaurant() {
 
     // Call the function
     getRestaurant();
-  }, [isAdmin]);
+  }, [router.isReady]);
 
   return (
     <section className={styles.restaurant}>
