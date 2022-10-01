@@ -16,7 +16,7 @@ export default function RestaurantPage() {
 
   return (
     <main>
-      {!isAdmin && <div>Loading...</div>}
+      {!isAdmin && <h1>Loading...</h1>}
       {isAdmin && <Restaurant />}
     </main>
   );

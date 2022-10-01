@@ -44,7 +44,8 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {restaurants.length > 0 && (
+      {/* Show next week's restaurant here */}
+      {restaurants && (
         <section className={styles.section}>
           <h2>Restaurants</h2>
 
@@ -73,10 +74,6 @@ export default function Dashboard() {
               </div>
             ))}
           </div>
-
-          <Link href="/admin/add-restaurant">
-            <a className={styles.button}>Add restaurant</a>
-          </Link>
         </section>
       )}
 

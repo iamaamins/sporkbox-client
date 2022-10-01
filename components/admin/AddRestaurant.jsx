@@ -74,7 +74,7 @@ export default function AddRestaurant() {
       setIsDisabled(true);
 
       // Push to dashboard
-      router.push("/admin");
+      router.push("/admin/restaurants");
     } catch (err) {
       console.log(err);
       // Remove loader

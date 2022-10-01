@@ -12,7 +12,7 @@ export const useRestaurants = () => useContext(RestaurantsContext);
 // Provider function
 export default function RestaurantsProvider({ children }) {
   const router = useRouter();
-  const [restaurants, setRestaurants] = useState([]);
+  const [restaurants, setRestaurants] = useState(null);
 
   useEffect(() => {
     async function getRestaurants() {
