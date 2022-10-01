@@ -2,7 +2,6 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { API_URL, getUser } from "@utils/index";
 import { createContext, useContext, useEffect, useState } from "react";
-import { useLoader } from "./loader";
 
 // Create context
 const UserContext = createContext();
@@ -13,8 +12,8 @@ export const useUser = () => useContext(UserContext);
 // Provider function
 export default function UserProvider({ children }) {
   const router = useRouter();
-  const { setIsLoading } = useLoader();
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Check if the user is admin
   const isAdmin = user?.role === "admin";
@@ -47,7 +46,7 @@ export default function UserProvider({ children }) {
   }, [router.isReady]);
 
   return (
-    <UserContext.Provider value={{ setUser, isAdmin, isCustomer }}>
+    <UserContext.Provider value={{ isLoading, setUser, isAdmin, isCustomer }}>
       {children}
     </UserContext.Provider>
   );

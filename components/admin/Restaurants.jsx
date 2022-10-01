@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { convertDate } from "@utils/index";
-import { useLoader } from "@context/loader";
 import { useRestaurants } from "@context/restaurants";
 import styles from "@styles/admin/Restaurants.module.css";
 
