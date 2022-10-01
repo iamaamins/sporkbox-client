@@ -14,8 +14,8 @@ export const hasEmpty = (formData) =>
   Object.values(formData).some((data) => data === "");
 
 // Check if there is an admin
-export function checkAdmin(isLoading, admin, router) {
-  if (!isLoading && !admin) {
-    router.push("/admin");
+export function checkUser(isLoading, user, router) {
+  if (!isLoading && !user) {
+    router.push("/login");
   }
 }

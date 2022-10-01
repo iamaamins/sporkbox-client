@@ -1,23 +1,23 @@
 import { useEffect } from "react";
 import { useUser } from "@context/user";
+import { useLoader } from "@context/loader";
 import { useRouter } from "next/router";
-import LoginForm from "@components/admin/LoginForm";
+import { checkUser } from "@utils/index";
+import Dashboard from "@components/admin/Dashboard";
 
-export default function LoginPage() {
+export default function DashboardPage() {
   const router = useRouter();
   const { isAdmin } = useUser();
+  const { isLoading } = useLoader();
 
-  // If not loading and admin
-  // then push to the dashboard
   useEffect(() => {
-    if (isAdmin) {
-      router.push("/admin/dashboard");
-    }
-  }, [isAdmin]);
+    checkUser(isLoading, isAdmin, router);
+  }, [isLoading, isAdmin]);
 
   return (
     <main>
-      <LoginForm />
+      {!isAdmin && <h1>Loading...</h1>}
+      {isAdmin && <Dashboard />}
     </main>
   );
 }

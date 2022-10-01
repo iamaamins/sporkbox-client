@@ -1,14 +1,20 @@
 import { useState } from "react";
+import axios from "axios";
+import { API_URL, hasEmpty } from "@utils/index";
+import { useUser } from "@context/user";
 import styles from "@styles/login/LoginForm.module.css";
-import { hasEmpty } from "@utils/index";
 
 export default function LoginForm() {
+  // Hooks
+  const { setUser } = useUser();
+  const [isLoading, setIsLoading] = useState(false);
+
+  // States
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const [disabled, setDisabled] = useState(true);
-  const [loading, setLoading] = useState(false);
 
   // Destructure form data and check
   // If there is an empty field
@@ -20,6 +26,7 @@ export default function LoginForm() {
       setDisabled(false);
     }
 
+    // Update state
     setFormData((prevData) => ({
       ...prevData,
       [e.target.id]: e.target.value,
@@ -27,15 +34,35 @@ export default function LoginForm() {
   }
 
   // Handle submit
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(formData);
+    try {
+      // Show the loader
+      setIsLoading(true);
 
-    setFormData({
-      email: "",
-      password: "",
-    });
+      // Fetch data
+      const res = await axios.post(`${API_URL}/user/login`, formData, {
+        withCredentials: true,
+      });
+
+      // Update state
+      setUser(res.data);
+
+      // Clear form data
+      setFormData({
+        email: "",
+        password: "",
+      });
+
+      // Remove the loader
+      setIsLoading(false);
+    } catch (err) {
+      console.log(err);
+
+      // Remove the loader
+      setIsLoading(false);
+    }
   }
 
   return (
