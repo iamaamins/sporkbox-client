@@ -1,19 +1,30 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useAdminData } from "@context/adminData";
 import styles from "@styles/admin/Restaurant.module.css";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import { API_URL } from "@utils/index";
+import { useUser } from "@context/user";
 
 export default function Restaurant() {
   const router = useRouter();
-  const { restaurants } = useAdminData();
+  const { isAdmin } = useUser();
   const [restaurant, setRestaurant] = useState(null);
 
   useEffect(() => {
-    if (restaurants) {
-      setRestaurant(restaurants?.find((data) => data._id === router.query.id));
+    // Get a single restaurant
+    async function getRestaurant() {
+      const res = await axios.get(`${API_URL}/restaurant/${router.query.id}`, {
+        withCredentials: true,
+      });
+
+      // Update state
+      setRestaurant(res.data);
     }
-  }, [restaurants]);
+
+    // Call the function
+    getRestaurant();
+  }, [isAdmin]);
 
   return (
     <section className={styles.restaurant}>

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useUser } from "@context/user";
 import { useRouter } from "next/router";
-import { checkUser } from "@utils/index";
+import { API_URL, checkUser } from "@utils/index";
 import Dashboard from "@components/admin/Dashboard";
 
 export default function DashboardPage() {

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useUser } from "@context/user";
-import { checkUser } from "@utils/index";
+import { API_URL, checkUser } from "@utils/index";
 import { useRouter } from "next/router";
 import Restaurants from "@components/admin/Restaurants";
 
