@@ -60,13 +60,16 @@ export default function AddItem() {
         }
       );
 
+      // Updated restaurant
+      const updatedRestaurant = res.data;
+
       // Update the restaurants state
       setRestaurants((prevRestaurants) =>
         prevRestaurants.map((prevRestaurant) => {
-          if (prevRestaurant._id === res.data._id) {
+          if (prevRestaurant._id === updatedRestaurant._id) {
             return {
               ...prevRestaurant,
-              items: res.data.items,
+              items: updatedRestaurant.items,
             };
           } else {
             return prevRestaurant;

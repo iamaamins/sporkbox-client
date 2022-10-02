@@ -1,5 +1,3 @@
-import axios from "axios";
-
 // API URL
 export const API_URL = "http://localhost:5100/api";
 

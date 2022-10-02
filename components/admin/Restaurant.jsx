@@ -3,15 +3,54 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useData } from "@context/data";
 import styles from "@styles/admin/Restaurant.module.css";
+import axios from "axios";
+import { API_URL } from "@utils/index";
 
 export default function Restaurant() {
   const router = useRouter();
-  const { restaurants } = useData();
+  const { restaurants, setRestaurants } = useData();
   const [restaurant, setRestaurant] = useState(null);
 
+  // Restaurant id
+  const restaurantId = router.query.id;
+
   useEffect(() => {
-    setRestaurant(restaurants?.find((data) => data._id === router.query.id));
+    setRestaurant(restaurants?.find((data) => data._id === restaurantId));
   }, [restaurants]);
+
+  // Handle approval
+  async function handleApproval(e) {
+    // Get current status
+    const action = e.target.innerText;
+
+    // Update restaurant status
+    try {
+      const res = await axios.post(
+        `${API_URL}/restaurant/status`,
+        { restaurantId, action },
+        { withCredentials: true }
+      );
+
+      // Updated restaurant
+      const updatedRestaurant = res.data;
+
+      // Update the restaurants state
+      setRestaurants((prevRestaurants) =>
+        prevRestaurants.map((prevRestaurant) => {
+          if (prevRestaurant._id === updatedRestaurant._id) {
+            return {
+              ...prevRestaurant,
+              status: updatedRestaurant.status,
+            };
+          } else {
+            return prevRestaurant;
+          }
+        })
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <section className={styles.restaurant}>
@@ -38,8 +77,8 @@ export default function Restaurant() {
               <a className={styles.add_item}>Add Item</a>
             </Link>
 
-            <button className={styles.block}>
-              {restaurant.status === "Pending" ? "Allow" : "Block"}
+            <button className={styles.block} onClick={handleApproval}>
+              {restaurant.status === "Pending" ? "Approve" : "Restrict"}
             </button>
           </div>
 
@@ -48,7 +87,7 @@ export default function Restaurant() {
             <div className={styles.items}>
               <p className={styles.title}>Items</p>
               {restaurant.items.map((item) => (
-                <div className={styles.item}>
+                <div key={item._id} className={styles.item}>
                   <div className={styles.item_details}>
                     <p className={styles.name}>{item.name}</p>
                     <p className={styles.description}>{item.description}</p>

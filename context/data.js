@@ -14,8 +14,6 @@ export default function DataProvider({ children }) {
   const { isAdmin } = useUser();
   const [restaurants, setRestaurants] = useState(null);
 
-  console.log(restaurants);
-
   useEffect(() => {
     async function getData() {
       // Get all restaurants
