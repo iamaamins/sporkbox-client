@@ -4,6 +4,7 @@ import styles from "@styles/admin/AddItem.module.css";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useData } from "@context/data";
+import Loader from "@components/layout/Loader";
 
 export default function AddItem() {
   // Initial state
@@ -19,7 +20,7 @@ export default function AddItem() {
   const router = useRouter();
   const { setRestaurants } = useData();
   const [disabled, setDisabled] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(initialState);
 
   // Destructure form data and check
@@ -42,7 +43,12 @@ export default function AddItem() {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    // Add a new item
     try {
+      // Show loader
+      setIsLoading(true);
+
+      // Post the data to backend
       const res = await axios.post(
         `${API_URL}/restaurant/add-item`,
         {
@@ -68,15 +74,20 @@ export default function AddItem() {
         })
       );
 
-      console.log(res.data);
+      // Reset form data
+      setFormData(initialState);
 
-      router.push(`/admin/restaurants/${router.query.id}`);
+      // Remove loader
+      setIsLoading(false);
+
+      // Back to the restaurant page
+      router.back();
     } catch (err) {
       console.log(err);
+      setIsLoading(false);
     }
-
-    // setFormData(initialState);
   }
+
   return (
     <section className={styles.add_item}>
       <p className={styles.title}>Add an item</p>
@@ -111,7 +122,7 @@ export default function AddItem() {
           type="submit"
           className={`${styles.button} ${!disabled && styles.active}`}
         >
-          Add Item
+          {isLoading ? <Loader /> : "Add Item"}
         </button>
       </form>
     </section>
