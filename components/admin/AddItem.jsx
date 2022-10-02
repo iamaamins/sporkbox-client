@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { API_URL, hasEmpty } from "@utils/index";
+import { API_URL, hasEmpty, updateRestaurants } from "@utils/index";
 import styles from "@styles/admin/AddItem.module.css";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -25,6 +25,7 @@ export default function AddItem() {
 
   // Destructure form data and check
   const { name, description, tags, price } = formData;
+  const restaurantId = router.query.restaurant;
 
   // Handle change
   function handleChange(e) {
@@ -50,32 +51,15 @@ export default function AddItem() {
 
       // Post the data to backend
       const res = await axios.post(
-        `${API_URL}/restaurant/add-item`,
-        {
-          ...formData,
-          restaurantId: router.query.restaurant,
-        },
+        `${API_URL}/restaurant/${restaurantId}/add-item`,
+        formData,
         {
           withCredentials: true,
         }
       );
 
-      // Updated restaurant
-      const updatedRestaurant = res.data;
-
-      // Update the restaurants state
-      setRestaurants((prevRestaurants) =>
-        prevRestaurants.map((prevRestaurant) => {
-          if (prevRestaurant._id === updatedRestaurant._id) {
-            return {
-              ...prevRestaurant,
-              items: updatedRestaurant.items,
-            };
-          } else {
-            return prevRestaurant;
-          }
-        })
-      );
+      // Update restaurants with updated items
+      updateRestaurants(res, "items", setRestaurants);
 
       // Reset form data
       setFormData(initialState);

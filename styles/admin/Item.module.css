@@ -50,6 +50,6 @@
   background: var(--teal);
 }
 
-.remove_item_button {
+.delete_item_button {
   background: var(--orange);
 }

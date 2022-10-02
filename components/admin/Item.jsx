@@ -1,13 +1,15 @@
+import axios from "axios";
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import styles from "@styles/admin/Item.module.css";
 import { useData } from "@context/data";
 import { useRouter } from "next/router";
-import Link from "next/link";
+import styles from "@styles/admin/Item.module.css";
+import { API_URL, updateRestaurants } from "@utils/index";
 
 export default function Item() {
   const router = useRouter();
-  const { restaurants } = useData();
   const [item, setItem] = useState(null);
+  const { restaurants, setRestaurants } = useData();
 
   // Restaurant and item id
   const itemId = router.query.item;
@@ -20,6 +22,26 @@ export default function Item() {
         .items?.find((item) => item._id === itemId)
     );
   }, [restaurants]);
+
+  // Handle delete
+  async function handleDelete() {
+    // Delete an item
+    try {
+      // Send the request to backend
+      const res = await axios.delete(
+        `${API_URL}/restaurant/${restaurantId}/${itemId}/delete-item`,
+        { withCredentials: true }
+      );
+
+      // Updated restaurants array with updated items
+      updateRestaurants(res, "items", setRestaurants);
+
+      // Bck to the restaurant page
+      router.back();
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <section className={styles.item}>
@@ -41,7 +63,12 @@ export default function Item() {
                 <a className={styles.edit_item_button}>Edit item</a>
               </Link>
 
-              <button className={styles.remove_item_button}>Remove item</button>
+              <button
+                onClick={handleDelete}
+                className={styles.delete_item_button}
+              >
+                Delete item
+              </button>
             </div>
           </div>
         </>

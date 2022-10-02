@@ -21,3 +21,23 @@ export function checkUser(isLoading, user, router) {
     router.push("/login");
   }
 }
+
+// Update restaurants items
+export function updateRestaurants(res, update, setRestaurants) {
+  // Updated restaurant
+  const updatedRestaurant = res.data;
+
+  // Update the restaurants state
+  setRestaurants((prevRestaurants) =>
+    prevRestaurants.map((prevRestaurant) => {
+      if (prevRestaurant._id === updatedRestaurant._id) {
+        return {
+          ...prevRestaurant,
+          [update]: updatedRestaurant[update],
+        };
+      } else {
+        return prevRestaurant;
+      }
+    })
+  );
+}

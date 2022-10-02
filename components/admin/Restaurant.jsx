@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useData } from "@context/data";
-import { API_URL } from "@utils/index";
+import { API_URL, updateRestaurants } from "@utils/index";
 import styles from "@styles/admin/Restaurant.module.css";
 
 export default function Restaurant() {
@@ -28,27 +28,13 @@ export default function Restaurant() {
     // Update restaurant status
     try {
       const res = await axios.post(
-        `${API_URL}/restaurant/status`,
-        { restaurantId, action },
+        `${API_URL}/restaurant/${restaurantId}/status`,
+        { action },
         { withCredentials: true }
       );
 
-      // Updated restaurant
-      const updatedRestaurant = res.data;
-
-      // Update the restaurants state
-      setRestaurants((prevRestaurants) =>
-        prevRestaurants.map((prevRestaurant) => {
-          if (prevRestaurant._id === updatedRestaurant._id) {
-            return {
-              ...prevRestaurant,
-              status: updatedRestaurant.status,
-            };
-          } else {
-            return prevRestaurant;
-          }
-        })
-      );
+      // Update restaurants with updates status
+      updateRestaurants(res, "status", setRestaurants);
     } catch (err) {
       console.log(err);
     }
