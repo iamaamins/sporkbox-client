@@ -6,8 +6,6 @@ import { useData } from "@context/data";
 export default function Restaurants() {
   const { restaurants } = useData();
 
-  console.log(restaurants);
-
   return (
     <section className={styles.section}>
       {!restaurants && <h2>No restaurants</h2>}

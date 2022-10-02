@@ -42,11 +42,11 @@
   color: var(--almost_white);
 }
 
-.add_item {
+.add_item_button {
   background: var(--teal);
 }
 
-.block {
+.block_restaurant_button {
   background: var(--orange);
 }
 
@@ -62,6 +62,7 @@
 
 .item {
   display: flex;
+  color: var(--black);
   align-items: center;
   padding: 0.75rem 0rem;
   justify-content: space-between;

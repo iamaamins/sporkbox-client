@@ -53,7 +53,7 @@ export default function AddItem() {
         `${API_URL}/restaurant/add-item`,
         {
           ...formData,
-          restaurantId: router.query.id,
+          restaurantId: router.query.restaurant,
         },
         {
           withCredentials: true,

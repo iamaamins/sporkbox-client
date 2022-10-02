@@ -1,10 +1,10 @@
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useData } from "@context/data";
-import styles from "@styles/admin/Restaurant.module.css";
-import axios from "axios";
 import { API_URL } from "@utils/index";
+import styles from "@styles/admin/Restaurant.module.css";
 
 export default function Restaurant() {
   const router = useRouter();
@@ -12,10 +12,12 @@ export default function Restaurant() {
   const [restaurant, setRestaurant] = useState(null);
 
   // Restaurant id
-  const restaurantId = router.query.id;
+  const restaurantId = router.query.restaurant;
 
   useEffect(() => {
-    setRestaurant(restaurants?.find((data) => data._id === restaurantId));
+    setRestaurant(
+      restaurants?.find((restaurant) => restaurant._id === restaurantId)
+    );
   }, [restaurants]);
 
   // Handle approval
@@ -73,11 +75,14 @@ export default function Restaurant() {
 
           {/* Buttons */}
           <div className={styles.buttons}>
-            <Link href={`/admin/restaurants/${restaurant._id}/add-item`}>
-              <a className={styles.add_item}>Add Item</a>
+            <Link href={`/admin/restaurants/${restaurantId}/add-item`}>
+              <a className={styles.add_item_button}>Add Item</a>
             </Link>
 
-            <button className={styles.block} onClick={handleApproval}>
+            <button
+              className={styles.block_restaurant_button}
+              onClick={handleApproval}
+            >
               {restaurant.status === "Pending" ? "Approve" : "Restrict"}
             </button>
           </div>
@@ -87,14 +92,18 @@ export default function Restaurant() {
             <div className={styles.items}>
               <p className={styles.title}>Items</p>
               {restaurant.items.map((item) => (
-                <div key={item._id} className={styles.item}>
-                  <div className={styles.item_details}>
-                    <p className={styles.name}>{item.name}</p>
-                    <p className={styles.description}>{item.description}</p>
-                    <p className={styles.price}>USD ${item.price}</p>
-                  </div>
+                <div key={item._id}>
+                  <Link href={`/admin/restaurants/${restaurantId}/${item._id}`}>
+                    <a className={styles.item}>
+                      <div className={styles.item_details}>
+                        <p className={styles.name}>{item.name}</p>
+                        <p className={styles.description}>{item.description}</p>
+                        <p className={styles.price}>USD ${item.price}</p>
+                      </div>
 
-                  <div className={styles.item_image}></div>
+                      <div className={styles.item_image}></div>
+                    </a>
+                  </Link>
                 </div>
               ))}
             </div>
