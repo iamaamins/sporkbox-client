@@ -35,11 +35,15 @@ export default function RegistrationForm() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const res = await axios.post(`${API_URL}/customer/register`, formData, {
-      withCredentials: true,
-    });
+    try {
+      const res = await axios.post(`${API_URL}/customer/register`, formData, {
+        withCredentials: true,
+      });
 
-    setUser(res.data);
+      setUser(res.data);
+    } catch (err) {
+      console.log(err);
+    }
 
     // setFormData({
     //   name: "",

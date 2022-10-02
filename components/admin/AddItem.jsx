@@ -1,17 +1,26 @@
 import { useState } from "react";
-import { hasEmpty } from "@utils/index";
-import { DayPicker } from "react-day-picker";
+import { API_URL, hasEmpty } from "@utils/index";
 import styles from "@styles/admin/AddItem.module.css";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useData } from "@context/data";
 
 export default function AddItem() {
-  const [formData, setFormData] = useState({
+  // Initial state
+  const initialState = {
     name: "",
     description: "",
     tags: "",
     price: "",
-  });
+  };
+
+  // Hooks
+  // Router
+  const router = useRouter();
+  const { setRestaurants } = useData();
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState(initialState);
 
   // Destructure form data and check
   const { name, description, tags, price } = formData;
@@ -30,17 +39,43 @@ export default function AddItem() {
   }
 
   // Handle submit
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(formData);
+    try {
+      const res = await axios.post(
+        `${API_URL}/restaurant/add-item`,
+        {
+          ...formData,
+          restaurantId: router.query.id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
-    setFormData({
-      name: "",
-      description: "",
-      password: "",
-      confirmPassword: "",
-    });
+      // Update the restaurants state
+      setRestaurants((prevRestaurants) =>
+        prevRestaurants.map((prevRestaurant) => {
+          if (prevRestaurant._id === res.data._id) {
+            return {
+              ...prevRestaurant,
+              items: res.data.items,
+            };
+          } else {
+            return prevRestaurant;
+          }
+        })
+      );
+
+      console.log(res.data);
+
+      router.push(`/admin/restaurants/${router.query.id}`);
+    } catch (err) {
+      console.log(err);
+    }
+
+    // setFormData(initialState);
   }
   return (
     <section className={styles.add_item}>
@@ -49,22 +84,17 @@ export default function AddItem() {
       <form onSubmit={handleSubmit}>
         <div className={styles.item}>
           <label htmlFor="name">Item name</label>
-          <input type="name" id="name" value={name} onChange={handleChange} />
+          <input type="text" id="name" value={name} onChange={handleChange} />
         </div>
 
         <div className={styles.item}>
           <label htmlFor="tags">Item tags</label>
-          <input type="tags" id="tags" value={tags} onChange={handleChange} />
+          <input type="text" id="tags" value={tags} onChange={handleChange} />
         </div>
 
         <div className={styles.item}>
           <label htmlFor="price">Item price</label>
-          <input
-            type="price"
-            id="price"
-            value={price}
-            onChange={handleChange}
-          />
+          <input type="text" id="price" value={price} onChange={handleChange} />
         </div>
 
         <div className={styles.item}>

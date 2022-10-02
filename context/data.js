@@ -4,15 +4,17 @@ import { API_URL } from "@utils/index";
 import { useState, createContext, useContext, useEffect } from "react";
 
 // Create context
-const AdminDataContext = createContext();
+const DataContext = createContext();
 
 // Create hook
-export const useAdminData = () => useContext(AdminDataContext);
+export const useData = () => useContext(DataContext);
 
 // Provider function
-export default function AdminDataProvider({ children }) {
+export default function DataProvider({ children }) {
   const { isAdmin } = useUser();
   const [restaurants, setRestaurants] = useState(null);
+
+  console.log(restaurants);
 
   useEffect(() => {
     async function getData() {
@@ -36,8 +38,8 @@ export default function AdminDataProvider({ children }) {
   }, [isAdmin]);
 
   return (
-    <AdminDataContext.Provider value={{ restaurants, setRestaurants }}>
+    <DataContext.Provider value={{ restaurants, setRestaurants }}>
       {children}
-    </AdminDataContext.Provider>
+    </DataContext.Provider>
   );
 }
