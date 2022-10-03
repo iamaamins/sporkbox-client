@@ -1,32 +1,47 @@
 import { useState } from "react";
-import { hasEmpty } from "@utils/index";
+import { API_URL, hasEmpty } from "@utils/index";
 import styles from "@styles/admin/AddCompany.module.css";
+import axios from "axios";
 
 export default function AddCompany() {
-  const [formData, setFormData] = useState({
+  // Initial state
+  const initialState = {
     name: "",
+    website: "",
     code: "",
     budget: "",
-  });
+  };
   const [disabled, setDisabled] = useState(true);
+  const [formData, setFormData] = useState(initialState);
 
-  const { name, code, budget } = formData;
+  const { name, website, code, budget } = formData;
 
   function handleChange(e) {
+    // Check if any field is empty
     if (!hasEmpty(formData)) {
       setDisabled(false);
     }
 
+    // update state
     setFormData((prevData) => ({
       ...prevData,
       [e.target.id]: e.target.value,
     }));
   }
 
-  function handleSubmit(e) {
+  // Handle submit
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(formData);
+    try {
+      const res = await axios.post(`${API_URL}/company/register`, formData, {
+        withCredentials: true,
+      });
+
+      console.log(res);
+    } catch (err) {
+      console.log(err.response.data);
+    }
   }
 
   return (
@@ -40,6 +55,16 @@ export default function AddCompany() {
         </div>
 
         <div className={styles.item}>
+          <label htmlFor="code">Website</label>
+          <input
+            type="text"
+            id="website"
+            value={website}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className={styles.item}>
           <label htmlFor="code">Code</label>
           <input type="text" id="code" value={code} onChange={handleChange} />
         </div>
@@ -47,7 +72,7 @@ export default function AddCompany() {
         <div className={styles.item}>
           <label htmlFor="budget">Budget</label>
           <input
-            type="budget"
+            type="text"
             id="budget"
             value={budget}
             onChange={handleChange}

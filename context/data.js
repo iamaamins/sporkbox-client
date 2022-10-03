@@ -13,10 +13,11 @@ export const useData = () => useContext(DataContext);
 export default function DataProvider({ children }) {
   const { isAdmin } = useUser();
   const [restaurants, setRestaurants] = useState(null);
+  const [companies, setCompanies] = useState(null);
 
   useEffect(() => {
-    async function getData() {
-      // Get all restaurants
+    async function getAdminData() {
+      // Get 20 latest restaurants
       try {
         const res = await axios.get(`${API_URL}/restaurant/20`, {
           withCredentials: true,
@@ -27,16 +28,30 @@ export default function DataProvider({ children }) {
       } catch (err) {
         console.log(err);
       }
+
+      // Get all companies
+      try {
+        const res = await axios.get(`${API_URL}/company`, {
+          withCredentials: true,
+        });
+
+        // Update state
+        setCompanies(res.data);
+      } catch (err) {
+        console.log(err);
+      }
     }
 
     // Run the function if there is an admin
     if (isAdmin) {
-      getData();
+      getAdminData();
     }
   }, [isAdmin]);
 
   return (
-    <DataContext.Provider value={{ restaurants, setRestaurants }}>
+    <DataContext.Provider
+      value={{ restaurants, setRestaurants, companies, setCompanies }}
+    >
       {children}
     </DataContext.Provider>
   );

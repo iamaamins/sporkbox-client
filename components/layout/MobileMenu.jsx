@@ -104,7 +104,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
         >
           <Link href="/admin/add-company">
             <a>
-              <TbBuildingSkyscraper /> Add Company
+              <BiPlusCircle /> Add Company
             </a>
           </Link>
         </li>
