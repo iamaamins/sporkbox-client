@@ -1,18 +1,9 @@
-.section {
+.all_companies {
   padding: var(--section_padding);
 }
 
-.section h2 {
+.all_companies h2 {
   margin-bottom: 0.75rem;
-}
-
-.button {
-  border: none;
-  display: inline-block;
-  padding: 0.5rem 1.25rem;
-  border-radius: 0.25rem;
-  color: var(--almost_white);
-  background-color: var(--teal);
 }
 
 .title {
@@ -28,7 +19,7 @@
   display: none;
 }
 
-.company {
+.company a {
   color: var(--black);
   padding: 1rem;
   display: flex;
@@ -46,4 +37,14 @@
 .company p:first-child {
   color: var(--black);
   font-size: 1rem;
+}
+
+.button {
+  border: none;
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.25rem;
+  color: var(--almost_white);
+  background-color: var(--teal);
+  margin-top: 1.25rem;
 }

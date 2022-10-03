@@ -7,7 +7,7 @@ export default function Restaurants() {
   const { restaurants } = useData();
 
   return (
-    <section className={styles.section}>
+    <section className={styles.all_restaurants}>
       {!restaurants && <h2>No restaurants</h2>}
       {restaurants && (
         <>

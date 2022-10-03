@@ -40,6 +40,10 @@ export default function DataProvider({ children }) {
       } catch (err) {
         console.log(err);
       }
+
+      // Get current orders
+
+      // Get 20 latest orders
     }
 
     // Run the function if there is an admin

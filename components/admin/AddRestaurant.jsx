@@ -63,8 +63,6 @@ export default function AddRestaurant() {
       // New restaurant
       const newRestaurant = res.data;
 
-      console.log(res.data);
-
       // Update state
       setRestaurants((prevRestaurants) => [...prevRestaurants, newRestaurant]);
 
@@ -152,7 +150,7 @@ export default function AddRestaurant() {
           type="submit"
           className={`${styles.button} ${!isDisabled && styles.active}`}
         >
-          {isLoading ? <Loader /> : "Add Restaurant"}
+          {isLoading ? <Loader /> : "Add restaurant"}
         </button>
       </form>
     </section>

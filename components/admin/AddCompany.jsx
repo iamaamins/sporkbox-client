@@ -1,7 +1,10 @@
+import axios from "axios";
 import { useState } from "react";
+import { useRouter } from "next/router";
+import { useData } from "@context/data";
+import Loader from "@components/layout/Loader";
 import { API_URL, hasEmpty } from "@utils/index";
 import styles from "@styles/admin/AddCompany.module.css";
-import axios from "axios";
 
 export default function AddCompany() {
   // Initial state
@@ -11,15 +14,22 @@ export default function AddCompany() {
     code: "",
     budget: "",
   };
-  const [disabled, setDisabled] = useState(true);
+
+  // Hooks
+  const router = useRouter();
+  const { setCompanies } = useData();
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(initialState);
 
+  // Destructure data
   const { name, website, code, budget } = formData;
 
+  // Handle change
   function handleChange(e) {
     // Check if any field is empty
     if (!hasEmpty(formData)) {
-      setDisabled(false);
+      setIsDisabled(false);
     }
 
     // update state
@@ -33,14 +43,34 @@ export default function AddCompany() {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    // Create a company
     try {
+      // Show loader
+      setIsLoading(true);
+
+      // Make request to backend
       const res = await axios.post(`${API_URL}/company/register`, formData, {
         withCredentials: true,
       });
 
-      console.log(res);
+      const newCompany = res.data;
+
+      // Update state
+      setCompanies((prevCompanies) => [...prevCompanies, newCompany]);
+
+      // Clear the form
+      setFormData(initialState);
+
+      // Update states
+      setIsLoading(false);
+      setIsDisabled(true);
+
+      // Push to dashboard
+      router.push("/admin/companies");
     } catch (err) {
-      console.log(err.response.data);
+      // Remove loader
+      setIsLoading(false);
+      console.log(err);
     }
   }
 
@@ -81,9 +111,9 @@ export default function AddCompany() {
 
         <button
           type="submit"
-          className={`${styles.button} ${!disabled && styles.active}`}
+          className={`${styles.button} ${!isDisabled && styles.active}`}
         >
-          Add Company
+          {isLoading ? <Loader /> : "Add company"}
         </button>
       </form>
     </section>
