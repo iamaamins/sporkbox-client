@@ -78,7 +78,7 @@ export default function AddCompany() {
 
   return (
     <section className={styles.add_company}>
-      <p className={styles.title}>Add a company</p>
+      <h2>Add a company</h2>
 
       <form onSubmit={handleSubmit}>
         <div className={styles.item}>

@@ -77,14 +77,14 @@ export default function ScheduleRestaurants() {
   }
 
   return (
-    <section className={styles.select_restaurants}>
-      {approvedRestaurants.length === 0 && (
-        <p className={styles.no_approved_restaurant}>No approved restaurants</p>
-      )}
+    <section className={styles.schedule_restaurants}>
+      {approvedRestaurants.length === 0 && <h2>No approved restaurants</h2>}
 
       {approvedRestaurants.length > 0 && (
         <>
-          <p className={styles.title}>Schedule restaurants</p>
+          <h2 className={styles.schedule_restaurants_title}>
+            Schedule restaurants
+          </h2>
 
           <form onSubmit={handleSchedule}>
             <div className={styles.item}>

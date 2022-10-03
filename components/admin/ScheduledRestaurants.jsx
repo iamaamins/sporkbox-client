@@ -29,7 +29,9 @@ export default function ScheduledRestaurants() {
 
       {scheduledRestaurants.length > 0 && (
         <>
-          <h2>Scheduled restaurants</h2>
+          <h2 className={styles.scheduled_restaurants_title}>
+            Scheduled restaurants
+          </h2>
 
           <div className={`${styles.title} ${styles.restaurants_title}`}>
             <p>Name</p>

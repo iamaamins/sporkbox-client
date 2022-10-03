@@ -2,8 +2,8 @@
   padding: var(--section_padding);
 }
 
-.all_restaurants h2 {
-  margin-bottom: 0.75rem;
+.all_restaurants_title {
+  margin-bottom: 1rem;
 }
 
 .title {

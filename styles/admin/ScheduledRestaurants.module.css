@@ -2,8 +2,8 @@
   padding: var(--section_padding);
 }
 
-.scheduled_restaurants h2 {
-  margin-bottom: 0.75rem;
+.scheduled_restaurants_title {
+  margin-bottom: 1rem;
 }
 
 .title {

@@ -1,18 +1,12 @@
-.select_restaurants {
+.schedule_restaurants {
   padding: var(--section_padding);
 }
 
-.no_approved_restaurant,
-.title {
-  font-size: 1.5rem;
-  font-weight: 500;
+.schedule_restaurants_title {
+  margin-bottom: 1rem;
 }
 
-.title {
-  margin-bottom: 1.5rem;
-}
-
-.select_restaurants form {
+.schedule_restaurants form {
   padding: 1rem;
   border-radius: 0.5rem;
   box-shadow: var(--shadow_medium);

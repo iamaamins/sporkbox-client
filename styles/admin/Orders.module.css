@@ -2,8 +2,8 @@
   padding: var(--section_padding);
 }
 
-.section h2 {
-  margin-bottom: 0.75rem;
+.all_orders_title {
+  margin-bottom: 1rem;
 }
 
 .button {

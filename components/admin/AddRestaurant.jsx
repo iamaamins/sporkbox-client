@@ -84,7 +84,7 @@ export default function AddRestaurant() {
 
   return (
     <section className={styles.add_restaurant}>
-      <p className={styles.title}>Add a restaurant</p>
+      <h2>Add a restaurant</h2>
 
       <form onSubmit={handleSubmit}>
         <p className={styles.form_title}>Owner info</p>

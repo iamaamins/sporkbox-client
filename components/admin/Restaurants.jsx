@@ -11,7 +11,7 @@ export default function Restaurants() {
       {!restaurants && <h2>No restaurants</h2>}
       {restaurants && (
         <>
-          <h2>All restaurants</h2>
+          <h2 className={styles.all_restaurants_title}>All restaurants</h2>
 
           <div className={`${styles.title} ${styles.restaurants_title}`}>
             <p>Name</p>

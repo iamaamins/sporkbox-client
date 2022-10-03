@@ -2,10 +2,8 @@
   padding: var(--section_padding);
 }
 
-.title {
-  font-size: 1.5rem;
-  font-weight: 500;
-  margin-bottom: 1.5rem;
+.add_restaurant h2 {
+  margin-bottom: 1rem;
 }
 
 .add_restaurant form {
