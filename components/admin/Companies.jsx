@@ -7,11 +7,11 @@ export default function Companies() {
 
   return (
     <section className={styles.all_companies}>
-      {!companies && <h2>No companies</h2>}
+      {(!companies || companies.length === 0) && <h2>No companies</h2>}
 
-      {companies && (
+      {companies.length > 0 && (
         <>
-          <h2>All companies</h2>
+          <h2 className={styles.all_companies_title}>All companies</h2>
           <div className={`${styles.title} ${styles.companies_title}`}>
             <p>Name</p>
             <p className={styles.hide_on_mobile}>Code</p>

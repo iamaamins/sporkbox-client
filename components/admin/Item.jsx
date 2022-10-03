@@ -60,13 +60,10 @@ export default function Item() {
               <Link
                 href={`/admin/restaurants/${restaurantId}/${itemId}/edit-item`}
               >
-                <a className={styles.edit_item_button}>Edit item</a>
+                <a className={styles.edit_button}>Edit item</a>
               </Link>
 
-              <button
-                onClick={handleDelete}
-                className={styles.delete_item_button}
-              >
+              <button onClick={handleDelete} className={styles.delete_button}>
                 Delete item
               </button>
             </div>

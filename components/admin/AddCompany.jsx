@@ -11,6 +11,7 @@ export default function AddCompany() {
   const initialState = {
     name: "",
     website: "",
+    address: "",
     code: "",
     budget: "",
   };
@@ -23,7 +24,7 @@ export default function AddCompany() {
   const [formData, setFormData] = useState(initialState);
 
   // Destructure data
-  const { name, website, code, budget } = formData;
+  const { name, website, address, code, budget } = formData;
 
   // Handle change
   function handleChange(e) {
@@ -53,6 +54,7 @@ export default function AddCompany() {
         withCredentials: true,
       });
 
+      // New company
       const newCompany = res.data;
 
       // Update state
@@ -90,6 +92,16 @@ export default function AddCompany() {
             type="text"
             id="website"
             value={website}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className={styles.item}>
+          <label htmlFor="code">Address</label>
+          <input
+            type="text"
+            id="address"
+            value={address}
             onChange={handleChange}
           />
         </div>

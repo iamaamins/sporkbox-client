@@ -14,10 +14,13 @@ export default function Restaurant() {
   // Restaurant id
   const restaurantId = router.query.restaurant;
 
+  // Get the restaurant
   useEffect(() => {
-    setRestaurant(
-      restaurants?.find((restaurant) => restaurant._id === restaurantId)
-    );
+    if (restaurants) {
+      setRestaurant(
+        restaurants?.find((restaurant) => restaurant._id === restaurantId)
+      );
+    }
   }, [restaurants]);
 
   // Handle approval

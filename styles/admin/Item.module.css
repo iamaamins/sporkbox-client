@@ -46,12 +46,12 @@
   color: var(--almost_white);
 }
 
-.edit_item_button {
+.edit_button {
   /* background: var(--teal); */
   background: var(--black);
   pointer-events: none;
 }
 
-.delete_item_button {
+.delete_button {
   background: var(--orange);
 }

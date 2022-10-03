@@ -26,20 +26,27 @@
   justify-content: space-between;
 }
 
-.buttons button {
+.edit_button,
+.delete_button {
   border: none;
   width: 10rem;
   height: 2.75rem;
   font-size: 1rem;
   font-weight: 500;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
   border-radius: 0.25rem;
+  justify-content: center;
   color: var(--almost_white);
 }
 
-.edit {
-  background: var(--teal);
+.edit_button {
+  /* background: var(--teal); */
+  background: var(--black);
+  pointer-events: none;
 }
 
-.block {
+.delete_button {
   background: var(--orange);
 }
