@@ -87,7 +87,7 @@ export default function AddCompany() {
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="code">Website</label>
+          <label htmlFor="website">Website</label>
           <input
             type="text"
             id="website"
@@ -97,7 +97,7 @@ export default function AddCompany() {
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="code">Address</label>
+          <label htmlFor="address">Address</label>
           <input
             type="text"
             id="address"
