@@ -10,6 +10,7 @@ import { IoLogIn } from "react-icons/io5";
 import { TbBuildingStore, TbBuildingSkyscraper } from "react-icons/tb";
 import { BsFillCalendar2DateFill } from "react-icons/bs";
 import { AiTwotonePhone } from "react-icons/ai";
+import { BiPlusCircle } from "react-icons/bi";
 import { useUser } from "@context/user";
 import { currentYear } from "@utils/index";
 import styles from "@styles/layout/MobileMenu.module.css";
@@ -92,7 +93,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
         >
           <Link href="/admin/add-restaurant">
             <a>
-              <TbBuildingStore /> Add Restaurant
+              <BiPlusCircle /> Add Restaurant
             </a>
           </Link>
         </li>
@@ -115,6 +116,17 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
           <Link href="/admin/schedule-restaurants">
             <a>
               <BsFillCalendar2DateFill /> Schedule Restaurants
+            </a>
+          </Link>
+        </li>
+
+        <li
+          className={!isAdmin ? styles.hide : null}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href="/admin/scheduled-restaurants">
+            <a>
+              <TbBuildingStore /> Scheduled Restaurants
             </a>
           </Link>
         </li>

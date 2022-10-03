@@ -1,0 +1,50 @@
+.scheduled_restaurants {
+  padding: var(--section_padding);
+}
+
+.scheduled_restaurants h2 {
+  margin-bottom: 0.75rem;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  background-color: var(--almost_white);
+}
+
+.hide_on_mobile {
+  display: none;
+}
+
+.restaurant {
+  color: var(--black);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border_color);
+}
+
+.restaurant p {
+  font-weight: 500;
+  color: var(--gray);
+  font-size: 0.9rem;
+}
+
+.restaurant p:first-child {
+  color: var(--black);
+  font-size: 1rem;
+}
+
+.button {
+  border: none;
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.25rem;
+  color: var(--almost_white);
+  background-color: var(--teal);
+  margin-top: 1.25rem;
+}

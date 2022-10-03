@@ -103,7 +103,7 @@ export default function ScheduleRestaurants() {
                 value={restaurantId}
                 onChange={handleChange}
               >
-                <option hidden value="Please select a restaurant">
+                <option hidden aria-hidden value="Please select a restaurant">
                   Please select a restaurant
                 </option>
 
