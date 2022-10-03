@@ -66,10 +66,10 @@ export default function Restaurant() {
             </Link>
 
             <button
-              className={styles.block_restaurant_button}
               onClick={handleApproval}
+              className={styles.block_restaurant_button}
             >
-              {restaurant.status === "Pending" ? "Approve" : "Restrict"}
+              {restaurant.status === "PENDING" ? "Approve" : "Restrict"}
             </button>
           </div>
 

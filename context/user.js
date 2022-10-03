@@ -16,10 +16,10 @@ export default function UserProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
 
   // Check if the user is admin
-  const isAdmin = user?.role === "admin";
+  const isAdmin = user?.role === "ADMIN";
 
   // Check if the user is customer
-  const isCustomer = user?.role === "customer";
+  const isCustomer = user?.role === "CUSTOMER";
 
   useEffect(() => {
     async function getUser() {

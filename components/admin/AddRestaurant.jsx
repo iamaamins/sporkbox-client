@@ -63,6 +63,8 @@ export default function AddRestaurant() {
       // New restaurant
       const newRestaurant = res.data;
 
+      console.log(res.data);
+
       // Update state
       setRestaurants((prevRestaurants) => [...prevRestaurants, newRestaurant]);
 

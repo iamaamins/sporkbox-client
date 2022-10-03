@@ -112,9 +112,9 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
           className={!isAdmin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
-          <Link href="/admin/select-restaurants">
+          <Link href="/admin/schedule-restaurants">
             <a>
-              <BsFillCalendar2DateFill /> Select Restaurants
+              <BsFillCalendar2DateFill /> Schedule Restaurants
             </a>
           </Link>
         </li>

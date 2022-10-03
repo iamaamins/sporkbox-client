@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import { useUser } from "@context/user";
 import { checkUser } from "@utils/index";
 import { useRouter } from "next/router";
-import SelectRestaurants from "@components/admin/SelectRestaurants";
+import ScheduleRestaurants from "@components/admin/ScheduleRestaurants";
 
-export default function SelectRestaurantsPage() {
+export default function ScheduleRestaurantsPage() {
   const router = useRouter();
   const { isLoading, isAdmin } = useUser();
 
@@ -15,7 +15,7 @@ export default function SelectRestaurantsPage() {
   return (
     <main>
       {isLoading && <h1>Loading...</h1>}
-      {isAdmin && <SelectRestaurants />}
+      {isAdmin && <ScheduleRestaurants />}
     </main>
   );
 }

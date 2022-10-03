@@ -46,6 +46,7 @@
   border: none;
   width: 10rem;
   height: 2.75rem;
+  cursor: pointer;
   font-size: 0.9rem;
   margin-top: 0.5rem;
   pointer-events: none;
