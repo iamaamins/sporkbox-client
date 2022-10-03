@@ -43,6 +43,7 @@
   height: 2.75rem;
   font-size: 0.9rem;
   margin-top: 0.5rem;
+  pointer-events: none;
   border-radius: 0.25rem;
   color: var(--disable_font);
   background: var(--border_color);
@@ -50,6 +51,7 @@
 }
 
 .button.active {
+  pointer-events: all;
   background: var(--teal);
   color: var(--almost_white);
 }
