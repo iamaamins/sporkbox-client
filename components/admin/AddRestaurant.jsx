@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import Loader from "@components/layout/Loader";
+import ButtonLoader from "@components/layout/ButtonLoader";
 import { API_URL, hasEmpty } from "@utils/index";
 import { useData } from "@context/data";
 import styles from "@styles/admin/AddRestaurant.module.css";
@@ -56,7 +56,7 @@ export default function AddRestaurant() {
       setIsLoading(true);
 
       // Post data to backend
-      const res = await axios.post(`${API_URL}/restaurant/register`, formData, {
+      const res = await axios.post(`${API_URL}/restaurant/add`, formData, {
         withCredentials: true,
       });
 
@@ -150,7 +150,7 @@ export default function AddRestaurant() {
           type="submit"
           className={`${styles.button} ${!isDisabled && styles.active}`}
         >
-          {isLoading ? <Loader /> : "Add restaurant"}
+          {isLoading ? <ButtonLoader /> : "Add restaurant"}
         </button>
       </form>
     </section>

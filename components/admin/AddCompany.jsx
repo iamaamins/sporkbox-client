@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useData } from "@context/data";
-import Loader from "@components/layout/Loader";
+import ButtonLoader from "@components/layout/ButtonLoader";
 import { API_URL, hasEmpty } from "@utils/index";
 import styles from "@styles/admin/AddCompany.module.css";
 
@@ -50,7 +50,7 @@ export default function AddCompany() {
       setIsLoading(true);
 
       // Make request to backend
-      const res = await axios.post(`${API_URL}/company/register`, formData, {
+      const res = await axios.post(`${API_URL}/company/add`, formData, {
         withCredentials: true,
       });
 
@@ -125,7 +125,7 @@ export default function AddCompany() {
           type="submit"
           className={`${styles.button} ${!isDisabled && styles.active}`}
         >
-          {isLoading ? <Loader /> : "Add company"}
+          {isLoading ? <ButtonLoader /> : "Add company"}
         </button>
       </form>
     </section>

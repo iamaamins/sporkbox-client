@@ -4,9 +4,7 @@ import { useData } from "@context/data";
 import styles from "@styles/admin/Dashboard.module.css";
 
 export default function Dashboard() {
-  const { restaurants } = useData();
-
-  console.log(restaurants);
+  const { restaurants, companies } = useData();
 
   return (
     <>
@@ -77,37 +75,33 @@ export default function Dashboard() {
         </section>
       )}
 
-      <section className={styles.section}>
-        <h2>Companies</h2>
+      {companies && companies.length > 0 && (
+        <section className={styles.section}>
+          <h2>Companies</h2>
 
-        <div className={`${styles.title} ${styles.companies_title}`}>
-          <p>Name</p>
-          <p className={styles.hide_on_mobile}>Code</p>
-          <p>Budget</p>
-        </div>
+          <div className={`${styles.title} ${styles.companies_title}`}>
+            <p>Name</p>
+            <p className={styles.hide_on_mobile}>Website</p>
+            <p>Budget</p>
+          </div>
 
-        <div className={styles.companies}>
-          <Link href={`/admin/companies/${createSlug("restaurant-name")}`}>
-            <a className={styles.company}>
-              <p>Company 1</p>
-              <p className={styles.hide_on_mobile}>company1</p>
-              <p>$140</p>
-            </a>
+          <div className={styles.companies}>
+            {companies.map((company) => (
+              <Link href={`/admin/companies/${company._id}}`}>
+                <a className={styles.company}>
+                  <p>{company.name}</p>
+                  <p className={styles.hide_on_mobile}>{company.website}</p>
+                  <p>${company.budget}</p>
+                </a>
+              </Link>
+            ))}
+          </div>
+
+          <Link href="/admin/add-company">
+            <a className={styles.button}>Add company</a>
           </Link>
-
-          <Link href={`/admin/companies/${createSlug("restaurant-name")}`}>
-            <a className={styles.company}>
-              <p>Company 2</p>
-              <p className={styles.hide_on_mobile}>company2</p>
-              <p>$180</p>
-            </a>
-          </Link>
-        </div>
-
-        <Link href="/admin/add-company">
-          <a className={styles.button}>Add company</a>
-        </Link>
-      </section>
+        </section>
+      )}
     </>
   );
 }

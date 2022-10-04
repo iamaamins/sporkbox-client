@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useUser } from "@context/user";
 import { checkUser } from "@utils/index";
 import { useRouter } from "next/router";
+import PageLoader from "@components/layout/PageLoader";
 import AddRestaurant from "@components/admin/AddRestaurant";
 
 export default function AddRestaurantPage() {
@@ -14,7 +15,7 @@ export default function AddRestaurantPage() {
 
   return (
     <main>
-      {isLoading && <h1>Loading...</h1>}
+      {isLoading && <PageLoader />}
       {isAdmin && <AddRestaurant />}
     </main>
   );

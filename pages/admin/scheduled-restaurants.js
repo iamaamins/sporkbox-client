@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useUser } from "@context/user";
 import { checkUser } from "@utils/index";
 import { useRouter } from "next/router";
+import PageLoader from "@components/layout/PageLoader";
 import ScheduledRestaurants from "@components/admin/ScheduledRestaurants";
 
 export default function ScheduledRestaurantsPage() {
@@ -14,7 +15,7 @@ export default function ScheduledRestaurantsPage() {
 
   return (
     <main>
-      {isLoading && <h1>Loading...</h1>}
+      {isLoading && <PageLoader />}
       {isAdmin && <ScheduledRestaurants />}
     </main>
   );

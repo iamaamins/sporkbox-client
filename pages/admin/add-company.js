@@ -2,6 +2,7 @@ import { useUser } from "@context/user";
 import { checkUser } from "@utils/index";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import PageLoader from "@components/layout/PageLoader";
 import AddCompany from "@components/admin/AddCompany";
 
 export default function AddCompanyPage() {
@@ -14,7 +15,7 @@ export default function AddCompanyPage() {
 
   return (
     <main>
-      {isLoading && <h1>Loading...</h1>}
+      {isLoading && <PageLoader />}
       {isAdmin && <AddCompany />}
     </main>
   );

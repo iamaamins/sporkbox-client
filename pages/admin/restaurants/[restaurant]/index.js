@@ -3,6 +3,7 @@ import { useUser } from "@context/user";
 import { checkUser } from "@utils/index";
 import { useRouter } from "next/router";
 import Restaurant from "@components/admin/Restaurant";
+import PageLoader from "@components/layout/PageLoader";
 
 export default function RestaurantPage() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default function RestaurantPage() {
 
   return (
     <main>
-      {isLoading && <h1>Loading...</h1>}
+      {isLoading && <PageLoader />}
       {isAdmin && <Restaurant />}
     </main>
   );

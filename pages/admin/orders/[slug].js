@@ -3,6 +3,7 @@ import { useUser } from "@context/user";
 import { checkUser } from "@utils/index";
 import { useRouter } from "next/router";
 import Order from "@components/admin/Order";
+import PageLoader from "@components/layout/PageLoader";
 
 export default function OrderPage() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default function OrderPage() {
 
   return (
     <main>
-      {isLoading && <div>Loading...</div>}
+      {isLoading && <PageLoader />}
       {isAdmin && <Order />}
     </main>
   );

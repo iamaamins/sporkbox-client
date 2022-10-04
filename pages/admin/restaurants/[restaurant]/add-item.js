@@ -3,6 +3,7 @@ import { useUser } from "@context/user";
 import { checkUser } from "@utils/index";
 import { useRouter } from "next/router";
 import AddItem from "@components/admin/AddItem";
+import PageLoader from "@components/layout/PageLoader";
 
 export default function AddItemPage() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default function AddItemPage() {
 
   return (
     <main>
-      {isLoading && <div>Loading...</div>}
+      {isLoading && <PageLoader />}
       {isAdmin && <AddItem />}
     </main>
   );

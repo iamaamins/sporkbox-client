@@ -4,7 +4,7 @@ import styles from "@styles/admin/AddItem.module.css";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useData } from "@context/data";
-import Loader from "@components/layout/Loader";
+import ButtonLoader from "@components/layout/ButtonLoader";
 
 export default function AddItem() {
   // Initial state
@@ -109,7 +109,7 @@ export default function AddItem() {
           type="submit"
           className={`${styles.button} ${!disabled && styles.active}`}
         >
-          {isLoading ? <Loader /> : "Add Item"}
+          {isLoading ? <ButtonLoader /> : "Add Item"}
         </button>
       </form>
     </section>
