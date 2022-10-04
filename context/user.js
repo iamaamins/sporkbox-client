@@ -31,6 +31,11 @@ export default function UserProvider({ children }) {
         // Fetch the data
         const res = await axios.get(`${API_URL}/user/me`, {
           withCredentials: true,
+          headers: {
+            "Cache-Control": "no-cache",
+            Pragma: "no-cache",
+            Expires: "0",
+          },
         });
 
         // Update state
