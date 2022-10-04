@@ -29,8 +29,8 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
   });
 
   // Logout user
-  async function handleLogout() {
-    // Log a user out
+  async function handleSignOut() {
+    // Sign a user out
     try {
       // Make request to backend
       await axios.post(`${API_URL}/user/logout`, {}, { withCredentials: true });
@@ -197,7 +197,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
 
         <li
           className={!isAdmin && !isVendor && !isCustomer ? styles.hide : null}
-          onClick={handleLogout}
+          onClick={handleSignOut}
         >
           <span>
             <MdLogout /> Sign out

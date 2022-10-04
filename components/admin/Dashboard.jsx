@@ -26,7 +26,7 @@ export default function Dashboard() {
 
               <tbody>
                 {restaurants.map((restaurant) => (
-                  <tr>
+                  <tr key={restaurant._id}>
                     <td className={styles.important}>
                       <Link href={`/admin/restaurants/${restaurant._id}`}>
                         <a>{restaurant.name}</a>
@@ -66,7 +66,7 @@ export default function Dashboard() {
 
                 <tbody>
                   {restaurants.map((restaurant) => (
-                    <tr>
+                    <tr key={restaurant._id}>
                       <td className={styles.important}>
                         <Link href={`/admin/restaurants/${restaurant._id}`}>
                           <a>{restaurant.name}</a>
@@ -109,7 +109,7 @@ export default function Dashboard() {
 
               <tbody>
                 {companies.map((company) => (
-                  <tr>
+                  <tr key={company._id}>
                     <td className={styles.important}>
                       <Link href={`/admin/companies/${company._id}`}>
                         <a>{company.name}</a>

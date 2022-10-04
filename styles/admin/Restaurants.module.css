@@ -60,7 +60,19 @@
 }
 
 @media (min-width: 768px) {
+  .all_restaurants {
+    max-width: 85%;
+    margin: 0 auto;
+  }
+
   .hide_on_mobile {
     display: table-cell;
+  }
+}
+
+@media (min-width: 1024px) {
+  .all_restaurants {
+    max-width: 80%;
+    margin: 0 auto;
   }
 }

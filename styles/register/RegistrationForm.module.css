@@ -55,3 +55,22 @@
   background: var(--teal);
   color: var(--almost_white);
 }
+
+@media (min-width: 768px) {
+  .registration_form {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding-bottom: 2.5rem;
+  }
+
+  .registration_form form {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .registration_form {
+    max-width: 42rem;
+    margin: 0 auto;
+  }
+}

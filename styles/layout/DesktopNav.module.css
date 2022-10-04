@@ -10,7 +10,7 @@
   }
 
   .logo {
-    width: 2.25rem;
+    width: 4rem;
   }
 
   .logo a {
@@ -41,6 +41,7 @@
     font-size: 0.9rem;
     border-radius: 2rem;
     border: none;
+    cursor: pointer;
     background: var(--teal);
     color: var(--almost_white);
   }

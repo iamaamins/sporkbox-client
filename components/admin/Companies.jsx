@@ -25,7 +25,7 @@ export default function Companies() {
 
             <tbody>
               {companies.map((company) => (
-                <tr>
+                <tr key={company._id}>
                   <td className={styles.important}>
                     <Link href={`/admin/companies/${company._id}`}>
                       <a>{company.name}</a>

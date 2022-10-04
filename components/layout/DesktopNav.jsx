@@ -3,9 +3,31 @@ import Image from "next/image";
 import logo from "@public/layout/logo.png";
 import { useUser } from "@context/user";
 import styles from "@styles/layout/DesktopNav.module.css";
+import axios from "axios";
+import { API_URL } from "@utils/index";
 
 export default function DesktopNav() {
-  const { isAdmin, isCustomer, isVendor } = useUser();
+  const { isAdmin, isCustomer, isVendor, setUser } = useUser();
+
+  // Handle sign out
+  async function handleSignOut() {
+    // Log a user out
+    try {
+      // Make request to backend
+      const res = await axios.post(
+        `${API_URL}/user/logout`,
+        {},
+        { withCredentials: true }
+      );
+
+      console.log(res);
+
+      // Update user
+      setUser(null);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <nav className={styles.desktop_nav}>
@@ -65,6 +87,7 @@ export default function DesktopNav() {
       {/* Call to actions */}
       <div className={styles.ctas}>
         <button
+          onClick={handleSignOut}
           className={!isAdmin && !isVendor && !isCustomer ? styles.hide : null}
         >
           Sign out

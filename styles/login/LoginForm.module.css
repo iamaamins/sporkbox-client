@@ -1,4 +1,4 @@
-.contact_form {
+.login_form {
   padding: var(--section_padding);
 }
 
@@ -8,7 +8,7 @@
   margin-bottom: 1.5rem;
 }
 
-.contact_form form {
+.login_form form {
   padding: 1rem;
   border-radius: 0.5rem;
   box-shadow: var(--shadow_medium);
@@ -54,4 +54,23 @@
   pointer-events: all;
   background: var(--teal);
   color: var(--almost_white);
+}
+
+@media (min-width: 768px) {
+  .login_form {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding-bottom: 2.5rem;
+  }
+
+  .login_form form {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .login_form {
+    max-width: 42rem;
+    margin: 0 auto;
+  }
 }

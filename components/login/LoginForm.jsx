@@ -66,7 +66,7 @@ export default function LoginForm() {
   }
 
   return (
-    <section className={styles.contact_form}>
+    <section className={styles.login_form}>
       <p className={styles.title}>Sign in to your account</p>
       <form onSubmit={handleSubmit}>
         <div className={styles.item}>
