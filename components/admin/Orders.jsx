@@ -1,40 +1,47 @@
 import Link from "next/link";
-import { createSlug } from "@utils/index";
+import { convertDate, createSlug } from "@utils/index";
+import { useData } from "@context/data";
 import styles from "@styles/admin/Orders.module.css";
 
 export default function Orders() {
+  const { restaurants } = useData();
   return (
     <section className={styles.section}>
       <h2 className={styles.all_orders_title}>All orders</h2>
 
-      <div className={`${styles.title} ${styles.orders_title}`}>
-        <p>Order</p>
-        <p className={styles.hide_on_mobile}>Date</p>
-        <p>Status</p>
-        <p className={styles.hide_on_mobile}>Total</p>
-        <p>Restaurant</p>
-      </div>
-
+      {/* Current orders */}
       <div className={styles.orders}>
-        <Link href={`/admin/orders/${createSlug("restaurant-name")}`}>
-          <a className={styles.order}>
-            <p>Order 1</p>
-            <p className={styles.hide_on_mobile}>Sep 28, 2022</p>
-            <p className={styles.gray}>Processing</p>
-            <p className={styles.hide_on_mobile}>$140</p>
-            <p>Restaurant 1</p>
-          </a>
-        </Link>
+        {restaurants && (
+          <table>
+            <thead>
+              <tr>
+                <th>Order#</th>
+                <th className={styles.hide_on_mobile}>Create on</th>
+                <th className={styles.hide_on_mobile}>Restaurant</th>
+                <th>Status</th>
+              </tr>
+            </thead>
 
-        <Link href={`/admin/orders/${createSlug("restaurant-name")}`}>
-          <a className={styles.order}>
-            <p>Order 2</p>
-            <p className={styles.hide_on_mobile}>Sep 30, 2022</p>
-            <p>Processing</p>
-            <p className={styles.hide_on_mobile}>$180</p>
-            <p>Restaurant 2</p>
-          </a>
-        </Link>
+            <tbody>
+              {restaurants.map((restaurant) => (
+                <tr>
+                  <td className={styles.important}>
+                    <Link href={`/admin/restaurants/${restaurant._id}`}>
+                      <a>{restaurant.name}</a>
+                    </Link>
+                  </td>
+                  <td className={styles.hide_on_mobile}>
+                    {restaurant.owner.email}
+                  </td>
+                  <td className={styles.hide_on_mobile}>
+                    {convertDate(restaurant.createdAt)}{" "}
+                  </td>
+                  <td>{restaurant.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </section>
   );

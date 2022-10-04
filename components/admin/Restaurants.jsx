@@ -13,31 +13,35 @@ export default function Restaurants() {
         <>
           <h2 className={styles.all_restaurants_title}>All restaurants</h2>
 
-          <div className={`${styles.title} ${styles.restaurants_title}`}>
-            <p>Name</p>
-            <p className={styles.hide_on_mobile}>Email</p>
-            <p className={styles.hide_on_mobile}>Registered</p>
-            <p>Status</p>
-          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th className={styles.hide_on_mobile}>Email</th>
+                <th className={styles.hide_on_mobile}>Registered</th>
+                <th>Status</th>
+              </tr>
+            </thead>
 
-          <div className={styles.restaurants}>
-            {restaurants.map((restaurant) => (
-              <div key={restaurant._id} className={styles.restaurant}>
-                <Link href={`/admin/restaurants/${restaurant._id}`}>
-                  <a>
-                    <p>{restaurant.name}</p>
-                    <p className={styles.hide_on_mobile}>
-                      {restaurant.owner.email}
-                    </p>
-                    <p className={styles.hide_on_mobile}>
-                      {convertDate(restaurant.createdAt)}
-                    </p>
-                    <p>{restaurant.status}</p>
-                  </a>
-                </Link>
-              </div>
-            ))}
-          </div>
+            <tbody>
+              {restaurants.map((restaurant) => (
+                <tr>
+                  <td className={styles.important}>
+                    <Link href={`/admin/restaurants/${restaurant._id}`}>
+                      <a>{restaurant.name}</a>
+                    </Link>
+                  </td>
+                  <td className={styles.hide_on_mobile}>
+                    {restaurant.owner.email}
+                  </td>
+                  <td className={styles.hide_on_mobile}>
+                    {convertDate(restaurant.createdAt)}{" "}
+                  </td>
+                  <td>{restaurant.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </>
       )}
       <Link href="/admin/add-restaurant">

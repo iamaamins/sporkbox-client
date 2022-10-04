@@ -9,30 +9,35 @@ export default function Companies() {
     <section className={styles.all_companies}>
       {(!companies || companies.length === 0) && <h2>No companies</h2>}
 
-      {companies.length > 0 && (
+      {companies && companies.length > 0 && (
         <>
           <h2 className={styles.all_companies_title}>All companies</h2>
-          <div className={`${styles.title} ${styles.companies_title}`}>
-            <p>Name</p>
-            <p className={styles.hide_on_mobile}>Code</p>
-            <p>Website</p>
-            <p>Budget</p>
-          </div>
 
-          <div className={styles.companies}>
-            {companies.map((company) => (
-              <div key={company._id} className={styles.company}>
-                <Link href={`/admin/companies/${company._id}`}>
-                  <a>
-                    <p>{company.name}</p>
-                    <p className={styles.hide_on_mobile}>{companies.code}</p>
-                    <p>{company.website}</p>
-                    <p>{company.budget}</p>
-                  </a>
-                </Link>
-              </div>
-            ))}
-          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th className={styles.hide_on_mobile}>Website</th>
+                <th className={styles.hide_on_mobile}>Code</th>
+                <th>Budget</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {companies.map((company) => (
+                <tr>
+                  <td className={styles.important}>
+                    <Link href={`/admin/companies/${company._id}`}>
+                      <a>{company.name}</a>
+                    </Link>
+                  </td>
+                  <td className={styles.hide_on_mobile}>{company.website}</td>
+                  <td className={styles.hide_on_mobile}>{company.code}</td>
+                  <td>${company.budget}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </>
       )}
 

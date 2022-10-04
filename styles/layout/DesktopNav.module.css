@@ -23,6 +23,11 @@
     align-items: center;
   }
 
+  .hide {
+    display: none;
+    border: 1px solid red;
+  }
+
   .navigation li a {
     opacity: 0.8;
     color: var(--grey);
@@ -30,10 +35,12 @@
     padding: 0.5rem 1rem;
   }
 
-  .register a {
+  .ctas a,
+  .ctas button {
     padding: 6px 16px;
     font-size: 0.9rem;
     border-radius: 2rem;
+    border: none;
     background: var(--teal);
     color: var(--almost_white);
   }

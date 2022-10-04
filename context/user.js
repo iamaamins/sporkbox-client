@@ -21,6 +21,9 @@ export default function UserProvider({ children }) {
   // Check if the user is customer
   const isCustomer = user?.role === "CUSTOMER";
 
+  // Check if the user is customer
+  const isVendor = user?.role === "VENDOR";
+
   useEffect(() => {
     async function getUser() {
       try {
@@ -46,7 +49,9 @@ export default function UserProvider({ children }) {
   }, [router.isReady]);
 
   return (
-    <UserContext.Provider value={{ isLoading, setUser, isAdmin, isCustomer }}>
+    <UserContext.Provider
+      value={{ isLoading, setUser, isAdmin, isVendor, isCustomer }}
+    >
       {children}
     </UserContext.Provider>
   );

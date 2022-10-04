@@ -8,6 +8,7 @@ import {
   MdOutlineRestaurantMenu,
 } from "react-icons/md";
 import { IoLogIn } from "react-icons/io5";
+import { FaUserAlt } from "react-icons/fa";
 import { TbBuildingStore, TbBuildingSkyscraper } from "react-icons/tb";
 import { BsFillCalendar2DateFill } from "react-icons/bs";
 import { AiTwotonePhone } from "react-icons/ai";
@@ -18,7 +19,7 @@ import styles from "@styles/layout/MobileMenu.module.css";
 
 export default function MobileMenu({ isOpen, setIsOpen }) {
   // Hooks
-  const { isAdmin, setUser } = useUser();
+  const { isAdmin, isVendor, isCustomer, setUser } = useUser();
 
   // Disable body scroll if MobileMenu is open
   useEffect(() => {
@@ -47,9 +48,9 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
   return (
     <div className={`${styles.mobile_menu} ${isOpen && styles.open}`}>
       <ul className={styles.nav_items}>
-        {/* Generic nav items */}
+        {/* Customer nav items */}
         <li
-          className={isAdmin ? styles.hide : null}
+          className={!isCustomer ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
           <Link href="/dashboard">
@@ -59,13 +60,115 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
           </Link>
         </li>
 
+        {/* Admin nav items */}
         <li
-          className={isAdmin ? styles.hide : null}
+          className={!isAdmin ? styles.hide : null}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href="/admin">
+            <a>
+              <MdSpaceDashboard /> Dashboard
+            </a>
+          </Link>
+        </li>
+
+        {/* <li
+          className={!isAdmin ? styles.hide : null}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href="/admin/add-restaurant">
+            <a>
+              <BiPlusCircle /> Add Restaurant
+            </a>
+          </Link>
+        </li> */}
+
+        {/* <li
+          className={!isAdmin ? styles.hide : null}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href="/admin/add-company">
+            <a>
+              <BiPlusCircle /> Add Company
+            </a>
+          </Link>
+        </li> */}
+
+        {/* <li
+          className={!isAdmin ? styles.hide : null}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href="/admin/schedule-restaurants">
+            <a>
+              <BsFillCalendar2DateFill /> Schedule Restaurants
+            </a>
+          </Link>
+        </li> */}
+
+        <li
+          className={!isAdmin ? styles.hide : null}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href="/admin/scheduled-restaurants">
+            <a>
+              <BsFillCalendar2DateFill /> Scheduled
+            </a>
+          </Link>
+        </li>
+
+        <li
+          className={!isAdmin ? styles.hide : null}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href="/admin/orders">
+            <a>
+              <MdOutlineRestaurantMenu /> Orders
+            </a>
+          </Link>
+        </li>
+
+        <li
+          className={!isAdmin ? styles.hide : null}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href="/admin/restaurants">
+            <a>
+              <TbBuildingStore /> Restaurants
+            </a>
+          </Link>
+        </li>
+
+        <li
+          className={!isAdmin ? styles.hide : null}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href="/admin/companies">
+            <a>
+              <TbBuildingSkyscraper /> Companies
+            </a>
+          </Link>
+        </li>
+
+        {/* Generic nav items */}
+
+        <li
+          className={isAdmin || isVendor || isCustomer ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
           <Link href="/register">
             <a>
-              <IoLogIn /> Sign up
+              <FaUserAlt /> Create account
+            </a>
+          </Link>
+        </li>
+
+        <li
+          className={isAdmin || isVendor || isCustomer ? styles.hide : null}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href="/login">
+            <a>
+              <IoLogIn /> Sign in
             </a>
           </Link>
         </li>
@@ -92,102 +195,14 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
           </Link>
         </li>
 
-        {/* Admin nav items */}
         <li
-          className={!isAdmin ? styles.hide : null}
-          onClick={() => setIsOpen(false)}
+          className={!isAdmin && !isVendor && !isCustomer ? styles.hide : null}
+          onClick={handleLogout}
         >
-          <Link href="/admin">
-            <a>
-              <MdSpaceDashboard /> Dashboard
-            </a>
-          </Link>
-        </li>
-
-        <li
-          className={!isAdmin ? styles.hide : null}
-          onClick={() => setIsOpen(false)}
-        >
-          <Link href="/admin/add-restaurant">
-            <a>
-              <BiPlusCircle /> Add Restaurant
-            </a>
-          </Link>
-        </li>
-
-        <li
-          className={!isAdmin ? styles.hide : null}
-          onClick={() => setIsOpen(false)}
-        >
-          <Link href="/admin/add-company">
-            <a>
-              <BiPlusCircle /> Add Company
-            </a>
-          </Link>
-        </li>
-
-        <li
-          className={!isAdmin ? styles.hide : null}
-          onClick={() => setIsOpen(false)}
-        >
-          <Link href="/admin/schedule-restaurants">
-            <a>
-              <BsFillCalendar2DateFill /> Schedule Restaurants
-            </a>
-          </Link>
-        </li>
-
-        <li
-          className={!isAdmin ? styles.hide : null}
-          onClick={() => setIsOpen(false)}
-        >
-          <Link href="/admin/scheduled-restaurants">
-            <a>
-              <TbBuildingStore /> Scheduled Restaurants
-            </a>
-          </Link>
-        </li>
-
-        <li
-          className={!isAdmin ? styles.hide : null}
-          onClick={() => setIsOpen(false)}
-        >
-          <Link href="/admin/orders">
-            <a>
-              <MdOutlineRestaurantMenu /> All orders
-            </a>
-          </Link>
-        </li>
-
-        <li
-          className={!isAdmin ? styles.hide : null}
-          onClick={() => setIsOpen(false)}
-        >
-          <Link href="/admin/restaurants">
-            <a>
-              <TbBuildingStore /> All restaurants
-            </a>
-          </Link>
-        </li>
-
-        <li
-          className={!isAdmin ? styles.hide : null}
-          onClick={() => setIsOpen(false)}
-        >
-          <Link href="/admin/companies">
-            <a>
-              <TbBuildingSkyscraper /> All companies
-            </a>
-          </Link>
-        </li>
-
-        <li className={!isAdmin ? styles.hide : null} onClick={handleLogout}>
           <span>
             <MdLogout /> Sign out
           </span>
         </li>
-
-        {/* Customer nav items */}
       </ul>
 
       <p className={styles.copyright}>
