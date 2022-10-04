@@ -1,3 +1,4 @@
+import axios from "axios";
 import Link from "next/link";
 import { useEffect } from "react";
 import {
@@ -12,13 +13,12 @@ import { BsFillCalendar2DateFill } from "react-icons/bs";
 import { AiTwotonePhone } from "react-icons/ai";
 import { BiPlusCircle } from "react-icons/bi";
 import { useUser } from "@context/user";
-import { currentYear } from "@utils/index";
+import { API_URL, currentYear } from "@utils/index";
 import styles from "@styles/layout/MobileMenu.module.css";
 
 export default function MobileMenu({ isOpen, setIsOpen }) {
   // Hooks
-  const { isAdmin } = useUser();
-  // const admin = null;
+  const { isAdmin, setUser } = useUser();
 
   // Disable body scroll if MobileMenu is open
   useEffect(() => {
@@ -26,6 +26,23 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
 
     isOpen ? (body.style.overflow = "hidden") : (body.style.overflow = "auto");
   });
+
+  // Logout user
+  async function handleLogout() {
+    // Log a user out
+    try {
+      // Make request to backend
+      await axios.post(`${API_URL}/user/logout`, {}, { withCredentials: true });
+
+      // Update user
+      setUser(null);
+
+      // Close the menu
+      setIsOpen(false);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <div className={`${styles.mobile_menu} ${isOpen && styles.open}`}>
@@ -164,10 +181,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
           </Link>
         </li>
 
-        <li
-          className={!isAdmin ? styles.hide : null}
-          onClick={() => setIsOpen(false)}
-        >
+        <li className={!isAdmin ? styles.hide : null} onClick={handleLogout}>
           <span>
             <MdLogout /> Sign out
           </span>
