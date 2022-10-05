@@ -8,7 +8,7 @@
   margin-bottom: 1.5rem;
 }
 
-.registration_form form {
+.add_item form {
   padding: 1rem;
   border-radius: 0.5rem;
   box-shadow: var(--shadow_medium);
@@ -62,4 +62,23 @@
   pointer-events: all;
   background: var(--teal);
   color: var(--almost_white);
+}
+
+@media (min-width: 768px) {
+  .add_item {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding-bottom: 2.5rem;
+  }
+
+  .add_item form {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .add_item {
+    max-width: 42rem;
+    margin: 0 auto;
+  }
 }

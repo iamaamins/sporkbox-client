@@ -78,24 +78,30 @@ export default function Restaurant() {
 
           {/* Items */}
           {restaurant.items.length > 0 && (
-            <div className={styles.items}>
-              <p className={styles.title}>Items</p>
-              {restaurant.items.map((item) => (
-                <div key={item._id}>
-                  <Link href={`/admin/restaurants/${restaurantId}/${item._id}`}>
-                    <a className={styles.item}>
-                      <div className={styles.item_details}>
-                        <p className={styles.name}>{item.name}</p>
-                        <p className={styles.description}>{item.description}</p>
-                        <p className={styles.price}>USD ${item.price}</p>
-                      </div>
+            <>
+              <h2>Items</h2>
+              <div className={styles.items}>
+                {restaurant.items.map((item) => (
+                  <div key={item._id}>
+                    <Link
+                      href={`/admin/restaurants/${restaurantId}/${item._id}`}
+                    >
+                      <a className={styles.item}>
+                        <div className={styles.item_details}>
+                          <p className={styles.name}>{item.name}</p>
+                          <p className={styles.description}>
+                            {item.description}
+                          </p>
+                          <p className={styles.price}>USD ${item.price}</p>
+                        </div>
 
-                      <div className={styles.item_image}></div>
-                    </a>
-                  </Link>
-                </div>
-              ))}
-            </div>
+                        <div className={styles.item_image}></div>
+                      </a>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </div>
       )}

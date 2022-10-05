@@ -48,3 +48,17 @@
   background-color: var(--teal);
   margin-top: 1.25rem;
 }
+
+@media (min-width: 768px) {
+  .scheduled_restaurants {
+    max-width: 85%;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .scheduled_restaurants {
+    max-width: 80%;
+    margin: 0 auto;
+  }
+}

@@ -40,3 +40,17 @@
   color: var(--almost_white);
   background: var(--teal);
 }
+
+@media (min-width: 768px) {
+  .order {
+    max-width: 85%;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .order {
+    max-width: 80%;
+    margin: 0 auto;
+  }
+}

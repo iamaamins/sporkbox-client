@@ -94,3 +94,22 @@
   color: var(--almost_white);
   background: var(--teal);
 }
+
+@media (min-width: 768px) {
+  .schedule_restaurants {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding-bottom: 2.5rem;
+  }
+
+  .schedule_restaurants form {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .schedule_restaurants {
+    max-width: 42rem;
+    margin: 0 auto;
+  }
+}

@@ -50,3 +50,25 @@
 .delete_button {
   background: var(--orange);
 }
+
+@media (min-width: 768px) {
+  .company {
+    max-width: 85%;
+    margin: 0 auto;
+  }
+
+  .buttons {
+    justify-content: flex-start;
+  }
+
+  .edit_button {
+    margin-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .company {
+    max-width: 80%;
+    margin: 0 auto;
+  }
+}
