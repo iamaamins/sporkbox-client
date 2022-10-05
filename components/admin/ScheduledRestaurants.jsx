@@ -23,18 +23,30 @@ export default function ScheduledRestaurants() {
             Scheduled restaurants
           </h2>
 
-          <div className={`${styles.title} ${styles.restaurants_title}`}>
-            <p>Name</p>
-            <p>Scheduled on</p>
-          </div>
-
           <div className={styles.restaurants}>
-            {scheduledRestaurants.map((scheduledRestaurant) => (
-              <div key={scheduledRestaurant._id} className={styles.restaurant}>
-                <p>{scheduledRestaurant.name}</p>
-                <p>{convertDate(scheduledRestaurant.scheduledOn)}</p>
-              </div>
-            ))}
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Scheduled on</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {scheduledRestaurants.map((scheduledRestaurant) => (
+                  <tr key={scheduledRestaurant._id}>
+                    <td className={styles.important}>
+                      <Link
+                        href={`/admin/restaurants/${scheduledRestaurant._id}`}
+                      >
+                        <a>{scheduledRestaurant.name}</a>
+                      </Link>
+                    </td>
+                    <td>{convertDate(scheduledRestaurant.scheduledOn)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </>
       )}

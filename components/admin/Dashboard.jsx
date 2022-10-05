@@ -72,7 +72,11 @@ export default function Dashboard() {
                 {scheduledRestaurants.map((scheduledRestaurant) => (
                   <tr key={scheduledRestaurant._id}>
                     <td className={styles.important}>
-                      {scheduledRestaurant.name}
+                      <Link
+                        href={`/admin/restaurants/${scheduledRestaurant._id}`}
+                      >
+                        <a>{scheduledRestaurant.name}</a>
+                      </Link>
                     </td>
                     <td>{convertDate(scheduledRestaurant.scheduledOn)}</td>
                   </tr>

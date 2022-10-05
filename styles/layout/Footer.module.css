@@ -34,7 +34,7 @@
 .about,
 .items a,
 .items p {
-  font-size: 14px;
+  font-size: 0.9rem;
   color: var(--gray);
 }
 
@@ -60,22 +60,23 @@
   }
 
   .section {
-    width: 30%;
+    width: auto;
     margin-bottom: 0rem;
   }
 
-  .section:first-child {
+  .section:nth-child(1) {
     width: 35%;
+  }
+  .section:nth-child(2) {
+    width: 20%;
   }
 }
 
 @media (min-width: 1024px) {
-  .section {
-    width: 22%;
-    margin-bottom: 0rem;
+  .section:nth-child(1) {
+    width: 30%;
   }
-
-  .section:first-child {
-    width: 35%;
+  .section:nth-child(2) {
+    width: 20%;
   }
 }
