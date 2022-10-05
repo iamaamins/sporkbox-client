@@ -1,10 +1,17 @@
 import Link from "next/link";
-import { convertDate } from "@utils/index";
+import { convertDate, getScheduledRestaurants } from "@utils/index";
 import { useData } from "@context/data";
 import styles from "@styles/admin/Dashboard.module.css";
+import { useEffect, useState } from "react";
 
 export default function Dashboard() {
   const { restaurants, companies } = useData();
+  const [scheduledRestaurants, setScheduledRestaurants] = useState(null);
+
+  // Get scheduled restaurants
+  useEffect(() => {
+    getScheduledRestaurants(restaurants, setScheduledRestaurants);
+  }, [restaurants]);
 
   return (
     <>
@@ -48,46 +55,34 @@ export default function Dashboard() {
       </section>
 
       {/* Scheduled restaurants */}
-      {restaurants && (
+      {scheduledRestaurants && (
         <section className={styles.section}>
-          <h2>Restaurants</h2>
+          <h2>Scheduled restaurants</h2>
 
           <div className={styles.restaurants}>
-            {restaurants && (
-              <table>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th className={styles.hide_on_mobile}>Email</th>
-                    <th className={styles.hide_on_mobile}>Registered</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Scheduled on</th>
+                </tr>
+              </thead>
 
-                <tbody>
-                  {restaurants.map((restaurant) => (
-                    <tr key={restaurant._id}>
-                      <td className={styles.important}>
-                        <Link href={`/admin/restaurants/${restaurant._id}`}>
-                          <a>{restaurant.name}</a>
-                        </Link>
-                      </td>
-                      <td className={styles.hide_on_mobile}>
-                        {restaurant.owner.email}
-                      </td>
-                      <td className={styles.hide_on_mobile}>
-                        {convertDate(restaurant.createdAt)}{" "}
-                      </td>
-                      <td>{restaurant.status}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
+              <tbody>
+                {scheduledRestaurants.map((scheduledRestaurant) => (
+                  <tr key={scheduledRestaurant._id}>
+                    <td className={styles.important}>
+                      {scheduledRestaurant.name}
+                    </td>
+                    <td>{convertDate(scheduledRestaurant.scheduledOn)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          {/* <Link href="/admin/schedule-restaurant">
-            <a className={styles.button}>Schedule one</a>
-          </Link> */}
+          <Link href="/admin/schedule-restaurants">
+            <a className={styles.button}>Schedule more</a>
+          </Link>
         </section>
       )}
 

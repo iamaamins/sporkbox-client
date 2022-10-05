@@ -63,7 +63,7 @@ export default function ScheduleRestaurants() {
       );
 
       // Update restaurants with updates schedules at
-      updateRestaurants(res, "scheduledAt", setRestaurants);
+      updateRestaurants(res, "scheduledOn", setRestaurants);
 
       // Clear form data
       setFormData(initialState);

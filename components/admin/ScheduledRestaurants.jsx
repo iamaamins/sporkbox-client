@@ -1,33 +1,23 @@
 import { useData } from "@context/data";
-import { convertDate } from "@utils/index";
+import { convertDate, getScheduledRestaurants } from "@utils/index";
 import { useEffect, useState } from "react";
 import styles from "@styles/admin/ScheduledRestaurants.module.css";
 import Link from "next/link";
 
 export default function ScheduledRestaurants() {
   const { restaurants } = useData();
-  const [scheduledRestaurants, setScheduledRestaurants] = useState([]);
+  const [scheduledRestaurants, setScheduledRestaurants] = useState(null);
 
   // Get the scheduled restaurants
   useEffect(() => {
-    if (restaurants) {
-      setScheduledRestaurants(
-        restaurants
-          .filter((restaurant) => restaurant.status === "APPROVED")
-          .filter(
-            (approvedRestaurant) =>
-              new Date(approvedRestaurant.scheduledAt).getTime() >
-              new Date().getTime()
-          )
-      );
-    }
+    getScheduledRestaurants(restaurants, setScheduledRestaurants);
   }, [restaurants]);
 
   return (
     <section className={styles.scheduled_restaurants}>
-      {scheduledRestaurants.length === 0 && <h2>No scheduled restaurants</h2>}
+      {!scheduledRestaurants && <h2>No scheduled restaurants</h2>}
 
-      {scheduledRestaurants.length > 0 && (
+      {scheduledRestaurants && (
         <>
           <h2 className={styles.scheduled_restaurants_title}>
             Scheduled restaurants
@@ -35,14 +25,14 @@ export default function ScheduledRestaurants() {
 
           <div className={`${styles.title} ${styles.restaurants_title}`}>
             <p>Name</p>
-            <p>Scheduled at</p>
+            <p>Scheduled on</p>
           </div>
 
           <div className={styles.restaurants}>
             {scheduledRestaurants.map((scheduledRestaurant) => (
               <div key={scheduledRestaurant._id} className={styles.restaurant}>
                 <p>{scheduledRestaurant.name}</p>
-                <p>{convertDate(scheduledRestaurant.scheduledAt)}</p>
+                <p>{convertDate(scheduledRestaurant.scheduledOn)}</p>
               </div>
             ))}
           </div>

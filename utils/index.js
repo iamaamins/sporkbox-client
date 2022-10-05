@@ -41,3 +41,18 @@ export function updateRestaurants(res, update, setRestaurants) {
     })
   );
 }
+
+// Get scheduled restaurants
+export function getScheduledRestaurants(restaurants, setScheduledRestaurants) {
+  if (restaurants) {
+    setScheduledRestaurants(
+      restaurants
+        .filter((restaurant) => restaurant.status === "APPROVED")
+        .filter(
+          (approvedRestaurant) =>
+            new Date(approvedRestaurant.scheduledOn).getTime() >
+            new Date().getTime()
+        )
+    );
+  }
+}
