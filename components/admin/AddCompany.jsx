@@ -50,7 +50,7 @@ export default function AddCompany() {
       setIsLoading(true);
 
       // Make request to backend
-      const res = await axios.post(`${API_URL}/company/add`, formData, {
+      const res = await axios.post(`${API_URL}/companies/add`, formData, {
         withCredentials: true,
       });
 

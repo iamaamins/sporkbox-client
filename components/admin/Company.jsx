@@ -28,7 +28,7 @@ export default function Company() {
 
     try {
       // Make delete request to backend
-      const res = await axios.delete(`${API_URL}/company/${companyId}`, {
+      const res = await axios.delete(`${API_URL}/companies/${companyId}`, {
         withCredentials: true,
       });
 

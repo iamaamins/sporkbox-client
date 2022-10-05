@@ -56,7 +56,7 @@ export default function AddRestaurant() {
       setIsLoading(true);
 
       // Post data to backend
-      const res = await axios.post(`${API_URL}/restaurant/add`, formData, {
+      const res = await axios.post(`${API_URL}/restaurants/add`, formData, {
         withCredentials: true,
       });
 

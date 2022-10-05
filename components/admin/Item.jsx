@@ -29,7 +29,7 @@ export default function Item() {
     try {
       // Send the request to backend
       const res = await axios.delete(
-        `${API_URL}/restaurant/${restaurantId}/${itemId}/delete-item`,
+        `${API_URL}/restaurants/${restaurantId}/${itemId}/delete-item`,
         { withCredentials: true }
       );
 

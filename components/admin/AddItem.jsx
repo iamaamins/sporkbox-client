@@ -51,7 +51,7 @@ export default function AddItem() {
 
       // Post the data to backend
       const res = await axios.post(
-        `${API_URL}/restaurant/${restaurantId}/add-item`,
+        `${API_URL}/restaurants/${restaurantId}/add-item`,
         formData,
         {
           withCredentials: true,

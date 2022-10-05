@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useUser } from "./user";
 import { API_URL } from "@utils/index";
+import { useRouter } from "next/router";
 import { useState, createContext, useContext, useEffect } from "react";
 
 // Create context
@@ -11,6 +12,7 @@ export const useData = () => useContext(DataContext);
 
 // Provider function
 export default function DataProvider({ children }) {
+  const router = useRouter();
   const { isAdmin } = useUser();
   const [restaurants, setRestaurants] = useState(null);
   const [companies, setCompanies] = useState(null);
@@ -19,7 +21,7 @@ export default function DataProvider({ children }) {
     async function getAdminData() {
       // Get 20 latest restaurants
       try {
-        const res = await axios.get(`${API_URL}/restaurant/20`, {
+        const res = await axios.get(`${API_URL}/restaurants/20`, {
           withCredentials: true,
         });
 
@@ -31,7 +33,7 @@ export default function DataProvider({ children }) {
 
       // Get all companies
       try {
-        const res = await axios.get(`${API_URL}/company`, {
+        const res = await axios.get(`${API_URL}/companies`, {
           withCredentials: true,
         });
 
@@ -46,11 +48,25 @@ export default function DataProvider({ children }) {
       // Get 20 latest orders
     }
 
+    // Get generic data
+    async function getGenericData() {
+      try {
+        const res = await axios.get(`${API_URL}/restaurants/scheduled`);
+
+        console.log(res);
+      } catch (err) {
+        console.log(err.response.data.message);
+      }
+    }
+
+    // Always run this function
+    getGenericData();
+
     // Run the function if there is an admin
     if (isAdmin) {
       getAdminData();
     }
-  }, [isAdmin]);
+  }, [isAdmin, router.query]);
 
   return (
     <DataContext.Provider

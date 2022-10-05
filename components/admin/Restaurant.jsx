@@ -31,7 +31,7 @@ export default function Restaurant() {
     // Update restaurant status
     try {
       const res = await axios.put(
-        `${API_URL}/restaurant/${restaurantId}/status`,
+        `${API_URL}/restaurants/${restaurantId}/status`,
         { action },
         { withCredentials: true }
       );
