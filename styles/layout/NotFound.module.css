@@ -1,0 +1,36 @@
+.not_found {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  max-width: 35rem;
+  margin: auto auto;
+  margin-top: 15rem;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+  padding: var(--section_padding);
+}
+
+.broken_link,
+.not_found p {
+  margin-bottom: 1.5rem;
+}
+
+.broken_link svg {
+  font-size: 3rem;
+}
+
+.not_found h2 {
+  margin-bottom: 1rem;
+}
+
+.go_home_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  color: var(--almost_white);
+  width: 10rem;
+  height: 2.75rem;
+  background: var(--teal);
+}
