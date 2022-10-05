@@ -2,11 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 import logo from "@public/layout/logo.png";
 import { useUser } from "@context/user";
-import styles from "@styles/layout/DesktopNav.module.css";
 import axios from "axios";
 import { API_URL } from "@utils/index";
+import { useRouter } from "next/router";
+import styles from "@styles/layout/DesktopNav.module.css";
 
 export default function DesktopNav() {
+  // Hooks
+  const pathName = useRouter().pathname;
   const { isAdmin, isCustomer, isVendor, setUser } = useUser();
 
   // Handle sign out
@@ -61,31 +64,53 @@ export default function DesktopNav() {
         {/* Admin nav items */}
         <li className={!isAdmin ? styles.hide : null}>
           <Link href="/admin">
-            <a>Dashboard</a>
+            <a className={pathName === "/admin" ? styles.active : null}>
+              Dashboard
+            </a>
           </Link>
         </li>
 
         <li className={!isAdmin ? styles.hide : null}>
           <Link href="/admin/orders">
-            <a>Orders</a>
+            <a className={pathName === "/admin/orders" ? styles.active : null}>
+              Orders
+            </a>
           </Link>
         </li>
 
         <li className={!isAdmin ? styles.hide : null}>
           <Link href="/admin/restaurants">
-            <a>Restaurants</a>
+            <a
+              className={
+                pathName === "/admin/restaurants" ? styles.active : null
+              }
+            >
+              Restaurants
+            </a>
           </Link>
         </li>
 
         <li className={!isAdmin ? styles.hide : null}>
           <Link href="/admin/scheduled-restaurants">
-            <a>Scheduled</a>
+            <a
+              className={
+                pathName === "/admin/scheduled-restaurants"
+                  ? styles.active
+                  : null
+              }
+            >
+              Scheduled
+            </a>
           </Link>
         </li>
 
         <li className={!isAdmin ? styles.hide : null}>
           <Link href="/admin/companies">
-            <a>Companies</a>
+            <a
+              className={pathName === "/admin/companies" ? styles.active : null}
+            >
+              Companies
+            </a>
           </Link>
         </li>
       </ul>
