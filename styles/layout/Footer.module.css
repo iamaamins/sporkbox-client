@@ -48,3 +48,34 @@
   color: var(--gray);
   text-align: center;
 }
+
+@media (min-width: 768px) {
+  .footer {
+    padding: 2rem 1.5rem;
+  }
+
+  .sections {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .section {
+    width: 30%;
+    margin-bottom: 0rem;
+  }
+
+  .section:first-child {
+    width: 35%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section {
+    width: 22%;
+    margin-bottom: 0rem;
+  }
+
+  .section:first-child {
+    width: 35%;
+  }
+}

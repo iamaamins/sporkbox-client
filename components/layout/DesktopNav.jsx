@@ -78,6 +78,12 @@ export default function DesktopNav() {
         </li>
 
         <li className={!isAdmin ? styles.hide : null}>
+          <Link href="/admin/scheduled-restaurants">
+            <a>Scheduled</a>
+          </Link>
+        </li>
+
+        <li className={!isAdmin ? styles.hide : null}>
           <Link href="/admin/companies">
             <a>Companies</a>
           </Link>

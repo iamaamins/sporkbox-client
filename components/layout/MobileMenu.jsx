@@ -109,17 +109,6 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
           className={!isAdmin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
-          <Link href="/admin/scheduled-restaurants">
-            <a>
-              <BsFillCalendar2DateFill /> Scheduled
-            </a>
-          </Link>
-        </li>
-
-        <li
-          className={!isAdmin ? styles.hide : null}
-          onClick={() => setIsOpen(false)}
-        >
           <Link href="/admin/orders">
             <a>
               <MdOutlineRestaurantMenu /> Orders
@@ -134,6 +123,17 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
           <Link href="/admin/restaurants">
             <a>
               <TbBuildingStore /> Restaurants
+            </a>
+          </Link>
+        </li>
+
+        <li
+          className={!isAdmin ? styles.hide : null}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href="/admin/scheduled-restaurants">
+            <a>
+              <BsFillCalendar2DateFill /> Scheduled
             </a>
           </Link>
         </li>
