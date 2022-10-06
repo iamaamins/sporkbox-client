@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { API_URL, hasEmpty, updateRestaurants } from "@utils/index";
+import { hasEmpty, updateRestaurants } from "@utils/index";
 import styles from "@styles/admin/AddItem.module.css";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -51,7 +51,7 @@ export default function AddItem() {
 
       // Post the data to backend
       const res = await axios.post(
-        `${API_URL}/restaurants/${restaurantId}/add-item`,
+        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${restaurantId}/add-item`,
         formData,
         {
           withCredentials: true,

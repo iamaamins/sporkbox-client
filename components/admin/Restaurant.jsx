@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useData } from "@context/data";
-import { API_URL, updateRestaurants } from "@utils/index";
+import { updateRestaurants } from "@utils/index";
 import styles from "@styles/admin/Restaurant.module.css";
 
 export default function Restaurant() {
@@ -31,7 +31,7 @@ export default function Restaurant() {
     // Update restaurant status
     try {
       const res = await axios.put(
-        `${API_URL}/restaurants/${restaurantId}/status`,
+        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${restaurantId}/status`,
         { action },
         { withCredentials: true }
       );

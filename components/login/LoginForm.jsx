@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { API_URL, hasEmpty } from "@utils/index";
+import { hasEmpty } from "@utils/index";
 import { useUser } from "@context/user";
 import styles from "@styles/login/LoginForm.module.css";
 
@@ -42,9 +42,13 @@ export default function LoginForm() {
       setIsLoading(true);
 
       // Fetch data
-      const res = await axios.post(`${API_URL}/user/login`, formData, {
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/login`,
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
 
       // Update state
       setUser(res.data);

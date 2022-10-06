@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import { API_URL } from "@utils/index";
 import { createContext, useContext, useEffect, useState } from "react";
 
 // Create context
@@ -29,9 +28,15 @@ export default function UserProvider({ children }) {
     async function getUser() {
       try {
         // Fetch the data
-        const res = await axios.get(`${API_URL}/user/me`, {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/user/me`,
+          {
+            withCredentials: true,
+            headers: {
+              "Cache-Control": "no-cache",
+            },
+          }
+        );
 
         // Update state
         setUser(res.data);

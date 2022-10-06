@@ -1,8 +1,3 @@
-// API URL
-// http://localhost:5100/api
-// https://sporkbytes.onrender.com/api
-export const API_URL = "https://friendly-pear-sunbonnet.cyclic.app/api";
-
 // Current year
 export const currentYear = new Date().getFullYear();
 

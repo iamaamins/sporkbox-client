@@ -3,7 +3,6 @@ import Image from "next/image";
 import logo from "@public/layout/logo.png";
 import { useUser } from "@context/user";
 import axios from "axios";
-import { API_URL } from "@utils/index";
 import { useRouter } from "next/router";
 import styles from "@styles/layout/DesktopNav.module.css";
 
@@ -18,7 +17,7 @@ export default function DesktopNav() {
     try {
       // Make request to backend
       const res = await axios.post(
-        `${API_URL}/user/logout`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/logout`,
         {},
         { withCredentials: true }
       );

@@ -1,7 +1,6 @@
 import axios from "axios";
 import Link from "next/link";
 import { useData } from "@context/data";
-import { API_URL } from "@utils/index";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from "@styles/admin/Company.module.css";
@@ -28,9 +27,12 @@ export default function Company() {
 
     try {
       // Make delete request to backend
-      const res = await axios.delete(`${API_URL}/companies/${companyId}`, {
-        withCredentials: true,
-      });
+      const res = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/companies/${companyId}`,
+        {
+          withCredentials: true,
+        }
+      );
 
       // Successfully deleted message
       console.log(res.data.message);

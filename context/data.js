@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useUser } from "./user";
-import { API_URL } from "@utils/index";
 import { useRouter } from "next/router";
 import { useState, createContext, useContext, useEffect } from "react";
 
@@ -24,7 +23,9 @@ export default function DataProvider({ children }) {
       // Get scheduled restaurants
       try {
         // Make request to backend
-        const res = await axios.get(`${API_URL}/restaurants/scheduled`);
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/restaurants/scheduled`
+        );
 
         // Update state
         setScheduledRestaurants(res.data);
@@ -37,9 +38,12 @@ export default function DataProvider({ children }) {
     async function getAdminData() {
       // Get 20 latest restaurants
       try {
-        const res = await axios.get(`${API_URL}/restaurants/20`, {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/restaurants/20`,
+          {
+            withCredentials: true,
+          }
+        );
 
         // Update state
         setRestaurants(res.data);
@@ -49,9 +53,12 @@ export default function DataProvider({ children }) {
 
       // Get all companies
       try {
-        const res = await axios.get(`${API_URL}/companies`, {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/companies`,
+          {
+            withCredentials: true,
+          }
+        );
 
         // Update state
         setCompanies(res.data);

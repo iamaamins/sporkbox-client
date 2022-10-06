@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import ButtonLoader from "@components/layout/ButtonLoader";
-import { API_URL, hasEmpty } from "@utils/index";
+import { hasEmpty } from "@utils/index";
 import { useData } from "@context/data";
 import styles from "@styles/admin/AddRestaurant.module.css";
 
@@ -56,9 +56,13 @@ export default function AddRestaurant() {
       setIsLoading(true);
 
       // Post data to backend
-      const res = await axios.post(`${API_URL}/restaurants/add`, formData, {
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/add`,
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
 
       // New restaurant
       const newRestaurant = res.data;

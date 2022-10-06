@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useUser } from "@context/user";
-import { API_URL, hasEmpty } from "@utils/index";
+import { hasEmpty } from "@utils/index";
 import styles from "@styles/register/RegistrationForm.module.css";
 
 export default function RegistrationForm() {
@@ -36,9 +36,13 @@ export default function RegistrationForm() {
     e.preventDefault();
 
     try {
-      const res = await axios.post(`${API_URL}/customer/register`, formData, {
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/customer/register`,
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
 
       setUser(res.data);
     } catch (err) {

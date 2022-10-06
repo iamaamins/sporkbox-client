@@ -57,7 +57,7 @@ export default function ScheduleRestaurants() {
     try {
       // Make request to backend
       const res = await axios.put(
-        `${API_URL}/restaurants/${restaurantId}/schedule`,
+        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${restaurantId}/schedule`,
         { date },
         { withCredentials: true }
       );

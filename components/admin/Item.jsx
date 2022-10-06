@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useData } from "@context/data";
 import { useRouter } from "next/router";
 import styles from "@styles/admin/Item.module.css";
-import { API_URL, updateRestaurants } from "@utils/index";
+import { updateRestaurants } from "@utils/index";
 
 export default function Item() {
   const router = useRouter();
@@ -29,7 +29,7 @@ export default function Item() {
     try {
       // Send the request to backend
       const res = await axios.delete(
-        `${API_URL}/restaurants/${restaurantId}/${itemId}/delete-item`,
+        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${restaurantId}/${itemId}/delete-item`,
         { withCredentials: true }
       );
 

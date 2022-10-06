@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { useData } from "@context/data";
 import ButtonLoader from "@components/layout/ButtonLoader";
-import { API_URL, hasEmpty } from "@utils/index";
+import { hasEmpty } from "@utils/index";
 import styles from "@styles/admin/AddCompany.module.css";
 
 export default function AddCompany() {
@@ -50,9 +50,13 @@ export default function AddCompany() {
       setIsLoading(true);
 
       // Make request to backend
-      const res = await axios.post(`${API_URL}/companies/add`, formData, {
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/companies/add`,
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
 
       // New company
       const newCompany = res.data;
