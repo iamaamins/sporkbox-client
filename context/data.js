@@ -18,8 +18,6 @@ export default function DataProvider({ children }) {
   const [companies, setCompanies] = useState(null);
   const [scheduledRestaurants, setScheduledRestaurants] = useState(null);
 
-  console.log(scheduledRestaurants);
-
   useEffect(() => {
     // Get generic data
     async function getGenericData() {
@@ -73,11 +71,17 @@ export default function DataProvider({ children }) {
     if (isAdmin) {
       getAdminData();
     }
-  }, [isAdmin, router.query]);
+  }, [isAdmin, router.isReady]);
 
   return (
     <DataContext.Provider
-      value={{ restaurants, setRestaurants, companies, setCompanies }}
+      value={{
+        restaurants,
+        setRestaurants,
+        companies,
+        setCompanies,
+        scheduledRestaurants,
+      }}
     >
       {children}
     </DataContext.Provider>
