@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useUser } from "@context/user";
 import { useRouter } from "next/router";
 import LoginForm from "@components/login/LoginForm";
+import PageLoader from "@components/layout/PageLoader";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,7 +19,7 @@ export default function LoginPage() {
 
   return (
     <main>
-      {isLoading && <h1>Loading...</h1>}
+      {isLoading && <PageLoader />}
       {!isLoading && <LoginForm />}
     </main>
   );
