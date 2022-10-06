@@ -1,13 +1,9 @@
-import { useEffect, useState } from "react";
-import {
-  API_URL,
-  convertDate,
-  hasEmpty,
-  updateRestaurants,
-} from "@utils/index";
-import { useData } from "@context/data";
-import styles from "@styles/admin/ScheduleRestaurants.module.css";
 import axios from "axios";
+import { useData } from "@context/data";
+import { useEffect, useState } from "react";
+import { hasEmpty, updateRestaurants } from "@utils/index";
+import styles from "@styles/admin/ScheduleRestaurants.module.css";
+import ButtonLoader from "@components/layout/ButtonLoader";
 
 export default function ScheduleRestaurants() {
   // Initial state
@@ -19,6 +15,7 @@ export default function ScheduleRestaurants() {
   // Hooks
   const { restaurants, setRestaurants } = useData();
   const [disabled, setDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(initialState);
   const [approvedRestaurants, setApprovedRestaurants] = useState([]);
 
@@ -55,6 +52,9 @@ export default function ScheduleRestaurants() {
 
     // Schedule a restaurant
     try {
+      // Show loader
+      setIsLoading(true);
+
       // Make request to backend
       const res = await axios.put(
         `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${restaurantId}/schedule`,
@@ -68,10 +68,16 @@ export default function ScheduleRestaurants() {
       // Clear form data
       setFormData(initialState);
 
+      // Remove loader
+      setIsLoading(false);
+
       // Disable button
       setDisabled(true);
     } catch (err) {
       console.log(err);
+
+      // Remove loader and disable button
+      setIsLoading(false);
       setDisabled(true);
     }
   }
@@ -122,30 +128,11 @@ export default function ScheduleRestaurants() {
               type="submit"
               className={`${styles.button} ${!disabled && styles.active}`}
             >
-              Schedule
+              {isLoading ? <ButtonLoader /> : "Schedule"}
             </button>
           </form>
         </>
       )}
     </section>
   );
-}
-
-{
-  /* {addedRestaurants.length > 0 && (
-        <section className={styles.restaurants}>
-          <p className={styles.restaurants_title}>Selected restaurants</p>
-
-          {addedRestaurants.map((addedRestaurant, index) => (
-            <div key={index} className={styles.restaurant}>
-              <p>{addedRestaurant.restaurant}</p>
-              <p>{addedRestaurant.date}</p>
-            </div>
-          ))}
-
-          <button className={`${styles.button} ${styles.submit}`}>
-            Submit
-          </button>
-        </section>
-      )} */
 }
