@@ -9,7 +9,7 @@ export default function NotFound() {
         <TbUnlink />
       </div>
 
-      <h2>This page isn't available</h2>
+      <h2>This page isn&apos;t available</h2>
 
       <p>
         This is maybe a broken link or the page have been removed. Please check

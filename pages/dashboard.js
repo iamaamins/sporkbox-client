@@ -10,18 +10,23 @@ export default function DashboardPage() {
     getScheduledRestaurants(restaurants, setScheduledRestaurants);
   }, [restaurants]);
 
-  // Now
-  const now = new Date();
+  function getDate(dayToAdd) {
+    // Now
+    const now = new Date("2022-10-09");
 
-  // This week Sunday and Friday
-  const currSunday = now.getDate() - now.getDay();
-  var currFriday = currSunday + 5;
+    // Day number
+    const sunday = now.getDate() - now.getDay();
 
-  // Next week Sunday and Friday
-  var nextSunday = new Date(now.setDate(currSunday + 7)).getDate();
-  var nextFriday = new Date(now.setDate(currFriday + 7)).getDate();
+    // Return date
+    return new Date(now.setDate(sunday + dayToAdd));
+  }
 
-  // console.log(nextSunday, nextFriday);
+  const nextWeekSunday = getDate(7);
+  const nextWeekFriday = getDate(12);
+  const nextTwoWeekSunday = getDate(14);
+  const nextTwoWeekFriday = getDate(19);
+
+  // console.log(getDate(14), getDate(19));
 
   return <main>DashboardPage</main>;
 }

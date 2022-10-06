@@ -48,13 +48,25 @@ export default function Footer() {
             <p>901 SE Oak St Portland, OR 97214</p>
 
             <div className={styles.social}>
-              <a href="https://instagram.com/sporkbytes" target="_blank">
+              <a
+                href="https://instagram.com/sporkbytes"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <AiFillInstagram />
               </a>
-              <a href="https://twitter.com/sporkbytes" target="_blank">
+              <a
+                href="https://twitter.com/sporkbytes"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <AiOutlineTwitter />
               </a>
-              <a href="https://facebook.com/sporkbytes" target="_blank">
+              <a
+                href="https://facebook.com/sporkbytes"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <FaFacebookSquare />
               </a>
             </div>
