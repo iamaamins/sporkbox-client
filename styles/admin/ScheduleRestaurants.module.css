@@ -28,6 +28,7 @@
 .item select {
   padding: 12px;
   border-radius: 0.25rem;
+  -webkit-appearance: none;
   border: 1px solid var(--border_color);
 }
 
