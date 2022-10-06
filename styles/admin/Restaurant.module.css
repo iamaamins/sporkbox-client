@@ -43,10 +43,12 @@
 }
 
 .add_item_button {
+  pointer-events: none; /*Remove*/
   background: var(--teal);
 }
 
 .block_restaurant_button {
+  pointer-events: none; /*Remove*/
   background: var(--orange);
 }
 

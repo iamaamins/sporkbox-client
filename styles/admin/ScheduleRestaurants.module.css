@@ -56,43 +56,7 @@
   pointer-events: all;
   background: var(--teal);
   color: var(--almost_white);
-}
-
-.restaurants {
-  padding: var(--section_padding);
-}
-
-.restaurants_title {
-  font-size: 1.25rem;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-}
-
-.restaurant {
-  color: var(--black);
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--border_color);
-}
-
-.restaurant p {
-  font-weight: 500;
-  color: var(--gray);
-  font-size: 0.9rem;
-}
-
-.restaurant p:first-child {
-  color: var(--black);
-  font-size: 1rem;
-}
-
-.submit {
-  cursor: pointer;
-  margin-top: 1.25rem;
-  color: var(--almost_white);
-  background: var(--teal);
+  pointer-events: none; /*Remove*/
 }
 
 @media (min-width: 768px) {

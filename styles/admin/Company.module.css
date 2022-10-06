@@ -49,6 +49,7 @@
 
 .delete_button {
   background: var(--orange);
+  pointer-events: none; /*Remove*/
 }
 
 @media (min-width: 768px) {

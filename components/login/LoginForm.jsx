@@ -3,6 +3,7 @@ import axios from "axios";
 import { hasEmpty } from "@utils/index";
 import { useUser } from "@context/user";
 import styles from "@styles/login/LoginForm.module.css";
+import ButtonLoader from "@components/layout/ButtonLoader";
 
 export default function LoginForm() {
   // Hooks
@@ -97,7 +98,7 @@ export default function LoginForm() {
           type="submit"
           className={`${styles.button} ${!disabled && styles.active}`}
         >
-          Sign in
+          {isLoading ? <ButtonLoader /> : "Sign in"}
         </button>
       </form>
     </section>
