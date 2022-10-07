@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useUser } from "@context/user";
 import { useRouter } from "next/router";
-import LoginForm from "@components/login/LoginForm";
+import LoginForm from "@components/generic/LoginForm";
 import PageLoader from "@components/layout/PageLoader";
 
 export default function LoginPage() {

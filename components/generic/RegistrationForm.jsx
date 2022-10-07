@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useUser } from "@context/user";
 import { hasEmpty } from "@utils/index";
-import styles from "@styles/register/RegistrationForm.module.css";
+import styles from "@styles/generic/RegistrationForm.module.css";
 
 export default function RegistrationForm() {
   const { setUser } = useUser();

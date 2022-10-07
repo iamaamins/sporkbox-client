@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { hasEmpty } from "@utils/index";
 import { useUser } from "@context/user";
-import styles from "@styles/login/LoginForm.module.css";
+import styles from "@styles/generic/LoginForm.module.css";
 import ButtonLoader from "@components/layout/ButtonLoader";
 
 export default function LoginForm() {
