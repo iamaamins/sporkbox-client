@@ -16,11 +16,13 @@ export default function DesktopNav() {
     // Log a user out
     try {
       // Make request to backend
-      await axios.post(
+      const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/user/logout`,
         {},
         { withCredentials: true }
       );
+
+      console.log(res.data);
 
       // Update user
       setUser(null);
