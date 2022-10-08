@@ -1,17 +1,18 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useData } from "@context/data";
-import { convertDate, groupBy } from "@utils/index";
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { convertDateToTime, groupBy } from "@utils/index";
 import styles from "@styles/generic/Calendar.module.css";
 
 export default function Calendar() {
+  const router = useRouter();
   const { scheduledRestaurants } = useData();
-  const [currGroup, setCurrGroup] = useState(0);
-  const [restaurantGroups, setRestaurantGroups] = useState(null);
+  const [restaurants, setRestaurants] = useState([]);
+  const [restaurantGroups, setRestaurantGroups] = useState([]);
 
   useEffect(() => {
-    if (scheduledRestaurants) {
+    if (router.isReady && scheduledRestaurants) {
       // Groups restaurants by scheduled on date
       const groups = groupBy(
         "scheduledOn",
@@ -19,61 +20,54 @@ export default function Calendar() {
         "restaurants"
       );
 
-      // Update state
+      // Find the restaurant with date from slug
+      const restaurants = groups.find(
+        (group) =>
+          convertDateToTime(group.scheduledOn).toString() === router.query.date
+      ).restaurants;
+
+      // Update restaurants
+      setRestaurants(restaurants);
+
+      // Update groups
       setRestaurantGroups(groups);
     }
-  }, [scheduledRestaurants]);
+  }, [scheduledRestaurants, router]);
 
-  // Current day
-  const currentDay = (groups) => convertDate(groups[currGroup].scheduledOn);
+  // Get the date
+  const getDate = (date) =>
+    new Date(date).toDateString().split(" ").slice(2, 3).join();
 
-  // Handle next day
-  const handleNextDay = (groups) => {
-    setCurrGroup(currGroup < groups.length - 1 ? currGroup + 1 : currGroup);
-  };
-
-  // Handle previous day
-  const handlePrevDay = () => {
-    setCurrGroup(currGroup > 0 ? currGroup - 1 : currGroup);
-  };
-
-  // Current restaurants
-  const currRestaurants = (groups) => groups[currGroup].restaurants;
+  // Get the first letter of the day
+  const getDay = (date) =>
+    new Date(date).toDateString().split(" ").slice(0, 1)[0].split("")[0];
 
   return (
     <section className={styles.calendar}>
-      {!restaurantGroups ||
-        (restaurantGroups.length === 0 && <h2>No restaurants</h2>)}
+      {restaurantGroups.length === 0 && <h2>No restaurants</h2>}
 
-      {restaurantGroups && restaurantGroups.length > 0 && (
+      {restaurantGroups.length > 0 && (
         <>
           <div className={styles.title_and_controller}>
             <h2 className={styles.calendar_title}>Upcoming week</h2>
 
             <div className={styles.controller}>
-              <p
-                onClick={handlePrevDay}
-                className={`${styles.previous_day} ${
-                  currGroup === 0 && styles.disabled
-                }`}
-              >
-                <MdKeyboardArrowLeft /> Previous day
-              </p>
-              <p className={styles.current_day}>
-                {currentDay(restaurantGroups)}
-              </p>
-              <p
-                onClick={() => handleNextDay(restaurantGroups)}
-                className={`${styles.next_day} ${
-                  currGroup === restaurantGroups.length - 1 && styles.disabled
-                }`}
-              >
-                Next day <MdKeyboardArrowRight />
-              </p>
+              {restaurantGroups.map((restaurantGroup) => (
+                <Link
+                  href={`/calendar/${convertDateToTime(
+                    restaurantGroup.scheduledOn
+                  )}`}
+                >
+                  <a key={restaurantGroup.scheduledOn}>
+                    <span>{getDate(restaurantGroup.scheduledOn)}</span>
+                    <span>{getDay(restaurantGroup.scheduledOn)}</span>
+                  </a>
+                </Link>
+              ))}
             </div>
           </div>
 
-          {currRestaurants(restaurantGroups).map((restaurant) => (
+          {restaurants.map((restaurant) => (
             <div key={restaurant._id} className={styles.restaurant}>
               <p className={styles.title}>{restaurant.name}</p>
 

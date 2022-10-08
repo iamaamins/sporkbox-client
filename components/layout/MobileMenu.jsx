@@ -1,6 +1,6 @@
 import axios from "axios";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   MdSpaceDashboard,
   MdGroups,
@@ -13,12 +13,32 @@ import { TbBuildingStore, TbBuildingSkyscraper } from "react-icons/tb";
 import { BsFillCalendar2DateFill } from "react-icons/bs";
 import { AiTwotonePhone } from "react-icons/ai";
 import { useUser } from "@context/user";
-import { currentYear } from "@utils/index";
+import { convertDateToTime, currentYear, groupBy } from "@utils/index";
 import styles from "@styles/layout/MobileMenu.module.css";
+import { useData } from "@context/data";
 
 export default function MobileMenu({ isOpen, setIsOpen }) {
   // Hooks
+  const [date, setDate] = useState();
+  const { scheduledRestaurants } = useData();
   const { isAdmin, isVendor, isCustomer, setUser } = useUser();
+
+  useEffect(() => {
+    if (scheduledRestaurants) {
+      // Groups restaurants by scheduled on date
+      const groups = groupBy(
+        "scheduledOn",
+        scheduledRestaurants,
+        "restaurants"
+      );
+
+      // Convert the first group's scheduled date to slug
+      const date = convertDateToTime(groups[0].scheduledOn);
+
+      // Update state
+      setDate(date);
+    }
+  }, [scheduledRestaurants]);
 
   // Disable body scroll if MobileMenu is open
   useEffect(() => {
@@ -75,39 +95,6 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
           </Link>
         </li>
 
-        {/* <li
-          className={!isAdmin ? styles.hide : null}
-          onClick={() => setIsOpen(false)}
-        >
-          <Link href="/admin/add-restaurant">
-            <a>
-              <BiPlusCircle /> Add Restaurant
-            </a>
-          </Link>
-        </li> */}
-
-        {/* <li
-          className={!isAdmin ? styles.hide : null}
-          onClick={() => setIsOpen(false)}
-        >
-          <Link href="/admin/add-company">
-            <a>
-              <BiPlusCircle /> Add Company
-            </a>
-          </Link>
-        </li> */}
-
-        {/* <li
-          className={!isAdmin ? styles.hide : null}
-          onClick={() => setIsOpen(false)}
-        >
-          <Link href="/admin/schedule-restaurants">
-            <a>
-              <BsFillCalendar2DateFill /> Schedule Restaurants
-            </a>
-          </Link>
-        </li> */}
-
         <li
           className={!isAdmin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
@@ -153,6 +140,14 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
         </li>
 
         {/* Generic nav items */}
+
+        <li onClick={() => setIsOpen(false)}>
+          <Link href={`/calendar/${date}`}>
+            <a>
+              <BsFillCalendar2DateFill /> Calendar
+            </a>
+          </Link>
+        </li>
 
         <li
           className={isAdmin || isVendor || isCustomer ? styles.hide : null}

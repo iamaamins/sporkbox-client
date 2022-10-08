@@ -1,7 +1,11 @@
+.calendar {
+  padding: var(--section_padding);
+}
+
 .title_and_controller {
-  top: 4rem;
-  position: sticky;
   padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
   background-color: var(--orange);
 }
 
@@ -11,16 +15,22 @@
 
 .controller {
   display: flex;
-  padding: 10px;
   align-items: center;
   margin-bottom: 0.5rem;
-  border-radius: 0.5rem;
-  background: var(--border_color);
-  justify-content: space-between;
 }
 
-.restaurant {
-  padding: 1.25rem;
+.controller a {
+  padding: 6px 12px;
+  border-radius: 2rem;
+  margin-right: 1rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: var(--almost_white);
+  border: 1px solid var(--almost_white);
 }
 
 .previous_day,
@@ -49,7 +59,7 @@
 }
 
 .title {
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--global);
 }

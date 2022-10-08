@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { convertDate, createSlug } from "@utils/index";
+import { convertDate } from "@utils/index";
 import { useData } from "@context/data";
 import styles from "@styles/admin/Orders.module.css";
 

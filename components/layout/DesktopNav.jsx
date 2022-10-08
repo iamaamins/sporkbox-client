@@ -5,11 +5,33 @@ import { useUser } from "@context/user";
 import axios from "axios";
 import { useRouter } from "next/router";
 import styles from "@styles/layout/DesktopNav.module.css";
+import { useData } from "@context/data";
+import { useEffect, useState } from "react";
+import { convertDateToTime, groupBy } from "@utils/index";
 
 export default function DesktopNav() {
   // Hooks
   const pathName = useRouter().pathname;
+  const [date, setDate] = useState();
+  const { scheduledRestaurants } = useData();
   const { isAdmin, isCustomer, isVendor, setUser } = useUser();
+
+  useEffect(() => {
+    if (scheduledRestaurants) {
+      // Groups restaurants by scheduled on date
+      const groups = groupBy(
+        "scheduledOn",
+        scheduledRestaurants,
+        "restaurants"
+      );
+
+      // Convert the first group's scheduled date to slug
+      const dateSlug = convertDateToTime(groups[0].scheduledOn);
+
+      // Update state
+      setDate(dateSlug);
+    }
+  }, [scheduledRestaurants]);
 
   // Handle sign out
   async function handleSignOut() {
@@ -55,6 +77,12 @@ export default function DesktopNav() {
         <li className={isAdmin ? styles.hide : null}>
           <Link href="/about-us">
             <a>About us</a>
+          </Link>
+        </li>
+
+        <li className={!date ? styles.hide : null}>
+          <Link href={`/calendar/${date}`}>
+            <a>Calendar</a>
           </Link>
         </li>
 

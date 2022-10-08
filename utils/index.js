@@ -1,9 +1,8 @@
 // Current year
 export const currentYear = new Date().getFullYear();
 
-// Create slug
-export const createSlug = (name) =>
-  name.split("'").join("").split(" ").join("-").toLowerCase();
+// Convert date to slug
+export const convertDateToTime = (date) => new Date(date).getTime();
 
 // Convert iso date to locale date string
 export const convertDate = (str) =>

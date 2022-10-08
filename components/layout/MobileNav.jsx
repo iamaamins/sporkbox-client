@@ -6,7 +6,7 @@ import styles from "@styles/layout/MobileNav.module.css";
 export default function MobileNav({ isOpen, setIsOpen }) {
   return (
     <nav className={styles.mobile_nav}>
-      <div className={styles.logo}>
+      <div className={styles.logo} onClick={() => setIsOpen(false)}>
         <Link href="/">
           <a>
             <Image src={logo} alt="logo" priority />
