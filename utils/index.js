@@ -6,7 +6,8 @@ export const createSlug = (name) =>
   name.split("'").join("").split(" ").join("-").toLowerCase();
 
 // Convert iso date to locale date string
-export const convertDate = (str) => new Date(str).toLocaleDateString();
+export const convertDate = (str) =>
+  new Date(str).toDateString().split(" ").slice(0, 3).join(" ");
 
 // Check if any input field is empty
 export const hasEmpty = (formData) =>
@@ -52,4 +53,31 @@ export function getScheduledRestaurants(restaurants, setScheduledRestaurants) {
         )
     );
   }
+}
+
+// Group items by property
+export function groupBy(key, items, itemsName) {
+  // Crate groups with provided key
+  const groupsObj = items.reduce((acc, curr) => {
+    // Property to create group with
+    const property = curr[key];
+
+    // If property exists in acc then,
+    // add the current item to the property array
+    if (property in acc) {
+      return { ...acc, [property]: [...acc[property], curr] };
+    }
+
+    // Else create a property and
+    // add the current item to an array
+    return { ...acc, [property]: [curr] };
+  }, {});
+
+  // Convert the object
+  const groupsArr = Object.keys(groupsObj).map((property) => ({
+    [key]: property,
+    [itemsName]: groupsObj[property],
+  }));
+
+  return groupsArr;
 }
