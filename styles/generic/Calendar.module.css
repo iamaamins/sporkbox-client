@@ -30,7 +30,14 @@
   align-items: center;
   flex-direction: column;
   color: var(--almost_white);
+  transition: all 100ms ease-in-out;
   border: 1px solid var(--almost_white);
+}
+
+.controller a.active {
+  color: var(--gray);
+  font-weight: 700;
+  background: var(--almost_white);
 }
 
 .previous_day,

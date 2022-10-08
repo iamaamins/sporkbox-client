@@ -44,8 +44,10 @@ export default function Calendar() {
 
   return (
     <section className={styles.calendar}>
+      {/* If there are no restaurant groups */}
       {restaurantGroups.length === 0 && <h2>No restaurants</h2>}
 
+      {/* If there are restaurant groups */}
       {restaurantGroups.length > 0 && (
         <>
           <div className={styles.title_and_controller}>
@@ -53,20 +55,32 @@ export default function Calendar() {
 
             <div className={styles.controller}>
               {restaurantGroups.map((restaurantGroup) => (
-                <Link
-                  href={`/calendar/${convertDateToTime(
-                    restaurantGroup.scheduledOn
-                  )}`}
-                >
-                  <a key={restaurantGroup.scheduledOn}>
-                    <span>{getDate(restaurantGroup.scheduledOn)}</span>
-                    <span>{getDay(restaurantGroup.scheduledOn)}</span>
-                  </a>
-                </Link>
+                <div key={restaurantGroup.scheduledOn}>
+                  <Link
+                    href={`/calendar/${convertDateToTime(
+                      restaurantGroup.scheduledOn
+                    )}`}
+                  >
+                    <a
+                      key={restaurantGroup.scheduledOn}
+                      className={
+                        convertDateToTime(
+                          restaurantGroup.scheduledOn
+                        ).toString() === router.query.date
+                          ? styles.active
+                          : null
+                      }
+                    >
+                      <span>{getDate(restaurantGroup.scheduledOn)}</span>
+                      <span>{getDay(restaurantGroup.scheduledOn)}</span>
+                    </a>
+                  </Link>
+                </div>
               ))}
             </div>
           </div>
 
+          {/* Show the restaurants */}
           {restaurants.map((restaurant) => (
             <div key={restaurant._id} className={styles.restaurant}>
               <p className={styles.title}>{restaurant.name}</p>
