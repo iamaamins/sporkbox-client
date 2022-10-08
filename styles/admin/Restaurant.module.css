@@ -47,7 +47,6 @@
 }
 
 .block_restaurant_button {
-  pointer-events: none; /*Remove*/
   background: var(--orange);
 }
 

@@ -12,21 +12,14 @@ import { convertDateToTime, groupBy } from "@utils/index";
 export default function DesktopNav() {
   // Hooks
   const pathName = useRouter().pathname;
-  const [date, setDate] = useState();
+  const [date, setDate] = useState(null);
   const { scheduledRestaurants } = useData();
   const { isAdmin, isCustomer, isVendor, setUser } = useUser();
 
   useEffect(() => {
     if (scheduledRestaurants) {
-      // Groups restaurants by scheduled on date
-      const groups = groupBy(
-        "scheduledOn",
-        scheduledRestaurants,
-        "restaurants"
-      );
-
       // Convert the first group's scheduled date to slug
-      const dateSlug = convertDateToTime(groups[0].scheduledOn);
+      const dateSlug = convertDateToTime(scheduledRestaurants[0].scheduledOn);
 
       // Update state
       setDate(dateSlug);

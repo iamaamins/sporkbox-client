@@ -19,21 +19,14 @@ import { useData } from "@context/data";
 
 export default function MobileMenu({ isOpen, setIsOpen }) {
   // Hooks
-  const [date, setDate] = useState();
+  const [date, setDate] = useState(null);
   const { scheduledRestaurants } = useData();
   const { isAdmin, isVendor, isCustomer, setUser } = useUser();
 
   useEffect(() => {
     if (scheduledRestaurants) {
-      // Groups restaurants by scheduled on date
-      const groups = groupBy(
-        "scheduledOn",
-        scheduledRestaurants,
-        "restaurants"
-      );
-
       // Convert the first group's scheduled date to slug
-      const date = convertDateToTime(groups[0].scheduledOn);
+      const date = convertDateToTime(scheduledRestaurants[0].scheduledOn);
 
       // Update state
       setDate(date);

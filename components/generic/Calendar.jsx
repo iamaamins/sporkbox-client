@@ -50,6 +50,7 @@ export default function Calendar() {
       {/* If there are restaurant groups */}
       {restaurantGroups.length > 0 && (
         <>
+          {/* Show next week's and scheduled date */}
           <div className={styles.title_and_controller}>
             <h2 className={styles.calendar_title}>Upcoming week</h2>
 
@@ -88,7 +89,9 @@ export default function Calendar() {
               <div className={styles.items}>
                 {restaurant.items.map((item) => (
                   <div key={item._id}>
-                    <Link href={`/calendar/${restaurant._id}/${item._id}`}>
+                    <Link
+                      href={`/calendar/${router.query.date}/${restaurant._id}/${item._id}`}
+                    >
                       <a className={styles.item}>
                         <div className={styles.item_details}>
                           <p className={styles.name}>{item.name}</p>

@@ -1,0 +1,81 @@
+.cover_image {
+  height: 12rem;
+  border-bottom: 1px solid var(--border_color);
+}
+
+.item_details {
+  padding: var(--section_padding);
+}
+
+.name {
+  font-size: 24px;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  margin-bottom: 0.5rem;
+}
+
+.price {
+  font-size: 20px;
+  margin-bottom: 0.5rem;
+}
+
+.tags {
+  margin-bottom: 1rem;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.buttons button,
+.buttons a {
+  border: none;
+  width: 10rem;
+  height: 2.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  border-radius: 0.25rem;
+  justify-content: center;
+  color: var(--almost_white);
+}
+
+.edit_button {
+  /* background: var(--teal); */
+  background: var(--black);
+  pointer-events: none;
+}
+
+.delete_button {
+  pointer-events: none;
+  background: var(--orange);
+  pointer-events: none; /*Remove*/
+}
+
+@media (min-width: 768px) {
+  .item {
+    max-width: 85%;
+    margin: 0 auto;
+  }
+
+  .buttons {
+    justify-content: flex-start;
+  }
+
+  .edit_button {
+    margin-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .item {
+    max-width: 80%;
+    margin: 0 auto;
+  }
+}
