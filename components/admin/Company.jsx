@@ -13,12 +13,12 @@ export default function Company() {
 
   // Get the company
   useEffect(() => {
-    if (companies) {
+    if (companies && router.isReady) {
       setCompany(
         companies.find((company) => company._id === router.query.company)
       );
     }
-  }, [companies]);
+  }, [companies, router.isReady]);
 
   // Delete company
   async function handleDelete(e) {

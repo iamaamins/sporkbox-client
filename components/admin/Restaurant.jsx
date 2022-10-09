@@ -13,14 +13,14 @@ export default function Restaurant() {
 
   // Get the restaurant
   useEffect(() => {
-    if (restaurants) {
+    if (restaurants && router.isReady) {
       setRestaurant(
         restaurants?.find(
           (restaurant) => restaurant._id === router.query.restaurant
         )
       );
     }
-  }, [restaurants]);
+  }, [restaurants, router.isReady]);
 
   // Handle approval
   async function handleApproval(e) {

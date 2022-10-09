@@ -12,12 +12,14 @@ export default function Item() {
   const { restaurants, setRestaurants } = useData();
 
   useEffect(() => {
-    setItem(
-      restaurants
-        ?.find((restaurant) => restaurant._id === router.query.restaurant)
-        .items?.find((item) => item._id === router.query.item)
-    );
-  }, [restaurants]);
+    if (restaurants && router.isReady) {
+      setItem(
+        restaurants
+          ?.find((restaurant) => restaurant._id === router.query.restaurant)
+          .items?.find((item) => item._id === router.query.item)
+      );
+    }
+  }, [restaurants, router.isReady]);
 
   // Handle delete
   async function handleDelete() {

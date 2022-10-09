@@ -14,7 +14,7 @@ export default function Calendar() {
   const [restaurantGroups, setRestaurantGroups] = useState([]);
 
   useEffect(() => {
-    if (router.isReady && scheduledRestaurants) {
+    if (scheduledRestaurants && router.isReady) {
       // Groups restaurants by scheduled on date
       const groups = groupBy(
         "scheduledOn",

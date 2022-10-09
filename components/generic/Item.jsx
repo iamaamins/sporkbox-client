@@ -26,18 +26,18 @@ export default function Item() {
 
   // Get the item from schedules restaurants
   useEffect(() => {
-    if (scheduledRestaurants) {
+    if (scheduledRestaurants && router.isReady) {
       setItem(
         scheduledRestaurants
           .find((restaurant) => restaurant._id === router.query.restaurant)
           .items.find((item) => item._id === router.query.item)
       );
     }
-  }, [scheduledRestaurants]);
+  }, [scheduledRestaurants, router.isReady]);
 
   // Update initial item
   useEffect(() => {
-    if (item) {
+    if (item && router.isReady) {
       setInitialItem({
         id: item._id,
         name: item.name,
@@ -48,7 +48,7 @@ export default function Item() {
         restaurant: router.query.restaurant,
       });
     }
-  }, [item]);
+  }, [item, router.isReady]);
 
   // Increase quantity
   function increaseQuantity() {
