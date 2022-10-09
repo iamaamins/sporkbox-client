@@ -5,6 +5,7 @@ import { useData } from "@context/data";
 import { useCart } from "@context/cart";
 import { convertDateToTime, groupBy } from "@utils/index";
 import styles from "@styles/generic/Calendar.module.css";
+import Image from "next/image";
 
 export default function Calendar() {
   const router = useRouter();
@@ -104,6 +105,14 @@ export default function Calendar() {
                         </div>
 
                         <div className={styles.item_image}>
+                          <Image
+                            src="https://images.unsplash.com/photo-1613987245117-50933bcb3240?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"
+                            height={2}
+                            width={3}
+                            layout="responsive"
+                            objectFit="cover"
+                          />
+
                           {cartItems.map(
                             (cartItem) =>
                               cartItem.id === item._id && (
