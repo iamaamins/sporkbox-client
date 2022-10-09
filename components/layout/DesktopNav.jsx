@@ -8,6 +8,7 @@ import styles from "@styles/layout/DesktopNav.module.css";
 import { useData } from "@context/data";
 import { useEffect, useState } from "react";
 import { convertDateToTime, groupBy } from "@utils/index";
+import CartIcon from "./CartIcon";
 
 export default function DesktopNav() {
   // Hooks
@@ -135,6 +136,7 @@ export default function DesktopNav() {
 
       {/* Call to actions */}
       <div className={styles.ctas}>
+        <CartIcon />
         <button
           onClick={handleSignOut}
           className={!isAdmin && !isVendor && !isCustomer ? styles.hide : null}

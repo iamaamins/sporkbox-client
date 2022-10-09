@@ -93,8 +93,9 @@
   position: absolute;
   top: -0.5rem;
   left: -0.5rem;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 20px;
+  height: 20px;
+  font-size: 0.9rem;
   border-radius: 100%;
   color: var(--white);
   background: var(--black);

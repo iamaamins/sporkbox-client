@@ -4,15 +4,6 @@
   justify-content: space-between;
 }
 
-.logo {
-  width: 4rem;
-}
-
-.logo a {
-  display: flex;
-  align-items: center;
-}
-
 .hamburger {
   position: relative;
   display: flex;
@@ -61,6 +52,15 @@
 
 .hamburger.open .line::after {
   transform: rotate(45deg);
+}
+
+.logo {
+  width: 4rem;
+}
+
+.logo a {
+  display: flex;
+  align-items: center;
 }
 
 @media (min-width: 768px) {

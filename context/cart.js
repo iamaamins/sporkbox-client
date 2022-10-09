@@ -17,6 +17,12 @@ export default function CartProvider({ children }) {
     setCartItems(JSON.parse(localStorage.getItem(`cart`)) || []);
   }, [router.isReady]);
 
+  // Calculate total quantity
+  const totalCartQuantity = cartItems.reduce(
+    (acc, item) => acc + item.quantity,
+    0
+  );
+
   // Add item to cart
   function addItemToCart(initialItem) {
     let updatedItems = [];
@@ -54,7 +60,9 @@ export default function CartProvider({ children }) {
   }
 
   return (
-    <CartContext.Provider value={{ cartItems, setCartItems, addItemToCart }}>
+    <CartContext.Provider
+      value={{ cartItems, setCartItems, addItemToCart, totalCartQuantity }}
+    >
       {children}
     </CartContext.Provider>
   );

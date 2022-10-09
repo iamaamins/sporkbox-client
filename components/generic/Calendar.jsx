@@ -107,9 +107,12 @@ export default function Calendar() {
                           {cartItems.map(
                             (cartItem) =>
                               cartItem.id === item._id && (
-                                <p key={item.id} className={styles.quantity}>
+                                <span
+                                  key={item._id}
+                                  className={styles.quantity}
+                                >
                                   {cartItem.quantity}
-                                </p>
+                                </span>
                               )
                           )}
                         </div>

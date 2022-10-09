@@ -42,14 +42,21 @@
     color: var(--black);
   }
 
+  .ctas {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   .ctas a,
   .ctas button {
     padding: 6px 16px;
     font-size: 0.9rem;
     border-radius: 2rem;
+    margin-left: 1.5rem;
     border: none;
     cursor: pointer;
-    background: var(--teal);
-    color: var(--almost_white);
+    background: transparent;
+    border: 1px solid var(--gray);
   }
 }

@@ -1,0 +1,32 @@
+.cart {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart svg {
+  font-size: 1.25rem;
+}
+
+.quantity {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: -0.75rem;
+  right: -0.75rem;
+  width: 18px;
+  height: 18px;
+  font-size: 0.8rem;
+  border-radius: 100%;
+  background: var(--black);
+  color: var(--almost_white);
+}
+
+@media (min-width: 768px) {
+  .cart svg {
+    font-size: 1.5rem;
+  }
+}
