@@ -57,12 +57,12 @@ export default function Company() {
       {company && (
         <>
           <div className={styles.details}>
-            <h2>{company.name}</h2>
+            <h2 className={styles.company_name}>{company.name}</h2>
             <p>
               <span>Code:</span> {company.code}
             </p>
             <p>
-              <span>Weekly budget:</span> {company.budget}
+              <span>Weekly budget:</span> USD ${company.budget}
             </p>
             <p>
               <span>Address:</span> {company.address}

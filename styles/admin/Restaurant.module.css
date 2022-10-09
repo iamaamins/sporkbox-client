@@ -3,28 +3,30 @@
 }
 
 .details {
+  margin-bottom: 2rem;
+}
+
+.restaurant_name {
   margin-bottom: 1rem;
 }
 
-.details h2,
-.details p {
+.restaurant_details {
+  margin-bottom: 1.5rem;
+}
+
+.restaurant_details p {
+  color: var(--gray);
   margin-bottom: 0.5rem;
 }
 
-.details p {
-  color: var(--gray);
-}
-
-.details p span {
+.restaurant_details p span {
   font-weight: 500;
   color: var(--black);
 }
 
 .buttons {
   display: flex;
-  margin: 1.5rem 0rem;
   align-items: center;
-  justify-content: space-between;
 }
 
 .buttons button,
@@ -43,11 +45,17 @@
 }
 
 .add_item_button {
+  margin-right: 2rem;
   background: var(--teal);
 }
 
 .block_restaurant_button {
   background: var(--orange);
+}
+
+.items_title {
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .item {
@@ -62,13 +70,15 @@
   width: 70%;
 }
 
-.name,
-.price {
+.name {
   font-weight: 600;
   font-size: 15px;
+  margin-bottom: 0.5rem;
 }
 
-.name {
+.price {
+  font-weight: 500;
+  font-size: 13px;
   margin-bottom: 0.5rem;
 }
 
@@ -78,7 +88,7 @@
   text-align: justify;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
@@ -93,14 +103,6 @@
   .restaurant {
     max-width: 85%;
     margin: 0 auto;
-  }
-
-  .buttons {
-    justify-content: flex-start;
-  }
-
-  .add_item_button {
-    margin-right: 2rem;
   }
 
   .items {

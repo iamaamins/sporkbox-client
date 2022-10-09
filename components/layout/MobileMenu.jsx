@@ -5,6 +5,7 @@ import {
   MdSpaceDashboard,
   MdGroups,
   MdLogout,
+  MdOutlineSchedule,
   MdOutlineRestaurantMenu,
 } from "react-icons/md";
 import { IoLogIn } from "react-icons/io5";
@@ -116,7 +117,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
         >
           <Link href="/admin/scheduled-restaurants">
             <a>
-              <BsFillCalendar2DateFill /> Scheduled
+              <MdOutlineSchedule /> Scheduled
             </a>
           </Link>
         </li>

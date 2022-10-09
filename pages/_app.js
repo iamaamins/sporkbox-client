@@ -4,15 +4,18 @@ import Header from "@components/layout/Header";
 import Footer from "@components/layout/Footer";
 import UserProvider from "@context/user";
 import DataProvider from "@context/data";
+import CartProvider from "@context/cart";
 
 export default function App({ Component, pageProps }) {
   return (
     <UserProvider>
-      <DataProvider>
-        <Header />
-        <Component {...pageProps} />
-        <Footer />
-      </DataProvider>
+      <CartProvider>
+        <DataProvider>
+          <Header />
+          <Component {...pageProps} />
+          <Footer />
+        </DataProvider>
+      </CartProvider>
     </UserProvider>
   );
 }

@@ -1,21 +1,72 @@
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useData } from "@context/data";
 import { useRouter } from "next/router";
+import { HiMinus, HiPlus } from "react-icons/hi";
+import { convertNumber } from "@utils/index";
+import { useCart } from "@context/cart";
 import styles from "@styles/generic/Item.module.css";
 
 export default function Item() {
   const router = useRouter();
-  const { restaurants } = useData();
   const [item, setItem] = useState(null);
+  const { scheduledRestaurants } = useData();
+  const { addItemToCart } = useCart();
+  const [initialItem, setInitialItem] = useState({
+    id: "",
+    name: "",
+    quantity: 1,
+    price: "",
+    total: "",
+    date: "",
+    restaurant: "",
+  });
 
+  // Price and quantity
+  const { quantity, price } = initialItem;
+
+  // Get the item from schedules restaurants
   useEffect(() => {
-    setItem(
-      restaurants
-        ?.find((restaurant) => restaurant._id === router.query.restaurant)
-        .items?.find((item) => item._id === router.query.item)
-    );
-  }, [restaurants]);
+    if (scheduledRestaurants) {
+      setItem(
+        scheduledRestaurants
+          .find((restaurant) => restaurant._id === router.query.restaurant)
+          .items.find((item) => item._id === router.query.item)
+      );
+    }
+  }, [scheduledRestaurants]);
+
+  // Update initial item
+  useEffect(() => {
+    if (item) {
+      setInitialItem({
+        id: item._id,
+        name: item.name,
+        quantity: 1,
+        price: parseFloat(item.price),
+        total: parseFloat(item.price),
+        date: router.query.date,
+        restaurant: router.query.restaurant,
+      });
+    }
+  }, [item]);
+
+  // Increase quantity
+  function increaseQuantity() {
+    setInitialItem((prevItem) => ({
+      ...prevItem,
+      quantity: prevItem.quantity + 1,
+      total: parseFloat(prevItem.price * (prevItem.quantity + 1)),
+    }));
+  }
+
+  // Decrease quantity
+  function decreaseQuantity() {
+    setInitialItem((prevItem) => ({
+      ...prevItem,
+      quantity: prevItem.quantity - 1,
+      total: parseFloat(prevItem.price * (prevItem.quantity - 1)),
+    }));
+  }
 
   return (
     <section className={styles.item}>
@@ -25,21 +76,35 @@ export default function Item() {
           <div className={styles.cover_image}></div>
 
           <div className={styles.item_details}>
-            <p className={styles.name}>{item.name}</p>
-            <p className={styles.description}>{item.description}</p>
-            <p className={styles.price}>USD ${item.price}</p>
-            <p className={styles.tags}>{item.tags}</p>
+            <p className={styles.item_name}>{item.name}</p>
+            <p className={styles.item_description}>{item.description}</p>
+            <p className={styles.item_tags}>{item.tags}</p>
+          </div>
 
-            <div className={styles.buttons}>
-              <Link
-                href={`/admin/restaurants/${router.query.restaurant}/${router.query.item}/edit-item`}
-              >
-                <a className={styles.edit_button}>Edit item</a>
-              </Link>
-
-              <button className={styles.delete_button}>Delete item</button>
+          <div className={styles.controller}>
+            <div
+              onClick={decreaseQuantity}
+              className={`${styles.minus} ${styles.icon} ${
+                quantity > 1 && styles.active
+              }`}
+            >
+              <HiMinus />
+            </div>
+            <p className={styles.item_quantity}>{quantity}</p>
+            <div
+              onClick={increaseQuantity}
+              className={`${styles.plus} ${styles.icon}`}
+            >
+              <HiPlus />
             </div>
           </div>
+
+          <button
+            className={styles.button}
+            onClick={() => addItemToCart(initialItem)}
+          >
+            Add {quantity} to basket • {convertNumber(quantity * price)} USD
+          </button>
         </>
       )}
     </section>

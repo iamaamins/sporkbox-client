@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { useData } from "@context/data";
 import { convertDateToTime, groupBy } from "@utils/index";
 import styles from "@styles/generic/Calendar.module.css";
+import { useCart } from "@context/cart";
 
 export default function Calendar() {
   const router = useRouter();
+  const { cartItems } = useCart();
   const { scheduledRestaurants } = useData();
   const [restaurants, setRestaurants] = useState([]);
   const [restaurantGroups, setRestaurantGroups] = useState([]);
@@ -84,7 +86,7 @@ export default function Calendar() {
           {/* Show the restaurants */}
           {restaurants.map((restaurant) => (
             <div key={restaurant._id} className={styles.restaurant}>
-              <p className={styles.title}>{restaurant.name}</p>
+              <h2 className={styles.title}>{restaurant.name}</h2>
 
               <div className={styles.items}>
                 {restaurant.items.map((item) => (
@@ -95,13 +97,22 @@ export default function Calendar() {
                       <a className={styles.item}>
                         <div className={styles.item_details}>
                           <p className={styles.name}>{item.name}</p>
+                          <p className={styles.price}>USD ${item.price}</p>
                           <p className={styles.description}>
                             {item.description}
                           </p>
-                          <p className={styles.price}>USD ${item.price}</p>
                         </div>
 
-                        <div className={styles.item_image}></div>
+                        <div className={styles.item_image}>
+                          {cartItems.map(
+                            (cartItem) =>
+                              cartItem.id === item._id && (
+                                <p key={item.id} className={styles.quantity}>
+                                  {cartItem.quantity}
+                                </p>
+                              )
+                          )}
+                        </div>
                       </a>
                     </Link>
                   </div>

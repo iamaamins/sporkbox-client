@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useUser } from "./user";
-import { useRouter } from "next/router";
 import { useState, createContext, useContext, useEffect } from "react";
 
 // Create context
@@ -11,29 +10,13 @@ export const useData = () => useContext(DataContext);
 
 // Provider function
 export default function DataProvider({ children }) {
-  const router = useRouter();
   const { isAdmin } = useUser();
   const [restaurants, setRestaurants] = useState(null);
   const [companies, setCompanies] = useState(null);
   const [scheduledRestaurants, setScheduledRestaurants] = useState(null);
 
+  // Get admin data
   useEffect(() => {
-    // Get generic data
-    async function getGenericData() {
-      // Get scheduled restaurants
-      try {
-        // Make request to backend
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/restaurants/scheduled`
-        );
-
-        // Update state
-        setScheduledRestaurants(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
     // Get admin data
     async function getAdminData() {
       // Get 20 latest restaurants
@@ -71,14 +54,32 @@ export default function DataProvider({ children }) {
       // Get 20 latest orders
     }
 
-    // Always run this function
-    getGenericData();
-
     // Run the function if there is an admin
     if (isAdmin) {
       getAdminData();
     }
-  }, [isAdmin, router.isReady]);
+  }, [isAdmin]);
+
+  // Fetch generic data
+  useEffect(() => {
+    async function getGenericData() {
+      // Get scheduled restaurants
+      try {
+        // Make request to backend
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/restaurants/scheduled`
+        );
+
+        // Update state
+        setScheduledRestaurants(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    // Call the function
+    getGenericData();
+  }, []);
 
   return (
     <DataContext.Provider

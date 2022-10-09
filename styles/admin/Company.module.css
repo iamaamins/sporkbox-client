@@ -3,16 +3,16 @@
 }
 
 .details {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.details h2,
-.details p {
-  margin-bottom: 0.5rem;
+.company_name {
+  margin-bottom: 1rem;
 }
 
 .details p {
   color: var(--gray);
+  margin-bottom: 0.5rem;
 }
 
 .details p span {
@@ -23,7 +23,6 @@
 .buttons {
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .edit_button,
@@ -43,27 +42,19 @@
 
 .edit_button {
   /* background: var(--teal); */
+  margin-right: 2rem;
   background: var(--black);
   pointer-events: none;
 }
 
 .delete_button {
   background: var(--orange);
-  pointer-events: none; /*Remove*/
 }
 
 @media (min-width: 768px) {
   .company {
     max-width: 85%;
     margin: 0 auto;
-  }
-
-  .buttons {
-    justify-content: flex-start;
-  }
-
-  .edit_button {
-    margin-right: 2rem;
   }
 }
 

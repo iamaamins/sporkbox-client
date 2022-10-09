@@ -45,42 +45,45 @@ export default function Restaurant() {
   return (
     <section className={styles.restaurant}>
       {!restaurant && <h2>No restaurant</h2>}
+
       {restaurant && (
         <div className={styles.details_and_items}>
           <div className={styles.details}>
-            <h2>{restaurant.name}</h2>
-            <p>
-              <span>Owner:</span> {restaurant.owner.name}
-            </p>
-            <p>
-              <span>Email:</span> {restaurant.owner.email}
-            </p>
+            <div className={styles.restaurant_details}>
+              <h2 className={styles.restaurant_name}>{restaurant.name}</h2>
+              <p>
+                <span>Owner:</span> {restaurant.owner.name}
+              </p>
+              <p>
+                <span>Email:</span> {restaurant.owner.email}
+              </p>
 
-            <p>
-              <span>Address:</span> {restaurant.address}
-            </p>
-          </div>
+              <p>
+                <span>Address:</span> {restaurant.address}
+              </p>
+            </div>
 
-          {/* Buttons */}
-          <div className={styles.buttons}>
-            <Link
-              href={`/admin/restaurants/${router.query.restaurant}/add-item`}
-            >
-              <a className={styles.add_item_button}>Add Item</a>
-            </Link>
+            {/* Buttons */}
+            <div className={styles.buttons}>
+              <Link
+                href={`/admin/restaurants/${router.query.restaurant}/add-item`}
+              >
+                <a className={styles.add_item_button}>Add Item</a>
+              </Link>
 
-            <button
-              onClick={handleApproval}
-              className={styles.block_restaurant_button}
-            >
-              {restaurant.status === "PENDING" ? "Approve" : "Restrict"}
-            </button>
+              <button
+                onClick={handleApproval}
+                className={styles.block_restaurant_button}
+              >
+                {restaurant.status === "PENDING" ? "Approve" : "Restrict"}
+              </button>
+            </div>
           </div>
 
           {/* Items */}
           {restaurant.items.length > 0 && (
             <>
-              <h2>Items</h2>
+              <h2 className={styles.items_title}>Items</h2>
               <div className={styles.items}>
                 {restaurant.items.map((item) => (
                   <div key={item._id}>
@@ -90,10 +93,10 @@ export default function Restaurant() {
                       <a className={styles.item}>
                         <div className={styles.item_details}>
                           <p className={styles.name}>{item.name}</p>
+                          <p className={styles.price}>USD ${item.price}</p>
                           <p className={styles.description}>
                             {item.description}
                           </p>
-                          <p className={styles.price}>USD ${item.price}</p>
                         </div>
 
                         <div className={styles.item_image}></div>
