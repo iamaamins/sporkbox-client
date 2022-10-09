@@ -11,15 +11,11 @@ export default function Item() {
   const [item, setItem] = useState(null);
   const { restaurants, setRestaurants } = useData();
 
-  // Restaurant and item id
-  const itemId = router.query.item;
-  const restaurantId = router.query.restaurant;
-
   useEffect(() => {
     setItem(
       restaurants
-        ?.find((restaurant) => restaurant._id === restaurantId)
-        .items?.find((item) => item._id === itemId)
+        ?.find((restaurant) => restaurant._id === router.query.restaurant)
+        .items?.find((item) => item._id === router.query.item)
     );
   }, [restaurants]);
 
@@ -29,7 +25,7 @@ export default function Item() {
     try {
       // Send the request to backend
       const res = await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${restaurantId}/${itemId}/delete-item`,
+        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${router.query.restaurant}/${router.query.item}/delete-item`,
         { withCredentials: true }
       );
 
@@ -58,7 +54,7 @@ export default function Item() {
 
             <div className={styles.buttons}>
               <Link
-                href={`/admin/restaurants/${restaurantId}/${itemId}/edit-item`}
+                href={`/admin/restaurants/${router.query.restaurant}/${router.query.item}/edit-item`}
               >
                 <a className={styles.edit_button}>Edit item</a>
               </Link>

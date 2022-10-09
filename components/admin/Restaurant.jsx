@@ -11,14 +11,13 @@ export default function Restaurant() {
   const { restaurants, setRestaurants } = useData();
   const [restaurant, setRestaurant] = useState(null);
 
-  // Restaurant id
-  const restaurantId = router.query.restaurant;
-
   // Get the restaurant
   useEffect(() => {
     if (restaurants) {
       setRestaurant(
-        restaurants?.find((restaurant) => restaurant._id === restaurantId)
+        restaurants?.find(
+          (restaurant) => restaurant._id === router.query.restaurant
+        )
       );
     }
   }, [restaurants]);
@@ -31,7 +30,7 @@ export default function Restaurant() {
     // Update restaurant status
     try {
       const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${restaurantId}/status`,
+        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${router.query.restaurant}/status`,
         { action },
         { withCredentials: true }
       );
@@ -64,7 +63,9 @@ export default function Restaurant() {
 
           {/* Buttons */}
           <div className={styles.buttons}>
-            <Link href={`/admin/restaurants/${restaurantId}/add-item`}>
+            <Link
+              href={`/admin/restaurants/${router.query.restaurant}/add-item`}
+            >
               <a className={styles.add_item_button}>Add Item</a>
             </Link>
 
@@ -84,7 +85,7 @@ export default function Restaurant() {
                 {restaurant.items.map((item) => (
                   <div key={item._id}>
                     <Link
-                      href={`/admin/restaurants/${restaurantId}/${item._id}`}
+                      href={`/admin/restaurants/${router.query.restaurant}/${item._id}`}
                     >
                       <a className={styles.item}>
                         <div className={styles.item_details}>

@@ -1,4 +1,3 @@
-import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useData } from "@context/data";
@@ -10,15 +9,11 @@ export default function Item() {
   const { restaurants } = useData();
   const [item, setItem] = useState(null);
 
-  // Restaurant and item id
-  const itemId = router.query.item;
-  const restaurantId = router.query.restaurant;
-
   useEffect(() => {
     setItem(
       restaurants
-        ?.find((restaurant) => restaurant._id === restaurantId)
-        .items?.find((item) => item._id === itemId)
+        ?.find((restaurant) => restaurant._id === router.query.restaurant)
+        .items?.find((item) => item._id === router.query.item)
     );
   }, [restaurants]);
 
@@ -37,7 +32,7 @@ export default function Item() {
 
             <div className={styles.buttons}>
               <Link
-                href={`/admin/restaurants/${restaurantId}/${itemId}/edit-item`}
+                href={`/admin/restaurants/${router.query.restaurant}/${router.query.item}/edit-item`}
               >
                 <a className={styles.edit_button}>Edit item</a>
               </Link>

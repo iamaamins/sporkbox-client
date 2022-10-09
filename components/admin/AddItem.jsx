@@ -25,7 +25,6 @@ export default function AddItem() {
 
   // Destructure form data and check
   const { name, description, tags, price } = formData;
-  const restaurantId = router.query.restaurant;
 
   // Handle change
   function handleChange(e) {
@@ -51,7 +50,7 @@ export default function AddItem() {
 
       // Post the data to backend
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${restaurantId}/add-item`,
+        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${router.query.restaurant}/add-item`,
         formData,
         {
           withCredentials: true,

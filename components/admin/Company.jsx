@@ -11,13 +11,12 @@ export default function Company() {
   const { companies, setCompanies } = useData();
   const [company, setCompany] = useState(null);
 
-  // Company id
-  const companyId = router.query.company;
-
   // Get the company
   useEffect(() => {
     if (companies) {
-      setCompany(companies.find((company) => company._id === companyId));
+      setCompany(
+        companies.find((company) => company._id === router.query.company)
+      );
     }
   }, [companies]);
 
@@ -28,7 +27,7 @@ export default function Company() {
     try {
       // Make delete request to backend
       const res = await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/companies/${companyId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/companies/${router.query.company}`,
         {
           withCredentials: true,
         }
@@ -39,7 +38,9 @@ export default function Company() {
 
       // Update state
       setCompanies((prevCompanies) =>
-        prevCompanies.filter((prevCompany) => prevCompany._id !== companyId)
+        prevCompanies.filter(
+          (prevCompany) => prevCompany._id !== router.query.company
+        )
       );
 
       // Back to companies page
