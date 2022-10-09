@@ -137,6 +137,7 @@ export default function DesktopNav() {
       {/* Call to actions */}
       <div className={styles.ctas}>
         <CartIcon />
+
         <button
           onClick={handleSignOut}
           className={!isAdmin && !isVendor && !isCustomer ? styles.hide : null}

@@ -8,6 +8,7 @@ export default function CartIcon() {
   return (
     <div className={styles.cart}>
       <BsHandbag />
+
       {totalCartQuantity > 0 && (
         <span className={styles.quantity}>{totalCartQuantity}</span>
       )}

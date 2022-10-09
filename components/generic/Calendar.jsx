@@ -2,9 +2,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useData } from "@context/data";
+import { useCart } from "@context/cart";
 import { convertDateToTime, groupBy } from "@utils/index";
 import styles from "@styles/generic/Calendar.module.css";
-import { useCart } from "@context/cart";
 
 export default function Calendar() {
   const router = useRouter();
