@@ -8,8 +8,13 @@ import styles from "@styles/generic/Cart.module.css";
 import ButtonLoader from "@components/layout/ButtonLoader";
 
 export default function Cart() {
-  const [isLoading, setIsLoading] = useState(false);
-  const { cartItems, removeItemFromCart, checkoutCart } = useCart();
+  const {
+    cartItems,
+    removeItemFromCart,
+    totalCartPrice,
+    checkoutCart,
+    isLoading,
+  } = useCart();
 
   return (
     <section className={styles.cart}>
@@ -56,7 +61,7 @@ export default function Cart() {
           </div>
 
           <button onClick={checkoutCart} className={styles.button}>
-            {isLoading ? <ButtonLoader /> : "Checkout"}
+            {isLoading ? <ButtonLoader /> : `Checkout • $${totalCartPrice}`}
           </button>
         </>
       )}

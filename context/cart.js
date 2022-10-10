@@ -1,4 +1,5 @@
 import { useUser } from "@context/user";
+import { convertNumber } from "@utils/index";
 import { useRouter } from "next/router";
 import { useState, useEffect, createContext, useContext } from "react";
 
@@ -23,6 +24,12 @@ export default function CartProvider({ children }) {
   // Calculate total quantity
   const totalCartQuantity = cartItems.reduce(
     (acc, item) => acc + item.quantity,
+    0
+  );
+
+  // Calculate total price
+  const totalCartPrice = cartItems.reduce(
+    (acc, item) => convertNumber(acc + item.total),
     0
   );
 
@@ -84,11 +91,13 @@ export default function CartProvider({ children }) {
     <CartContext.Provider
       value={{
         cartItems,
+        isLoading,
         setCartItems,
         checkoutCart,
         addItemToCart,
-        removeItemFromCart,
+        totalCartPrice,
         totalCartQuantity,
+        removeItemFromCart,
       }}
     >
       {children}
