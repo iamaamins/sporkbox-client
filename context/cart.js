@@ -1,3 +1,4 @@
+import { useUser } from "@context/user";
 import { useRouter } from "next/router";
 import { useState, useEffect, createContext, useContext } from "react";
 
@@ -10,7 +11,9 @@ export const useCart = () => useContext(CartContext);
 // Provider function
 export default function CartProvider({ children }) {
   const router = useRouter();
+  const { isCustomer } = useUser();
   const [cartItems, setCartItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Get cart items from local storage on app reload
   useEffect(() => {
@@ -71,11 +74,16 @@ export default function CartProvider({ children }) {
     localStorage.setItem("cart", JSON.stringify(updatedItems));
   }
 
+  async function checkoutCart() {
+    if (!isCustomer) router.push("/login");
+  }
+
   return (
     <CartContext.Provider
       value={{
         cartItems,
         setCartItems,
+        checkoutCart,
         addItemToCart,
         removeItemFromCart,
         totalCartQuantity,

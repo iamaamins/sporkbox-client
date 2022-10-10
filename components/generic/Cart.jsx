@@ -9,11 +9,7 @@ import ButtonLoader from "@components/layout/ButtonLoader";
 
 export default function Cart() {
   const [isLoading, setIsLoading] = useState(false);
-  const { cartItems, removeItemFromCart } = useCart();
-
-  async function handleCheckout() {
-    console.log("checkout");
-  }
+  const { cartItems, removeItemFromCart, checkoutCart } = useCart();
 
   return (
     <section className={styles.cart}>
@@ -59,7 +55,7 @@ export default function Cart() {
             ))}
           </div>
 
-          <button onClick={handleCheckout} className={styles.button}>
+          <button onClick={checkoutCart} className={styles.button}>
             {isLoading ? <ButtonLoader /> : "Checkout"}
           </button>
         </>

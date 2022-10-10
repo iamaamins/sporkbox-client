@@ -5,6 +5,7 @@ import { useUser } from "@context/user";
 import styles from "@styles/generic/LoginForm.module.css";
 import ButtonLoader from "@components/layout/ButtonLoader";
 import ActionButton from "@components/layout/ActionButton";
+import Link from "next/link";
 
 export default function LoginForm() {
   // Hooks
@@ -99,6 +100,21 @@ export default function LoginForm() {
           isDisabled={isDisabled}
         />
       </form>
+
+      <div className={styles.actions}>
+        <p>
+          Don't have an account? Register{" "}
+          <Link href="/register">
+            <a>here</a>
+          </Link>
+        </p>
+        <p>
+          Forgot password? Reset{" "}
+          <Link href="/forgot-password">
+            <a>here</a>
+          </Link>
+        </p>
+      </div>
     </section>
   );
 }

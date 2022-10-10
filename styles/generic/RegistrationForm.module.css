@@ -9,8 +9,9 @@
 }
 
 .registration_form form {
-  padding: 1rem;
+  padding: 1.25rem;
   border-radius: 0.5rem;
+  margin-bottom: 1.25rem;
   box-shadow: var(--shadow_medium);
 }
 
@@ -35,6 +36,16 @@
 .item input:focus {
   outline: none;
   border: 1px solid var(--teal);
+}
+
+.action {
+  text-align: center;
+  font-weight: 500;
+  color: var(--gray);
+}
+
+.action a {
+  color: var(--orange);
 }
 
 @media (min-width: 768px) {

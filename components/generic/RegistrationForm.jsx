@@ -4,6 +4,7 @@ import { useUser } from "@context/user";
 import { hasEmpty } from "@utils/index";
 import styles from "@styles/generic/RegistrationForm.module.css";
 import ActionButton from "@components/layout/ActionButton";
+import Link from "next/link";
 
 export default function RegistrationForm() {
   const { setUser } = useUser();
@@ -96,6 +97,13 @@ export default function RegistrationForm() {
           isDisabled={isDisabled}
         />
       </form>
+
+      <p className={styles.action}>
+        Already have an account? Sign in{" "}
+        <Link href="/login">
+          <a>here</a>
+        </Link>
+      </p>
     </section>
   );
 }
