@@ -56,6 +56,11 @@
     border: none;
     cursor: pointer;
     background: transparent;
+    color: var(--black);
     border: 1px solid var(--gray);
+  }
+
+  .ctas a {
+    padding: 3px 16px;
   }
 }
