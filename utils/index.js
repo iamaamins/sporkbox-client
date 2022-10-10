@@ -2,8 +2,7 @@
 export const currentYear = new Date().getFullYear();
 
 // Convert number
-export const convertNumber = (number) =>
-  parseFloat(number).toLocaleString("en-US");
+export const convertNumber = (number) => +number.toLocaleString("en-US");
 
 // Convert date to slug
 export const convertDateToTime = (date) => new Date(date).getTime();

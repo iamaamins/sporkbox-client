@@ -59,9 +59,27 @@ export default function CartProvider({ children }) {
     router.back();
   }
 
+  // Remove cart item
+  function removeItemFromCart(itemId) {
+    // Filter the items by item id
+    const updatedItems = cartItems.filter((cartItem) => cartItem.id !== itemId);
+
+    // Set updated items to cart
+    setCartItems(updatedItems);
+
+    // Set updated items to local storage
+    localStorage.setItem("cart", JSON.stringify(updatedItems));
+  }
+
   return (
     <CartContext.Provider
-      value={{ cartItems, setCartItems, addItemToCart, totalCartQuantity }}
+      value={{
+        cartItems,
+        setCartItems,
+        addItemToCart,
+        removeItemFromCart,
+        totalCartQuantity,
+      }}
     >
       {children}
     </CartContext.Provider>

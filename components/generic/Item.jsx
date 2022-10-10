@@ -43,9 +43,9 @@ export default function Item() {
         id: item._id,
         name: item.name,
         quantity: 1,
-        price: parseFloat(item.price),
-        total: parseFloat(item.price),
-        date: router.query.date,
+        price: +item.price,
+        total: +item.price,
+        date: +router.query.date,
         restaurant: router.query.restaurant,
       });
     }
@@ -56,7 +56,7 @@ export default function Item() {
     setInitialItem((prevItem) => ({
       ...prevItem,
       quantity: prevItem.quantity + 1,
-      total: parseFloat(prevItem.price * (prevItem.quantity + 1)),
+      total: convertNumber(prevItem.price * (prevItem.quantity + 1)),
     }));
   }
 
@@ -65,7 +65,7 @@ export default function Item() {
     setInitialItem((prevItem) => ({
       ...prevItem,
       quantity: prevItem.quantity - 1,
-      total: parseFloat(prevItem.price * (prevItem.quantity - 1)),
+      total: convertNumber(prevItem.price * (prevItem.quantity - 1)),
     }));
   }
 

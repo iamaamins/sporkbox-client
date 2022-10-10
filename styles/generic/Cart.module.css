@@ -57,7 +57,7 @@
 .name,
 .price,
 .date {
-  margin-bottom: 0.75rem;
+  margin-bottom: 12px;
 }
 
 .name {
