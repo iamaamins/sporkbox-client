@@ -87,7 +87,7 @@ export default function Calendar() {
           {/* Show the restaurants */}
           {restaurants.map((restaurant) => (
             <div key={restaurant._id} className={styles.restaurant}>
-              <h2 className={styles.title}>{restaurant.name}</h2>
+              <h2 className={styles.restaurant_name}>{restaurant.name}</h2>
 
               <div className={styles.items}>
                 {restaurant.items.map((item) => (

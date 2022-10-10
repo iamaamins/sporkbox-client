@@ -40,7 +40,7 @@
   margin-bottom: 1rem;
 }
 
-.title {
+.restaurant_name {
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 1rem;
@@ -111,7 +111,7 @@
 }
 
 @media (min-width: 768px) {
-  .title {
+  .restaurant_name {
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
   }

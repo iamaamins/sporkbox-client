@@ -6,6 +6,7 @@ import { useData } from "@context/data";
 import { updateRestaurants } from "@utils/index";
 import styles from "@styles/admin/Restaurant.module.css";
 import Buttons from "@components/layout/Buttons";
+import Image from "next/image";
 
 export default function Restaurant() {
   const router = useRouter();
@@ -92,7 +93,15 @@ export default function Restaurant() {
                           </p>
                         </div>
 
-                        <div className={styles.item_image}></div>
+                        <div className={styles.item_image}>
+                          <Image
+                            src="https://images.unsplash.com/photo-1613987245117-50933bcb3240?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"
+                            height={2}
+                            width={3}
+                            layout="responsive"
+                            objectFit="cover"
+                          />
+                        </div>
                       </a>
                     </Link>
                   </div>

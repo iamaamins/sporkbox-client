@@ -1,17 +1,17 @@
-.cover_image {
-  height: 12rem;
-  border-bottom: 1px solid var(--border_color);
-}
-
 .item_details {
   padding: var(--section_padding);
 }
 
-.name,
-.price {
-  font-size: 18px;
+.name {
+  font-size: 20px;
   font-weight: 600;
   margin-bottom: 0.5rem;
+}
+
+.price {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 1rem;
 }
 
 .description {
@@ -20,13 +20,17 @@
 }
 
 .tags {
-  margin-bottom: 1rem;
+  margin-bottom: 2.5rem;
 }
 
 @media (min-width: 768px) {
   .item {
     max-width: 85%;
     margin: 0 auto;
+  }
+
+  .item_details {
+    padding: 1.25rem 0rem;
   }
 }
 
