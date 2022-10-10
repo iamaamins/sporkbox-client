@@ -7,13 +7,15 @@ import ActionButton from "@components/layout/ActionButton";
 import Link from "next/link";
 
 export default function RegistrationForm() {
-  const { setUser } = useUser();
-  const [formData, setFormData] = useState({
+  const initialSate = {
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
-  });
+  };
+
+  const { setUser } = useUser();
+  const [formData, setFormData] = useState(initialSate);
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -38,6 +40,10 @@ export default function RegistrationForm() {
     e.preventDefault();
 
     try {
+      // Show the loader
+      setIsLoading(true);
+
+      // Make the request to backend
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/customer/register`,
         formData,
@@ -46,9 +52,16 @@ export default function RegistrationForm() {
         }
       );
 
+      // Update state
       setUser(res.data);
+
+      // Remove the loader and clear form
+      setIsLoading(false);
+      setFormData(initialSate);
     } catch (err) {
-      console.log(err);
+      // Remove the loader
+      setIsLoading(false);
+      console.log(err.response);
     }
   }
 

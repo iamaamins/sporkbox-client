@@ -76,6 +76,8 @@ export default function CartProvider({ children }) {
 
   async function checkoutCart() {
     if (!isCustomer) router.push("/login");
+
+    console.log(isCustomer);
   }
 
   return (
