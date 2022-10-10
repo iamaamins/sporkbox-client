@@ -2,6 +2,7 @@
   cursor: pointer;
   position: relative;
   display: flex;
+  color: var(--black);
   align-items: center;
   justify-content: center;
 }

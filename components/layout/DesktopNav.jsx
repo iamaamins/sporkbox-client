@@ -140,13 +140,19 @@ export default function DesktopNav() {
 
         <button
           onClick={handleSignOut}
-          className={!isAdmin && !isVendor && !isCustomer ? styles.hide : null}
+          className={`${styles.sign_out} ${
+            !isAdmin && !isVendor && !isCustomer && styles.hide
+          }`}
         >
           Sign out
         </button>
 
         <Link href="/login">
-          <a className={isAdmin || isVendor || isCustomer ? styles.hide : null}>
+          <a
+            className={`${styles.sing_in} ${
+              (isAdmin || isVendor || isCustomer) && styles.hide
+            }`}
+          >
             Sign in
           </a>
         </Link>

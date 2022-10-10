@@ -47,8 +47,8 @@
     justify-content: space-between;
   }
 
-  .ctas a,
-  .ctas button {
+  .sing_in,
+  .sign_out {
     padding: 6px 16px;
     font-size: 0.9rem;
     border-radius: 2rem;
@@ -60,7 +60,7 @@
     border: 1px solid var(--gray);
   }
 
-  .ctas a {
+  .sing_in {
     padding: 3px 16px;
   }
 }
