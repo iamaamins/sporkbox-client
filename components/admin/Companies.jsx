@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useData } from "@context/data";
 import styles from "@styles/admin/Companies.module.css";
+import LinkButton from "@components/layout/LinkButton";
 
 export default function Companies() {
   const { companies } = useData();
@@ -41,9 +42,7 @@ export default function Companies() {
         </>
       )}
 
-      <Link href="/admin/add-company">
-        <a className={styles.button}>Add company</a>
-      </Link>
+      <LinkButton href="/admin/add-company" text="Add company" />
     </section>
   );
 }

@@ -20,37 +20,6 @@
   color: var(--black);
 }
 
-.buttons {
-  display: flex;
-  align-items: center;
-}
-
-.edit_button,
-.delete_button {
-  border: none;
-  width: 10rem;
-  height: 2.75rem;
-  font-size: 1rem;
-  font-weight: 500;
-  display: flex;
-  cursor: pointer;
-  align-items: center;
-  border-radius: 0.25rem;
-  justify-content: center;
-  color: var(--almost_white);
-}
-
-.edit_button {
-  /* background: var(--teal); */
-  margin-right: 2rem;
-  background: var(--black);
-  pointer-events: none;
-}
-
-.delete_button {
-  background: var(--orange);
-}
-
 @media (min-width: 768px) {
   .company {
     max-width: 85%;

@@ -3,6 +3,7 @@ import { convertDate, getScheduledRestaurants } from "@utils/index";
 import { useEffect, useState } from "react";
 import styles from "@styles/admin/ScheduledRestaurants.module.css";
 import Link from "next/link";
+import LinkButton from "@components/layout/LinkButton";
 
 export default function ScheduledRestaurants() {
   const { restaurants } = useData();
@@ -51,9 +52,7 @@ export default function ScheduledRestaurants() {
         </>
       )}
 
-      <Link href="/admin/schedule-restaurants">
-        <a className={styles.button}>Schedule more</a>
-      </Link>
+      <LinkButton href="/admin/schedule-restaurants" text="Schedule more" />
     </section>
   );
 }

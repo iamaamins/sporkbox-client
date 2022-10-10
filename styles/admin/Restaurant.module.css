@@ -24,35 +24,6 @@
   color: var(--black);
 }
 
-.buttons {
-  display: flex;
-  align-items: center;
-}
-
-.buttons button,
-.buttons a {
-  border: none;
-  width: 10rem;
-  height: 2.75rem;
-  font-size: 1rem;
-  font-weight: 500;
-  display: flex;
-  cursor: pointer;
-  align-items: center;
-  border-radius: 0.25rem;
-  justify-content: center;
-  color: var(--almost_white);
-}
-
-.add_item_button {
-  margin-right: 2rem;
-  background: var(--teal);
-}
-
-.block_restaurant_button {
-  background: var(--orange);
-}
-
 .items_title {
   font-size: 18px;
   font-weight: 600;

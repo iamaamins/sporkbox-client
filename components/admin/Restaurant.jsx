@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useData } from "@context/data";
 import { updateRestaurants } from "@utils/index";
 import styles from "@styles/admin/Restaurant.module.css";
+import Buttons from "@components/layout/Buttons";
 
 export default function Restaurant() {
   const router = useRouter();
@@ -64,20 +65,12 @@ export default function Restaurant() {
             </div>
 
             {/* Buttons */}
-            <div className={styles.buttons}>
-              <Link
-                href={`/admin/restaurants/${router.query.restaurant}/add-item`}
-              >
-                <a className={styles.add_item_button}>Add Item</a>
-              </Link>
-
-              <button
-                onClick={handleApproval}
-                className={styles.block_restaurant_button}
-              >
-                {restaurant.status === "PENDING" ? "Approve" : "Restrict"}
-              </button>
-            </div>
+            <Buttons
+              handleClick={handleApproval}
+              linkText="Add item"
+              status={restaurant.status}
+              href={`/admin/restaurants/${router.query.restaurant}/add-item`}
+            />
           </div>
 
           {/* Items */}

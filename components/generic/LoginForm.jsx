@@ -4,18 +4,17 @@ import { hasEmpty } from "@utils/index";
 import { useUser } from "@context/user";
 import styles from "@styles/generic/LoginForm.module.css";
 import ButtonLoader from "@components/layout/ButtonLoader";
+import ActionButton from "@components/layout/ActionButton";
 
 export default function LoginForm() {
   // Hooks
   const { setUser } = useUser();
+  const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-
-  // States
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [disabled, setDisabled] = useState(true);
 
   // Destructure form data and check
   // If there is an empty field
@@ -24,7 +23,7 @@ export default function LoginForm() {
   // Handle change
   function handleChange(e) {
     if (!hasEmpty(formData)) {
-      setDisabled(false);
+      setIsDisabled(false);
     }
 
     // Update state
@@ -94,12 +93,11 @@ export default function LoginForm() {
           />
         </div>
 
-        <button
-          type="submit"
-          className={`${styles.button} ${!disabled && styles.active}`}
-        >
-          {isLoading ? <ButtonLoader /> : "Sign in"}
-        </button>
+        <ActionButton
+          text="Sign in"
+          isLoading={isLoading}
+          isDisabled={isDisabled}
+        />
       </form>
     </section>
   );

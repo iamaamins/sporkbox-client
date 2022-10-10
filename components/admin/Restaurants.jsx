@@ -2,6 +2,7 @@ import Link from "next/link";
 import { convertDate } from "@utils/index";
 import styles from "@styles/admin/Restaurants.module.css";
 import { useData } from "@context/data";
+import LinkButton from "@components/layout/LinkButton";
 
 export default function Restaurants() {
   const { restaurants } = useData();
@@ -44,9 +45,8 @@ export default function Restaurants() {
           </table>
         </>
       )}
-      <Link href="/admin/add-restaurant">
-        <a className={styles.button}>Add restaurant</a>
-      </Link>
+
+      <LinkButton href="/admin/add-restaurant" text="Add restaurant" />
     </section>
   );
 }

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useUser } from "@context/user";
 import { hasEmpty } from "@utils/index";
 import styles from "@styles/generic/RegistrationForm.module.css";
+import ActionButton from "@components/layout/ActionButton";
 
 export default function RegistrationForm() {
   const { setUser } = useUser();
@@ -12,8 +13,8 @@ export default function RegistrationForm() {
     password: "",
     confirmPassword: "",
   });
-  const [disabled, setDisabled] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Destructure form data and check
   // If there is an empty field
@@ -22,7 +23,7 @@ export default function RegistrationForm() {
   // Handle change
   function handleChange(e) {
     if (!hasEmpty(formData)) {
-      setDisabled(false);
+      setIsDisabled(false);
     }
 
     setFormData((prevData) => ({
@@ -48,13 +49,6 @@ export default function RegistrationForm() {
     } catch (err) {
       console.log(err);
     }
-
-    // setFormData({
-    //   name: "",
-    //   email: "",
-    //   password: "",
-    //   confirmPassword: "",
-    // });
   }
 
   return (
@@ -96,12 +90,11 @@ export default function RegistrationForm() {
           />
         </div>
 
-        <button
-          type="submit"
-          className={`${styles.button} ${!disabled && styles.active}`}
-        >
-          Create account
-        </button>
+        <ActionButton
+          text="Create account"
+          isLoading={isLoading}
+          isDisabled={isDisabled}
+        />
       </form>
     </section>
   );

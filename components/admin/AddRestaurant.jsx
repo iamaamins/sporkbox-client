@@ -5,6 +5,7 @@ import ButtonLoader from "@components/layout/ButtonLoader";
 import { hasEmpty } from "@utils/index";
 import { useData } from "@context/data";
 import styles from "@styles/admin/AddRestaurant.module.css";
+import ActionButton from "@components/layout/ActionButton";
 
 export default function AddRestaurant() {
   // Initial state
@@ -150,12 +151,11 @@ export default function AddRestaurant() {
           />
         </div>
 
-        <button
-          type="submit"
-          className={`${styles.button} ${!isDisabled && styles.active}`}
-        >
-          {isLoading ? <ButtonLoader /> : "Add restaurant"}
-        </button>
+        <ActionButton
+          text="Add restaurant"
+          isLoading={isLoading}
+          isDisabled={isDisabled}
+        />
       </form>
     </section>
   );

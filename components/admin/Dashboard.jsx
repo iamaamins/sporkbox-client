@@ -3,6 +3,7 @@ import { convertDate, getScheduledRestaurants } from "@utils/index";
 import { useData } from "@context/data";
 import styles from "@styles/admin/Dashboard.module.css";
 import { useEffect, useState } from "react";
+import LinkButton from "@components/layout/LinkButton";
 
 export default function Dashboard() {
   const { restaurants, companies } = useData();
@@ -84,9 +85,8 @@ export default function Dashboard() {
               </tbody>
             </table>
           </div>
-          <Link href="/admin/schedule-restaurants">
-            <a className={styles.button}>Schedule more</a>
-          </Link>
+
+          <LinkButton href="/admin/schedule-restaurants" text="Schedule more" />
         </section>
       )}
 
@@ -123,9 +123,7 @@ export default function Dashboard() {
             </table>
           </div>
 
-          <Link href="/admin/add-company">
-            <a className={styles.button}>Add company</a>
-          </Link>
+          <LinkButton href="/admin/add-company" text="Add company" />
         </section>
       )}
     </>

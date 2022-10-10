@@ -8,6 +8,7 @@
 
 .all_companies table {
   width: 100%;
+  margin-bottom: 1.25rem;
   border-collapse: collapse;
 }
 
@@ -47,17 +48,6 @@
 
 .hide_on_mobile {
   display: none;
-}
-
-.button {
-  border: none;
-  cursor: pointer;
-  margin-top: 1.25rem;
-  display: inline-block;
-  padding: 0.5rem 1.25rem;
-  border-radius: 0.25rem;
-  color: var(--almost_white);
-  background-color: var(--teal);
 }
 
 @media (min-width: 768px) {

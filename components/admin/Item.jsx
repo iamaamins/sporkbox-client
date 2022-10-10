@@ -5,6 +5,7 @@ import { useData } from "@context/data";
 import { useRouter } from "next/router";
 import styles from "@styles/admin/Item.module.css";
 import { updateRestaurants } from "@utils/index";
+import Buttons from "@components/layout/Buttons";
 
 export default function Item() {
   const router = useRouter();
@@ -54,17 +55,13 @@ export default function Item() {
             <p className={styles.price}>USD ${item.price}</p>
             <p className={styles.tags}>{item.tags}</p>
 
-            <div className={styles.buttons}>
-              <Link
-                href={`/admin/restaurants/${router.query.restaurant}/${router.query.item}/edit-item`}
-              >
-                <a className={styles.edit_button}>Edit item</a>
-              </Link>
-
-              <button onClick={handleDelete} className={styles.delete_button}>
-                Delete item
-              </button>
-            </div>
+            {/* Buttons */}
+            <Buttons
+              handleClick={handleDelete}
+              linkText="Edit item"
+              buttonText="Delete item"
+              href={`/admin/restaurants/${router.query.restaurant}/${router.query.item}/edit-item`}
+            />
           </div>
         </>
       )}

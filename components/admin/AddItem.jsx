@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useData } from "@context/data";
 import ButtonLoader from "@components/layout/ButtonLoader";
+import ActionButton from "@components/layout/ActionButton";
 
 export default function AddItem() {
   // Initial state
@@ -19,7 +20,7 @@ export default function AddItem() {
   // Router
   const router = useRouter();
   const { setRestaurants } = useData();
-  const [disabled, setDisabled] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(initialState);
 
@@ -29,7 +30,7 @@ export default function AddItem() {
   // Handle change
   function handleChange(e) {
     if (!hasEmpty(formData)) {
-      setDisabled(false);
+      setIsDisabled(false);
     }
 
     // Update state
@@ -104,12 +105,11 @@ export default function AddItem() {
           />
         </div>
 
-        <button
-          type="submit"
-          className={`${styles.button} ${!disabled && styles.active}`}
-        >
-          {isLoading ? <ButtonLoader /> : "Add Item"}
-        </button>
+        <ActionButton
+          text="Add Item"
+          isLoading={isLoading}
+          isDisabled={isDisabled}
+        />
       </form>
     </section>
   );

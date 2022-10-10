@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { hasEmpty, updateRestaurants } from "@utils/index";
 import styles from "@styles/admin/ScheduleRestaurants.module.css";
 import ButtonLoader from "@components/layout/ButtonLoader";
+import ActionButton from "@components/layout/ActionButton";
 
 export default function ScheduleRestaurants() {
   // Initial state
@@ -14,7 +15,7 @@ export default function ScheduleRestaurants() {
 
   // Hooks
   const { restaurants, setRestaurants } = useData();
-  const [disabled, setDisabled] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(initialState);
   const [approvedRestaurants, setApprovedRestaurants] = useState([]);
@@ -36,7 +37,7 @@ export default function ScheduleRestaurants() {
   function handleChange(e) {
     // If any field is empty
     if (hasEmpty(formData)) {
-      setDisabled(false);
+      setIsDisabled(false);
     }
 
     // Update state
@@ -72,13 +73,13 @@ export default function ScheduleRestaurants() {
       setIsLoading(false);
 
       // Disable button
-      setDisabled(true);
+      setIsDisabled(true);
     } catch (err) {
       console.log(err);
 
       // Remove loader and disable button
       setIsLoading(false);
-      setDisabled(true);
+      setIsDisabled(true);
     }
   }
 
@@ -124,12 +125,11 @@ export default function ScheduleRestaurants() {
               </select>
             </div>
 
-            <button
-              type="submit"
-              className={`${styles.button} ${!disabled && styles.active}`}
-            >
-              {isLoading ? <ButtonLoader /> : "Schedule"}
-            </button>
+            <ActionButton
+              text="Schedule"
+              isLoading={isLoading}
+              isDisabled={isDisabled}
+            />
           </form>
         </>
       )}

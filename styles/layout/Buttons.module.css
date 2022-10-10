@@ -1,0 +1,28 @@
+.buttons {
+  display: flex;
+  align-items: center;
+}
+
+.link_button,
+.action_button {
+  border: none;
+  width: 10rem;
+  height: 2.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  border-radius: 0.25rem;
+  justify-content: center;
+  color: var(--almost_white);
+}
+
+.link_button {
+  margin-right: 2rem;
+  background: var(--black);
+}
+
+.action_button {
+  background: var(--orange);
+}

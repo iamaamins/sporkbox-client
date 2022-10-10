@@ -1,0 +1,21 @@
+.action_button {
+  border: none;
+  width: 10rem;
+  cursor: pointer;
+  height: 2.75rem;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  pointer-events: none;
+  border-radius: 0.25rem;
+  color: var(--disable_font);
+  background: var(--border_color);
+  transition: all 150ms ease-in-out;
+}
+
+.action_button.active {
+  pointer-events: all;
+  background: var(--teal);
+  color: var(--almost_white);
+}

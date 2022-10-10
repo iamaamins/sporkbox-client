@@ -4,6 +4,7 @@ import { useData } from "@context/data";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from "@styles/admin/Company.module.css";
+import Buttons from "@components/layout/Buttons";
 
 export default function Company() {
   // Hooks
@@ -69,15 +70,13 @@ export default function Company() {
             </p>
           </div>
 
-          <div className={styles.buttons}>
-            <Link href="/">
-              <a className={styles.edit_button}>Edit details</a>
-            </Link>
-
-            <button onClick={handleDelete} className={styles.delete_button}>
-              Delete
-            </button>
-          </div>
+          {/* Buttons */}
+          <Buttons
+            handleClick={handleDelete}
+            linkText="Edit details"
+            buttonText="Delete"
+            href={`/admin/companies/${router.query.company}/edit-details`}
+          />
         </>
       )}
     </section>

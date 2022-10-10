@@ -5,6 +5,7 @@ import { useData } from "@context/data";
 import ButtonLoader from "@components/layout/ButtonLoader";
 import { hasEmpty } from "@utils/index";
 import styles from "@styles/admin/AddCompany.module.css";
+import ActionButton from "@components/layout/ActionButton";
 
 export default function AddCompany() {
   // Initial state
@@ -125,12 +126,11 @@ export default function AddCompany() {
           />
         </div>
 
-        <button
-          type="submit"
-          className={`${styles.button} ${!isDisabled && styles.active}`}
-        >
-          {isLoading ? <ButtonLoader /> : "Add company"}
-        </button>
+        <ActionButton
+          text="Add company"
+          isLoading={isLoading}
+          isDisabled={isDisabled}
+        />
       </form>
     </section>
   );
