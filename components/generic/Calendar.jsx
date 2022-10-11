@@ -27,10 +27,10 @@ export default function Calendar() {
       const restaurants = groups.find(
         (group) =>
           convertDateToTime(group.scheduledOn).toString() === router.query.date
-      ).restaurants;
+      )?.restaurants;
 
       // Update restaurants
-      setRestaurants(restaurants);
+      setRestaurants(restaurants || []);
 
       // Update groups
       setRestaurantGroups(groups);
@@ -84,54 +84,58 @@ export default function Calendar() {
             </div>
           </div>
 
-          {/* Show the restaurants */}
-          {restaurants.map((restaurant) => (
-            <div key={restaurant._id} className={styles.restaurant}>
-              <h2 className={styles.restaurant_name}>{restaurant.name}</h2>
+          {restaurants.length > 0 && (
+            <>
+              {/* Show the restaurants */}
+              {restaurants.map((restaurant) => (
+                <div key={restaurant._id} className={styles.restaurant}>
+                  <h2 className={styles.restaurant_name}>{restaurant.name}</h2>
 
-              <div className={styles.items}>
-                {restaurant.items.map((item) => (
-                  <div key={item._id}>
-                    <Link
-                      href={`/calendar/${router.query.date}/${restaurant._id}/${item._id}`}
-                    >
-                      <a className={styles.item}>
-                        <div className={styles.item_details}>
-                          <p className={styles.name}>{item.name}</p>
-                          <p className={styles.price}>USD ${item.price}</p>
-                          <p className={styles.description}>
-                            {item.description}
-                          </p>
-                        </div>
+                  <div className={styles.items}>
+                    {restaurant.items.map((item) => (
+                      <div key={item._id}>
+                        <Link
+                          href={`/calendar/${router.query.date}/${restaurant._id}/${item._id}`}
+                        >
+                          <a className={styles.item}>
+                            <div className={styles.item_details}>
+                              <p className={styles.name}>{item.name}</p>
+                              <p className={styles.price}>USD ${item.price}</p>
+                              <p className={styles.description}>
+                                {item.description}
+                              </p>
+                            </div>
 
-                        <div className={styles.item_image}>
-                          <Image
-                            src="https://images.unsplash.com/photo-1613987245117-50933bcb3240?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"
-                            height={2}
-                            width={3}
-                            layout="responsive"
-                            objectFit="cover"
-                          />
+                            <div className={styles.item_image}>
+                              <Image
+                                src="https://images.unsplash.com/photo-1613987245117-50933bcb3240?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"
+                                height={2}
+                                width={3}
+                                layout="responsive"
+                                objectFit="cover"
+                              />
 
-                          {cartItems.map(
-                            (cartItem) =>
-                              cartItem.id === item._id && (
-                                <span
-                                  key={item._id}
-                                  className={styles.quantity}
-                                >
-                                  {cartItem.quantity}
-                                </span>
-                              )
-                          )}
-                        </div>
-                      </a>
-                    </Link>
+                              {cartItems.map(
+                                (cartItem) =>
+                                  cartItem.id === item._id && (
+                                    <span
+                                      key={item._id}
+                                      className={styles.quantity}
+                                    >
+                                      {cartItem.quantity}
+                                    </span>
+                                  )
+                              )}
+                            </div>
+                          </a>
+                        </Link>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
-          ))}
+                </div>
+              ))}
+            </>
+          )}
         </>
       )}
     </section>

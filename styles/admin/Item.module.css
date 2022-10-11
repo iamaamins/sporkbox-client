@@ -1,3 +1,7 @@
+.item h2 {
+  padding: var(--section_padding);
+}
+
 .item_details {
   padding: var(--section_padding);
 }

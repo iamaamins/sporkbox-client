@@ -53,7 +53,7 @@ export default function Company() {
 
   return (
     <section className={styles.company}>
-      {!company && <h2>No company</h2>}
+      {!company && <h2>No company found</h2>}
 
       {company && (
         <>

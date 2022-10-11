@@ -1,5 +1,5 @@
 import { useUser } from "@context/user";
-import { convertNumber } from "@utils/index";
+import { formatNumber } from "@utils/index";
 import { useRouter } from "next/router";
 import { useState, useEffect, createContext, useContext } from "react";
 
@@ -29,7 +29,7 @@ export default function CartProvider({ children }) {
 
   // Calculate total price
   const totalCartPrice = cartItems.reduce(
-    (acc, item) => convertNumber(acc + item.total),
+    (acc, item) => formatNumber(acc + item.total),
     0
   );
 

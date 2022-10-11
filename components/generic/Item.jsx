@@ -1,37 +1,52 @@
-import { useEffect, useState } from "react";
-import { useData } from "@context/data";
-import { useRouter } from "next/router";
-import { HiMinus, HiPlus } from "react-icons/hi";
-import { convertNumber } from "@utils/index";
-import { useCart } from "@context/cart";
-import styles from "@styles/generic/Item.module.css";
 import Image from "next/image";
+import { useData } from "@context/data";
+import { useCart } from "@context/cart";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { HiMinus, HiPlus } from "react-icons/hi";
+import styles from "@styles/generic/Item.module.css";
+import { convertDateToTime, formatNumber } from "@utils/index";
 
 export default function Item() {
   const router = useRouter();
   const [item, setItem] = useState(null);
   const { scheduledRestaurants } = useData();
   const { addItemToCart } = useCart();
+  const [date, setDate] = useState(0);
   const [initialItem, setInitialItem] = useState({
+    date,
     id: "",
     name: "",
+    price: 0,
+    total: 0,
     quantity: 1,
-    price: "",
-    total: "",
-    date: "",
     restaurant: "",
   });
 
   // Price and quantity
   const { quantity, price } = initialItem;
 
-  // Get the item from schedules restaurants
+  // Get item and date from schedules restaurants
   useEffect(() => {
     if (scheduledRestaurants && router.isReady) {
+      // Update item
       setItem(
         scheduledRestaurants
-          .find((restaurant) => restaurant._id === router.query.restaurant)
-          .items.find((item) => item._id === router.query.item)
+          .find(
+            (scheduledRestaurant) =>
+              scheduledRestaurant._id === router.query.restaurant
+          )
+          ?.items?.find((item) => item._id === router.query.item)
+      );
+
+      // Update date
+      setDate(
+        convertDateToTime(
+          scheduledRestaurants.find(
+            (scheduledRestaurant) =>
+              scheduledRestaurant._id === router.query.restaurant
+          )?.scheduledOn
+        )
       );
     }
   }, [scheduledRestaurants, router.isReady]);
@@ -40,12 +55,12 @@ export default function Item() {
   useEffect(() => {
     if (item && router.isReady) {
       setInitialItem({
+        date,
+        quantity: 1,
         id: item._id,
         name: item.name,
-        quantity: 1,
         price: +item.price,
         total: +item.price,
-        date: +router.query.date,
         restaurant: router.query.restaurant,
       });
     }
@@ -56,7 +71,7 @@ export default function Item() {
     setInitialItem((prevItem) => ({
       ...prevItem,
       quantity: prevItem.quantity + 1,
-      total: convertNumber(prevItem.price * (prevItem.quantity + 1)),
+      total: formatNumber(prevItem.price * (prevItem.quantity + 1)),
     }));
   }
 
@@ -65,13 +80,14 @@ export default function Item() {
     setInitialItem((prevItem) => ({
       ...prevItem,
       quantity: prevItem.quantity - 1,
-      total: convertNumber(prevItem.price * (prevItem.quantity - 1)),
+      total: formatNumber(prevItem.price * (prevItem.quantity - 1)),
     }));
   }
 
   return (
     <section className={styles.item}>
       {!item && <h2>No item</h2>}
+
       {item && (
         <>
           <div className={styles.cover_image}>
@@ -113,7 +129,7 @@ export default function Item() {
               className={styles.button}
               onClick={() => addItemToCart(initialItem)}
             >
-              Add {quantity} to basket • {convertNumber(quantity * price)} USD
+              Add {quantity} to basket • {formatNumber(quantity * price)} USD
             </button>
           </div>
         </>

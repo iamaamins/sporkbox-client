@@ -46,7 +46,7 @@ export default function Restaurant() {
 
   return (
     <section className={styles.restaurant}>
-      {!vendor && <h2>No vendor</h2>}
+      {!vendor && <h2>No restaurant found</h2>}
 
       {vendor && (
         <div className={styles.details_and_items}>

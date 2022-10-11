@@ -12,12 +12,13 @@ export default function Item() {
   const [item, setItem] = useState(null);
   const { vendors, setVendors } = useData();
 
+  // Get the item
   useEffect(() => {
     if (vendors.length > 0 && router.isReady) {
       setItem(
         vendors
           .find((vendor) => vendor.restaurant._id === router.query.restaurant)
-          .restaurant.items?.find((item) => item._id === router.query.item)
+          ?.restaurant.items?.find((item) => item._id === router.query.item)
       );
     }
   }, [vendors, router.isReady]);
@@ -44,7 +45,7 @@ export default function Item() {
 
   return (
     <section className={styles.item}>
-      {!item && <h2>No item</h2>}
+      {!item && <h2>No item found</h2>}
 
       {item && (
         <>
