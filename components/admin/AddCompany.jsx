@@ -14,7 +14,7 @@ export default function AddCompany() {
     website: "",
     address: "",
     code: "",
-    budget: "",
+    budget: 0,
   };
 
   // Hooks
@@ -34,10 +34,14 @@ export default function AddCompany() {
       setIsDisabled(false);
     }
 
-    // update state
-    setFormData((prevData) => ({
-      ...prevData,
-      [e.target.id]: e.target.value,
+    // Id and value
+    const id = e.target.id;
+    const value = e.target.value;
+
+    // Update state
+    setFormData((currData) => ({
+      ...currData,
+      [id]: id === "budget" ? +value : value,
     }));
   }
 
@@ -119,7 +123,7 @@ export default function AddCompany() {
         <div className={styles.item}>
           <label htmlFor="budget">Budget</label>
           <input
-            type="text"
+            type="number"
             id="budget"
             value={budget}
             onChange={handleChange}

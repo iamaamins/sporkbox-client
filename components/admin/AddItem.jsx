@@ -11,7 +11,7 @@ export default function AddItem() {
   const initialState = {
     name: "",
     tags: "",
-    price: "",
+    price: 0,
     description: "",
   };
 
@@ -32,10 +32,14 @@ export default function AddItem() {
       setIsDisabled(false);
     }
 
+    // Id and value
+    const id = e.target.id;
+    const value = e.target.value;
+
     // Update state
-    setFormData((prevData) => ({
-      ...prevData,
-      [e.target.id]: e.target.value,
+    setFormData((currData) => ({
+      ...currData,
+      [id]: id === "price" ? +value : value,
     }));
   }
 
@@ -91,7 +95,12 @@ export default function AddItem() {
 
         <div className={styles.item}>
           <label htmlFor="price">Item price</label>
-          <input type="text" id="price" value={price} onChange={handleChange} />
+          <input
+            type="number"
+            id="price"
+            value={price}
+            onChange={handleChange}
+          />
         </div>
 
         <div className={styles.item}>

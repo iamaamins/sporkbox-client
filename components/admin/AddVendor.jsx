@@ -57,7 +57,7 @@ export default function AddVendor() {
 
       // Post data to backend
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/add`,
+        `${process.env.NEXT_PUBLIC_API_URL}/vendor/add`,
         formData,
         {
           withCredentials: true,

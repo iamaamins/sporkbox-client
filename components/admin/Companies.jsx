@@ -8,9 +8,9 @@ export default function Companies() {
 
   return (
     <section className={styles.all_companies}>
-      {(!companies || companies.length === 0) && <h2>No companies</h2>}
+      {companies.length === 0 && <h2>No companies</h2>}
 
-      {companies && companies.length > 0 && (
+      {companies.length > 0 && (
         <>
           <h2 className={styles.all_companies_title}>All companies</h2>
 

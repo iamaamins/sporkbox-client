@@ -12,7 +12,7 @@ export const useData = () => useContext(DataContext);
 export default function DataProvider({ children }) {
   const { isAdmin } = useUser();
   const [vendors, setVendors] = useState([]);
-  const [companies, setCompanies] = useState(null);
+  const [companies, setCompanies] = useState([]);
   const [scheduledRestaurants, setScheduledRestaurants] = useState([]);
 
   // Get admin data
