@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { hasEmpty, updateRestaurants } from "@utils/index";
+import { hasEmpty, updateVendors } from "@utils/index";
 import styles from "@styles/admin/AddItem.module.css";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -11,15 +11,15 @@ export default function AddItem() {
   // Initial state
   const initialState = {
     name: "",
-    description: "",
     tags: "",
     price: "",
+    description: "",
   };
 
   // Hooks
   // Router
   const router = useRouter();
-  const { setRestaurants } = useData();
+  const { setVendors } = useData();
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(initialState);
@@ -58,8 +58,8 @@ export default function AddItem() {
         }
       );
 
-      // Update restaurants with updated items
-      updateRestaurants(res, "items", setRestaurants);
+      // Update vendors with updated items
+      updateVendors(res, setVendors);
 
       // Reset form data
       setFormData(initialState);
@@ -68,7 +68,7 @@ export default function AddItem() {
       setIsLoading(false);
 
       // Back to the restaurant page
-      router.back();
+      router.push(`/admin/vendors/${router.query.restaurant}`);
     } catch (err) {
       console.log(err);
       setIsLoading(false);

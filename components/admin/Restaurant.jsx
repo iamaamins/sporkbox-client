@@ -1,28 +1,28 @@
 import axios from "axios";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useData } from "@context/data";
-import { updateRestaurants } from "@utils/index";
-import styles from "@styles/admin/Restaurant.module.css";
+import { updateVendors } from "@utils/index";
 import Buttons from "@components/layout/Buttons";
-import Image from "next/image";
+import styles from "@styles/admin/Restaurant.module.css";
 
 export default function Restaurant() {
   const router = useRouter();
-  const { restaurants, setRestaurants } = useData();
-  const [restaurant, setRestaurant] = useState(null);
+  const { vendors, setVendors } = useData();
+  const [vendor, setVendor] = useState(null);
 
   // Get the restaurant
   useEffect(() => {
-    if (restaurants && router.isReady) {
-      setRestaurant(
-        restaurants?.find(
-          (restaurant) => restaurant._id === router.query.restaurant
+    if (vendors.length > 0 && router.isReady) {
+      setVendor(
+        vendors.find(
+          (vendor) => vendor.restaurant._id === router.query.restaurant
         )
       );
     }
-  }, [restaurants, router.isReady]);
+  }, [vendors, router.isReady]);
 
   // Handle approval
   async function handleApproval(e) {
@@ -32,13 +32,13 @@ export default function Restaurant() {
     // Update restaurant status
     try {
       const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${router.query.restaurant}/status`,
+        `${process.env.NEXT_PUBLIC_API_URL}/vendor/${vendor._id}/status`,
         { action },
         { withCredentials: true }
       );
 
-      // Update restaurants with updates status
-      updateRestaurants(res, "status", setRestaurants);
+      // Update vendors with updates status
+      updateVendors(res, setVendors);
     } catch (err) {
       console.log(err);
     }
@@ -46,22 +46,22 @@ export default function Restaurant() {
 
   return (
     <section className={styles.restaurant}>
-      {!restaurant && <h2>No restaurant</h2>}
+      {!vendor && <h2>No vendor</h2>}
 
-      {restaurant && (
+      {vendor && (
         <div className={styles.details_and_items}>
           <div className={styles.details}>
             <div className={styles.restaurant_details}>
-              <h2 className={styles.restaurant_name}>{restaurant.name}</h2>
+              <h2 className={styles.restaurant_name}>{vendor.name}</h2>
               <p>
-                <span>Owner:</span> {restaurant.owner.name}
+                <span>Owner:</span> {vendor.name}
               </p>
               <p>
-                <span>Email:</span> {restaurant.owner.email}
+                <span>Email:</span> {vendor.email}
               </p>
 
               <p>
-                <span>Address:</span> {restaurant.address}
+                <span>Address:</span> {vendor.restaurant.address}
               </p>
             </div>
 
@@ -69,20 +69,20 @@ export default function Restaurant() {
             <Buttons
               handleClick={handleApproval}
               linkText="Add item"
-              status={restaurant.status}
-              href={`/admin/restaurants/${router.query.restaurant}/add-item`}
+              status={vendor.status}
+              href={`/admin/vendors/${vendor.restaurant._id}/add-item`}
             />
           </div>
 
           {/* Items */}
-          {restaurant.items.length > 0 && (
+          {vendor.restaurant.items.length > 0 && (
             <>
               <h2 className={styles.items_title}>Items</h2>
               <div className={styles.items}>
-                {restaurant.items.map((item) => (
+                {vendor.restaurant.items.map((item) => (
                   <div key={item._id}>
                     <Link
-                      href={`/admin/restaurants/${router.query.restaurant}/${item._id}`}
+                      href={`/admin/vendors/${vendor.restaurant._id}/${item._id}`}
                     >
                       <a className={styles.item}>
                         <div className={styles.item_details}>

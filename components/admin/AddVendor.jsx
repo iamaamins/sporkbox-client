@@ -1,13 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import ButtonLoader from "@components/layout/ButtonLoader";
 import { hasEmpty } from "@utils/index";
 import { useData } from "@context/data";
-import styles from "@styles/admin/AddRestaurant.module.css";
+import styles from "@styles/admin/AddVendor.module.css";
 import ActionButton from "@components/layout/ActionButton";
 
-export default function AddRestaurant() {
+export default function AddVendor() {
   // Initial state
   const initialState = {
     name: "",
@@ -20,7 +19,7 @@ export default function AddRestaurant() {
 
   // Hooks
   const router = useRouter();
-  const { setRestaurants } = useData();
+  const { setVendors } = useData();
   const [formData, setFormData] = useState(initialState);
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +57,7 @@ export default function AddRestaurant() {
 
       // Post data to backend
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/add`,
+        `${process.env.NEXT_PUBLIC_API_URL}/vendors/add`,
         formData,
         {
           withCredentials: true,
@@ -66,10 +65,10 @@ export default function AddRestaurant() {
       );
 
       // New restaurant
-      const newRestaurant = res.data;
+      const newVendor = res.data;
 
       // Update state
-      setRestaurants((prevRestaurants) => [...prevRestaurants, newRestaurant]);
+      setVendors((prevVendors) => [...prevVendors, newVendor]);
 
       // Reset form data
       setFormData(initialState);
@@ -79,7 +78,7 @@ export default function AddRestaurant() {
       setIsDisabled(true);
 
       // Push to dashboard
-      router.push("/admin/restaurants");
+      router.push("/admin/vendors");
     } catch (err) {
       console.log(err);
       // Remove loader
@@ -88,7 +87,7 @@ export default function AddRestaurant() {
   }
 
   return (
-    <section className={styles.add_restaurant}>
+    <section className={styles.add_vendor}>
       <h2>Add a restaurant</h2>
 
       <form onSubmit={handleSubmit}>
@@ -152,7 +151,7 @@ export default function AddRestaurant() {
         </div>
 
         <ActionButton
-          text="Add restaurant"
+          text="Add vendor"
           isLoading={isLoading}
           isDisabled={isDisabled}
         />

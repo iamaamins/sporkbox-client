@@ -11,25 +11,25 @@ export const useData = () => useContext(DataContext);
 // Provider function
 export default function DataProvider({ children }) {
   const { isAdmin } = useUser();
-  const [restaurants, setRestaurants] = useState(null);
+  const [vendors, setVendors] = useState([]);
   const [companies, setCompanies] = useState(null);
-  const [scheduledRestaurants, setScheduledRestaurants] = useState(null);
+  const [scheduledRestaurants, setScheduledRestaurants] = useState([]);
 
   // Get admin data
   useEffect(() => {
     // Get admin data
     async function getAdminData() {
-      // Get 20 latest restaurants
+      // Get 20 latest vendors
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/restaurants/20`,
+          `${process.env.NEXT_PUBLIC_API_URL}/vendor/20`,
           {
             withCredentials: true,
           }
         );
 
         // Update state
-        setRestaurants(res.data);
+        setVendors(res.data);
       } catch (err) {
         console.log(err);
       }
@@ -84,8 +84,8 @@ export default function DataProvider({ children }) {
   return (
     <DataContext.Provider
       value={{
-        restaurants,
-        setRestaurants,
+        vendors,
+        setVendors,
         companies,
         setCompanies,
         scheduledRestaurants,

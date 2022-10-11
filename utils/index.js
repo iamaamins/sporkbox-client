@@ -23,38 +23,28 @@ export function checkUser(isLoading, user, router) {
 }
 
 // Update restaurants items
-export function updateRestaurants(res, update, setRestaurants) {
+export function updateVendors(res, setVendors) {
   // Updated restaurant
-  const updatedRestaurant = res.data;
+  const updatedData = res.data;
 
   // Update the restaurants state
-  setRestaurants((prevRestaurants) =>
-    prevRestaurants.map((prevRestaurant) => {
-      if (prevRestaurant._id === updatedRestaurant._id) {
+  setVendors((prevVendors) =>
+    prevVendors.map((prevVendor) => {
+      if (prevVendor._id === updatedData._id) {
         return {
-          ...prevRestaurant,
-          [update]: updatedRestaurant[update],
+          ...prevVendor,
+          status: updatedData.status,
+        };
+      } else if (prevVendor.restaurant._id === updatedData._id) {
+        return {
+          ...prevVendor,
+          restaurant: updatedData,
         };
       } else {
-        return prevRestaurant;
+        return prevVendor;
       }
     })
   );
-}
-
-// Get scheduled restaurants
-export function getScheduledRestaurants(restaurants, setScheduledRestaurants) {
-  if (restaurants) {
-    setScheduledRestaurants(
-      restaurants
-        .filter((restaurant) => restaurant.status === "APPROVED")
-        .filter(
-          (approvedRestaurant) =>
-            new Date(approvedRestaurant.scheduledOn).getTime() >
-            new Date().getTime()
-        )
-    );
-  }
 }
 
 // Group items by property

@@ -37,9 +37,7 @@ export default function ScheduledRestaurants() {
                 {scheduledRestaurants.map((scheduledRestaurant) => (
                   <tr key={scheduledRestaurant._id}>
                     <td className={styles.important}>
-                      <Link
-                        href={`/admin/restaurants/${scheduledRestaurant._id}`}
-                      >
+                      <Link href={`/admin/vendors/${scheduledRestaurant._id}`}>
                         <a>{scheduledRestaurant.name}</a>
                       </Link>
                     </td>

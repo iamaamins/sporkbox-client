@@ -1,18 +1,11 @@
 import Link from "next/link";
-import { convertDate, getScheduledRestaurants } from "@utils/index";
+import { convertDate } from "@utils/index";
 import { useData } from "@context/data";
 import styles from "@styles/admin/Dashboard.module.css";
-import { useEffect, useState } from "react";
 import LinkButton from "@components/layout/LinkButton";
 
 export default function Dashboard() {
-  const { restaurants, companies } = useData();
-  const [scheduledRestaurants, setScheduledRestaurants] = useState(null);
-
-  // Get scheduled restaurants
-  useEffect(() => {
-    getScheduledRestaurants(restaurants, setScheduledRestaurants);
-  }, [restaurants]);
+  const { scheduledRestaurants, companies } = useData();
 
   return (
     <>
@@ -20,7 +13,7 @@ export default function Dashboard() {
         <h2>Current orders</h2>
 
         {/* Current orders */}
-        <div className={styles.orders}>
+        {/* <div className={styles.orders}>
           {restaurants && (
             <table>
               <thead>
@@ -36,7 +29,7 @@ export default function Dashboard() {
                 {restaurants.map((restaurant) => (
                   <tr key={restaurant._id}>
                     <td className={styles.important}>
-                      <Link href={`/admin/restaurants/${restaurant._id}`}>
+                      <Link href={`/admin/vendors/${restaurant._id}`}>
                         <a>{restaurant.name}</a>
                       </Link>
                     </td>
@@ -52,11 +45,11 @@ export default function Dashboard() {
               </tbody>
             </table>
           )}
-        </div>
+        </div> */}
       </section>
 
       {/* Scheduled restaurants */}
-      {scheduledRestaurants && (
+      {scheduledRestaurants.length > 0 && (
         <section className={styles.section}>
           <h2>Scheduled restaurants</h2>
 
@@ -73,9 +66,7 @@ export default function Dashboard() {
                 {scheduledRestaurants.map((scheduledRestaurant) => (
                   <tr key={scheduledRestaurant._id}>
                     <td className={styles.important}>
-                      <Link
-                        href={`/admin/restaurants/${scheduledRestaurant._id}`}
-                      >
+                      <Link href={`/admin/vendors/${scheduledRestaurant._id}`}>
                         <a>{scheduledRestaurant.name}</a>
                       </Link>
                     </td>

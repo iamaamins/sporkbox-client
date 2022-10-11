@@ -4,24 +4,24 @@ import { useEffect, useState } from "react";
 import { useData } from "@context/data";
 import { useRouter } from "next/router";
 import styles from "@styles/admin/Item.module.css";
-import { updateRestaurants } from "@utils/index";
+import { updateVendors } from "@utils/index";
 import Buttons from "@components/layout/Buttons";
 import Image from "next/image";
 
 export default function Item() {
   const router = useRouter();
   const [item, setItem] = useState(null);
-  const { restaurants, setRestaurants } = useData();
+  const { vendors, setVendors } = useData();
 
   useEffect(() => {
-    if (restaurants && router.isReady) {
+    if (vendors.length > 0 && router.isReady) {
       setItem(
-        restaurants
-          ?.find((restaurant) => restaurant._id === router.query.restaurant)
-          .items?.find((item) => item._id === router.query.item)
+        vendors
+          .find((vendor) => vendor.restaurant._id === router.query.restaurant)
+          .restaurant.items?.find((item) => item._id === router.query.item)
       );
     }
-  }, [restaurants, router.isReady]);
+  }, [vendors, router.isReady]);
 
   // Handle delete
   async function handleDelete() {
@@ -33,8 +33,8 @@ export default function Item() {
         { withCredentials: true }
       );
 
-      // Updated restaurants array with updated items
-      updateRestaurants(res, "items", setRestaurants);
+      // Updated vendors array with updated items
+      updateVendors(res, setVendors);
 
       // Bck to the restaurant page
       router.back();
@@ -46,6 +46,7 @@ export default function Item() {
   return (
     <section className={styles.item}>
       {!item && <h2>No item</h2>}
+
       {item && (
         <>
           <div className={styles.cover_image}>
@@ -69,7 +70,7 @@ export default function Item() {
               handleClick={handleDelete}
               linkText="Edit item"
               buttonText="Delete item"
-              href={`/admin/restaurants/${router.query.restaurant}/${router.query.item}/edit-item`}
+              href={`/admin/vendors/${router.query.restaurant}/${router.query.item}/edit-item`}
             />
           </div>
         </>

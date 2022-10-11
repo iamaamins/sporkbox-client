@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import styles from "@styles/layout/DesktopNav.module.css";
 import { useData } from "@context/data";
 import { useEffect, useState } from "react";
-import { convertDateToTime, groupBy } from "@utils/index";
+import { convertDateToTime } from "@utils/index";
 import CartIcon from "./CartIcon";
 
 export default function DesktopNav() {
@@ -18,7 +18,7 @@ export default function DesktopNav() {
   const { isAdmin, isCustomer, isVendor, setUser } = useUser();
 
   useEffect(() => {
-    if (scheduledRestaurants) {
+    if (scheduledRestaurants.length > 0) {
       // Convert the first group's scheduled date to slug
       const dateSlug = convertDateToTime(scheduledRestaurants[0].scheduledOn);
 
@@ -98,13 +98,9 @@ export default function DesktopNav() {
         </li>
 
         <li className={!isAdmin ? styles.hide : null}>
-          <Link href="/admin/restaurants">
-            <a
-              className={
-                pathName === "/admin/restaurants" ? styles.active : null
-              }
-            >
-              Restaurants
+          <Link href="/admin/vendors">
+            <a className={pathName === "/admin/vendors" ? styles.active : null}>
+              Vendors
             </a>
           </Link>
         </li>

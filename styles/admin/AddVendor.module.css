@@ -1,12 +1,12 @@
-.add_restaurant {
+.add_vendor {
   padding: var(--section_padding);
 }
 
-.add_restaurant h2 {
+.add_vendor h2 {
   margin-bottom: 1rem;
 }
 
-.add_restaurant form {
+.add_vendor form {
   padding: 1rem;
   border-radius: 0.5rem;
   box-shadow: var(--shadow_medium);
@@ -41,19 +41,19 @@
 }
 
 @media (min-width: 768px) {
-  .add_restaurant {
+  .add_vendor {
     max-width: 38rem;
     margin: 0 auto;
     padding-bottom: 2.5rem;
   }
 
-  .add_restaurant form {
+  .add_vendor form {
     padding: 1.5rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .add_restaurant {
+  .add_vendor {
     max-width: 42rem;
     margin: 0 auto;
   }

@@ -1,10 +1,9 @@
 import axios from "axios";
 import { useData } from "@context/data";
 import { useEffect, useState } from "react";
-import { hasEmpty, updateRestaurants } from "@utils/index";
-import styles from "@styles/admin/ScheduleRestaurants.module.css";
-import ButtonLoader from "@components/layout/ButtonLoader";
+import { hasEmpty, updateVendors } from "@utils/index";
 import ActionButton from "@components/layout/ActionButton";
+import styles from "@styles/admin/ScheduleRestaurants.module.css";
 
 export default function ScheduleRestaurants() {
   // Initial state
@@ -14,7 +13,7 @@ export default function ScheduleRestaurants() {
   };
 
   // Hooks
-  const { restaurants, setRestaurants } = useData();
+  const { restaurants, setVendors } = useData();
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(initialState);
@@ -58,13 +57,13 @@ export default function ScheduleRestaurants() {
 
       // Make request to backend
       const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${restaurantId}/schedule`,
+        `${process.env.NEXT_PUBLIC_API_URL}/vendors/${restaurantId}/schedule`,
         { date },
         { withCredentials: true }
       );
 
-      // Update restaurants with updates schedules at
-      updateRestaurants(res, "scheduledOn", setRestaurants);
+      // Update vendors with updates schedules at
+      updateVendors(res, "scheduledOn", setVendors);
 
       // Clear form data
       setFormData(initialState);

@@ -10,7 +10,7 @@ export default function Orders() {
       <h2 className={styles.all_orders_title}>All orders</h2>
 
       {/* Current orders */}
-      <div className={styles.orders}>
+      {/* <div className={styles.orders}>
         {restaurants && (
           <table>
             <thead>
@@ -26,7 +26,7 @@ export default function Orders() {
               {restaurants.map((restaurant) => (
                 <tr key={restaurant._id}>
                   <td className={styles.important}>
-                    <Link href={`/admin/restaurants/${restaurant._id}`}>
+                    <Link href={`/admin/vendors/${restaurant._id}`}>
                       <a>{restaurant.name}</a>
                     </Link>
                   </td>
@@ -42,7 +42,7 @@ export default function Orders() {
             </tbody>
           </table>
         )}
-      </div>
+      </div> */}
     </section>
   );
 }

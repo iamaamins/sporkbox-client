@@ -25,7 +25,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
   const { isAdmin, isVendor, isCustomer, setUser } = useUser();
 
   useEffect(() => {
-    if (scheduledRestaurants) {
+    if (scheduledRestaurants.length > 0) {
       // Convert the first group's scheduled date to slug
       const date = convertDateToTime(scheduledRestaurants[0].scheduledOn);
 
@@ -104,9 +104,9 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
           className={!isAdmin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
-          <Link href="/admin/restaurants">
+          <Link href="/admin/vendors">
             <a>
-              <TbBuildingStore /> Restaurants
+              <TbBuildingStore /> Vendors
             </a>
           </Link>
         </li>
