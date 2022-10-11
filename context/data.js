@@ -89,6 +89,7 @@ export default function DataProvider({ children }) {
         companies,
         setCompanies,
         scheduledRestaurants,
+        setScheduledRestaurants,
       }}
     >
       {children}

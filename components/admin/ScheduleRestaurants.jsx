@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useData } from "@context/data";
 import { useEffect, useState } from "react";
-import { hasEmpty, updateVendors } from "@utils/index";
 import ActionButton from "@components/layout/ActionButton";
 import styles from "@styles/admin/ScheduleRestaurants.module.css";
+import { hasEmpty, updateScheduledRestaurants } from "@utils/index";
 
 export default function ScheduleRestaurants() {
   // Initial state
@@ -13,10 +13,10 @@ export default function ScheduleRestaurants() {
   };
 
   // Hooks
-  const { restaurants, setVendors } = useData();
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(initialState);
+  const { vendors, setScheduledRestaurants } = useData();
   const [approvedRestaurants, setApprovedRestaurants] = useState([]);
 
   // Destructure form data
@@ -24,13 +24,15 @@ export default function ScheduleRestaurants() {
 
   // Get the approved restaurants
   useEffect(() => {
-    if (restaurants) {
+    if (vendors.length > 0) {
       // Filter approved restaurants
       setApprovedRestaurants(
-        restaurants.filter((restaurant) => restaurant.status === "APPROVED")
+        vendors.map(
+          (vendor) => vendor.status === "APPROVED" && vendor.restaurant
+        )
       );
     }
-  }, [restaurants]);
+  }, [vendors]);
 
   // Handle change
   function handleChange(e) {
@@ -57,13 +59,15 @@ export default function ScheduleRestaurants() {
 
       // Make request to backend
       const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/vendors/${restaurantId}/schedule`,
+        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${restaurantId}/schedule`,
         { date },
         { withCredentials: true }
       );
 
-      // Update vendors with updates schedules at
-      updateVendors(res, "scheduledOn", setVendors);
+      const updatedData = res.data;
+
+      // Update scheduled restaurants
+      updateScheduledRestaurants(res, setScheduledRestaurants);
 
       // Clear form data
       setFormData(initialState);

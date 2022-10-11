@@ -52,7 +52,9 @@ export default function Restaurant() {
         <div className={styles.details_and_items}>
           <div className={styles.details}>
             <div className={styles.restaurant_details}>
-              <h2 className={styles.restaurant_name}>{vendor.name}</h2>
+              <h2 className={styles.restaurant_name}>
+                {vendor.restaurant.name}
+              </h2>
               <p>
                 <span>Owner:</span> {vendor.name}
               </p>

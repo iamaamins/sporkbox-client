@@ -24,27 +24,61 @@ export function checkUser(isLoading, user, router) {
 
 // Update restaurants items
 export function updateVendors(res, setVendors) {
-  // Updated restaurant
+  // Updated data
   const updatedData = res.data;
 
   // Update the restaurants state
-  setVendors((prevVendors) =>
-    prevVendors.map((prevVendor) => {
-      if (prevVendor._id === updatedData._id) {
+  setVendors((currVendors) =>
+    currVendors.map((currVendor) => {
+      if (currVendor._id === updatedData._id) {
         return {
-          ...prevVendor,
+          ...currVendor,
           status: updatedData.status,
         };
-      } else if (prevVendor.restaurant._id === updatedData._id) {
+      } else if (currVendor.restaurant._id === updatedData._id) {
         return {
-          ...prevVendor,
+          ...currVendor,
           restaurant: updatedData,
         };
       } else {
-        return prevVendor;
+        return currVendor;
       }
     })
   );
+}
+
+// Update scheduled restaurants
+export function updateScheduledRestaurants(res, setScheduledRestaurants) {
+  // Updated data
+  const updatedData = res.data;
+
+  // Update scheduled restaurants state
+  setScheduledRestaurants((currScheduledRestaurants) => {
+    // If the restaurant isn't already
+    // in the scheduled restaurants array
+    if (
+      !currScheduledRestaurants.some(
+        (currScheduledRestaurant) =>
+          currScheduledRestaurant._id === updatedData._id
+      )
+    ) {
+      return [...currScheduledRestaurants, updatedData];
+
+      // If the restaurant is already
+      // in the scheduled restaurants array
+    } else {
+      return currScheduledRestaurants.map((currScheduledRestaurant) => {
+        if (currScheduledRestaurant._id === updatedData._id) {
+          return {
+            ...currScheduledRestaurant,
+            scheduledOn: updatedData.scheduledOn,
+          };
+        } else {
+          return currScheduledRestaurant;
+        }
+      });
+    }
+  });
 }
 
 // Group items by property

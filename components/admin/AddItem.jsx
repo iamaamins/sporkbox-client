@@ -1,10 +1,9 @@
-import { useState } from "react";
-import { hasEmpty, updateVendors } from "@utils/index";
-import styles from "@styles/admin/AddItem.module.css";
 import axios from "axios";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { useData } from "@context/data";
-import ButtonLoader from "@components/layout/ButtonLoader";
+import styles from "@styles/admin/AddItem.module.css";
+import { hasEmpty, updateVendors } from "@utils/index";
 import ActionButton from "@components/layout/ActionButton";
 
 export default function AddItem() {

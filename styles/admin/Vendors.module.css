@@ -2,8 +2,7 @@
   padding: var(--section_padding);
 }
 
-.no_vendors_title,
-.all_vendors_title {
+.all_vendors h2 {
   margin-bottom: 1rem;
 }
 

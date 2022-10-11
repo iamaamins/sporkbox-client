@@ -57,7 +57,7 @@ export default function AddVendor() {
 
       // Post data to backend
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/vendors/add`,
+        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/add`,
         formData,
         {
           withCredentials: true,
@@ -88,7 +88,7 @@ export default function AddVendor() {
 
   return (
     <section className={styles.add_vendor}>
-      <h2>Add a restaurant</h2>
+      <h2>Add a vendor</h2>
 
       <form onSubmit={handleSubmit}>
         <p className={styles.form_title}>Owner info</p>
