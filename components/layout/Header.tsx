@@ -5,7 +5,7 @@ import MobileMenu from "./MobileMenu";
 import styles from "@styles/layout/Header.module.css";
 
 export default function Header() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <header className={styles.header}>

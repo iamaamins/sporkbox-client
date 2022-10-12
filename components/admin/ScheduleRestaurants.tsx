@@ -1,23 +1,26 @@
 import axios from "axios";
 import { useData } from "@context/Data";
 import { useEffect, useState } from "react";
+import { IRestaurant, IScheduleRestaurantInitialState } from "types";
 import ActionButton from "@components/layout/ActionButton";
 import styles from "@styles/admin/ScheduleRestaurants.module.css";
 import { hasEmpty, updateScheduledRestaurants } from "@utils/index";
 
 export default function ScheduleRestaurants() {
   // Initial state
-  const initialState = {
+  const initialState: IScheduleRestaurantInitialState = {
     date: "",
     restaurantId: "",
   };
 
   // Hooks
-  const [isDisabled, setIsDisabled] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState(initialState);
   const { vendors, setScheduledRestaurants } = useData();
-  const [approvedRestaurants, setApprovedRestaurants] = useState([]);
+  const [formData, setFormData] = useState(initialState);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [approvedRestaurants, setApprovedRestaurants] = useState<IRestaurant[]>(
+    []
+  );
 
   // Destructure form data
   const { date, restaurantId } = formData;

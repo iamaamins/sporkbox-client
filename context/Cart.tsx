@@ -1,10 +1,17 @@
 import { useUser } from "@context/User";
-import { formatNumberToUS } from "@utils/index";
 import { useRouter } from "next/router";
-import { useState, useEffect, createContext, useContext } from "react";
+import { ICartContext, ICartItem } from "types";
+import { formatNumberToUS } from "@utils/index";
+import React, {
+  useState,
+  useEffect,
+  createContext,
+  useContext,
+  FC,
+} from "react";
 
 // Create context
-const CartContext = createContext();
+const CartContext = createContext({} as ICartContext);
 
 // Create hook
 export const useCart = () => useContext(CartContext);
@@ -13,8 +20,8 @@ export const useCart = () => useContext(CartContext);
 export default function CartProvider({ children }) {
   const router = useRouter();
   const { isCustomer } = useUser();
-  const [cartItems, setCartItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [cartItems, setCartItems] = useState<ICartItem[]>([]);
 
   // Get cart items from local storage on app reload
   useEffect(() => {
@@ -40,13 +47,13 @@ export default function CartProvider({ children }) {
     // Add item to cart
     // If the item ins't already
     //  in cart add it to the cart
-    if (!cartItems.some((cartItem) => cartItem.id === initialItem.id)) {
+    if (!cartItems.some((cartItem) => cartItem._id === initialItem._id)) {
       updatedItems = [...cartItems, initialItem];
     } else {
       // If the item is already in cart
       // update teh quantity and total
       updatedItems = cartItems.map((cartItem) => {
-        if (cartItem.id === initialItem.id) {
+        if (cartItem._id === initialItem._id) {
           return {
             ...cartItem,
             quantity: initialItem.quantity,
@@ -72,7 +79,9 @@ export default function CartProvider({ children }) {
   // Remove cart item
   function removeItemFromCart(itemId) {
     // Filter the items by item id
-    const updatedItems = cartItems.filter((cartItem) => cartItem.id !== itemId);
+    const updatedItems = cartItems.filter(
+      (cartItem) => cartItem._id !== itemId
+    );
 
     // Set updated items to cart
     setCartItems(updatedItems);

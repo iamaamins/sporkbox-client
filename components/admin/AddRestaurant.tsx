@@ -5,10 +5,11 @@ import { hasEmpty } from "@utils/index";
 import { useData } from "@context/Data";
 import styles from "@styles/admin/AddRestaurant.module.css";
 import ActionButton from "@components/layout/ActionButton";
+import { IRestaurantInitialState } from "types";
 
 export default function AddRestaurant() {
   // Initial state
-  const initialState = {
+  const initialState: IRestaurantInitialState = {
     name: "",
     email: "",
     password: "",
@@ -21,8 +22,8 @@ export default function AddRestaurant() {
   const router = useRouter();
   const { setVendors } = useData();
   const [formData, setFormData] = useState(initialState);
-  const [isDisabled, setIsDisabled] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   const {
     name,

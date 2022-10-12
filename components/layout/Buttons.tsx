@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { IButtons } from "types";
 import styles from "@styles/layout/Buttons.module.css";
 
 export default function Buttons({
@@ -7,7 +8,7 @@ export default function Buttons({
   buttonText,
   status,
   href,
-}) {
+}: IButtons) {
   return (
     <div className={styles.buttons}>
       <Link href={href}>
@@ -15,7 +16,7 @@ export default function Buttons({
       </Link>
 
       <button onClick={handleClick} className={styles.action_button}>
-        {status ? (status === "PENDING" ? "Approve" : "Restrict") : buttonText}
+        {buttonText || (status === "PENDING" ? "Approve" : "Restrict")}
       </button>
     </div>
   );

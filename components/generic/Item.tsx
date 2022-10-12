@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { IInitialItem, IItem } from "types";
 import { useData } from "@context/Data";
 import { useCart } from "@context/Cart";
 import { useRouter } from "next/router";
@@ -12,20 +13,22 @@ import {
 } from "@utils/index";
 
 export default function Item() {
-  const router = useRouter();
-  const [item, setItem] = useState(null);
-  const { scheduledRestaurants } = useData();
-  const { addItemToCart } = useCart();
-  const [date, setDate] = useState(0);
-  const [initialItem, setInitialItem] = useState({
-    date,
-    id: "",
+  // Initial state
+  const initialState: IInitialItem = {
+    _id: "",
+    date: 0,
     name: "",
     price: 0,
     total: 0,
     quantity: 1,
     restaurant: "",
-  });
+  };
+  const router = useRouter();
+  const { addItemToCart } = useCart();
+  const { scheduledRestaurants } = useData();
+  const [date, setDate] = useState<number>(0);
+  const [item, setItem] = useState<IItem>(null);
+  const [initialItem, setInitialItem] = useState(initialState);
 
   // Price and quantity
   const { quantity, price } = initialItem;
@@ -61,11 +64,11 @@ export default function Item() {
       setInitialItem({
         date,
         quantity: 1,
-        id: item._id,
+        _id: item._id,
         name: item.name,
         price: item.price,
         total: item.price,
-        restaurant: router.query.restaurant,
+        restaurant: router.query.restaurant as string,
       });
     }
   }, [item, router.isReady]);

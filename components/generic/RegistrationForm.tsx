@@ -5,9 +5,10 @@ import { hasEmpty } from "@utils/index";
 import styles from "@styles/generic/RegistrationForm.module.css";
 import ActionButton from "@components/layout/ActionButton";
 import Link from "next/link";
+import { IRegisterInitialState } from "types";
 
 export default function RegistrationForm() {
-  const initialSate = {
+  const initialSate: IRegisterInitialState = {
     name: "",
     email: "",
     password: "",
@@ -16,8 +17,8 @@ export default function RegistrationForm() {
 
   const { setUser } = useUser();
   const [formData, setFormData] = useState(initialSate);
-  const [isDisabled, setIsDisabled] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   // Destructure form data and check
   // If there is an empty field

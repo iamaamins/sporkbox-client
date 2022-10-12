@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useRouter } from "next/router";
+import { IUser, IUserContext } from "types";
 import { createContext, useContext, useEffect, useState } from "react";
 
 // Create context
-const UserContext = createContext();
+const UserContext = createContext({} as IUserContext);
 
 // Create hook
 export const useUser = () => useContext(UserContext);
@@ -11,8 +12,8 @@ export const useUser = () => useContext(UserContext);
 // Provider function
 export default function UserProvider({ children }) {
   const router = useRouter();
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<IUser>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Check if the user is admin
   const isAdmin = user?.role === "ADMIN";

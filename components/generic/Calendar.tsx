@@ -8,15 +8,19 @@ import {
   groupBy,
   convertDateToMilliseconds,
 } from "@utils/index";
-import styles from "@styles/generic/Calendar.module.css";
 import Image from "next/image";
+import { IRestaurant, IRestaurantGroup } from "types";
+import styles from "@styles/generic/Calendar.module.css";
 
 export default function Calendar() {
+  // Hooks
   const router = useRouter();
   const { cartItems } = useCart();
   const { scheduledRestaurants } = useData();
-  const [restaurants, setRestaurants] = useState([]);
-  const [restaurantGroups, setRestaurantGroups] = useState([]);
+  const [restaurants, setRestaurants] = useState<IRestaurant[]>([]);
+  const [restaurantGroups, setRestaurantGroups] = useState<IRestaurantGroup[]>(
+    []
+  );
 
   useEffect(() => {
     if (scheduledRestaurants && router.isReady) {

@@ -1,11 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import { useCart } from "@context/Cart";
-import { convertDateToText, formatCurrencyToUSD } from "@utils/index";
 import { IoMdRemove } from "react-icons/io";
 import styles from "@styles/generic/Cart.module.css";
 import ButtonLoader from "@components/layout/ButtonLoader";
+import { convertDateToText, formatCurrencyToUSD } from "@utils/index";
 
 export default function Cart() {
   const {
@@ -25,7 +24,7 @@ export default function Cart() {
           <h2 className={styles.cart_title}>Your basket</h2>
           <div className={styles.items}>
             {cartItems.map((cartItem) => (
-              <div key={cartItem.id} className={styles.item}>
+              <div key={cartItem._id} className={styles.item}>
                 <div className={styles.cover_image}>
                   <Image
                     src="https://images.unsplash.com/photo-1613987245117-50933bcb3240?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"
@@ -37,14 +36,14 @@ export default function Cart() {
 
                   <div
                     className={styles.remove}
-                    onClick={() => removeItemFromCart(cartItem.id)}
+                    onClick={() => removeItemFromCart(cartItem._id)}
                   >
                     <IoMdRemove />
                   </div>
                 </div>
 
                 <Link
-                  href={`/calendar/${cartItem.date}/${cartItem.restaurant}/${cartItem.id}`}
+                  href={`/calendar/${cartItem.date}/${cartItem.restaurant}/${cartItem._id}`}
                 >
                   <a className={styles.item_details}>
                     <p className={styles.name}>

@@ -5,12 +5,13 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from "@styles/admin/Company.module.css";
 import Buttons from "@components/layout/Buttons";
+import { ICompany } from "types";
 
 export default function Company() {
   // Hooks
   const router = useRouter();
   const { companies, setCompanies } = useData();
-  const [company, setCompany] = useState(null);
+  const [company, setCompany] = useState<ICompany>(null);
 
   // Get the company
   useEffect(() => {

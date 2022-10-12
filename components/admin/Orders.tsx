@@ -1,10 +1,6 @@
-import Link from "next/link";
-import { convertDateToText } from "@utils/index";
-import { useData } from "@context/Data";
 import styles from "@styles/admin/Orders.module.css";
 
 export default function Orders() {
-  const { restaurants } = useData();
   return (
     <section className={styles.section}>
       <h2 className={styles.all_orders_title}>All orders</h2>

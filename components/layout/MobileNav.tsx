@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import logo from "@public/layout/logo.png";
 import CartIcon from "./CartIcon";
+import { IMobileNavProps } from "types";
+import logo from "@public/layout/logo.png";
 import styles from "@styles/layout/MobileNav.module.css";
 
-export default function MobileNav({ isOpen, setIsOpen }) {
+export default function MobileNav({ isOpen, setIsOpen }: IMobileNavProps) {
   return (
     <nav className={styles.mobile_nav}>
       <div

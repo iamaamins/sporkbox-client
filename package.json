@@ -19,6 +19,8 @@
     "react-spinners": "^0.13.4"
   },
   "devDependencies": {
+    "@types/node": "18.8.4",
+    "@types/react": "18.0.21",
     "eslint": "8.24.0",
     "eslint-config-next": "12.3.1"
   }

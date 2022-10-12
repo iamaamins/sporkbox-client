@@ -7,11 +7,12 @@ import { useData } from "@context/Data";
 import { formatCurrencyToUSD, updateVendors } from "@utils/index";
 import Buttons from "@components/layout/Buttons";
 import styles from "@styles/admin/Restaurant.module.css";
+import { IVendor } from "types";
 
 export default function Restaurant() {
   const router = useRouter();
   const { vendors, setVendors } = useData();
-  const [vendor, setVendor] = useState(null);
+  const [vendor, setVendor] = useState<IVendor>(null);
 
   // Get the restaurant
   useEffect(() => {

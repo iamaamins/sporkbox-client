@@ -11,6 +11,7 @@ import {
 import { useData } from "@context/Data";
 import { useUser } from "@context/User";
 import { IoLogIn } from "react-icons/io5";
+import { IMobileMenuProps } from "types";
 import { FaUserAlt } from "react-icons/fa";
 import { AiTwotonePhone } from "react-icons/ai";
 import { BsFillCalendar2DateFill } from "react-icons/bs";
@@ -18,7 +19,7 @@ import styles from "@styles/layout/MobileMenu.module.css";
 import { convertDateToMilliseconds, currentYear } from "@utils/index";
 import { TbBuildingStore, TbBuildingSkyscraper } from "react-icons/tb";
 
-export default function MobileMenu({ isOpen, setIsOpen }) {
+export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
   // Hooks
   const [date, setDate] = useState(null);
   const { scheduledRestaurants } = useData();

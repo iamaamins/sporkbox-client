@@ -5,10 +5,11 @@ import { useData } from "@context/Data";
 import styles from "@styles/admin/AddItem.module.css";
 import { hasEmpty, updateVendors } from "@utils/index";
 import ActionButton from "@components/layout/ActionButton";
+import { IItemInitialState } from "types";
 
 export default function AddItem() {
   // Initial state
-  const initialState = {
+  const initialState: IItemInitialState = {
     name: "",
     tags: "",
     price: 0,
@@ -19,9 +20,9 @@ export default function AddItem() {
   // Router
   const router = useRouter();
   const { setVendors } = useData();
-  const [isDisabled, setIsDisabled] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(initialState);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   // Destructure form data and check
   const { name, description, tags, price } = formData;
@@ -106,7 +107,6 @@ export default function AddItem() {
         <div className={styles.item}>
           <label htmlFor="description">Item description</label>
           <textarea
-            type="description"
             id="description"
             value={description}
             onChange={handleChange}

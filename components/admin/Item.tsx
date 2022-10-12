@@ -6,11 +6,12 @@ import { useEffect, useState } from "react";
 import { formatCurrencyToUSD, updateVendors } from "@utils/index";
 import Buttons from "@components/layout/Buttons";
 import styles from "@styles/admin/Item.module.css";
+import { IItem } from "types";
 
 export default function Item() {
   const router = useRouter();
-  const [item, setItem] = useState(null);
   const { vendors, setVendors } = useData();
+  const [item, setItem] = useState<IItem>(null);
 
   // Get the item
   useEffect(() => {

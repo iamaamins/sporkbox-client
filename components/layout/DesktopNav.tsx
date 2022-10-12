@@ -13,8 +13,8 @@ import styles from "@styles/layout/DesktopNav.module.css";
 export default function DesktopNav() {
   // Hooks
   const pathName = useRouter().pathname;
-  const [date, setDate] = useState(null);
   const { scheduledRestaurants } = useData();
+  const [date, setDate] = useState<number>(null);
   const { isAdmin, isCustomer, isVendor, setUser } = useUser();
 
   useEffect(() => {
