@@ -1,14 +1,14 @@
+import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
-import logo from "@public/layout/logo.png";
+import CartIcon from "./CartIcon";
 import { useUser } from "@context/user";
-import axios from "axios";
 import { useRouter } from "next/router";
-import styles from "@styles/layout/DesktopNav.module.css";
 import { useData } from "@context/data";
+import logo from "@public/layout/logo.png";
 import { useEffect, useState } from "react";
 import { convertDateToTime } from "@utils/index";
-import CartIcon from "./CartIcon";
+import styles from "@styles/layout/DesktopNav.module.css";
 
 export default function DesktopNav() {
   // Hooks
@@ -98,9 +98,13 @@ export default function DesktopNav() {
         </li>
 
         <li className={!isAdmin ? styles.hide : null}>
-          <Link href="/admin/vendors">
-            <a className={pathName === "/admin/vendors" ? styles.active : null}>
-              Vendors
+          <Link href="/admin/restaurants">
+            <a
+              className={
+                pathName === "/admin/restaurants" ? styles.active : null
+              }
+            >
+              Restaurants
             </a>
           </Link>
         </li>

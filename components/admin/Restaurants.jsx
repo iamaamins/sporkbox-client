@@ -2,20 +2,20 @@ import Link from "next/link";
 import { convertDate } from "@utils/index";
 import { useData } from "@context/data";
 import LinkButton from "@components/layout/LinkButton";
-import styles from "@styles/admin/Vendors.module.css";
+import styles from "@styles/admin/Restaurants.module.css";
 
-export default function Vendors() {
+export default function Restaurants() {
   const { vendors } = useData();
 
   return (
-    <section className={styles.all_vendors}>
+    <section className={styles.all_restaurants}>
       {vendors.length === 0 && (
-        <h2 className={styles.no_vendors_title}>No vendors</h2>
+        <h2 className={styles.no_vendors_title}>No Restaurants</h2>
       )}
 
       {vendors.length > 0 && (
         <>
-          <h2 className={styles.all_vendors_title}>All vendors</h2>
+          <h2 className={styles.all_restaurants_title}>All Restaurants</h2>
 
           <table>
             <thead>
@@ -32,7 +32,7 @@ export default function Vendors() {
                 <tr key={vendor._id}>
                   <td className={styles.important}>
                     <Link href={`/admin/vendors/${vendor.restaurant._id}`}>
-                      <a>{vendor.name}</a>
+                      <a>{vendor.restaurant.name}</a>
                     </Link>
                   </td>
                   <td className={styles.hide_on_mobile}>{vendor.email}</td>

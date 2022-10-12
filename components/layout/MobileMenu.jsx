@@ -8,15 +8,15 @@ import {
   MdOutlineSchedule,
   MdOutlineRestaurantMenu,
 } from "react-icons/md";
+import { useData } from "@context/data";
+import { useUser } from "@context/user";
 import { IoLogIn } from "react-icons/io5";
 import { FaUserAlt } from "react-icons/fa";
-import { TbBuildingStore, TbBuildingSkyscraper } from "react-icons/tb";
-import { BsFillCalendar2DateFill } from "react-icons/bs";
 import { AiTwotonePhone } from "react-icons/ai";
-import { useUser } from "@context/user";
-import { convertDateToTime, currentYear, groupBy } from "@utils/index";
+import { BsFillCalendar2DateFill } from "react-icons/bs";
 import styles from "@styles/layout/MobileMenu.module.css";
-import { useData } from "@context/data";
+import { convertDateToTime, currentYear } from "@utils/index";
+import { TbBuildingStore, TbBuildingSkyscraper } from "react-icons/tb";
 
 export default function MobileMenu({ isOpen, setIsOpen }) {
   // Hooks
@@ -104,9 +104,9 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
           className={!isAdmin ? styles.hide : null}
           onClick={() => setIsOpen(false)}
         >
-          <Link href="/admin/vendors">
+          <Link href="/admin/restaurants">
             <a>
-              <TbBuildingStore /> Vendors
+              <TbBuildingStore /> Restaurants
             </a>
           </Link>
         </li>
