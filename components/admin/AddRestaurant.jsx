@@ -3,10 +3,10 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { hasEmpty } from "@utils/index";
 import { useData } from "@context/data";
-import styles from "@styles/admin/AddVendor.module.css";
+import styles from "@styles/admin/AddRestaurant.module.css";
 import ActionButton from "@components/layout/ActionButton";
 
-export default function AddVendor() {
+export default function AddRestaurant() {
   // Initial state
   const initialState = {
     name: "",
@@ -78,7 +78,7 @@ export default function AddVendor() {
       setIsDisabled(true);
 
       // Push to dashboard
-      router.push("/admin/vendors");
+      router.push("/admin/restaurants");
     } catch (err) {
       console.log(err);
       // Remove loader
@@ -87,8 +87,8 @@ export default function AddVendor() {
   }
 
   return (
-    <section className={styles.add_vendor}>
-      <h2>Add a vendor</h2>
+    <section className={styles.add_restaurant}>
+      <h2>Add a restaurant</h2>
 
       <form onSubmit={handleSubmit}>
         <p className={styles.form_title}>Owner info</p>

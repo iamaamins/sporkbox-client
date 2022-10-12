@@ -26,7 +26,7 @@ export default function Orders() {
               {restaurants.map((restaurant) => (
                 <tr key={restaurant._id}>
                   <td className={styles.important}>
-                    <Link href={`/admin/vendors/${restaurant._id}`}>
+                    <Link href={`/admin/restaurants/${restaurant._id}`}>
                       <a>{restaurant.name}</a>
                     </Link>
                   </td>

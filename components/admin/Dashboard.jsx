@@ -29,7 +29,7 @@ export default function Dashboard() {
                 {restaurants.map((restaurant) => (
                   <tr key={restaurant._id}>
                     <td className={styles.important}>
-                      <Link href={`/admin/vendors/${restaurant._id}`}>
+                      <Link href={`/admin/restaurants/${restaurant._id}`}>
                         <a>{restaurant.name}</a>
                       </Link>
                     </td>
@@ -66,7 +66,9 @@ export default function Dashboard() {
                 {scheduledRestaurants.map((scheduledRestaurant) => (
                   <tr key={scheduledRestaurant._id}>
                     <td className={styles.important}>
-                      <Link href={`/admin/vendors/${scheduledRestaurant._id}`}>
+                      <Link
+                        href={`/admin/restaurants/${scheduledRestaurant._id}`}
+                      >
                         <a>{scheduledRestaurant.name}</a>
                       </Link>
                     </td>

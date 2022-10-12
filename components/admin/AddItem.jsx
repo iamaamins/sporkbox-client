@@ -71,7 +71,7 @@ export default function AddItem() {
       setIsLoading(false);
 
       // Back to the restaurant page
-      router.push(`/admin/vendors/${router.query.restaurant}`);
+      router.push(`/admin/restaurants/${router.query.restaurant}`);
     } catch (err) {
       console.log(err);
       setIsLoading(false);

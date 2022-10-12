@@ -70,7 +70,7 @@ export default function Item() {
               handleClick={handleDelete}
               linkText="Edit item"
               buttonText="Delete item"
-              href={`/admin/vendors/${router.query.restaurant}/${router.query.item}/edit-item`}
+              href={`/admin/restaurants/${router.query.restaurant}/${router.query.item}/edit-item`}
             />
           </div>
         </>

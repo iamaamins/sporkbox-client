@@ -72,7 +72,7 @@ export default function Restaurant() {
               handleClick={handleApproval}
               linkText="Add item"
               status={vendor.status}
-              href={`/admin/vendors/${vendor.restaurant._id}/add-item`}
+              href={`/admin/restaurants/${vendor.restaurant._id}/add-item`}
             />
           </div>
 
@@ -84,7 +84,7 @@ export default function Restaurant() {
                 {vendor.restaurant.items.map((item) => (
                   <div key={item._id}>
                     <Link
-                      href={`/admin/vendors/${vendor.restaurant._id}/${item._id}`}
+                      href={`/admin/restaurants/${vendor.restaurant._id}/${item._id}`}
                     >
                       <a className={styles.item}>
                         <div className={styles.item_details}>

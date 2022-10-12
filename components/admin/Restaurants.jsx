@@ -31,7 +31,7 @@ export default function Restaurants() {
               {vendors.map((vendor) => (
                 <tr key={vendor._id}>
                   <td className={styles.important}>
-                    <Link href={`/admin/vendors/${vendor.restaurant._id}`}>
+                    <Link href={`/admin/restaurants/${vendor.restaurant._id}`}>
                       <a>{vendor.restaurant.name}</a>
                     </Link>
                   </td>
@@ -47,7 +47,7 @@ export default function Restaurants() {
         </>
       )}
 
-      <LinkButton href="/admin/add-vendor" text="Add vendor" />
+      <LinkButton href="/admin/add-restaurant" text="Add restaurant" />
     </section>
   );
 }

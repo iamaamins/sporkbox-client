@@ -3,9 +3,9 @@ import { useUser } from "@context/user";
 import { checkUser } from "@utils/index";
 import { useRouter } from "next/router";
 import PageLoader from "@components/layout/PageLoader";
-import AddVendor from "@components/admin/AddVendor";
+import AddRestaurant from "@components/admin/AddRestaurant";
 
-export default function AddVendorPage() {
+export default function AddRestaurantPage() {
   const router = useRouter();
   const { isLoading, isAdmin } = useUser();
 
@@ -16,7 +16,7 @@ export default function AddVendorPage() {
   return (
     <main>
       {isLoading && <PageLoader />}
-      {isAdmin && <AddVendor />}
+      {isAdmin && <AddRestaurant />}
     </main>
   );
 }
