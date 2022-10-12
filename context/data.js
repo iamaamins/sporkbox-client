@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useUser } from "./user";
+import { useUser } from "./User";
 import { useState, createContext, useContext, useEffect } from "react";
 
 // Create context

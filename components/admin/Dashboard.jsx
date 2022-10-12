@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { convertDate } from "@utils/index";
-import { useData } from "@context/data";
+import { convertDateToText } from "@utils/index";
+import { useData } from "@context/Data";
 import styles from "@styles/admin/Dashboard.module.css";
 import LinkButton from "@components/layout/LinkButton";
 
@@ -37,7 +37,7 @@ export default function Dashboard() {
                       {restaurant.owner.email}
                     </td>
                     <td className={styles.hide_on_mobile}>
-                      {convertDate(restaurant.createdAt)}
+                      {convertDateToText(restaurant.createdAt)}
                     </td>
                     <td>{restaurant.status}</td>
                   </tr>
@@ -72,7 +72,9 @@ export default function Dashboard() {
                         <a>{scheduledRestaurant.name}</a>
                       </Link>
                     </td>
-                    <td>{convertDate(scheduledRestaurant.scheduledOn)}</td>
+                    <td>
+                      {convertDateToText(scheduledRestaurant.scheduledOn)}
+                    </td>
                   </tr>
                 ))}
               </tbody>

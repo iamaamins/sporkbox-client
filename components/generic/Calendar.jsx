@@ -1,9 +1,13 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useData } from "@context/data";
-import { useCart } from "@context/cart";
-import { convertDateToTime, groupBy } from "@utils/index";
+import { useData } from "@context/Data";
+import { useCart } from "@context/Cart";
+import {
+  formatCurrencyToUSD,
+  groupBy,
+  convertDateToMilliseconds,
+} from "@utils/index";
 import styles from "@styles/generic/Calendar.module.css";
 import Image from "next/image";
 
@@ -26,7 +30,8 @@ export default function Calendar() {
       // Find the restaurant with date from slug
       const restaurants = groups.find(
         (group) =>
-          convertDateToTime(group.scheduledOn).toString() === router.query.date
+          convertDateToMilliseconds(group.scheduledOn).toString() ===
+          router.query.date
       )?.restaurants;
 
       // Update restaurants
@@ -61,14 +66,14 @@ export default function Calendar() {
               {restaurantGroups.map((restaurantGroup) => (
                 <div key={restaurantGroup.scheduledOn}>
                   <Link
-                    href={`/calendar/${convertDateToTime(
+                    href={`/calendar/${convertDateToMilliseconds(
                       restaurantGroup.scheduledOn
                     )}`}
                   >
                     <a
                       key={restaurantGroup.scheduledOn}
                       className={
-                        convertDateToTime(
+                        convertDateToMilliseconds(
                           restaurantGroup.scheduledOn
                         ).toString() === router.query.date
                           ? styles.active
@@ -100,7 +105,9 @@ export default function Calendar() {
                           <a className={styles.item}>
                             <div className={styles.item_details}>
                               <p className={styles.name}>{item.name}</p>
-                              <p className={styles.price}>USD ${item.price}</p>
+                              <p className={styles.price}>
+                                {formatCurrencyToUSD(item.price)}
+                              </p>
                               <p className={styles.description}>
                                 {item.description}
                               </p>

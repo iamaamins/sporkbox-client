@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useData } from "@context/data";
+import { useData } from "@context/Data";
 import { useEffect, useState } from "react";
 import ActionButton from "@components/layout/ActionButton";
 import styles from "@styles/admin/ScheduleRestaurants.module.css";

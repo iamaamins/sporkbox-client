@@ -1,11 +1,15 @@
 import Image from "next/image";
-import { useData } from "@context/data";
-import { useCart } from "@context/cart";
+import { useData } from "@context/Data";
+import { useCart } from "@context/Cart";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { HiMinus, HiPlus } from "react-icons/hi";
 import styles from "@styles/generic/Item.module.css";
-import { convertDateToTime, formatNumber } from "@utils/index";
+import {
+  convertDateToMilliseconds,
+  formatCurrencyToUSD,
+  formatNumberToUS,
+} from "@utils/index";
 
 export default function Item() {
   const router = useRouter();
@@ -41,7 +45,7 @@ export default function Item() {
 
       // Update date
       setDate(
-        convertDateToTime(
+        convertDateToMilliseconds(
           scheduledRestaurants.find(
             (scheduledRestaurant) =>
               scheduledRestaurant._id === router.query.restaurant
@@ -68,19 +72,19 @@ export default function Item() {
 
   // Increase quantity
   function increaseQuantity() {
-    setInitialItem((prevItem) => ({
-      ...prevItem,
-      quantity: prevItem.quantity + 1,
-      total: formatNumber(prevItem.price * (prevItem.quantity + 1)),
+    setInitialItem((currItem) => ({
+      ...currItem,
+      quantity: currItem.quantity + 1,
+      total: formatNumberToUS(currItem.price * (currItem.quantity + 1)),
     }));
   }
 
   // Decrease quantity
   function decreaseQuantity() {
-    setInitialItem((prevItem) => ({
-      ...prevItem,
-      quantity: prevItem.quantity - 1,
-      total: formatNumber(prevItem.price * (prevItem.quantity - 1)),
+    setInitialItem((currItem) => ({
+      ...currItem,
+      quantity: currItem.quantity - 1,
+      total: formatNumberToUS(currItem.price * (currItem.quantity - 1)),
     }));
   }
 
@@ -129,7 +133,8 @@ export default function Item() {
               className={styles.button}
               onClick={() => addItemToCart(initialItem)}
             >
-              Add {quantity} to basket • {formatNumber(quantity * price)} USD
+              Add {quantity} to basket • {formatCurrencyToUSD(quantity * price)}{" "}
+              USD
             </button>
           </div>
         </>

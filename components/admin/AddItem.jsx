@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { useData } from "@context/data";
+import { useData } from "@context/Data";
 import styles from "@styles/admin/AddItem.module.css";
 import { hasEmpty, updateVendors } from "@utils/index";
 import ActionButton from "@components/layout/ActionButton";

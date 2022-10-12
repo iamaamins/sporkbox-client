@@ -3,8 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useData } from "@context/data";
-import { updateVendors } from "@utils/index";
+import { useData } from "@context/Data";
+import { formatCurrencyToUSD, updateVendors } from "@utils/index";
 import Buttons from "@components/layout/Buttons";
 import styles from "@styles/admin/Restaurant.module.css";
 
@@ -89,7 +89,9 @@ export default function Restaurant() {
                       <a className={styles.item}>
                         <div className={styles.item_details}>
                           <p className={styles.name}>{item.name}</p>
-                          <p className={styles.price}>USD ${item.price}</p>
+                          <p className={styles.price}>
+                            {formatCurrencyToUSD(item.price)}
+                          </p>
                           <p className={styles.description}>
                             {item.description}
                           </p>

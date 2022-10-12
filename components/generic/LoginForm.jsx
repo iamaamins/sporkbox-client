@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { hasEmpty } from "@utils/index";
-import { useUser } from "@context/user";
+import { useUser } from "@context/User";
 import styles from "@styles/generic/LoginForm.module.css";
 import ButtonLoader from "@components/layout/ButtonLoader";
 import ActionButton from "@components/layout/ActionButton";

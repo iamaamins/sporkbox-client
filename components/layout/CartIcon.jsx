@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useCart } from "@context/cart";
+import { useCart } from "@context/Cart";
 import { BsHandbag } from "react-icons/bs";
 import styles from "@styles/layout/CartIcon.module.css";
 

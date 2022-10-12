@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { hasEmpty } from "@utils/index";
-import { useData } from "@context/data";
+import { useData } from "@context/Data";
 import styles from "@styles/admin/AddRestaurant.module.css";
 import ActionButton from "@components/layout/ActionButton";
 
@@ -151,7 +151,7 @@ export default function AddRestaurant() {
         </div>
 
         <ActionButton
-          text="Add vendor"
+          text="Add restaurant"
           isLoading={isLoading}
           isDisabled={isDisabled}
         />

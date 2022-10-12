@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useUser } from "@context/user";
+import { useUser } from "@context/User";
 import { checkUser } from "@utils/index";
 import { useRouter } from "next/router";
 import Company from "@components/admin/Company";

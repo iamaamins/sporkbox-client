@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { useData } from "@context/data";
-import { convertDate } from "@utils/index";
+import { useData } from "@context/Data";
+import { convertDateToText } from "@utils/index";
 import LinkButton from "@components/layout/LinkButton";
 import styles from "@styles/admin/ScheduledRestaurants.module.css";
 
@@ -34,7 +34,9 @@ export default function ScheduledRestaurants() {
                         <a>{scheduledRestaurant.name}</a>
                       </Link>
                     </td>
-                    <td>{convertDate(scheduledRestaurant.scheduledOn)}</td>
+                    <td>
+                      {convertDateToText(scheduledRestaurant.scheduledOn)}
+                    </td>
                   </tr>
                 ))}
               </tbody>

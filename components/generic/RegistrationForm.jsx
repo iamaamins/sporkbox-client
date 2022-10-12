@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useUser } from "@context/user";
+import { useUser } from "@context/User";
 import { hasEmpty } from "@utils/index";
 import styles from "@styles/generic/RegistrationForm.module.css";
 import ActionButton from "@components/layout/ActionButton";

@@ -1,9 +1,9 @@
 import axios from "axios";
 import Image from "next/image";
-import { useData } from "@context/data";
+import { useData } from "@context/Data";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { updateVendors } from "@utils/index";
+import { formatCurrencyToUSD, updateVendors } from "@utils/index";
 import Buttons from "@components/layout/Buttons";
 import styles from "@styles/admin/Item.module.css";
 
@@ -62,7 +62,7 @@ export default function Item() {
           <div className={styles.item_details}>
             <p className={styles.name}>{item.name}</p>
             <p className={styles.description}>{item.description}</p>
-            <p className={styles.price}>USD ${item.price}</p>
+            <p className={styles.price}>{formatCurrencyToUSD(item.price)}</p>
             <p className={styles.tags}>{item.tags}</p>
 
             {/* Buttons */}

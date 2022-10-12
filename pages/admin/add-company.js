@@ -1,4 +1,4 @@
-import { useUser } from "@context/user";
+import { useUser } from "@context/User";
 import { checkUser } from "@utils/index";
 import { useRouter } from "next/router";
 import { useEffect } from "react";

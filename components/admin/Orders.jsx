@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { convertDate } from "@utils/index";
-import { useData } from "@context/data";
+import { convertDateToText } from "@utils/index";
+import { useData } from "@context/Data";
 import styles from "@styles/admin/Orders.module.css";
 
 export default function Orders() {
@@ -34,7 +34,7 @@ export default function Orders() {
                     {restaurant.owner.email}
                   </td>
                   <td className={styles.hide_on_mobile}>
-                    {convertDate(restaurant.createdAt)}{" "}
+                    {convertDateToText(restaurant.createdAt)}{" "}
                   </td>
                   <td>{restaurant.status}</td>
                 </tr>

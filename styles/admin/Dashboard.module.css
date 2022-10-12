@@ -36,10 +36,6 @@
   font-size: 0.9rem;
 }
 
-.section table tbody td:last-child {
-  text-transform: lowercase;
-}
-
 .important a {
   font-size: 1rem;
   color: var(--black);

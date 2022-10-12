@@ -2,12 +2,12 @@ import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
 import CartIcon from "./CartIcon";
-import { useUser } from "@context/user";
+import { useUser } from "@context/User";
 import { useRouter } from "next/router";
-import { useData } from "@context/data";
+import { useData } from "@context/Data";
 import logo from "@public/layout/logo.png";
 import { useEffect, useState } from "react";
-import { convertDateToTime } from "@utils/index";
+import { convertDateToMilliseconds } from "@utils/index";
 import styles from "@styles/layout/DesktopNav.module.css";
 
 export default function DesktopNav() {
@@ -20,7 +20,9 @@ export default function DesktopNav() {
   useEffect(() => {
     if (scheduledRestaurants.length > 0) {
       // Convert the first group's scheduled date to slug
-      const dateSlug = convertDateToTime(scheduledRestaurants[0].scheduledOn);
+      const dateSlug = convertDateToMilliseconds(
+        scheduledRestaurants[0].scheduledOn
+      );
 
       // Update state
       setDate(dateSlug);

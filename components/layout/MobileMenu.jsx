@@ -8,14 +8,14 @@ import {
   MdOutlineSchedule,
   MdOutlineRestaurantMenu,
 } from "react-icons/md";
-import { useData } from "@context/data";
-import { useUser } from "@context/user";
+import { useData } from "@context/Data";
+import { useUser } from "@context/User";
 import { IoLogIn } from "react-icons/io5";
 import { FaUserAlt } from "react-icons/fa";
 import { AiTwotonePhone } from "react-icons/ai";
 import { BsFillCalendar2DateFill } from "react-icons/bs";
 import styles from "@styles/layout/MobileMenu.module.css";
-import { convertDateToTime, currentYear } from "@utils/index";
+import { convertDateToMilliseconds, currentYear } from "@utils/index";
 import { TbBuildingStore, TbBuildingSkyscraper } from "react-icons/tb";
 
 export default function MobileMenu({ isOpen, setIsOpen }) {
@@ -27,7 +27,9 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
   useEffect(() => {
     if (scheduledRestaurants.length > 0) {
       // Convert the first group's scheduled date to slug
-      const date = convertDateToTime(scheduledRestaurants[0].scheduledOn);
+      const date = convertDateToMilliseconds(
+        scheduledRestaurants[0].scheduledOn
+      );
 
       // Update state
       setDate(date);

@@ -2,13 +2,20 @@
 export const currentYear = new Date().getFullYear();
 
 // Convert number
-export const formatNumber = (number) => +number.toLocaleString("en-US");
+export const formatNumberToUS = (number) => +number.toLocaleString("en-US");
+
+// Format currency
+export const formatCurrencyToUSD = (number) =>
+  new Intl.NumberFormat("en-us", {
+    style: "currency",
+    currency: "USD",
+  }).format(number);
 
 // Convert date to slug
-export const convertDateToTime = (date) => new Date(date).getTime();
+export const convertDateToMilliseconds = (date) => new Date(date).getTime();
 
 // Convert iso date to locale date string
-export const convertDate = (str) =>
+export const convertDateToText = (str) =>
   new Date(str).toDateString().split(" ").slice(0, 3).join(" ");
 
 // Check if any input field is empty

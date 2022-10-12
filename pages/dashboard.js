@@ -1,4 +1,4 @@
-import { useData } from "@context/data";
+import { useData } from "@context/Data";
 import { useEffect, useState } from "react";
 import { getScheduledRestaurants } from "@utils/index";
 

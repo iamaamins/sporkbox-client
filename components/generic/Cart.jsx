@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { useCart } from "@context/cart";
-import { convertDate } from "@utils/index";
+import { useCart } from "@context/Cart";
+import { convertDateToText, formatCurrencyToUSD } from "@utils/index";
 import { IoMdRemove } from "react-icons/io";
 import styles from "@styles/generic/Cart.module.css";
 import ButtonLoader from "@components/layout/ButtonLoader";
@@ -50,9 +50,12 @@ export default function Cart() {
                     <p className={styles.name}>
                       <span>{cartItem.quantity}</span> {cartItem.name}
                     </p>
-                    <p className={styles.price}>Total: ${cartItem.total}</p>
+                    <p className={styles.price}>
+                      Total: {formatCurrencyToUSD(cartItem.total)}
+                    </p>
                     <p className={styles.date}>
-                      Delivery date: <span>{convertDate(cartItem.date)}</span>
+                      Delivery date:{" "}
+                      <span>{convertDateToText(cartItem.date)}</span>
                     </p>
                   </a>
                 </Link>
@@ -61,7 +64,11 @@ export default function Cart() {
           </div>
 
           <button onClick={checkoutCart} className={styles.button}>
-            {isLoading ? <ButtonLoader /> : `Checkout • $${totalCartPrice}`}
+            {isLoading ? (
+              <ButtonLoader />
+            ) : (
+              `Checkout • ${formatCurrencyToUSD(totalCartPrice)}`
+            )}
           </button>
         </>
       )}

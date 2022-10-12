@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { convertDate } from "@utils/index";
-import { useData } from "@context/data";
+import { convertDateToText } from "@utils/index";
+import { useData } from "@context/Data";
 import LinkButton from "@components/layout/LinkButton";
 import styles from "@styles/admin/Restaurants.module.css";
 
@@ -37,7 +37,7 @@ export default function Restaurants() {
                   </td>
                   <td className={styles.hide_on_mobile}>{vendor.email}</td>
                   <td className={styles.hide_on_mobile}>
-                    {convertDate(vendor.createdAt)}{" "}
+                    {convertDateToText(vendor.createdAt)}{" "}
                   </td>
                   <td>{vendor.status}</td>
                 </tr>

@@ -1,6 +1,6 @@
 import axios from "axios";
 import Link from "next/link";
-import { useData } from "@context/data";
+import { useData } from "@context/Data";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from "@styles/admin/Company.module.css";

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useData } from "@context/data";
+import { useData } from "@context/Data";
 import styles from "@styles/admin/Companies.module.css";
 import LinkButton from "@components/layout/LinkButton";
 

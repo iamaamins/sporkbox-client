@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useUser } from "@context/user";
+import { useUser } from "@context/User";
 import { useRouter } from "next/router";
 import { checkUser } from "@utils/index";
 import Dashboard from "@components/admin/Dashboard";
