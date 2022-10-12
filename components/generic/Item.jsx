@@ -40,7 +40,7 @@ export default function Item() {
             (scheduledRestaurant) =>
               scheduledRestaurant._id === router.query.restaurant
           )
-          ?.items?.find((item) => item._id === router.query.item)
+          ?.items.find((item) => item._id === router.query.item)
       );
 
       // Update date

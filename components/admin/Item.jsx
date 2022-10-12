@@ -18,7 +18,7 @@ export default function Item() {
       setItem(
         vendors
           .find((vendor) => vendor.restaurant._id === router.query.restaurant)
-          ?.restaurant.items?.find((item) => item._id === router.query.item)
+          ?.restaurant.items.find((item) => item._id === router.query.item)
       );
     }
   }, [vendors, router.isReady]);
