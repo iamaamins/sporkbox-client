@@ -15,8 +15,8 @@ export const formatCurrencyToUSD = (number) =>
 export const convertDateToMilliseconds = (date) => new Date(date).getTime();
 
 // Convert iso date to locale date string
-export const convertDateToText = (str) =>
-  new Date(str).toDateString().split(" ").slice(0, 3).join(" ");
+export const convertDateToText = (date) =>
+  new Date(date).toDateString().split(" ").slice(0, 3).join(" ");
 
 // Check if any input field is empty
 export const hasEmpty = (formData) =>

@@ -63,8 +63,8 @@ export default function Item() {
         quantity: 1,
         id: item._id,
         name: item.name,
-        price: +item.price,
-        total: +item.price,
+        price: item.price,
+        total: item.price,
         restaurant: router.query.restaurant,
       });
     }

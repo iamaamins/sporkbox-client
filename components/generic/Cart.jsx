@@ -10,10 +10,10 @@ import ButtonLoader from "@components/layout/ButtonLoader";
 export default function Cart() {
   const {
     cartItems,
-    removeItemFromCart,
-    totalCartPrice,
-    checkoutCart,
     isLoading,
+    checkoutCart,
+    totalCartPrice,
+    removeItemFromCart,
   } = useCart();
 
   return (
@@ -67,7 +67,7 @@ export default function Cart() {
             {isLoading ? (
               <ButtonLoader />
             ) : (
-              `Checkout • ${formatCurrencyToUSD(totalCartPrice)}`
+              `Checkout • ${formatCurrencyToUSD(totalCartPrice)} USD`
             )}
           </button>
         </>
