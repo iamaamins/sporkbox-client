@@ -38,9 +38,9 @@ export default function Company() {
       console.log(res.data.message);
 
       // Update state
-      setCompanies((prevCompanies) =>
-        prevCompanies.filter(
-          (prevCompany) => prevCompany._id !== router.query.company
+      setCompanies((currCompanies) =>
+        currCompanies.filter(
+          (currCompany) => currCompany._id !== router.query.company
         )
       );
 

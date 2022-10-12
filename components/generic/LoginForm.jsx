@@ -28,8 +28,8 @@ export default function LoginForm() {
     }
 
     // Update state
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData((currData) => ({
+      ...currData,
       [e.target.id]: e.target.value,
     }));
   }

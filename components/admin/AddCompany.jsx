@@ -67,7 +67,7 @@ export default function AddCompany() {
       const newCompany = res.data;
 
       // Update state
-      setCompanies((prevCompanies) => [...prevCompanies, newCompany]);
+      setCompanies((currCompanies) => [...currCompanies, newCompany]);
 
       // Clear the form
       setFormData(initialState);

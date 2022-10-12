@@ -42,8 +42,8 @@ export default function ScheduleRestaurants() {
     }
 
     // Update state
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData((currData) => ({
+      ...currData,
       [e.target.name]: e.target.value,
     }));
   }

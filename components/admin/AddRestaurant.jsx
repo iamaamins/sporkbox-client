@@ -41,8 +41,8 @@ export default function AddRestaurant() {
     }
 
     // Update state
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData((currData) => ({
+      ...currData,
       [e.target.id]: e.target.value,
     }));
   }
@@ -68,7 +68,7 @@ export default function AddRestaurant() {
       const newVendor = res.data;
 
       // Update state
-      setVendors((prevVendors) => [...prevVendors, newVendor]);
+      setVendors((currVendors) => [...currVendors, newVendor]);
 
       // Reset form data
       setFormData(initialState);

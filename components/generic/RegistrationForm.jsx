@@ -29,8 +29,8 @@ export default function RegistrationForm() {
       setIsDisabled(false);
     }
 
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData((currData) => ({
+      ...currData,
       [e.target.id]: e.target.value,
     }));
   }
