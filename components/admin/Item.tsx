@@ -11,7 +11,7 @@ import { IItem } from "types";
 export default function Item() {
   const router = useRouter();
   const { vendors, setVendors } = useData();
-  const [item, setItem] = useState<IItem>(null);
+  const [item, setItem] = useState<IItem>();
 
   // Get the item
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function Item() {
       );
 
       // Updated vendors array with updated items
-      updateVendors(res, setVendors);
+      updateVendors(res.data, setVendors);
 
       // Bck to the restaurant page
       router.back();

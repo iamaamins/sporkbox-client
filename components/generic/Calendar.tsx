@@ -47,12 +47,14 @@ export default function Calendar() {
   }, [scheduledRestaurants, router]);
 
   // Get the date
-  const getDate = (date) =>
+  const getDate = (date: string) =>
     new Date(date).toDateString().split(" ").slice(2, 3).join();
 
   // Get the first letter of the day
-  const getDay = (date) =>
+  const getDay = (date: string) =>
     new Date(date).toDateString().split(" ").slice(0, 1)[0].split("")[0];
+
+  console.log(restaurantGroups);
 
   return (
     <section className={styles.calendar}>
@@ -81,7 +83,7 @@ export default function Calendar() {
                           restaurantGroup.scheduledOn
                         ).toString() === router.query.date
                           ? styles.active
-                          : null
+                          : ""
                       }
                     >
                       <span>{getDate(restaurantGroup.scheduledOn)}</span>

@@ -1,9 +1,9 @@
 import axios from "axios";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import { hasEmpty } from "@utils/index";
-import { ICompanyInitialState } from "types";
+import { ICompany, ICompanyInitialState } from "types";
 import styles from "@styles/admin/AddCompany.module.css";
 import ActionButton from "@components/layout/ActionButton";
 
@@ -28,7 +28,7 @@ export default function AddCompany() {
   const { name, website, address, code, budget } = formData;
 
   // Handle change
-  function handleChange(e) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     // Check if any field is empty
     if (!hasEmpty(formData)) {
       setIsDisabled(false);
@@ -46,7 +46,7 @@ export default function AddCompany() {
   }
 
   // Handle submit
-  async function handleSubmit(e) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     // Create a company
@@ -67,7 +67,10 @@ export default function AddCompany() {
       const newCompany = res.data;
 
       // Update state
-      setCompanies((currCompanies) => [...currCompanies, newCompany]);
+      setCompanies((currCompanies: ICompany[]) => [
+        ...currCompanies,
+        newCompany,
+      ]);
 
       // Clear the form
       setFormData(initialState);

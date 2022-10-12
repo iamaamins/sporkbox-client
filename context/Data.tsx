@@ -1,6 +1,12 @@
 import axios from "axios";
 import { useUser } from "./User";
-import { ICompany, IDataContext, IRestaurant, IVendor } from "types";
+import {
+  ICompany,
+  IContextProviderProps,
+  IDataContext,
+  IRestaurant,
+  IVendor,
+} from "types";
 import { useState, createContext, useContext, useEffect } from "react";
 
 // Create context
@@ -10,15 +16,13 @@ const DataContext = createContext({} as IDataContext);
 export const useData = () => useContext(DataContext);
 
 // Provider function
-export default function DataProvider({ children }) {
+export default function DataProvider({ children }: IContextProviderProps) {
   const { isAdmin } = useUser();
   const [vendors, setVendors] = useState<IVendor[]>([]);
   const [companies, setCompanies] = useState<ICompany[]>([]);
   const [scheduledRestaurants, setScheduledRestaurants] = useState<
     IRestaurant[]
   >([]);
-
-  console.log(companies);
 
   // Get admin data
   useEffect(() => {

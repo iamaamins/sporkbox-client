@@ -1,21 +1,27 @@
+import { NextRouter } from "next/router";
+import { IVendor, IRestaurant } from "types";
+import { SetStateAction } from "react";
+
 // Current year
 export const currentYear = new Date().getFullYear();
 
 // Convert number
-export const formatNumberToUS = (number) => +number.toLocaleString("en-US");
+export const formatNumberToUS = (number: number) =>
+  +number.toLocaleString("en-US");
 
 // Format currency
-export const formatCurrencyToUSD = (number) =>
+export const formatCurrencyToUSD = (number: number) =>
   new Intl.NumberFormat("en-us", {
     style: "currency",
     currency: "USD",
   }).format(number);
 
 // Convert date to slug
-export const convertDateToMilliseconds = (date) => new Date(date).getTime();
+export const convertDateToMilliseconds = (date: string) =>
+  new Date(date).getTime();
 
 // Convert iso date to locale date string
-export const convertDateToText = (date) =>
+export const convertDateToText = (date: string | number) =>
   new Date(date).toDateString().split(" ").slice(0, 3).join(" ");
 
 // Check if any input field is empty
@@ -23,17 +29,21 @@ export const hasEmpty = (formData) =>
   Object.values(formData).some((data) => data === "");
 
 // Check if there is an admin
-export function checkUser(isLoading, user, router) {
+export function checkUser(
+  isLoading: boolean,
+  user: boolean,
+  router: NextRouter
+) {
   if (!isLoading && !user) {
     router.push("/login");
   }
 }
 
 // Update restaurants items
-export function updateVendors(res, setVendors) {
-  // Updated data
-  const updatedData = res.data;
-
+export function updateVendors(
+  updatedData,
+  setVendors: React.Dispatch<SetStateAction<IVendor[]>>
+) {
   // Update the restaurants state
   setVendors((currVendors) =>
     currVendors.map((currVendor) => {

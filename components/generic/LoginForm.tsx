@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import { hasEmpty } from "@utils/index";
@@ -23,7 +23,7 @@ export default function LoginForm() {
   const { email, password } = formData;
 
   // Handle change
-  function handleChange(e) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     if (!hasEmpty(formData)) {
       setIsDisabled(false);
     }
@@ -36,7 +36,7 @@ export default function LoginForm() {
   }
 
   // Handle submit
-  async function handleSubmit(e) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     try {

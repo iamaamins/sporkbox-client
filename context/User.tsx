@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import { IUser, IUserContext } from "types";
+import { IContextProviderProps, IUser, IUserContext } from "types";
 import { createContext, useContext, useEffect, useState } from "react";
 
 // Create context
@@ -10,9 +10,9 @@ const UserContext = createContext({} as IUserContext);
 export const useUser = () => useContext(UserContext);
 
 // Provider function
-export default function UserProvider({ children }) {
+export default function UserProvider({ children }: IContextProviderProps) {
   const router = useRouter();
-  const [user, setUser] = useState<IUser>(null);
+  const [user, setUser] = useState<IUser>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Check if the user is admin

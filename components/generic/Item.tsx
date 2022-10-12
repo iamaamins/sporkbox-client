@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { IInitialItem, IItem } from "types";
+import { ICartItem, IItem } from "types";
 import { useData } from "@context/Data";
 import { useCart } from "@context/Cart";
 import { useRouter } from "next/router";
@@ -14,7 +14,7 @@ import {
 
 export default function Item() {
   // Initial state
-  const initialState: IInitialItem = {
+  const initialState = {
     _id: "",
     date: 0,
     name: "",
@@ -26,56 +26,52 @@ export default function Item() {
   const router = useRouter();
   const { addItemToCart } = useCart();
   const { scheduledRestaurants } = useData();
-  const [date, setDate] = useState<number>(0);
-  const [item, setItem] = useState<IItem>(null);
-  const [initialItem, setInitialItem] = useState(initialState);
+  const [item, setItem] = useState<IItem>();
+  const [cartItem, setCarItem] = useState<ICartItem>(initialState);
 
   // Price and quantity
-  const { quantity, price } = initialItem;
+  const { quantity, price } = cartItem;
 
   // Get item and date from schedules restaurants
   useEffect(() => {
-    if (scheduledRestaurants && router.isReady) {
-      // Update item
-      setItem(
-        scheduledRestaurants
-          .find(
-            (scheduledRestaurant) =>
-              scheduledRestaurant._id === router.query.restaurant
-          )
-          ?.items.find((item) => item._id === router.query.item)
+    if (scheduledRestaurants.length > 0 && router.isReady) {
+      // Find the restaurant
+      const restaurant = scheduledRestaurants.find(
+        (scheduledRestaurant) =>
+          scheduledRestaurant._id === router.query.restaurant
       );
 
-      // Update date
-      setDate(
-        convertDateToMilliseconds(
-          scheduledRestaurants.find(
-            (scheduledRestaurant) =>
-              scheduledRestaurant._id === router.query.restaurant
-          )?.scheduledOn
-        )
+      // Find the item
+      const item = restaurant?.items.find(
+        (item) => item._id === router.query.item
       );
+
+      // Get the date
+      const date = convertDateToMilliseconds(restaurant?.scheduledOn!);
+
+      // If there are date and item
+      if (date && item) {
+        // Update item
+        setItem(item);
+
+        // Update initial item
+        setCarItem((currItem) => ({
+          ...currItem,
+          date,
+          quantity: 1,
+          _id: item._id,
+          name: item.name,
+          price: item.price,
+          total: item.price,
+          restaurant: router.query.restaurant as string,
+        }));
+      }
     }
   }, [scheduledRestaurants, router.isReady]);
 
-  // Update initial item
-  useEffect(() => {
-    if (item && router.isReady) {
-      setInitialItem({
-        date,
-        quantity: 1,
-        _id: item._id,
-        name: item.name,
-        price: item.price,
-        total: item.price,
-        restaurant: router.query.restaurant as string,
-      });
-    }
-  }, [item, router.isReady]);
-
   // Increase quantity
   function increaseQuantity() {
-    setInitialItem((currItem) => ({
+    setCarItem((currItem) => ({
       ...currItem,
       quantity: currItem.quantity + 1,
       total: formatNumberToUS(currItem.price * (currItem.quantity + 1)),
@@ -84,7 +80,7 @@ export default function Item() {
 
   // Decrease quantity
   function decreaseQuantity() {
-    setInitialItem((currItem) => ({
+    setCarItem((currItem) => ({
       ...currItem,
       quantity: currItem.quantity - 1,
       total: formatNumberToUS(currItem.price * (currItem.quantity - 1)),
@@ -134,7 +130,7 @@ export default function Item() {
 
             <button
               className={styles.button}
-              onClick={() => addItemToCart(initialItem)}
+              onClick={() => addItemToCart(cartItem)}
             >
               Add {quantity} to basket • {formatCurrencyToUSD(quantity * price)}{" "}
               USD

@@ -1,6 +1,6 @@
 import { useUser } from "@context/User";
 import { useRouter } from "next/router";
-import { ICartContext, ICartItem } from "types";
+import { ICartContext, ICartItem, IContextProviderProps } from "types";
 import { formatNumberToUS } from "@utils/index";
 import React, {
   useState,
@@ -17,7 +17,7 @@ const CartContext = createContext({} as ICartContext);
 export const useCart = () => useContext(CartContext);
 
 // Provider function
-export default function CartProvider({ children }) {
+export default function CartProvider({ children }: IContextProviderProps) {
   const router = useRouter();
   const { isCustomer } = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -25,7 +25,9 @@ export default function CartProvider({ children }) {
 
   // Get cart items from local storage on app reload
   useEffect(() => {
-    setCartItems(JSON.parse(localStorage.getItem(`cart`)) || []);
+    // console.log(JSON.parse("[]"));
+
+    setCartItems(JSON.parse(localStorage.getItem("cart") || "[]"));
   }, [router.isReady]);
 
   // Calculate total quantity
@@ -41,7 +43,7 @@ export default function CartProvider({ children }) {
   );
 
   // Add item to cart
-  function addItemToCart(initialItem) {
+  function addItemToCart(initialItem: ICartItem) {
     let updatedItems = [];
 
     // Add item to cart
@@ -77,7 +79,7 @@ export default function CartProvider({ children }) {
   }
 
   // Remove cart item
-  function removeItemFromCart(itemId) {
+  function removeItemFromCart(itemId: string) {
     // Filter the items by item id
     const updatedItems = cartItems.filter(
       (cartItem) => cartItem._id !== itemId

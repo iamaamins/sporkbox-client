@@ -2,7 +2,7 @@ import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useData } from "@context/Data";
 import { formatCurrencyToUSD, updateVendors } from "@utils/index";
 import Buttons from "@components/layout/Buttons";
@@ -12,7 +12,7 @@ import { IVendor } from "types";
 export default function Restaurant() {
   const router = useRouter();
   const { vendors, setVendors } = useData();
-  const [vendor, setVendor] = useState<IVendor>(null);
+  const [vendor, setVendor] = useState<IVendor>();
 
   // Get the restaurant
   useEffect(() => {
@@ -26,20 +26,20 @@ export default function Restaurant() {
   }, [vendors, router.isReady]);
 
   // Handle approval
-  async function handleApproval(e) {
+  async function handleApproval(e: FormEvent) {
     // Get current status
-    const action = e.target.innerText;
+    const action = e.currentTarget.textContent;
 
     // Update restaurant status
     try {
       const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/vendor/${vendor._id}/status`,
+        `${process.env.NEXT_PUBLIC_API_URL}/vendor/${vendor?._id}/status`,
         { action },
         { withCredentials: true }
       );
 
       // Update vendors with updates status
-      updateVendors(res, setVendors);
+      updateVendors(res.data, setVendors);
     } catch (err) {
       console.log(err);
     }

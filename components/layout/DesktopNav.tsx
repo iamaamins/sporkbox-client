@@ -14,7 +14,7 @@ export default function DesktopNav() {
   // Hooks
   const pathName = useRouter().pathname;
   const { scheduledRestaurants } = useData();
-  const [date, setDate] = useState<number>(null);
+  const [date, setDate] = useState<number>();
   const { isAdmin, isCustomer, isVendor, setUser } = useUser();
 
   useEffect(() => {
@@ -58,66 +58,62 @@ export default function DesktopNav() {
       </div>
 
       <ul className={styles.navigation}>
-        <li className={isAdmin ? styles.hide : null}>
+        <li className={isAdmin ? styles.hide : ""}>
           <Link href="/dashboard">
             <a>Dashboard</a>
           </Link>
         </li>
 
-        <li className={isAdmin ? styles.hide : null}>
+        <li className={isAdmin ? styles.hide : ""}>
           <Link href="/contact">
             <a>Contact</a>
           </Link>
         </li>
 
-        <li className={isAdmin ? styles.hide : null}>
+        <li className={isAdmin ? styles.hide : ""}>
           <Link href="/about-us">
             <a>About us</a>
           </Link>
         </li>
 
-        <li className={!date ? styles.hide : null}>
+        <li className={!date ? styles.hide : ""}>
           <Link href={`/calendar/${date}`}>
             <a>Calendar</a>
           </Link>
         </li>
 
         {/* Admin nav items */}
-        <li className={!isAdmin ? styles.hide : null}>
+        <li className={!isAdmin ? styles.hide : ""}>
           <Link href="/admin">
-            <a className={pathName === "/admin" ? styles.active : null}>
+            <a className={pathName === "/admin" ? styles.active : ""}>
               Dashboard
             </a>
           </Link>
         </li>
 
-        <li className={!isAdmin ? styles.hide : null}>
+        <li className={!isAdmin ? styles.hide : ""}>
           <Link href="/admin/orders">
-            <a className={pathName === "/admin/orders" ? styles.active : null}>
+            <a className={pathName === "/admin/orders" ? styles.active : ""}>
               Orders
             </a>
           </Link>
         </li>
 
-        <li className={!isAdmin ? styles.hide : null}>
+        <li className={!isAdmin ? styles.hide : ""}>
           <Link href="/admin/restaurants">
             <a
-              className={
-                pathName === "/admin/restaurants" ? styles.active : null
-              }
+              className={pathName === "/admin/restaurants" ? styles.active : ""}
             >
               Restaurants
             </a>
           </Link>
         </li>
 
-        <li className={!isAdmin ? styles.hide : null}>
+        <li className={!isAdmin ? styles.hide : ""}>
           <Link href="/admin/scheduled-restaurants">
             <a
               className={
-                pathName === "/admin/scheduled-restaurants"
-                  ? styles.active
-                  : null
+                pathName === "/admin/scheduled-restaurants" ? styles.active : ""
               }
             >
               Scheduled
@@ -125,11 +121,9 @@ export default function DesktopNav() {
           </Link>
         </li>
 
-        <li className={!isAdmin ? styles.hide : null}>
+        <li className={!isAdmin ? styles.hide : ""}>
           <Link href="/admin/companies">
-            <a
-              className={pathName === "/admin/companies" ? styles.active : null}
-            >
+            <a className={pathName === "/admin/companies" ? styles.active : ""}>
               Companies
             </a>
           </Link>

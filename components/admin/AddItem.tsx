@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import styles from "@styles/admin/AddItem.module.css";
@@ -28,7 +28,9 @@ export default function AddItem() {
   const { name, description, tags, price } = formData;
 
   // Handle change
-  function handleChange(e) {
+  function handleChange(
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
     if (!hasEmpty(formData)) {
       setIsDisabled(false);
     }
@@ -45,7 +47,7 @@ export default function AddItem() {
   }
 
   // Handle submit
-  async function handleSubmit(e) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     // Add a new item
@@ -63,7 +65,7 @@ export default function AddItem() {
       );
 
       // Update vendors with updated items
-      updateVendors(res, setVendors);
+      updateVendors(res.data, setVendors);
 
       // Reset form data
       setFormData(initialState);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import axios from "axios";
 import { useUser } from "@context/User";
 import { hasEmpty } from "@utils/index";
@@ -25,7 +25,7 @@ export default function RegistrationForm() {
   const { name, email, password, confirmPassword } = formData;
 
   // Handle change
-  function handleChange(e) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     if (!hasEmpty(formData)) {
       setIsDisabled(false);
     }
@@ -37,7 +37,7 @@ export default function RegistrationForm() {
   }
 
   // Handle submit
-  async function handleSubmit(e) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     try {
@@ -62,7 +62,7 @@ export default function RegistrationForm() {
     } catch (err) {
       // Remove the loader
       setIsLoading(false);
-      console.log(err.response);
+      console.log(err);
     }
   }
 

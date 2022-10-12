@@ -6,16 +6,6 @@ export interface IButtons {
   handleClick: (e: FormEvent) => Promise<void>;
 }
 
-export interface IInitialItem {
-  _id: string;
-  date: number;
-  name: string;
-  price: number;
-  total: number;
-  quantity: number;
-  restaurant: string;
-}
-
 export interface ICartItem {
   _id: string;
   date: number;
@@ -170,4 +160,8 @@ export interface IMobileMenuProps {
 export interface IMobileNavProps {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+export interface IContextProviderProps {
+  children: React.ReactNode;
 }

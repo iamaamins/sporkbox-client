@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { hasEmpty } from "@utils/index";
 import { useData } from "@context/Data";
 import styles from "@styles/admin/AddRestaurant.module.css";
 import ActionButton from "@components/layout/ActionButton";
-import { IRestaurantInitialState } from "types";
+import { IRestaurantInitialState, IVendor } from "types";
 
 export default function AddRestaurant() {
   // Initial state
@@ -35,7 +35,7 @@ export default function AddRestaurant() {
   } = formData;
 
   // Handle change
-  function handleChange(e) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     // Check for empty field
     if (!hasEmpty(formData)) {
       setIsDisabled(false);
@@ -49,7 +49,7 @@ export default function AddRestaurant() {
   }
 
   // Handle submit
-  async function handleSubmit(e) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     try {
@@ -69,7 +69,7 @@ export default function AddRestaurant() {
       const newVendor = res.data;
 
       // Update state
-      setVendors((currVendors) => [...currVendors, newVendor]);
+      setVendors((currVendors: IVendor[]) => [...currVendors, newVendor]);
 
       // Reset form data
       setFormData(initialState);

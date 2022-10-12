@@ -2,7 +2,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import styles from "@styles/admin/Company.module.css";
 import Buttons from "@components/layout/Buttons";
 import { ICompany } from "types";
@@ -11,11 +11,11 @@ export default function Company() {
   // Hooks
   const router = useRouter();
   const { companies, setCompanies } = useData();
-  const [company, setCompany] = useState<ICompany>(null);
+  const [company, setCompany] = useState<ICompany>();
 
   // Get the company
   useEffect(() => {
-    if (companies && router.isReady) {
+    if (companies.length > 0 && router.isReady) {
       setCompany(
         companies.find((company) => company._id === router.query.company)
       );
@@ -23,7 +23,7 @@ export default function Company() {
   }, [companies, router.isReady]);
 
   // Delete company
-  async function handleDelete(e) {
+  async function handleDelete(e: FormEvent) {
     e.preventDefault();
 
     try {
@@ -39,7 +39,7 @@ export default function Company() {
       console.log(res.data.message);
 
       // Update state
-      setCompanies((currCompanies) =>
+      setCompanies((currCompanies: ICompany[]) =>
         currCompanies.filter(
           (currCompany) => currCompany._id !== router.query.company
         )
@@ -48,7 +48,7 @@ export default function Company() {
       // Back to companies page
       router.back();
     } catch (err) {
-      console.log(err.response);
+      console.log(err);
     }
   }
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useData } from "@context/Data";
-import { useEffect, useState } from "react";
-import { IRestaurant, IScheduleRestaurantInitialState } from "types";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { IRestaurant, IScheduleRestaurantInitialState, IVendor } from "types";
 import ActionButton from "@components/layout/ActionButton";
 import styles from "@styles/admin/ScheduleRestaurants.module.css";
 import { hasEmpty, updateScheduledRestaurants } from "@utils/index";
@@ -30,15 +30,15 @@ export default function ScheduleRestaurants() {
     if (vendors.length > 0) {
       // Filter approved restaurants
       setApprovedRestaurants(
-        vendors.map(
-          (vendor) => vendor.status === "APPROVED" && vendor.restaurant
-        )
+        vendors
+          .filter((vendor) => vendor.status === "APPROVED")
+          .map((vendor) => vendor.restaurant)
       );
     }
   }, [vendors]);
 
   // Handle change
-  function handleChange(e) {
+  function handleChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     // If any field is empty
     if (hasEmpty(formData)) {
       setIsDisabled(false);
@@ -52,7 +52,7 @@ export default function ScheduleRestaurants() {
   }
 
   // Handle schedule
-  async function handleSchedule(e) {
+  async function handleSchedule(e: FormEvent) {
     e.preventDefault();
 
     // Schedule a restaurant
@@ -91,9 +91,9 @@ export default function ScheduleRestaurants() {
 
   return (
     <section className={styles.schedule_restaurants}>
-      {approvedRestaurants.length === 0 && <h2>No approved restaurants</h2>}
+      {approvedRestaurants?.length === 0 && <h2>No approved restaurants</h2>}
 
-      {approvedRestaurants.length > 0 && (
+      {approvedRestaurants?.length > 0 && (
         <>
           <h2 className={styles.schedule_restaurants_title}>
             Schedule restaurants
