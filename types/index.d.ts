@@ -135,7 +135,7 @@ export interface IScheduleRestaurantInitialState {
 }
 
 export interface IRestaurantGroup {
-  scheduleOn: string;
+  scheduledOn: string;
   restaurants: IRestaurant[];
 }
 

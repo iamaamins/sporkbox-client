@@ -128,7 +128,7 @@ export default function Calendar() {
 
                               {cartItems.map(
                                 (cartItem) =>
-                                  cartItem.id === item._id && (
+                                  cartItem._id === item._id && (
                                     <span
                                       key={item._id}
                                       className={styles.quantity}
