@@ -25,7 +25,7 @@ export const convertDateToText = (date: string | number) =>
   new Date(date).toDateString().split(" ").slice(0, 3).join(" ");
 
 // Check if any input field is empty
-export const hasEmpty = (formData): boolean =>
+export const hasEmpty = (formData: any): boolean =>
   Object.values(formData).some((data) => data === "");
 
 // Check if there is an admin
@@ -41,7 +41,7 @@ export function checkUser(
 
 // Update restaurants items
 export function updateVendors(
-  updatedData,
+  updatedData: any,
   setVendors: React.Dispatch<SetStateAction<IVendor[]>>
 ) {
   // Update the restaurants state
@@ -66,7 +66,7 @@ export function updateVendors(
 
 // Update scheduled restaurants
 export function updateScheduledRestaurants(
-  updatedData,
+  updatedData: any,
   setScheduledRestaurants: React.Dispatch<SetStateAction<IRestaurant[]>>
 ) {
   // Update scheduled restaurants state
@@ -99,7 +99,7 @@ export function updateScheduledRestaurants(
 }
 
 // Group items by property
-export function groupBy(key, items, itemsName) {
+export function groupBy(key: string, items: any[], itemsName: string): any[] {
   // Crate groups with provided key
   const groupsObj = items.reduce((acc, curr) => {
     // Property to create group with
