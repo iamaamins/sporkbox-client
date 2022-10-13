@@ -1,6 +1,6 @@
-import { NextRouter } from "next/router";
 import { IVendor, IRestaurant } from "types";
 import { SetStateAction } from "react";
+import { NextRouter } from "next/router";
 
 // Current year
 export const currentYear = new Date().getFullYear();
@@ -25,7 +25,7 @@ export const convertDateToText = (date: string | number) =>
   new Date(date).toDateString().split(" ").slice(0, 3).join(" ");
 
 // Check if any input field is empty
-export const hasEmpty = (formData) =>
+export const hasEmpty = (formData): boolean =>
   Object.values(formData).some((data) => data === "");
 
 // Check if there is an admin
@@ -65,10 +65,10 @@ export function updateVendors(
 }
 
 // Update scheduled restaurants
-export function updateScheduledRestaurants(res, setScheduledRestaurants) {
-  // Updated data
-  const updatedData = res.data;
-
+export function updateScheduledRestaurants(
+  updatedData,
+  setScheduledRestaurants: React.Dispatch<SetStateAction<IRestaurant[]>>
+) {
   // Update scheduled restaurants state
   setScheduledRestaurants((currScheduledRestaurants) => {
     // If the restaurant isn't already

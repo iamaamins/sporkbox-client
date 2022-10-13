@@ -46,13 +46,13 @@ export default function Item() {
         (item) => item._id === router.query.item
       );
 
-      // Get the date
-      const date = convertDateToMilliseconds(restaurant?.scheduledOn!);
-
-      // If there are date and item
-      if (date && item) {
+      // If there are restaurant and item
+      if (restaurant && item) {
         // Update item
         setItem(item);
+
+        // Get the date
+        const date = convertDateToMilliseconds(restaurant?.scheduledOn);
 
         // Update initial item
         setCarItem((currItem) => ({

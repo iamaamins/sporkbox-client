@@ -67,10 +67,8 @@ export default function ScheduleRestaurants() {
         { withCredentials: true }
       );
 
-      const updatedData = res.data;
-
       // Update scheduled restaurants
-      updateScheduledRestaurants(res, setScheduledRestaurants);
+      updateScheduledRestaurants(res.data, setScheduledRestaurants);
 
       // Clear form data
       setFormData(initialState);

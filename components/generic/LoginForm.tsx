@@ -111,7 +111,7 @@ export default function LoginForm() {
         </p>
         <p>
           Forgot password? Reset{" "}
-          <Link href="/forgot-password">
+          <Link href="/reset-password">
             <a>here</a>
           </Link>
         </p>

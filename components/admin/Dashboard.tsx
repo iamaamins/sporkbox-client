@@ -10,7 +10,9 @@ export default function Dashboard() {
   return (
     <>
       <section className={styles.section}>
-        <h2>Current orders</h2>
+        <h2>No current orders</h2>
+
+        {/* <h2>Current orders</h2> */}
 
         {/* Current orders */}
         {/* <div className={styles.orders}>

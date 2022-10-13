@@ -12,7 +12,7 @@ export default function Companies() {
 
       {companies.length > 0 && (
         <>
-          <h2 className={styles.all_companies_title}>All companies</h2>
+          <h2>All companies</h2>
 
           <table>
             <thead>

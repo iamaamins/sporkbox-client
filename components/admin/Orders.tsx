@@ -3,7 +3,9 @@ import styles from "@styles/admin/Orders.module.css";
 export default function Orders() {
   return (
     <section className={styles.section}>
-      <h2 className={styles.all_orders_title}>All orders</h2>
+      <h2 className={styles.all_orders_title}>No orders</h2>
+
+      {/* <h2 className={styles.all_orders_title}>All orders</h2> */}
 
       {/* Current orders */}
       {/* <div className={styles.orders}>
