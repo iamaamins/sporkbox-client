@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useUser } from "./User";
 import {
-  ICompany,
-  IContextProviderProps,
-  IDataContext,
-  IRestaurant,
   IVendor,
+  ICompany,
+  IRestaurant,
+  IDataContext,
+  IContextProviderProps,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
 

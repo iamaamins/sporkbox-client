@@ -1,15 +1,15 @@
 import axios from "axios";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { IItemState } from "types";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import styles from "@styles/admin/AddItem.module.css";
 import { hasEmpty, updateVendors } from "@utils/index";
+import { ChangeEvent, FormEvent, useState } from "react";
 import ActionButton from "@components/layout/ActionButton";
-import { IItemInitialState } from "types";
 
 export default function AddItem() {
   // Initial state
-  const initialState: IItemInitialState = {
+  const initialState = {
     name: "",
     tags: "",
     price: 0,
@@ -20,9 +20,9 @@ export default function AddItem() {
   // Router
   const router = useRouter();
   const { setVendors } = useData();
-  const [formData, setFormData] = useState(initialState);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const [formData, setFormData] = useState<IItemState>(initialState);
 
   // Destructure form data and check
   const { name, description, tags, price } = formData;

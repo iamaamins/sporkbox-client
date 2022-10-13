@@ -1,14 +1,14 @@
-import { ChangeEvent, FormEvent, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import { hasEmpty } from "@utils/index";
 import { useUser } from "@context/User";
+import { ILoginState } from "types";
+import { ChangeEvent, FormEvent, useState } from "react";
 import styles from "@styles/generic/LoginForm.module.css";
 import ActionButton from "@components/layout/ActionButton";
-import { ILoginInitialState } from "types";
 
 export default function LoginForm() {
-  const initialSate: ILoginInitialState = {
+  const initialSate = {
     email: "",
     password: "",
   };
@@ -16,7 +16,7 @@ export default function LoginForm() {
   const { setUser } = useUser();
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState(initialSate);
+  const [formData, setFormData] = useState<ILoginState>(initialSate);
 
   // Destructure form data and check
   // If there is an empty field

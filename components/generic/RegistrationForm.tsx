@@ -1,14 +1,14 @@
-import { ChangeEvent, FormEvent, useState } from "react";
 import axios from "axios";
+import Link from "next/link";
 import { useUser } from "@context/User";
 import { hasEmpty } from "@utils/index";
-import styles from "@styles/generic/RegistrationForm.module.css";
+import { IRegisterState } from "types";
+import { ChangeEvent, FormEvent, useState } from "react";
 import ActionButton from "@components/layout/ActionButton";
-import Link from "next/link";
-import { IRegisterInitialState } from "types";
+import styles from "@styles/generic/RegistrationForm.module.css";
 
 export default function RegistrationForm() {
-  const initialSate: IRegisterInitialState = {
+  const initialSate = {
     name: "",
     email: "",
     password: "",
@@ -16,9 +16,9 @@ export default function RegistrationForm() {
   };
 
   const { setUser } = useUser();
-  const [formData, setFormData] = useState(initialSate);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const [formData, setFormData] = useState<IRegisterState>(initialSate);
 
   // Destructure form data and check
   // If there is an empty field

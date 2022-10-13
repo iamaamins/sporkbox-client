@@ -43,23 +43,23 @@ export default function CartProvider({ children }: IContextProviderProps) {
   );
 
   // Add item to cart
-  function addItemToCart(initialItem: ICartItem) {
+  function addItemToCart(item: ICartItem) {
     let updatedItems = [];
 
     // Add item to cart
     // If the item ins't already
     //  in cart add it to the cart
-    if (!cartItems.some((cartItem) => cartItem._id === initialItem._id)) {
-      updatedItems = [...cartItems, initialItem];
+    if (!cartItems.some((cartItem) => cartItem._id === item._id)) {
+      updatedItems = [...cartItems, item];
     } else {
       // If the item is already in cart
       // update teh quantity and total
       updatedItems = cartItems.map((cartItem) => {
-        if (cartItem._id === initialItem._id) {
+        if (cartItem._id === item._id) {
           return {
             ...cartItem,
-            quantity: initialItem.quantity,
-            total: initialItem.total,
+            quantity: item.quantity,
+            total: item.total,
           };
         } else {
           // Return other cart items

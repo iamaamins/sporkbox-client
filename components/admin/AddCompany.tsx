@@ -3,13 +3,13 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import { hasEmpty } from "@utils/index";
-import { ICompany, ICompanyInitialState } from "types";
+import { ICompany, ICompanyState } from "types";
 import styles from "@styles/admin/AddCompany.module.css";
 import ActionButton from "@components/layout/ActionButton";
 
 export default function AddCompany() {
   // Initial state
-  const initialState: ICompanyInitialState = {
+  const initialState = {
     name: "",
     code: "",
     budget: 0,
@@ -20,9 +20,9 @@ export default function AddCompany() {
   // Hooks
   const router = useRouter();
   const { setCompanies } = useData();
-  const [formData, setFormData] = useState(initialState);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const [formData, setFormData] = useState<ICompanyState>(initialState);
 
   // Destructure data
   const { name, website, address, code, budget } = formData;

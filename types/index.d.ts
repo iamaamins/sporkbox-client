@@ -23,7 +23,7 @@ export interface ICartContext {
   totalCartQuantity: number;
   checkoutCart: () => Promise<void>;
   removeItemFromCart: (itemId: string) => void;
-  addItemToCart: (initialItem: IInitialItem) => void;
+  addItemToCart: (item: ICartItem) => void;
   setCartItems: Dispatch<SetStateAction<ICartItem[]>>;
 }
 
@@ -35,20 +35,22 @@ interface IItem {
   description: string;
 }
 
+export interface IRestaurant {
+  _id: string;
+  name: string;
+  items: IItem[];
+  address: string;
+  createdAt: string;
+  scheduledOn: string;
+}
+
 export interface IVendor {
   _id: string;
   name: string;
   email: string;
   status: string;
   createdAt: string;
-  restaurant: {
-    _id: string;
-    name: string;
-    address: string;
-    items: IItem[];
-    createdAt: string;
-    scheduledOn: string;
-  };
+  restaurant: IRestaurant;
 }
 
 export interface ICompany {
@@ -59,15 +61,6 @@ export interface ICompany {
   website: string;
   address: string;
   createdAt: string;
-}
-
-export interface IRestaurant {
-  _id: string;
-  name: string;
-  items: IItem[];
-  address: string;
-  createdAt: string;
-  scheduledOn: string;
 }
 
 export interface IDataContext {
@@ -85,6 +78,7 @@ export interface IUser {
   email: string;
   role: string;
   company?: ICompany;
+  restaurant?: IRestaurant;
 }
 
 export interface IUserContext {
@@ -95,7 +89,7 @@ export interface IUserContext {
   setUser: Dispatch<SetStateAction<IUser>>;
 }
 
-export interface ICompanyInitialState {
+export interface ICompanyState {
   name: string;
   code: string;
   budget: number;
@@ -103,14 +97,14 @@ export interface ICompanyInitialState {
   address: string;
 }
 
-export interface IItemInitialState {
+export interface IItemState {
   name: string;
   tags: string;
   price: number;
   description: string;
 }
 
-export interface IRestaurantInitialState {
+export interface IRestaurantState {
   name: string;
   email: string;
   password: string;
@@ -119,7 +113,19 @@ export interface IRestaurantInitialState {
   restaurantAddress: string;
 }
 
-export interface IScheduleRestaurantInitialState {
+export interface ILoginState {
+  email: string;
+  password: string;
+}
+
+export interface IRegisterState {
+  email: string;
+  name: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface IScheduleRestaurantState {
   date: string;
   restaurantId: string;
 }
@@ -127,18 +133,6 @@ export interface IScheduleRestaurantInitialState {
 export interface IRestaurantGroup {
   scheduledOn: string;
   restaurants: IRestaurant[];
-}
-
-export interface ILoginInitialState {
-  email: string;
-  password: string;
-}
-
-export interface IRegisterInitialState {
-  email: string;
-  name: string;
-  password: string;
-  confirmPassword: string;
 }
 
 export interface IActionButtonProps {
@@ -157,10 +151,7 @@ export interface IMobileMenuProps {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export interface IMobileNavProps {
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
-}
+export interface IMobileNavProps extends IMobileMenuProps {}
 
 export interface IContextProviderProps {
   children: React.ReactNode;
