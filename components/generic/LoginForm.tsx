@@ -104,7 +104,7 @@ export default function LoginForm() {
 
       <div className={styles.actions}>
         <p>
-          Don't have an account? Register{" "}
+          Don&apos;t have an account? Register{" "}
           <Link href="/register">
             <a>here</a>
           </Link>
