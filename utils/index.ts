@@ -25,7 +25,7 @@ export const convertDateToText = (date: string | number) =>
   new Date(date).toDateString().split(" ").slice(0, 3).join(" ");
 
 // Check if any input field is empty
-export const hasEmpty = (formData: any): boolean =>
+export const hasEmpty = (formData: object): boolean =>
   Object.values(formData).some((data) => data === "");
 
 // Check if there is an admin

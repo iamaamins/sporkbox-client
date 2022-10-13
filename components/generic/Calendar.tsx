@@ -54,8 +54,6 @@ export default function Calendar() {
   const getDay = (date: string) =>
     new Date(date).toDateString().split(" ").slice(0, 1)[0].split("")[0];
 
-  console.log(restaurantGroups);
-
   return (
     <section className={styles.calendar}>
       {/* If there are no restaurant groups */}
