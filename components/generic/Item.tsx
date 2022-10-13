@@ -107,7 +107,11 @@ export default function Item() {
             <div className={styles.item_details}>
               <p className={styles.item_name}>{item.name}</p>
               <p className={styles.item_description}>{item.description}</p>
-              <p className={styles.item_tags}>{item.tags}</p>
+              <p className={styles.tags}>
+                {item.tags.split(",").map((tag, index) => (
+                  <span key={index}>{tag}</span>
+                ))}
+              </p>
             </div>
 
             <div className={styles.controller}>
