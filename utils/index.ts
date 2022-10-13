@@ -98,10 +98,26 @@ export function updateScheduledRestaurants(
   });
 }
 
+type Groups<
+  Item extends object,
+  Key extends keyof Item,
+  ItemsName extends PropertyKey
+> = {
+  [Q in Key]: Item[Key];
+} & { [Q in ItemsName]: Item[] };
+
 // Group items by property
-export function groupBy(key: string, items: any[], itemsName: string): any[] {
+export function groupBy<
+  Key extends keyof Item,
+  Item extends Record<Key, string>,
+  ItemsName extends PropertyKey
+>(
+  key: Key,
+  items: Item[],
+  itemsName: ItemsName
+): Groups<Item, Key, ItemsName>[] {
   // Crate groups with provided key
-  const groupsObj = items.reduce((acc, curr) => {
+  const groupsObj = items.reduce<Record<string, Item[]>>((acc, curr) => {
     // Property to create group with
     const property = curr[key];
 
@@ -117,10 +133,13 @@ export function groupBy(key: string, items: any[], itemsName: string): any[] {
   }, {});
 
   // Convert the object
-  const groupsArr = Object.keys(groupsObj).map((property) => ({
-    [key]: property,
-    [itemsName]: groupsObj[property],
-  }));
+  const groupsArr = Object.keys(groupsObj).map(
+    (property) =>
+      ({
+        [key]: property,
+        [itemsName]: groupsObj[property],
+      } as Groups<Item, Key, ItemsName>)
+  );
 
   return groupsArr;
 }

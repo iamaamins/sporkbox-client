@@ -64,7 +64,11 @@ export default function Item() {
             <p className={styles.name}>{item.name}</p>
             <p className={styles.description}>{item.description}</p>
             <p className={styles.price}>{formatCurrencyToUSD(item.price)}</p>
-            <p className={styles.tags}>{item.tags}</p>
+            <p className={styles.tags}>
+              {item.tags.split(",").map((tag) => (
+                <span>{tag}</span>
+              ))}
+            </p>
 
             {/* Buttons */}
             <Buttons

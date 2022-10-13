@@ -1,7 +1,7 @@
 export default function HomePage() {
   return (
     <main style={{ padding: "1.25rem" }}>
-      <h2>This feature is reserved for future phase</h2>
+      <h2>Homepage</h2>
     </main>
   );
 }

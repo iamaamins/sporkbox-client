@@ -76,11 +76,11 @@ export default function DesktopNav() {
           </Link>
         </li>
 
-        <li className={!date ? styles.hide : ""}>
+        {/* <li className={!date ? styles.hide : ""}>
           <Link href={`/calendar/${date}`}>
             <a>Calendar</a>
           </Link>
-        </li>
+        </li> */}
 
         {/* Admin nav items */}
         <li className={!isAdmin ? styles.hide : ""}>
@@ -132,7 +132,7 @@ export default function DesktopNav() {
 
       {/* Call to actions */}
       <div className={styles.ctas}>
-        <CartIcon />
+        {/* <CartIcon /> */}
 
         <button
           onClick={handleSignOut}

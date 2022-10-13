@@ -27,6 +27,15 @@
   margin-bottom: 2.5rem;
 }
 
+.tags span {
+  margin-right: 0.75rem;
+  padding: 5px 10px;
+  border-radius: 2rem;
+  color: var(--gray);
+  text-transform: lowercase;
+  background: var(--border_color);
+}
+
 @media (min-width: 768px) {
   .item {
     max-width: 85%;

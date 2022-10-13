@@ -92,7 +92,7 @@ export default function AddItem() {
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="tags">Item tags</label>
+          <label htmlFor="tags">Item tags (comma separated)</label>
           <input type="text" id="tags" value={tags} onChange={handleChange} />
         </div>
 
