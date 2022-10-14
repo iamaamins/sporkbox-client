@@ -38,18 +38,37 @@
 
 @media (min-width: 768px) {
   .item {
-    max-width: 85%;
-    margin: 0 auto;
+    display: flex;
+    padding: var(--section_padding);
+  }
+
+  .cover_image {
+    width: 50%;
+    margin-right: 2rem;
+  }
+
+  .cover_image img {
+    border-radius: 0.25rem;
   }
 
   .item_details {
-    padding: 1.25rem 0rem;
+    width: 50%;
+    padding: 0rem;
   }
 }
 
 @media (min-width: 1024px) {
   .item {
-    max-width: 80%;
+    width: 80%;
     margin: 0 auto;
+  }
+
+  .cover_image {
+    width: 55%;
+    margin-right: 4rem;
+  }
+
+  .item_details {
+    width: 45%;
   }
 }

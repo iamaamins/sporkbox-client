@@ -23,7 +23,7 @@ export default function MobileNav({ isOpen, setIsOpen }: IMobileNavProps) {
         </Link>
       </div>
 
-      {/* <CartIcon /> */}
+      <CartIcon />
     </nav>
   );
 }
