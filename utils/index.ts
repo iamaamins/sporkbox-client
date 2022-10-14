@@ -41,18 +41,21 @@ export function checkUser(
 
 // Update restaurants items
 export function updateVendors(
-  updatedData: any,
+  updatedData: IVendor | IRestaurant,
   setVendors: React.Dispatch<SetStateAction<IVendor[]>>
 ) {
   // Update the restaurants state
   setVendors((currVendors) =>
     currVendors.map((currVendor) => {
-      if (currVendor._id === updatedData._id) {
+      if (currVendor._id === updatedData._id && "status" in updatedData) {
         return {
           ...currVendor,
           status: updatedData.status,
         };
-      } else if (currVendor.restaurant._id === updatedData._id) {
+      } else if (
+        currVendor.restaurant._id === updatedData._id &&
+        "items" in updatedData
+      ) {
         return {
           ...currVendor,
           restaurant: updatedData,
@@ -66,7 +69,7 @@ export function updateVendors(
 
 // Update scheduled restaurants
 export function updateScheduledRestaurants(
-  updatedData: any,
+  updatedData: IRestaurant,
   setScheduledRestaurants: React.Dispatch<SetStateAction<IRestaurant[]>>
 ) {
   // Update scheduled restaurants state
