@@ -36,7 +36,7 @@ interface IItem {
 }
 
 export interface IRestaurant {
-  type: "restaurant"; // Discriminated union
+  _type: "Restaurant"; // Discriminated union
   _id: string;
   name: string;
   items: IItem[];
@@ -46,7 +46,7 @@ export interface IRestaurant {
 }
 
 export interface IVendor {
-  type: "vendor"; // Discriminated union
+  _type: "Vendor"; // Discriminated union
   _id: string;
   name: string;
   email: string;
@@ -121,10 +121,10 @@ export interface IContextProviderProps {
 export type Groups<
   Item extends object,
   Key extends keyof Item,
-  ItemsName extends PropertyKey
+  ItemsName extends PropertyKey // Property key is a string | number | symbol
 > = {
-  [Q in Key]: Item[Key];
-} & { [Q in ItemsName]: Item[] };
+  [key in Key]: Item[Key];
+} & { [itemsName in ItemsName]: Item[] };
 
 export interface IFormData {
   [key: string]: string | number; // Index type

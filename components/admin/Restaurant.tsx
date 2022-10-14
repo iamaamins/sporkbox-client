@@ -1,13 +1,13 @@
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { FormEvent, useEffect, useState } from "react";
-import { useData } from "@context/Data";
-import { formatCurrencyToUSD, updateVendors } from "@utils/index";
-import Buttons from "@components/layout/Buttons";
-import styles from "@styles/admin/Restaurant.module.css";
 import { IVendor } from "types";
+import { useRouter } from "next/router";
+import { useData } from "@context/Data";
+import Buttons from "@components/layout/Buttons";
+import { FormEvent, useEffect, useState } from "react";
+import styles from "@styles/admin/Restaurant.module.css";
+import { formatCurrencyToUSD, updateVendors } from "@utils/index";
 
 export default function Restaurant() {
   const router = useRouter();
