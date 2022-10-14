@@ -1,11 +1,10 @@
 import axios from "axios";
-import Link from "next/link";
+import { ICompany } from "types";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
+import Buttons from "@components/layout/Buttons";
 import { FormEvent, useEffect, useState } from "react";
 import styles from "@styles/admin/Company.module.css";
-import Buttons from "@components/layout/Buttons";
-import { ICompany } from "types";
 
 export default function Company() {
   // Hooks

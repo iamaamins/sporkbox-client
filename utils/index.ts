@@ -1,6 +1,7 @@
-import { IVendor, IRestaurant } from "types";
+import { IFormData } from "./../types/index.d";
 import { SetStateAction } from "react";
 import { NextRouter } from "next/router";
+import { IVendor, IRestaurant, Groups } from "types";
 
 // Current year
 export const currentYear = new Date().getFullYear();
@@ -25,7 +26,7 @@ export const convertDateToText = (date: string | number) =>
   new Date(date).toDateString().split(" ").slice(0, 3).join(" ");
 
 // Check if any input field is empty
-export const hasEmpty = (formData: object): boolean =>
+export const hasEmpty = (formData: IFormData): boolean =>
   Object.values(formData).some((data) => data === "");
 
 // Check if there is an admin
@@ -47,14 +48,14 @@ export function updateVendors(
   // Update the restaurants state
   setVendors((currVendors) =>
     currVendors.map((currVendor) => {
-      if (currVendor._id === updatedData._id && "status" in updatedData) {
+      if (currVendor._id === updatedData._id && updatedData.type === "vendor") {
         return {
           ...currVendor,
           status: updatedData.status,
         };
       } else if (
         currVendor.restaurant._id === updatedData._id &&
-        "items" in updatedData
+        updatedData.type === "restaurant"
       ) {
         return {
           ...currVendor,
@@ -100,14 +101,6 @@ export function updateScheduledRestaurants(
     }
   });
 }
-
-type Groups<
-  Item extends object,
-  Key extends keyof Item,
-  ItemsName extends PropertyKey
-> = {
-  [Q in Key]: Item[Key];
-} & { [Q in ItemsName]: Item[] };
 
 // Group items by property
 export function groupBy<

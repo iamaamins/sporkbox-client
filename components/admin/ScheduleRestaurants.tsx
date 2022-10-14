@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useData } from "@context/Data";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { IRestaurant, IScheduleRestaurantState, IVendor } from "types";
+import { IFormData, IRestaurant } from "types";
 import ActionButton from "@components/layout/ActionButton";
 import styles from "@styles/admin/ScheduleRestaurants.module.css";
 import { hasEmpty, updateScheduledRestaurants } from "@utils/index";
@@ -20,8 +20,7 @@ export default function ScheduleRestaurants() {
   const [approvedRestaurants, setApprovedRestaurants] = useState<IRestaurant[]>(
     []
   );
-  const [formData, setFormData] =
-    useState<IScheduleRestaurantState>(initialState);
+  const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Destructure form data
   const { date, restaurantId } = formData;

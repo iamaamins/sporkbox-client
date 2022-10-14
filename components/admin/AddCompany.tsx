@@ -1,9 +1,9 @@
 import axios from "axios";
-import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import { hasEmpty } from "@utils/index";
-import { ICompany, ICompanyState } from "types";
+import { ICompany, IFormData } from "types";
+import { ChangeEvent, FormEvent, useState } from "react";
 import styles from "@styles/admin/AddCompany.module.css";
 import ActionButton from "@components/layout/ActionButton";
 
@@ -22,7 +22,7 @@ export default function AddCompany() {
   const { setCompanies } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  const [formData, setFormData] = useState<ICompanyState>(initialState);
+  const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Destructure data
   const { name, website, address, code, budget } = formData;

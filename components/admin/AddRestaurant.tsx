@@ -2,7 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { hasEmpty } from "@utils/index";
 import { useData } from "@context/Data";
-import { IRestaurantState, IVendor } from "types";
+import { IFormData, IVendor } from "types";
 import { ChangeEvent, FormEvent, useState } from "react";
 import ActionButton from "@components/layout/ActionButton";
 import styles from "@styles/admin/AddRestaurant.module.css";
@@ -23,7 +23,7 @@ export default function AddRestaurant() {
   const { setVendors } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  const [formData, setFormData] = useState<IRestaurantState>(initialState);
+  const [formData, setFormData] = useState<IFormData>(initialState);
 
   const {
     name,

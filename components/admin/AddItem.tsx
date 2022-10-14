@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IItemState } from "types";
+import { IFormData } from "types";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import styles from "@styles/admin/AddItem.module.css";
@@ -22,7 +22,7 @@ export default function AddItem() {
   const { setVendors } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  const [formData, setFormData] = useState<IItemState>(initialState);
+  const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Destructure form data and check
   const { name, description, tags, price } = formData;

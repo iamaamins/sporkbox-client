@@ -36,6 +36,7 @@ interface IItem {
 }
 
 export interface IRestaurant {
+  type: "restaurant"; // Discriminated union
   _id: string;
   name: string;
   items: IItem[];
@@ -45,6 +46,7 @@ export interface IRestaurant {
 }
 
 export interface IVendor {
+  type: "vendor"; // Discriminated union
   _id: string;
   name: string;
   email: string;
@@ -89,47 +91,6 @@ export interface IUserContext {
   setUser: Dispatch<SetStateAction<IUser>>;
 }
 
-export interface ICompanyState {
-  name: string;
-  code: string;
-  budget: number;
-  website: string;
-  address: string;
-}
-
-export interface IItemState {
-  name: string;
-  tags: string;
-  price: number;
-  description: string;
-}
-
-export interface IRestaurantState {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  restaurantName: string;
-  restaurantAddress: string;
-}
-
-export interface ILoginState {
-  email: string;
-  password: string;
-}
-
-export interface IRegisterState {
-  email: string;
-  name: string;
-  password: string;
-  confirmPassword: string;
-}
-
-export interface IScheduleRestaurantState {
-  date: string;
-  restaurantId: string;
-}
-
 export interface IRestaurantGroup {
   scheduledOn: string;
   restaurants: IRestaurant[];
@@ -155,4 +116,16 @@ export interface IMobileNavProps extends IMobileMenuProps {}
 
 export interface IContextProviderProps {
   children: React.ReactNode;
+}
+
+export type Groups<
+  Item extends object,
+  Key extends keyof Item,
+  ItemsName extends PropertyKey
+> = {
+  [Q in Key]: Item[Key];
+} & { [Q in ItemsName]: Item[] };
+
+export interface IFormData {
+  [key: string]: string | number; // Index type
 }
