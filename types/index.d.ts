@@ -1,19 +1,68 @@
-export interface IButtons {
-  href: string;
+export interface IUser {
+  _id: string;
+  name: string;
+  email: string;
+  role: string;
   status?: string;
-  linkText: string;
-  buttonText?: string;
-  handleClick: (e: FormEvent) => Promise<void>;
+  createdAt?: string;
+  company?: ICompany;
+  restaurant?: IRestaurant;
 }
 
-export interface ICartItem {
+export interface IVendor extends IUser {
+  _type: "Vendor"; // Discriminated union
+  status: string;
+  createdAt: string;
+  restaurant: IRestaurant;
+}
+
+export interface IRestaurant {
+  _type: "Restaurant"; // Discriminated union
   _id: string;
-  date: number;
+  name: string;
+  items: IItem[];
+  address: string;
+  createdAt: string;
+  scheduledOn: string;
+}
+
+interface IItem {
+  _id: string;
+  tags: string;
   name: string;
   price: number;
-  total: number;
-  quantity: number;
-  restaurant: string;
+  description: string;
+}
+
+export interface ICompany {
+  _id: string;
+  name: string;
+  code: string;
+  budget: number;
+  website: string;
+  address: string;
+  createdAt: string;
+}
+
+export interface IContextProviderProps {
+  children: React.ReactNode;
+}
+
+export interface IUserContext {
+  isLoading: boolean;
+  isAdmin: boolean;
+  isVendor: boolean;
+  isCustomer: boolean;
+  setUser: Dispatch<SetStateAction<IUser>>;
+}
+
+export interface IDataContext {
+  vendors: IVendor[];
+  companies: ICompany[];
+  scheduledRestaurants: IRestaurant[];
+  setVendors: Dispatch<SetStateAction<IVendor[]>>;
+  setCompanies: Dispatch<SetStateAction<ICompany[]>>;
+  setScheduledRestaurants: Dispatch<SetStateAction<IRestaurant[]>>;
 }
 
 export interface ICartContext {
@@ -27,73 +76,27 @@ export interface ICartContext {
   setCartItems: Dispatch<SetStateAction<ICartItem[]>>;
 }
 
-interface IItem {
+export interface ICartItem {
   _id: string;
-  tags: string;
+  date: number;
   name: string;
   price: number;
-  description: string;
-}
-
-export interface IRestaurant {
-  _type: "Restaurant"; // Discriminated union
-  _id: string;
-  name: string;
-  items: IItem[];
-  address: string;
-  createdAt: string;
-  scheduledOn: string;
-}
-
-export interface IVendor {
-  _type: "Vendor"; // Discriminated union
-  _id: string;
-  name: string;
-  email: string;
-  status: string;
-  createdAt: string;
-  restaurant: IRestaurant;
-}
-
-export interface ICompany {
-  _id: string;
-  name: string;
-  code: string;
-  budget: number;
-  website: string;
-  address: string;
-  createdAt: string;
-}
-
-export interface IDataContext {
-  vendors: IVendor[];
-  companies: ICompany[];
-  scheduledRestaurants: IRestaurant[];
-  setVendors: Dispatch<SetStateAction<IVendor[]>>;
-  setCompanies: Dispatch<SetStateAction<ICompany[]>>;
-  setScheduledRestaurants: Dispatch<SetStateAction<IRestaurant[]>>;
-}
-
-export interface IUser {
-  _id: string;
-  name: string;
-  email: string;
-  role: string;
-  company?: ICompany;
-  restaurant?: IRestaurant;
-}
-
-export interface IUserContext {
-  isLoading: boolean;
-  isAdmin: boolean;
-  isVendor: boolean;
-  isCustomer: boolean;
-  setUser: Dispatch<SetStateAction<IUser>>;
+  total: number;
+  quantity: number;
+  restaurant: string;
 }
 
 export interface IRestaurantGroup {
   scheduledOn: string;
   restaurants: IRestaurant[];
+}
+
+export interface IButtons {
+  href: string;
+  status?: string;
+  linkText: string;
+  buttonText?: string;
+  handleClick: (e: FormEvent) => Promise<void>;
 }
 
 export interface IActionButtonProps {
@@ -113,10 +116,6 @@ export interface IMobileMenuProps {
 }
 
 export interface IMobileNavProps extends IMobileMenuProps {}
-
-export interface IContextProviderProps {
-  children: React.ReactNode;
-}
 
 export type Groups<
   Item extends object,
