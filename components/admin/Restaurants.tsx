@@ -37,7 +37,7 @@ export default function Restaurants() {
                   </td>
                   <td className={styles.hide_on_mobile}>{vendor.email}</td>
                   <td className={styles.hide_on_mobile}>
-                    {convertDateToText(vendor.createdAt)}{" "}
+                    {convertDateToText(vendor.restaurant.createdAt)}{" "}
                   </td>
                   <td>{vendor.status}</td>
                 </tr>

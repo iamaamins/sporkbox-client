@@ -4,14 +4,12 @@ export interface IUser {
   email: string;
   role: string;
   status?: string;
-  createdAt?: string;
   company?: ICompany;
   restaurant?: IRestaurant;
 }
 
 export interface IVendor extends IUser {
   status: string;
-  createdAt: string;
   restaurant: IRestaurant;
 }
 
