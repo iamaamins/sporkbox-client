@@ -6,7 +6,6 @@ export default function Buttons({
   handleClick,
   linkText,
   buttonText,
-  status,
   href,
 }: IButtons) {
   return (
@@ -16,7 +15,7 @@ export default function Buttons({
       </Link>
 
       <button onClick={handleClick} className={styles.action_button}>
-        {buttonText || (status === "PENDING" ? "Approve" : "Restrict")}
+        {buttonText}
       </button>
     </div>
   );

@@ -72,7 +72,7 @@ export default function Restaurant() {
             <Buttons
               handleClick={handleApproval}
               linkText="Add item"
-              status={vendor.status}
+              buttonText={vendor.status === "PENDING" ? "Approve" : "Restrict"}
               href={`/admin/restaurants/${vendor.restaurant._id}/add-item`}
             />
           </div>

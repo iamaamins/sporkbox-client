@@ -48,17 +48,14 @@ export function updateVendors(
   // Update the restaurants state
   setVendors((currVendors) =>
     currVendors.map((currVendor) => {
-      if (
-        currVendor._id === updatedData._id &&
-        updatedData._type === "Vendor"
-      ) {
+      if (currVendor._id === updatedData._id && "status" in updatedData) {
         return {
           ...currVendor,
           status: updatedData.status,
         };
       } else if (
         currVendor.restaurant._id === updatedData._id &&
-        updatedData._type === "Restaurant"
+        "items" in updatedData
       ) {
         return {
           ...currVendor,

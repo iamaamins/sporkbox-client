@@ -10,14 +10,12 @@ export interface IUser {
 }
 
 export interface IVendor extends IUser {
-  _type: "Vendor"; // Discriminated union
   status: string;
   createdAt: string;
   restaurant: IRestaurant;
 }
 
 export interface IRestaurant {
-  _type: "Restaurant"; // Discriminated union
   _id: string;
   name: string;
   items: IItem[];
@@ -93,9 +91,8 @@ export interface IRestaurantGroup {
 
 export interface IButtons {
   href: string;
-  status?: string;
   linkText: string;
-  buttonText?: string;
+  buttonText: string;
   handleClick: (e: FormEvent) => Promise<void>;
 }
 
