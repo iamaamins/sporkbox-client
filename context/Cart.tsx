@@ -9,6 +9,7 @@ import React, {
   useContext,
   FC,
 } from "react";
+import axios from "axios";
 
 // Create context
 const CartContext = createContext({} as ICartContext);
@@ -93,9 +94,30 @@ export default function CartProvider({ children }: IContextProviderProps) {
   }
 
   async function checkoutCart() {
-    if (!isCustomer) router.push("/login");
+    // if (!isCustomer) router.push("/login");
 
-    console.log(isCustomer);
+    // Create order
+    const order = {
+      items: cartItems,
+      total: totalCartPrice,
+    };
+
+    // Create an order
+    try {
+      // Make request to the backend
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/orders/create`,
+        order,
+        {
+          withCredentials: true,
+        }
+      );
+
+      // Update customer's orders state
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (

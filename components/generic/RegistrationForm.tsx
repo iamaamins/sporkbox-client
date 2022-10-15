@@ -2,12 +2,14 @@ import axios from "axios";
 import Link from "next/link";
 import { IFormData } from "types";
 import { useUser } from "@context/User";
+import { useRouter } from "next/router";
 import { hasEmpty } from "@utils/index";
 import { ChangeEvent, FormEvent, useState } from "react";
 import ActionButton from "@components/layout/ActionButton";
 import styles from "@styles/generic/RegistrationForm.module.css";
 
 export default function RegistrationForm() {
+  // Initial state
   const initialSate = {
     name: "",
     email: "",
@@ -15,6 +17,8 @@ export default function RegistrationForm() {
     confirmPassword: "",
   };
 
+  // Hooks
+  const router = useRouter();
   const { setUser } = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
@@ -59,6 +63,9 @@ export default function RegistrationForm() {
       // Remove the loader and clear form
       setIsLoading(false);
       setFormData(initialSate);
+
+      // Push to dashboard page
+      router.push("/dashboard");
     } catch (err) {
       // Remove the loader
       setIsLoading(false);

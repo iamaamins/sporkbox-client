@@ -16,12 +16,12 @@ export default function Item() {
   // Initial state
   const initialState = {
     _id: "",
-    date: 0,
     name: "",
     price: 0,
     total: 0,
     quantity: 1,
     restaurant: "",
+    deliveryDate: 0,
   };
   const router = useRouter();
   const { addItemToCart } = useCart();
@@ -46,19 +46,19 @@ export default function Item() {
         (item) => item._id === router.query.item
       );
 
-      // If there are restaurant and item
+      // If there is a restaurant and an item
       if (restaurant && item) {
         // Update item
         setItem(item);
 
         // Get the date
-        const date = convertDateToMilliseconds(restaurant?.scheduledOn);
+        const deliveryDate = convertDateToMilliseconds(restaurant.scheduledOn);
 
         // Update initial item
         setCarItem((currItem) => ({
           ...currItem,
-          date,
           quantity: 1,
+          deliveryDate,
           _id: item._id,
           name: item.name,
           price: item.price,

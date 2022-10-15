@@ -43,7 +43,7 @@ export default function Cart() {
                 </div>
 
                 <Link
-                  href={`/calendar/${cartItem.date}/${cartItem.restaurant}/${cartItem._id}`}
+                  href={`/calendar/${cartItem.deliveryDate}/${cartItem.restaurant}/${cartItem._id}`}
                 >
                   <a className={styles.item_details}>
                     <p className={styles.name}>
@@ -54,7 +54,7 @@ export default function Cart() {
                     </p>
                     <p className={styles.date}>
                       Delivery date:{" "}
-                      <span>{convertDateToText(cartItem.date)}</span>
+                      <span>{convertDateToText(cartItem.deliveryDate)}</span>
                     </p>
                   </a>
                 </Link>

@@ -78,12 +78,12 @@ export interface ICartContext {
 
 export interface ICartItem {
   _id: string;
-  date: number;
   name: string;
   price: number;
   total: number;
   quantity: number;
   restaurant: string;
+  deliveryDate: number;
 }
 
 export interface IRestaurantGroup {
