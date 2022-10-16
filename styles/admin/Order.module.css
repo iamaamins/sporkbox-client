@@ -22,3 +22,9 @@
 .hide_on_mobile {
   display: none;
 }
+
+@media (min-width: 768px) {
+  .hide_on_mobile {
+    display: table-cell;
+  }
+}

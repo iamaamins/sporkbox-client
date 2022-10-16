@@ -1,0 +1,52 @@
+.filter {
+  width: 1.75rem;
+  height: 1.75rem;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  border-radius: 100%;
+  justify-content: center;
+  border: 1px solid var(--gray);
+}
+
+.filter svg {
+  font-size: 1.25rem;
+  color: var(--gray);
+}
+
+.filters {
+  display: none;
+  margin-left: auto;
+}
+
+.filters.show {
+  display: flex;
+  margin-bottom: 1.5rem;
+  justify-content: space-between;
+}
+
+.filters select {
+  width: 48%;
+  padding: 8px;
+  border-radius: 0.25rem;
+  -webkit-appearance: none;
+  border: 1px solid var(--border_color);
+}
+
+.filters select:focus {
+  outline: 1px solid var(--teal);
+}
+
+@media (min-width: 768px) {
+  .filters.show {
+    justify-content: flex-start;
+  }
+
+  .filters select {
+    width: 12rem;
+  }
+
+  .filters select:last-child {
+    margin-left: 1rem;
+  }
+}

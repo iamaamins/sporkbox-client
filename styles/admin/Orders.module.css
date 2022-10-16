@@ -25,29 +25,6 @@
   color: var(--gray);
 }
 
-.filters {
-  display: none;
-}
-
-.filters.show {
-  display: flex;
-  margin-bottom: 1rem;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.filters select {
-  width: 48%;
-  padding: 8px;
-  border-radius: 0.25rem;
-  -webkit-appearance: none;
-  border: 1px solid var(--border_color);
-}
-
-.filters select:focus {
-  outline: 1px solid var(--teal);
-}
-
 .orders table {
   width: 100%;
   border-collapse: collapse;

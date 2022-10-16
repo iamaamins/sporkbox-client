@@ -125,6 +125,13 @@ export interface IOrderProps {
 
 export interface IOrdersProps {
   title: string;
+  orders: IOrder[];
+}
+
+export interface IFilterProps {
+  orders: IOrder[];
+  showFilters: boolean;
+  setFilteredOrders: Dispatch<SetStateAction<IOrder[]>>;
 }
 
 export interface IButtons {
