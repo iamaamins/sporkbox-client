@@ -105,9 +105,18 @@ export interface IActiveOrder {
   };
 }
 
-export interface IRestaurantGroup {
+export interface IRestaurantsGroup {
   scheduledOn: string;
   restaurants: IRestaurant[];
+}
+
+export interface IActiveOrdersGroup {
+  [key: string]: string | IActiveOrder[];
+}
+
+export interface IFiltersData {
+  category: string;
+  subCategory: string;
 }
 
 export interface IButtons {

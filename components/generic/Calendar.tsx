@@ -9,7 +9,7 @@ import {
   convertDateToMilliseconds,
 } from "@utils/index";
 import Image from "next/image";
-import { IRestaurant, IRestaurantGroup } from "types";
+import { IRestaurant, IRestaurantsGroup } from "types";
 import styles from "@styles/generic/Calendar.module.css";
 
 export default function Calendar() {
@@ -18,7 +18,7 @@ export default function Calendar() {
   const { cartItems } = useCart();
   const { scheduledRestaurants } = useData();
   const [restaurants, setRestaurants] = useState<IRestaurant[]>([]);
-  const [restaurantGroups, setRestaurantGroups] = useState<IRestaurantGroup[]>(
+  const [restaurantGroups, setRestaurantGroups] = useState<IRestaurantsGroup[]>(
     []
   );
 
@@ -30,6 +30,8 @@ export default function Calendar() {
         scheduledRestaurants,
         "restaurants"
       );
+
+      console.log(groups);
 
       // Find the restaurant with date from slug
       const restaurants = groups.find(

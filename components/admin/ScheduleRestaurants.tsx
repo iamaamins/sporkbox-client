@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useData } from "@context/Data";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { IFormData, IRestaurant } from "types";
 import ActionButton from "@components/layout/ActionButton";
 import styles from "@styles/admin/ScheduleRestaurants.module.css";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { hasEmpty, updateScheduledRestaurants } from "@utils/index";
 
 export default function ScheduleRestaurants() {

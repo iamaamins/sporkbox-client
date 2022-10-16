@@ -26,8 +26,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
   >([]);
   const [activeOrders, setActiveOrders] = useState<IActiveOrder[]>([]);
 
-  console.log(activeOrders);
-
   // Get admin data
   useEffect(() => {
     // Get admin data
