@@ -5,18 +5,16 @@ import styles from "@styles/admin/Dashboard.module.css";
 import LinkButton from "@components/layout/LinkButton";
 
 export default function Dashboard() {
-  const { scheduledRestaurants, companies } = useData();
+  const { activeOrders, scheduledRestaurants, companies } = useData();
 
   return (
     <>
-      <section className={styles.section}>
-        <h2>No current orders</h2>
+      {activeOrders.length > 0 && (
+        <section className={styles.section}>
+          <h2>Active orders</h2>
 
-        {/* <h2>Current orders</h2> */}
-
-        {/* Current orders */}
-        {/* <div className={styles.orders}>
-          {restaurants && (
+          {/* Active orders */}
+          <div className={styles.active_orders}>
             <table>
               <thead>
                 <tr>
@@ -28,27 +26,27 @@ export default function Dashboard() {
               </thead>
 
               <tbody>
-                {restaurants.map((restaurant) => (
-                  <tr key={restaurant._id}>
+                {activeOrders.map((activeOrder) => (
+                  <tr key={activeOrder._id}>
                     <td className={styles.important}>
-                      <Link href={`/admin/restaurants/${restaurant._id}`}>
-                        <a>{restaurant.name}</a>
+                      <Link href={`/admin/restaurants/${activeOrder._id}`}>
+                        <a>{activeOrder.customerName}</a>
                       </Link>
                     </td>
                     <td className={styles.hide_on_mobile}>
-                      {restaurant.owner.email}
+                      {activeOrder.deliveryDate}
                     </td>
                     <td className={styles.hide_on_mobile}>
-                      {convertDateToText(restaurant.createdAt)}
+                      {convertDateToText(activeOrder.restaurantName)}
                     </td>
-                    <td>{restaurant.status}</td>
+                    <td>{activeOrder.status}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          )}
-        </div> */}
-      </section>
+          </div>
+        </section>
+      )}
 
       {/* Scheduled restaurants */}
       {scheduledRestaurants.length > 0 && (

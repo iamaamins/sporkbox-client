@@ -22,6 +22,7 @@ export default function Item() {
     quantity: 1,
     restaurant: "",
     deliveryDate: 0,
+    restaurantName: "",
   };
   const router = useRouter();
   const { addItemToCart } = useCart();
@@ -63,7 +64,8 @@ export default function Item() {
           name: item.name,
           price: item.price,
           total: item.price,
-          restaurant: router.query.restaurant as string,
+          restaurant: restaurant._id,
+          restaurantName: restaurant.name,
         }));
       }
     }

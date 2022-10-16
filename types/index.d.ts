@@ -55,6 +55,7 @@ export interface IUserContext {
 export interface IDataContext {
   vendors: IVendor[];
   companies: ICompany[];
+  activeOrders: IActiveOrder[];
   scheduledRestaurants: IRestaurant[];
   setVendors: Dispatch<SetStateAction<IVendor[]>>;
   setCompanies: Dispatch<SetStateAction<ICompany[]>>;
@@ -80,6 +81,28 @@ export interface ICartItem {
   quantity: number;
   restaurant: string;
   deliveryDate: number;
+  restaurantName: string;
+}
+
+export interface IActiveOrder {
+  _id: string;
+  status: string;
+  company: string;
+  customer: string;
+  createdAt: string;
+  restaurant: string;
+  companyName: string;
+  customerName: string;
+  deliveryDate: string;
+  customerEmail: string;
+  restaurantName: string;
+  deliveryAddress: string;
+  item: {
+    _id: string;
+    name: string;
+    total: number;
+    quantity: number;
+  };
 }
 
 export interface IRestaurantGroup {

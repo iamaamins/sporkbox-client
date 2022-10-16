@@ -5,6 +5,7 @@ import {
   ICompany,
   IRestaurant,
   IDataContext,
+  IActiveOrder,
   IContextProviderProps,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
@@ -23,11 +24,29 @@ export default function DataProvider({ children }: IContextProviderProps) {
   const [scheduledRestaurants, setScheduledRestaurants] = useState<
     IRestaurant[]
   >([]);
+  const [activeOrders, setActiveOrders] = useState<IActiveOrder[]>([]);
+
+  console.log(activeOrders);
 
   // Get admin data
   useEffect(() => {
     // Get admin data
     async function getAdminData() {
+      // Get active orders
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/orders/active`,
+          {
+            withCredentials: true,
+          }
+        );
+
+        // Update state
+        setActiveOrders(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+
       // Get 20 latest vendors
       try {
         const res = await axios.get(
@@ -57,8 +76,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
       } catch (err) {
         console.log(err);
       }
-
-      // Get current orders
 
       // Get 20 latest orders
     }
@@ -97,6 +114,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setVendors,
         companies,
         setCompanies,
+        activeOrders,
         scheduledRestaurants,
         setScheduledRestaurants,
       }}

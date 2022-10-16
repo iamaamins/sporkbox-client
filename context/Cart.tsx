@@ -96,18 +96,12 @@ export default function CartProvider({ children }: IContextProviderProps) {
   async function checkoutCart() {
     // if (!isCustomer) router.push("/login");
 
-    // Create order
-    const order = {
-      items: cartItems,
-      total: totalCartPrice,
-    };
-
     // Create an order
     try {
       // Make request to the backend
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/orders/create`,
-        order,
+        { items: cartItems },
         {
           withCredentials: true,
         }
