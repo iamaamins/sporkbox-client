@@ -45,7 +45,10 @@ export default function ScheduledRestaurants() {
         </>
       )}
 
-      <LinkButton href="/admin/schedule-restaurants" text="Schedule more" />
+      <LinkButton
+        href="/admin/restaurants/schedule-restaurants"
+        text="Schedule more"
+      />
     </section>
   );
 }

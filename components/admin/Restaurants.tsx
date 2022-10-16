@@ -47,7 +47,10 @@ export default function Restaurants() {
         </>
       )}
 
-      <LinkButton href="/admin/add-restaurant" text="Add restaurant" />
+      <LinkButton
+        href="/admin/restaurants/add-restaurant"
+        text="Add restaurant"
+      />
     </section>
   );
 }

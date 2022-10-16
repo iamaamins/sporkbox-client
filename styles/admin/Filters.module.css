@@ -19,15 +19,20 @@
   margin-left: auto;
 }
 
-.filters.show {
+.show_filters {
   display: flex;
   margin-bottom: 1.5rem;
   justify-content: space-between;
 }
 
+.hide_select {
+  display: none;
+}
+
 .filters select {
   width: 48%;
   padding: 8px;
+  color: var(--gray);
   border-radius: 0.25rem;
   -webkit-appearance: none;
   border: 1px solid var(--border_color);
@@ -38,7 +43,7 @@
 }
 
 @media (min-width: 768px) {
-  .filters.show {
+  .show_filters {
     justify-content: flex-start;
   }
 

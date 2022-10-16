@@ -35,10 +35,10 @@ export default function Orders({ title, orders }: IOrdersProps) {
       <table>
         <thead>
           <tr>
-            <th>Order#</th>
-            <th className={styles.hide_on_mobile}>Created on</th>
+            <th>Customer</th>
+            <th className={styles.hide_on_mobile}>Company</th>
             <th className={styles.hide_on_mobile}>Restaurant</th>
-            <th>Status</th>
+            <th>Delivery date</th>
           </tr>
         </thead>
 

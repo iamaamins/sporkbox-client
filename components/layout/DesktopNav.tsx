@@ -110,10 +110,10 @@ export default function DesktopNav() {
         </li>
 
         <li className={!isAdmin ? styles.hide : ""}>
-          <Link href="/admin/scheduled-restaurants">
+          <Link href="/admin/restaurants/scheduled">
             <a
               className={
-                pathName === "/admin/scheduled-restaurants" ? styles.active : ""
+                pathName === "/admin/restaurants/scheduled" ? styles.active : ""
               }
             >
               Scheduled

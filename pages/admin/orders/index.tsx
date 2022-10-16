@@ -2,11 +2,13 @@ import { useEffect } from "react";
 import { useUser } from "@context/User";
 import { checkUser } from "@utils/index";
 import { useRouter } from "next/router";
+import { useData } from "@context/Data";
 import Orders from "@components/admin/Orders";
 import PageLoader from "@components/layout/PageLoader";
 
 export default function OrdersPage() {
   const router = useRouter();
+  const { activeOrders } = useData();
   const { isLoading, isAdmin } = useUser();
 
   useEffect(() => {
@@ -16,7 +18,7 @@ export default function OrdersPage() {
   return (
     <main>
       {isLoading && <PageLoader />}
-      {isAdmin && <Orders />}
+      {isAdmin && <Orders orders={activeOrders} title="All orders" />}
     </main>
   );
 }

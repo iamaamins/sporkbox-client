@@ -1,8 +1,7 @@
-import { useData } from "@context/Data";
 import { groupBy } from "@utils/index";
 import { ChangeEvent, useEffect, useState } from "react";
-import { IFilterProps, IFiltersData, IOrdersGroup } from "types";
 import styles from "@styles/admin/Filters.module.css";
+import { IFilterProps, IFiltersData, IOrdersGroup } from "types";
 
 export default function Filters({
   orders,
@@ -46,7 +45,9 @@ export default function Filters({
         setCategoryGroups(groupBy(category, orders, "orders"));
     }
 
-    console.log(subCategory);
+    {
+      category === "all" && setFilteredOrders([]);
+    }
   }, [category]);
 
   // Handle change
@@ -58,17 +59,23 @@ export default function Filters({
   }
 
   return (
-    <div className={`${styles.filters} ${showFilters && styles.show}`}>
+    <div className={`${styles.filters} ${showFilters && styles.show_filters}`}>
       <select name="category" value={category} onChange={handleChange}>
         <option hidden aria-hidden>
           Category
         </option>
+        <option value="all">All</option>
         <option value="companyName">Company</option>
         <option value="restaurantName">Restaurant</option>
         <option value="deliveryDate">Delivery date</option>
       </select>
 
-      <select name="subCategory" value={subCategory} onChange={handleChange}>
+      <select
+        name="subCategory"
+        value={subCategory}
+        onChange={handleChange}
+        className={category === "all" ? styles.hide_select : ""}
+      >
         <option hidden aria-hidden>
           Sub category
         </option>
