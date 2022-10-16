@@ -1,52 +1,69 @@
-.section {
+.orders {
   padding: var(--section_padding);
 }
 
-.all_orders_title {
+.orders_top {
+  display: flex;
+  align-items: center;
   margin-bottom: 1rem;
+  justify-content: space-between;
 }
 
-.section table {
+.filter {
+  width: 1.75rem;
+  height: 1.75rem;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  border-radius: 100%;
+  justify-content: center;
+  border: 1px solid var(--gray);
+}
+
+.filter svg {
+  font-size: 1.25rem;
+  color: var(--gray);
+}
+
+.filters {
+  display: none;
+}
+
+.filters.show {
+  display: flex;
+  margin-bottom: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filters select {
+  width: 48%;
+  padding: 8px;
+  border-radius: 0.25rem;
+  -webkit-appearance: none;
+  border: 1px solid var(--border_color);
+}
+
+.filters select:focus {
+  outline: 1px solid var(--teal);
+}
+
+.orders table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.section table th,
-.section table td {
+.orders th {
   text-align: left;
   padding: 1rem;
 }
 
-.section table th:last-child,
-.section table td:last-child {
+.orders th:last-child {
   text-align: right;
 }
 
-.section table thead tr {
+.orders thead tr {
   background-color: var(--almost_white);
-}
-
-.section table tbody tr {
-  border-bottom: 1px solid var(--border_color);
-}
-
-.section table tbody tr:last-child {
-  border-bottom: none;
-}
-
-.section table tbody td {
-  font-weight: 500;
-  color: var(--gray);
-  font-size: 0.9rem;
-}
-
-.section table tbody td:last-child {
-  text-transform: lowercase;
-}
-
-.important a {
-  color: var(--black);
-  font-size: 1rem;
 }
 
 .hide_on_mobile {
@@ -54,7 +71,7 @@
 }
 
 @media (min-width: 768px) {
-  .section {
+  .orders {
     max-width: 85%;
     margin: 0 auto;
   }
@@ -65,7 +82,7 @@
 }
 
 @media (min-width: 1024px) {
-  .section {
+  .orders {
     max-width: 80%;
     margin: 0 auto;
   }

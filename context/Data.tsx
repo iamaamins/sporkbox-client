@@ -5,7 +5,7 @@ import {
   ICompany,
   IRestaurant,
   IDataContext,
-  IActiveOrder,
+  IOrder,
   IContextProviderProps,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
@@ -24,7 +24,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
   const [scheduledRestaurants, setScheduledRestaurants] = useState<
     IRestaurant[]
   >([]);
-  const [activeOrders, setActiveOrders] = useState<IActiveOrder[]>([]);
+  const [activeOrders, setActiveOrders] = useState<IOrder[]>([]);
 
   // Get admin data
   useEffect(() => {
