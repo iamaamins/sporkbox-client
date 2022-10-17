@@ -27,21 +27,16 @@ export default function Company() {
 
     try {
       // Make delete request to backend
-      const res = await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/companies/${router.query.company}`,
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/companies/${company?._id}`,
         {
           withCredentials: true,
         }
       );
 
-      // Successfully deleted message
-      console.log(res.data.message);
-
       // Update state
       setCompanies((currCompanies: ICompany[]) =>
-        currCompanies.filter(
-          (currCompany) => currCompany._id !== router.query.company
-        )
+        currCompanies.filter((currCompany) => currCompany._id !== company?._id)
       );
 
       // Back to companies page
