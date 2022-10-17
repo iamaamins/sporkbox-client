@@ -14,7 +14,7 @@ export default function Orders({ title, orders }: IOrdersProps) {
   return (
     <section className={styles.orders}>
       {/* If there are no active orders */}
-      {orders.length === 0 && <h2>No active orders</h2>}
+      {orders.length === 0 && <h2>No {title.toLowerCase()}</h2>}
 
       {/* If there are active orders */}
       {orders.length > 0 && (
