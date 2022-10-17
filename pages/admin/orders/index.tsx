@@ -8,7 +8,7 @@ import PageLoader from "@components/layout/PageLoader";
 
 export default function OrdersPage() {
   const router = useRouter();
-  const { activeOrders } = useData();
+  const { deliveredOrders } = useData();
   const { isLoading, isAdmin } = useUser();
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function OrdersPage() {
   return (
     <main>
       {isLoading && <PageLoader />}
-      {isAdmin && <Orders orders={activeOrders} title="All orders" />}
+      {isAdmin && <Orders orders={deliveredOrders} title="Delivered orders" />}
     </main>
   );
 }

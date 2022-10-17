@@ -25,6 +25,13 @@ export default function DataProvider({ children }: IContextProviderProps) {
     IRestaurant[]
   >([]);
   const [activeOrders, setActiveOrders] = useState<IOrder[]>([]);
+  const [deliveredOrders, setDeliveredOrders] = useState<IOrder[]>([]);
+  const [allOrders, setAllOrders] = useState<IOrder[]>([]);
+
+  // Create all orders
+  useEffect(() => {
+    setAllOrders([...activeOrders, ...deliveredOrders]);
+  }, [activeOrders, deliveredOrders]);
 
   // Get admin data
   useEffect(() => {
@@ -32,6 +39,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
     async function getAdminData() {
       // Get active orders
       try {
+        // Make request to backend
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/orders/active`,
           {
@@ -47,6 +55,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
 
       // Get 20 latest vendors
       try {
+        // Make request to backend
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/vendor/20`,
           {
@@ -62,6 +71,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
 
       // Get all companies
       try {
+        // Make request to backend
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/companies`,
           {
@@ -75,7 +85,19 @@ export default function DataProvider({ children }: IContextProviderProps) {
         console.log(err);
       }
 
-      // Get 20 latest orders
+      // Get 50 delivered orders
+      try {
+        // Make request to backend
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/orders/50}`,
+          { withCredentials: true }
+        );
+
+        // Update state
+        setDeliveredOrders(res.data);
+      } catch (err) {
+        console.log(err);
+      }
     }
 
     // Run the function if there is an admin
@@ -111,9 +133,12 @@ export default function DataProvider({ children }: IContextProviderProps) {
         vendors,
         setVendors,
         companies,
+        allOrders,
         setCompanies,
         activeOrders,
         setActiveOrders,
+        deliveredOrders,
+        setDeliveredOrders,
         scheduledRestaurants,
         setScheduledRestaurants,
       }}

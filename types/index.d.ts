@@ -54,12 +54,15 @@ export interface IUserContext {
 
 export interface IDataContext {
   vendors: IVendor[];
+  allOrders: IOrder[];
   companies: ICompany[];
   activeOrders: IOrder[];
+  deliveredOrders: IOrder[];
   scheduledRestaurants: IRestaurant[];
   setVendors: Dispatch<SetStateAction<IVendor[]>>;
   setCompanies: Dispatch<SetStateAction<ICompany[]>>;
   setActiveOrders: Dispatch<SetStateAction<IOrder[]>>;
+  setDeliveredOrders: Dispatch<SetStateAction<IOrder[]>>;
   setScheduledRestaurants: Dispatch<SetStateAction<IRestaurant[]>>;
 }
 

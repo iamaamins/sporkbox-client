@@ -7,17 +7,17 @@ import { IOrder, IOrdersProps } from "types";
 import styles from "@styles/admin/Orders.module.css";
 
 export default function Orders({ title, orders }: IOrdersProps) {
-  const { activeOrders } = useData();
+  // const { activeOrders } = useData();
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const [filteredOrders, setFilteredOrders] = useState<IOrder[]>([]);
 
   return (
     <section className={styles.orders}>
       {/* If there are no active orders */}
-      {activeOrders.length === 0 && <h2>No active orders</h2>}
+      {orders.length === 0 && <h2>No active orders</h2>}
 
       {/* If there are active orders */}
-      {activeOrders.length > 0 && (
+      {orders.length > 0 && (
         <>
           {/* Title and filter icon */}
           <div className={styles.orders_top}>
@@ -51,7 +51,7 @@ export default function Orders({ title, orders }: IOrdersProps) {
             <tbody>
               {filteredOrders.length === 0 ? (
                 <>
-                  {activeOrders.map((order, index) => (
+                  {orders.map((order, index) => (
                     <OrderRow key={index} order={order} />
                   ))}
                 </>

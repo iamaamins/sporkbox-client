@@ -1,3 +1,5 @@
+import axios from "axios";
+import Link from "next/link";
 import { IOrder } from "types";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
@@ -5,25 +7,21 @@ import { useEffect, useState } from "react";
 import styles from "@styles/admin/Order.module.css";
 import ActionButton from "@components/layout/ActionButton";
 import { convertDateToText, formatCurrencyToUSD } from "@utils/index";
-import Link from "next/link";
-import axios from "axios";
 
 export default function Order() {
   const router = useRouter();
   const [order, setOrder] = useState<IOrder>();
   const [isLoading, setIsLoading] = useState(false);
-  const { activeOrders, setActiveOrders } = useData();
+  const { allOrders, setActiveOrders, setDeliveredOrders } = useData();
 
   // Get the order
   useEffect(() => {
-    if (activeOrders.length > 0 && router.isReady) {
+    if (allOrders.length > 0 && router.isReady) {
       setOrder(
-        activeOrders.find(
-          (activeOrder) => activeOrder._id === router.query.order
-        )
+        allOrders.find((activeOrder) => activeOrder._id === router.query.order)
       );
     }
-  }, [activeOrders, router.isReady]);
+  }, [allOrders, router.isReady]);
 
   // Handle order status
   async function handleOrderStatus() {
@@ -32,7 +30,7 @@ export default function Order() {
       setIsLoading(true);
 
       // Make request to backend
-      await axios.put(
+      const res = await axios.put(
         `${process.env.NEXT_PUBLIC_API_URL}/orders/${order?._id}/status`,
         {},
         { withCredentials: true }
@@ -44,6 +42,12 @@ export default function Order() {
           (currActiveOrder) => currActiveOrder._id !== order?._id
         )
       );
+
+      // Update delivered orders
+      setDeliveredOrders((currDeliveredOrders: IOrder[]) => [
+        ...currDeliveredOrders,
+        res.data,
+      ]);
 
       // Remove the loader
       setIsLoading(false);
