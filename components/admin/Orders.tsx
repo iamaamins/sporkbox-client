@@ -1,4 +1,4 @@
-import Order from "./Order";
+import OrderRow from "./OrderRow";
 import Filters from "./Filters";
 import { useState } from "react";
 import { useData } from "@context/Data";
@@ -46,13 +46,13 @@ export default function Orders({ title, orders }: IOrdersProps) {
           {filteredOrders.length === 0 ? (
             <>
               {activeOrders.map((order, index) => (
-                <Order key={index} order={order} />
+                <OrderRow key={index} order={order} />
               ))}
             </>
           ) : (
             <>
               {filteredOrders.map((order, index) => (
-                <Order key={index} order={order} />
+                <OrderRow key={index} order={order} />
               ))}
             </>
           )}

@@ -5,7 +5,7 @@ import { useData } from "@context/Data";
 import styles from "@styles/admin/AddItem.module.css";
 import { hasEmpty, updateVendors } from "@utils/index";
 import { ChangeEvent, FormEvent, useState } from "react";
-import ActionButton from "@components/layout/ActionButton";
+import SubmitButton from "@components/layout/SubmitButton";
 
 export default function AddItem() {
   // Initial state
@@ -115,7 +115,7 @@ export default function AddItem() {
           />
         </div>
 
-        <ActionButton
+        <SubmitButton
           text="Add Item"
           isLoading={isLoading}
           isDisabled={isDisabled}

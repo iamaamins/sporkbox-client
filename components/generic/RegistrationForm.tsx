@@ -5,7 +5,7 @@ import { useUser } from "@context/User";
 import { useRouter } from "next/router";
 import { hasEmpty } from "@utils/index";
 import { ChangeEvent, FormEvent, useState } from "react";
-import ActionButton from "@components/layout/ActionButton";
+import SubmitButton from "@components/layout/SubmitButton";
 import styles from "@styles/generic/RegistrationForm.module.css";
 
 export default function RegistrationForm() {
@@ -112,7 +112,7 @@ export default function RegistrationForm() {
           />
         </div>
 
-        <ActionButton
+        <SubmitButton
           text="Create account"
           isLoading={isLoading}
           isDisabled={isDisabled}

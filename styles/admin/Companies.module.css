@@ -31,14 +31,10 @@
   border-bottom: 1px solid var(--border_color);
 }
 
-.all_companies table tbody td {
+.all_companies table td {
   font-weight: 500;
   color: var(--gray);
   font-size: 0.9rem;
-}
-
-.all_companies table tbody td:last-child {
-  text-transform: lowercase;
 }
 
 .important a {

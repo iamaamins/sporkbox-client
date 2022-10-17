@@ -5,7 +5,7 @@ import { hasEmpty } from "@utils/index";
 import { ICompany, IFormData } from "types";
 import { ChangeEvent, FormEvent, useState } from "react";
 import styles from "@styles/admin/AddCompany.module.css";
-import ActionButton from "@components/layout/ActionButton";
+import SubmitButton from "@components/layout/SubmitButton";
 
 export default function AddCompany() {
   // Initial state
@@ -133,7 +133,7 @@ export default function AddCompany() {
           />
         </div>
 
-        <ActionButton
+        <SubmitButton
           text="Add company"
           isLoading={isLoading}
           isDisabled={isDisabled}

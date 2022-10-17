@@ -5,7 +5,7 @@ import { hasEmpty } from "@utils/index";
 import { useUser } from "@context/User";
 import { ChangeEvent, FormEvent, useState } from "react";
 import styles from "@styles/generic/LoginForm.module.css";
-import ActionButton from "@components/layout/ActionButton";
+import SubmitButton from "@components/layout/SubmitButton";
 
 export default function LoginForm() {
   const initialSate = {
@@ -95,7 +95,7 @@ export default function LoginForm() {
           />
         </div>
 
-        <ActionButton
+        <SubmitButton
           text="Sign in"
           isLoading={isLoading}
           isDisabled={isDisabled}

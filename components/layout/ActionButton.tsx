@@ -1,19 +1,13 @@
-import ButtonLoader from "./ButtonLoader";
-import { IActionButtonProps } from "types";
 import styles from "@styles/layout/ActionButton.module.css";
+import { IActionButton } from "types";
 
 export default function ActionButton({
-  text,
-  isLoading,
-  isDisabled,
-}: IActionButtonProps) {
+  buttonText,
+  handleClick,
+}: IActionButton) {
   return (
-    <button
-      type="submit"
-      className={`${styles.action_button} 
-      ${!isDisabled && styles.active}`}
-    >
-      {isLoading ? <ButtonLoader /> : text}
+    <button className={styles.action_button} onClick={handleClick}>
+      {buttonText}
     </button>
   );
 }

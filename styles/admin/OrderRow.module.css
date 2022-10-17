@@ -1,0 +1,29 @@
+.order_row {
+  border-bottom: 1px solid var(--border_color);
+}
+
+.order_row td {
+  padding: 1rem;
+  font-weight: 500;
+  color: var(--gray);
+  font-size: 0.9rem;
+}
+
+.order_row td:last-child {
+  text-align: right;
+}
+
+.important a {
+  color: var(--black);
+  font-size: 1rem;
+}
+
+.hide_on_mobile {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .hide_on_mobile {
+    display: table-cell;
+  }
+}

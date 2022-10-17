@@ -141,7 +141,12 @@ export interface IButtons {
   handleClick: (e: FormEvent) => Promise<void>;
 }
 
-export interface IActionButtonProps {
+export interface IActionButton {
+  buttonText: string;
+  handleClick: () => Promise<void>;
+}
+
+export interface ISubmitButtonProps {
   text: string;
   isLoading: boolean;
   isDisabled: boolean;

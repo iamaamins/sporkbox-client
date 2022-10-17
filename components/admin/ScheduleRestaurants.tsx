@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useData } from "@context/Data";
 import { IFormData, IRestaurant } from "types";
-import ActionButton from "@components/layout/ActionButton";
+import SubmitButton from "@components/layout/SubmitButton";
 import styles from "@styles/admin/ScheduleRestaurants.module.css";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { hasEmpty, updateScheduledRestaurants } from "@utils/index";
@@ -129,7 +129,7 @@ export default function ScheduleRestaurants() {
               </select>
             </div>
 
-            <ActionButton
+            <SubmitButton
               text="Schedule"
               isLoading={isLoading}
               isDisabled={isDisabled}

@@ -31,14 +31,14 @@
   border-bottom: 1px solid var(--border_color);
 }
 
-.all_restaurants table tbody td {
+.all_restaurants table td {
   font-weight: 500;
   color: var(--gray);
   font-size: 0.9rem;
 }
 
-.all_restaurants table tbody td:last-child {
-  text-transform: lowercase;
+.all_restaurants table td:last-child {
+  text-transform: capitalize;
 }
 
 .important a {

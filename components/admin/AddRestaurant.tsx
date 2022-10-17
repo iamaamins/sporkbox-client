@@ -4,7 +4,7 @@ import { hasEmpty } from "@utils/index";
 import { useData } from "@context/Data";
 import { IFormData, IVendor } from "types";
 import { ChangeEvent, FormEvent, useState } from "react";
-import ActionButton from "@components/layout/ActionButton";
+import SubmitButton from "@components/layout/SubmitButton";
 import styles from "@styles/admin/AddRestaurant.module.css";
 
 export default function AddRestaurant() {
@@ -151,7 +151,7 @@ export default function AddRestaurant() {
           />
         </div>
 
-        <ActionButton
+        <SubmitButton
           text="Add restaurant"
           isLoading={isLoading}
           isDisabled={isDisabled}
