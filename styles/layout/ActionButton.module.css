@@ -4,7 +4,8 @@
   font-weight: 500;
   display: flex;
   cursor: pointer;
-  padding: 12px 24px;
+  width: 11rem;
+  height: 2.75rem;
   align-items: center;
   border-radius: 0.25rem;
   justify-content: center;

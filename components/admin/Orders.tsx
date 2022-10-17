@@ -13,51 +13,59 @@ export default function Orders({ title, orders }: IOrdersProps) {
 
   return (
     <section className={styles.orders}>
-      {/* Title and filter icon */}
-      <div className={styles.orders_top}>
-        <h2>{title}</h2>
-        <div
-          className={styles.filter}
-          onClick={() => setShowFilters(!showFilters)}
-        >
-          <BsFilter />
-        </div>
-      </div>
+      {/* If there are no active orders */}
+      {activeOrders.length === 0 && <h2>No active orders</h2>}
 
-      {/* Filters */}
-      <Filters
-        orders={orders}
-        showFilters={showFilters}
-        setFilteredOrders={setFilteredOrders}
-      />
+      {/* If there are active orders */}
+      {activeOrders.length > 0 && (
+        <>
+          {/* Title and filter icon */}
+          <div className={styles.orders_top}>
+            <h2>{title}</h2>
+            <div
+              className={styles.filter}
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <BsFilter />
+            </div>
+          </div>
 
-      {/* Orders */}
-      <table>
-        <thead>
-          <tr>
-            <th>Customer</th>
-            <th className={styles.hide_on_mobile}>Company</th>
-            <th className={styles.hide_on_mobile}>Restaurant</th>
-            <th>Delivery date</th>
-          </tr>
-        </thead>
+          {/* Filters */}
+          <Filters
+            orders={orders}
+            showFilters={showFilters}
+            setFilteredOrders={setFilteredOrders}
+          />
 
-        <tbody>
-          {filteredOrders.length === 0 ? (
-            <>
-              {activeOrders.map((order, index) => (
-                <OrderRow key={index} order={order} />
-              ))}
-            </>
-          ) : (
-            <>
-              {filteredOrders.map((order, index) => (
-                <OrderRow key={index} order={order} />
-              ))}
-            </>
-          )}
-        </tbody>
-      </table>
+          {/* Orders */}
+          <table>
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th className={styles.hide_on_mobile}>Company</th>
+                <th className={styles.hide_on_mobile}>Restaurant</th>
+                <th>Delivery date</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {filteredOrders.length === 0 ? (
+                <>
+                  {activeOrders.map((order, index) => (
+                    <OrderRow key={index} order={order} />
+                  ))}
+                </>
+              ) : (
+                <>
+                  {filteredOrders.map((order, index) => (
+                    <OrderRow key={index} order={order} />
+                  ))}
+                </>
+              )}
+            </tbody>
+          </table>
+        </>
+      )}
     </section>
   );
 }

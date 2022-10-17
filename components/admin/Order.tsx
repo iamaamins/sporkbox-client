@@ -28,9 +28,13 @@ export default function Order() {
   // Handle order status
   async function handleOrderStatus() {
     try {
-      const res = await axios.put(
+      // Show the loader
+      setIsLoading(true);
+
+      // Make request to backend
+      await axios.put(
         `${process.env.NEXT_PUBLIC_API_URL}/orders/${order?._id}/status`,
-        { action: "DELIVERED" },
+        {},
         { withCredentials: true }
       );
 
@@ -41,9 +45,14 @@ export default function Order() {
         )
       );
 
+      // Remove the loader
+      setIsLoading(false);
+
       // Back to admin page
       router.back();
     } catch (err) {
+      // Remove the loader
+      setIsLoading(false);
       console.log(err);
     }
   }
