@@ -59,6 +59,7 @@ export interface IDataContext {
   scheduledRestaurants: IRestaurant[];
   setVendors: Dispatch<SetStateAction<IVendor[]>>;
   setCompanies: Dispatch<SetStateAction<ICompany[]>>;
+  setActiveOrders: Dispatch<SetStateAction<IOrder[]>>;
   setScheduledRestaurants: Dispatch<SetStateAction<IRestaurant[]>>;
 }
 
@@ -142,6 +143,7 @@ export interface IButtons {
 }
 
 export interface IActionButton {
+  isLoading: boolean;
   buttonText: string;
   handleClick: () => Promise<void>;
 }

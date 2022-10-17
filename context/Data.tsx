@@ -113,6 +113,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
         companies,
         setCompanies,
         activeOrders,
+        setActiveOrders,
         scheduledRestaurants,
         setScheduledRestaurants,
       }}

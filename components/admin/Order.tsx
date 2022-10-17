@@ -6,12 +6,13 @@ import styles from "@styles/admin/Order.module.css";
 import ActionButton from "@components/layout/ActionButton";
 import { convertDateToText, formatCurrencyToUSD } from "@utils/index";
 import Link from "next/link";
+import axios from "axios";
 
 export default function Order() {
   const router = useRouter();
-  const { activeOrders } = useData();
   const [order, setOrder] = useState<IOrder>();
   const [isLoading, setIsLoading] = useState(false);
+  const { activeOrders, setActiveOrders } = useData();
 
   // Get the order
   useEffect(() => {
@@ -26,7 +27,25 @@ export default function Order() {
 
   // Handle order status
   async function handleOrderStatus() {
-    console.log("hello");
+    try {
+      const res = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_URL}/orders/${order?._id}/status`,
+        { action: "DELIVERED" },
+        { withCredentials: true }
+      );
+
+      // Update active orders
+      setActiveOrders((currActiveOrders: IOrder[]) =>
+        currActiveOrders.filter(
+          (currActiveOrder) => currActiveOrder._id !== order?._id
+        )
+      );
+
+      // Back to admin page
+      router.back();
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -128,6 +147,7 @@ export default function Order() {
 
           {order.status === "PROCESSING" && (
             <ActionButton
+              isLoading={isLoading}
               buttonText="Mark as delivered"
               handleClick={handleOrderStatus}
             />

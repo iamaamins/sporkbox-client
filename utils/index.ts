@@ -115,7 +115,7 @@ export function groupBy<
   // Crate groups with provided key
   const groupsObj = items.reduce<Record<string, Item[]>>((acc, curr) => {
     // Property to create group with
-    const property = curr[key];
+    const property: string = curr[key];
 
     // If property exists in acc then,
     // add the current item to the property array
