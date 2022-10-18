@@ -125,8 +125,8 @@ export default function Order() {
               </thead>
               <tbody>
                 <tr>
-                  <td>{order.deliveryAddress}</td>
-                  <td>{order.deliveryDate}</td>
+                  <td>{order.shippingAddress}</td>
+                  <td>{order.shippingDate}</td>
                 </tr>
               </tbody>
             </table>

@@ -41,7 +41,7 @@ export default function Filters({
     }
 
     {
-      category === "deliveryDate" &&
+      category === "shippingDate" &&
         setCategoryGroups(groupBy(category, orders, "orders"));
     }
 
@@ -67,7 +67,7 @@ export default function Filters({
         <option value="all">All</option>
         <option value="companyName">Company</option>
         <option value="restaurantName">Restaurant</option>
-        <option value="deliveryDate">Delivery date</option>
+        <option value="shippingDate">Shipping date</option>
       </select>
 
       <select

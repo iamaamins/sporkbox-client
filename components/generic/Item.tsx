@@ -21,7 +21,7 @@ export default function Item() {
     total: 0,
     quantity: 1,
     restaurantId: "",
-    deliveryDate: 0,
+    shippingDate: 0,
     restaurantName: "",
   };
   const router = useRouter();
@@ -53,13 +53,13 @@ export default function Item() {
         setItem(item);
 
         // Get the date
-        const deliveryDate = convertDateToMilliseconds(restaurant.scheduledOn);
+        const shippingDate = convertDateToMilliseconds(restaurant.scheduledOn);
 
         // Update initial item
         setCarItem((currItem) => ({
           ...currItem,
           quantity: 1,
-          deliveryDate,
+          shippingDate,
           _id: item._id,
           name: item.name,
           price: item.price,

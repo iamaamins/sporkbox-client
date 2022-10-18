@@ -12,7 +12,7 @@ export default function OrderRow({ order }: IOrderProps) {
       </td>
       <td className={styles.hide_on_mobile}>{order.companyName}</td>
       <td className={styles.hide_on_mobile}>{order.restaurantName}</td>
-      <td>{order.deliveryDate}</td>
+      <td>{order.shippingDate}</td>
     </tr>
   );
 }
