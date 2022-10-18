@@ -20,7 +20,7 @@ export default function Item() {
     price: 0,
     total: 0,
     quantity: 1,
-    restaurant: "",
+    restaurantId: "",
     deliveryDate: 0,
     restaurantName: "",
   };
@@ -64,7 +64,7 @@ export default function Item() {
           name: item.name,
           price: item.price,
           total: item.price,
-          restaurant: restaurant._id,
+          restaurantId: restaurant._id,
           restaurantName: restaurant.name,
         }));
       }

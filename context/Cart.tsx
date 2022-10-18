@@ -26,8 +26,6 @@ export default function CartProvider({ children }: IContextProviderProps) {
 
   // Get cart items from local storage on app reload
   useEffect(() => {
-    // console.log(JSON.parse("[]"));
-
     setCartItems(JSON.parse(localStorage.getItem("cart") || "[]"));
   }, [router.isReady]);
 

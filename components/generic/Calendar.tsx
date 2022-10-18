@@ -31,8 +31,6 @@ export default function Calendar() {
         "restaurants"
       );
 
-      console.log(groups);
-
       // Find the restaurant with date from slug
       const restaurants = groups.find(
         (group) =>

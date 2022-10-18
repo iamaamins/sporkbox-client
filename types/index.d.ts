@@ -83,7 +83,7 @@ export interface ICartItem {
   price: number;
   total: number;
   quantity: number;
-  restaurant: string;
+  restaurantId: string;
   deliveryDate: number;
   restaurantName: string;
 }
@@ -91,10 +91,9 @@ export interface ICartItem {
 export interface IOrder {
   _id: string;
   status: string;
-  company: string;
-  customer: string;
+  customerId: string;
   createdAt: string;
-  restaurant: string;
+  restaurantId: string;
   companyName: string;
   customerName: string;
   deliveryDate: string;

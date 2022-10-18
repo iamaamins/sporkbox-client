@@ -83,7 +83,7 @@ export default function Order() {
               <tbody>
                 <tr>
                   <td className={styles.important}>
-                    <Link href={`/admin/restaurants/${order.restaurant}`}>
+                    <Link href={`/admin/restaurants/${order.restaurantId}`}>
                       <a>{order.restaurantName}</a>
                     </Link>
                   </td>
@@ -146,7 +146,7 @@ export default function Order() {
                 <tr>
                   <td className={styles.important}>
                     <Link
-                      href={`/admin/restaurants/${order.restaurant}/${order.item._id}`}
+                      href={`/admin/restaurants/${order.restaurantId}/${order.item._id}`}
                     >
                       <a>{order.item.name}</a>
                     </Link>
