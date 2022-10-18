@@ -1,13 +1,11 @@
 import OrderRow from "./OrderRow";
 import Filters from "./Filters";
 import { useState } from "react";
-import { useData } from "@context/Data";
 import { BsFilter } from "react-icons/bs";
 import { IOrder, IOrdersProps } from "types";
 import styles from "@styles/admin/Orders.module.css";
 
 export default function Orders({ title, orders }: IOrdersProps) {
-  // const { activeOrders } = useData();
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const [filteredOrders, setFilteredOrders] = useState<IOrder[]>([]);
 
