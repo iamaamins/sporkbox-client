@@ -61,8 +61,8 @@ export default function ScheduleRestaurants() {
       setIsLoading(true);
 
       // Make request to backend
-      const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${restaurantId}/schedule`,
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/scheduled-restaurants/schedule/${restaurantId}`,
         { date },
         { withCredentials: true }
       );

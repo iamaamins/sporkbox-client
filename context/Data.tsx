@@ -7,6 +7,7 @@ import {
   IDataContext,
   IOrder,
   IContextProviderProps,
+  IScheduledRestaurant,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
 
@@ -22,11 +23,13 @@ export default function DataProvider({ children }: IContextProviderProps) {
   const [vendors, setVendors] = useState<IVendor[]>([]);
   const [companies, setCompanies] = useState<ICompany[]>([]);
   const [scheduledRestaurants, setScheduledRestaurants] = useState<
-    IRestaurant[]
+    IScheduledRestaurant[]
   >([]);
+  const [allOrders, setAllOrders] = useState<IOrder[]>([]);
   const [activeOrders, setActiveOrders] = useState<IOrder[]>([]);
   const [deliveredOrders, setDeliveredOrders] = useState<IOrder[]>([]);
-  const [allOrders, setAllOrders] = useState<IOrder[]>([]);
+
+  console.log(scheduledRestaurants);
 
   // Create all orders
   useEffect(() => {
@@ -113,7 +116,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       try {
         // Make request to backend
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/restaurants/scheduled`
+          `${process.env.NEXT_PUBLIC_API_URL}/scheduled-restaurants`
         );
 
         // Update state

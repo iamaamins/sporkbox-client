@@ -31,7 +31,7 @@ export default function ScheduledRestaurants() {
                       <Link
                         href={`/admin/restaurants/${scheduledRestaurant._id}`}
                       >
-                        <a>{scheduledRestaurant.name}</a>
+                        <a>{scheduledRestaurant.restaurant.name}</a>
                       </Link>
                     </td>
                     <td>

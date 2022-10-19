@@ -22,6 +22,12 @@ export interface IRestaurant {
   scheduledOn: string;
 }
 
+export interface IScheduledRestaurant {
+  _id: string;
+  scheduledOn: string;
+  restaurant: IRestaurant;
+}
+
 interface IItem {
   _id: string;
   tags: string;
@@ -58,12 +64,12 @@ export interface IDataContext {
   companies: ICompany[];
   activeOrders: IOrder[];
   deliveredOrders: IOrder[];
-  scheduledRestaurants: IRestaurant[];
+  scheduledRestaurants: IScheduledRestaurant[];
   setVendors: Dispatch<SetStateAction<IVendor[]>>;
   setCompanies: Dispatch<SetStateAction<ICompany[]>>;
   setActiveOrders: Dispatch<SetStateAction<IOrder[]>>;
   setDeliveredOrders: Dispatch<SetStateAction<IOrder[]>>;
-  setScheduledRestaurants: Dispatch<SetStateAction<IRestaurant[]>>;
+  setScheduledRestaurants: Dispatch<SetStateAction<IScheduledRestaurant[]>>;
 }
 
 export interface ICartContext {
