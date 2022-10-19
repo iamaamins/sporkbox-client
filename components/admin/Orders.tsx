@@ -42,7 +42,7 @@ export default function Orders({ title, orders }: IOrdersProps) {
                 <th>Customer</th>
                 <th className={styles.hide_on_mobile}>Company</th>
                 <th className={styles.hide_on_mobile}>Restaurant</th>
-                <th>Shipping date</th>
+                <th>Delivery date</th>
               </tr>
             </thead>
 

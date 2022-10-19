@@ -92,7 +92,7 @@ export interface ICartItem {
   total: number;
   quantity: number;
   restaurantId: string;
-  shippingDate: number;
+  deliveryDate: number;
   restaurantName: string;
 }
 
@@ -104,10 +104,10 @@ export interface IOrder {
   restaurantId: string;
   companyName: string;
   customerName: string;
-  shippingDate: string;
+  deliveryDate: string;
   customerEmail: string;
   restaurantName: string;
-  shippingAddress: string;
+  deliveryAddress: string;
   item: {
     _id: string;
     name: string;

@@ -21,7 +21,7 @@ export default function Item() {
     total: 0,
     quantity: 1,
     restaurantId: "",
-    shippingDate: 0,
+    deliveryDate: 0,
     restaurantName: "",
   };
   const router = useRouter();
@@ -32,8 +32,6 @@ export default function Item() {
 
   // Price and quantity
   const { quantity, price } = cartItem;
-
-  console.log(scheduledRestaurants);
 
   // Get item and date from schedules restaurants
   useEffect(() => {
@@ -55,19 +53,21 @@ export default function Item() {
         setItem(item);
 
         // Get the date
-        const shippingDate = convertDateToMilliseconds(restaurant.scheduledOn);
+        const deliveryDate = convertDateToMilliseconds(restaurant.scheduledOn);
+
+        console.log(router.query.restaurant);
 
         // Update initial item
         setCarItem((currItem) => ({
           ...currItem,
           quantity: 1,
-          shippingDate,
-          _id: item._id,
+          deliveryDate,
           name: item.name,
           price: item.price,
           total: item.price,
-          restaurantId: restaurant._id,
+          _id: router.query.item as string,
           restaurantName: restaurant.name,
+          restaurantId: router.query.restaurant as string,
         }));
       }
     }
@@ -90,8 +90,6 @@ export default function Item() {
       total: formatNumberToUS(currItem.price * (currItem.quantity - 1)),
     }));
   }
-
-  console.log(item);
 
   return (
     <section className={styles.item}>

@@ -115,7 +115,7 @@ export default function Order() {
           </>
 
           <>
-            <p className={styles.title}>Shipping details</p>
+            <p className={styles.title}>Delivery details</p>
             <table>
               <thead>
                 <tr>
@@ -125,8 +125,8 @@ export default function Order() {
               </thead>
               <tbody>
                 <tr>
-                  <td>{order.shippingAddress}</td>
-                  <td>{order.shippingDate}</td>
+                  <td>{order.deliveryAddress}</td>
+                  <td>{order.deliveryDate}</td>
                 </tr>
               </tbody>
             </table>
