@@ -24,8 +24,10 @@ export interface IRestaurant {
 
 export interface IScheduledRestaurant {
   _id: string;
+  restaurantId: string;
+  name: string;
+  items: Item[];
   scheduledOn: string;
-  restaurant: IRestaurant;
 }
 
 interface IItem {

@@ -33,14 +33,16 @@ export default function Item() {
   // Price and quantity
   const { quantity, price } = cartItem;
 
+  console.log(scheduledRestaurants);
+
   // Get item and date from schedules restaurants
   useEffect(() => {
     if (scheduledRestaurants.length > 0 && router.isReady) {
       // Find the restaurant
       const restaurant = scheduledRestaurants.find(
         (scheduledRestaurant) =>
-          scheduledRestaurant.restaurant._id === router.query.restaurant
-      )?.restaurant;
+          scheduledRestaurant.restaurantId === router.query.restaurant
+      );
 
       // Find the item
       const item = restaurant?.items.find(
@@ -88,6 +90,8 @@ export default function Item() {
       total: formatNumberToUS(currItem.price * (currItem.quantity - 1)),
     }));
   }
+
+  console.log(item);
 
   return (
     <section className={styles.item}>

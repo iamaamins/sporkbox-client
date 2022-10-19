@@ -100,14 +100,14 @@ export default function Calendar() {
                   className={styles.restaurant}
                 >
                   <h2 className={styles.restaurant_name}>
-                    {scheduledRestaurant.restaurant.name}
+                    {scheduledRestaurant.name}
                   </h2>
 
                   <div className={styles.items}>
-                    {scheduledRestaurant.restaurant.items.map((item) => (
+                    {scheduledRestaurant.items.map((item) => (
                       <div key={item._id}>
                         <Link
-                          href={`/calendar/${router.query.date}/${scheduledRestaurant.restaurant._id}/${item._id}`}
+                          href={`/calendar/${router.query.date}/${scheduledRestaurant.restaurantId}/${item._id}`}
                         >
                           <a className={styles.item}>
                             <div className={styles.item_details}>
