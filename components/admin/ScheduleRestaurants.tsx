@@ -67,6 +67,8 @@ export default function ScheduleRestaurants() {
         { withCredentials: true }
       );
 
+      console.log(res.data);
+
       // Update scheduled restaurants
       updateScheduledRestaurants(res.data, setScheduledRestaurants);
 

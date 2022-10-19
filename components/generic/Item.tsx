@@ -39,8 +39,8 @@ export default function Item() {
       // Find the restaurant
       const restaurant = scheduledRestaurants.find(
         (scheduledRestaurant) =>
-          scheduledRestaurant._id === router.query.restaurant
-      );
+          scheduledRestaurant.restaurant._id === router.query.restaurant
+      )?.restaurant;
 
       // Find the item
       const item = restaurant?.items.find(
