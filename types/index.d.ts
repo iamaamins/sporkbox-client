@@ -116,7 +116,7 @@ export interface IOrder {
 
 export interface IRestaurantsGroup {
   scheduledOn: string;
-  restaurants: IRestaurant[];
+  restaurants: IScheduledRestaurant[];
 }
 
 export interface IOrdersGroup {

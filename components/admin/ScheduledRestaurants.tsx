@@ -29,7 +29,7 @@ export default function ScheduledRestaurants() {
                   <tr key={scheduledRestaurant._id}>
                     <td className={styles.important}>
                       <Link
-                        href={`/admin/restaurants/${scheduledRestaurant._id}`}
+                        href={`/admin/restaurants/${scheduledRestaurant.restaurant._id}`}
                       >
                         <a>{scheduledRestaurant.restaurant.name}</a>
                       </Link>
