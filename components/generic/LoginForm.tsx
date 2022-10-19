@@ -45,7 +45,7 @@ export default function LoginForm() {
 
       // Fetch data
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/login`,
+        `${process.env.NEXT_PUBLIC_API_URL}/users/login`,
         formData,
         {
           withCredentials: true,

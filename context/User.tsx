@@ -30,7 +30,7 @@ export default function UserProvider({ children }: IContextProviderProps) {
       try {
         // Fetch the data
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/user/me`,
+          `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
           {
             withCredentials: true,
             headers: {

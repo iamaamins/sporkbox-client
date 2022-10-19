@@ -33,7 +33,7 @@ export default function Restaurant() {
     // Update restaurant status
     try {
       const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/vendor/${vendor?._id}/status`,
+        `${process.env.NEXT_PUBLIC_API_URL}/vendors/${vendor?._id}/status`,
         { action },
         { withCredentials: true }
       );

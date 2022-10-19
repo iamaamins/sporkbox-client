@@ -52,7 +52,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
     try {
       // Make request to backend
       await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/logout`,
+        `${process.env.NEXT_PUBLIC_API_URL}/users/logout`,
         {},
         { withCredentials: true }
       );
@@ -140,13 +140,13 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
 
         {/* Generic nav items */}
 
-        {/* <li onClick={() => setIsOpen(false)}>
+        <li onClick={() => setIsOpen(false)}>
           <Link href={`/calendar/${date}`}>
             <a>
               <BsFillCalendar2DateFill /> Calendar
             </a>
           </Link>
-        </li> */}
+        </li>
 
         <li
           className={isAdmin || isVendor || isCustomer ? styles.hide : ""}

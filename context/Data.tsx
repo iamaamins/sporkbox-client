@@ -3,7 +3,6 @@ import { useUser } from "./User";
 import {
   IVendor,
   ICompany,
-  IRestaurant,
   IDataContext,
   IOrder,
   IContextProviderProps,
@@ -28,8 +27,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
   const [allOrders, setAllOrders] = useState<IOrder[]>([]);
   const [activeOrders, setActiveOrders] = useState<IOrder[]>([]);
   const [deliveredOrders, setDeliveredOrders] = useState<IOrder[]>([]);
-
-  console.log(scheduledRestaurants);
 
   // Create all orders
   useEffect(() => {
@@ -60,7 +57,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       try {
         // Make request to backend
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/vendor/20`,
+          `${process.env.NEXT_PUBLIC_API_URL}/vendors/20`,
           {
             withCredentials: true,
           }

@@ -50,7 +50,7 @@ export default function RegistrationForm() {
 
       // Make the request to backend
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/customer/register`,
+        `${process.env.NEXT_PUBLIC_API_URL}/customers/register`,
         formData,
         {
           withCredentials: true,
