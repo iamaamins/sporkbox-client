@@ -55,19 +55,19 @@ export default function Item() {
         // Get the date
         const deliveryDate = convertDateToMilliseconds(restaurant.scheduledOn);
 
-        console.log(router.query.restaurant);
+        console.log(restaurant.restaurantId, item._id);
 
         // Update initial item
         setCarItem((currItem) => ({
           ...currItem,
           quantity: 1,
           deliveryDate,
+          _id: item._id,
           name: item.name,
           price: item.price,
           total: item.price,
-          _id: router.query.item as string,
           restaurantName: restaurant.name,
-          restaurantId: router.query.restaurant as string,
+          restaurantId: restaurant.restaurantId,
         }));
       }
     }
