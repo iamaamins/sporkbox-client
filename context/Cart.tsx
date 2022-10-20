@@ -1,7 +1,7 @@
 import { useUser } from "@context/User";
 import { useRouter } from "next/router";
 import { ICartContext, ICartItem, IContextProviderProps } from "types";
-import { formatNumberToUS, getFutureDate } from "@utils/index";
+import { formatNumberToUS } from "@utils/index";
 import React, {
   useState,
   useEffect,
@@ -23,16 +23,6 @@ export default function CartProvider({ children }: IContextProviderProps) {
   const { isCustomer } = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<ICartItem[]>([]);
-
-  // Remove cart items automatically
-  useEffect(() => {
-    const today = new Date().getDay();
-
-    // If today is saturday then remove the cart
-    if (today === 6) {
-      localStorage.removeItem("cart");
-    }
-  }, [router.isReady]);
 
   // Get cart items from local storage on app reload
   useEffect(() => {

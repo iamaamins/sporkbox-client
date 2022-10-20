@@ -104,15 +104,3 @@ export function groupBy<
 
   return groupsArr;
 }
-
-// Get future date
-export function getFutureDate(dayToAdd: number) {
-  // Today
-  const today = new Date();
-
-  // Day number of current week sunday
-  const sunday = today.getDate() - today.getDay();
-
-  // Return a future date
-  return new Date(today.setDate(sunday + dayToAdd));
-}
