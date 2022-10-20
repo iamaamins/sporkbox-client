@@ -140,13 +140,13 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
 
         {/* Generic nav items */}
 
-        {/* <li onClick={() => setIsOpen(false)}>
+        <li onClick={() => setIsOpen(false)}>
           <Link href={`/calendar/${date}`}>
             <a>
               <BsFillCalendar2DateFill /> Calendar
             </a>
           </Link>
-        </li> */}
+        </li>
 
         <li
           className={isAdmin || isVendor || isCustomer ? styles.hide : ""}
