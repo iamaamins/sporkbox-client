@@ -22,20 +22,20 @@ import { TbBuildingStore, TbBuildingSkyscraper } from "react-icons/tb";
 export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
   // Hooks
   const [date, setDate] = useState<number>();
-  const { scheduledRestaurants } = useData();
+  const { upcomingWeekRestaurants } = useData();
   const { isAdmin, isVendor, isCustomer, setUser } = useUser();
 
   useEffect(() => {
-    if (scheduledRestaurants.length > 0) {
+    if (upcomingWeekRestaurants.length > 0) {
       // Convert the first group's scheduled date to slug
       const date = convertDateToMilliseconds(
-        scheduledRestaurants[0].scheduledOn
+        upcomingWeekRestaurants[0].scheduledOn
       );
 
       // Update state
       setDate(date);
     }
-  }, [scheduledRestaurants]);
+  }, [upcomingWeekRestaurants]);
 
   // Disable body scroll if MobileMenu is open
   useEffect(() => {

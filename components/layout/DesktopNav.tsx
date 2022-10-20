@@ -13,21 +13,21 @@ import styles from "@styles/layout/DesktopNav.module.css";
 export default function DesktopNav() {
   // Hooks
   const pathName = useRouter().pathname;
-  const { scheduledRestaurants } = useData();
   const [date, setDate] = useState<number>();
+  const { upcomingWeekRestaurants } = useData();
   const { isAdmin, isCustomer, isVendor, setUser } = useUser();
 
   useEffect(() => {
-    if (scheduledRestaurants.length > 0) {
+    if (upcomingWeekRestaurants.length > 0) {
       // Convert the first group's scheduled date to slug
       const dateSlug = convertDateToMilliseconds(
-        scheduledRestaurants[0].scheduledOn
+        upcomingWeekRestaurants[0].scheduledOn
       );
 
       // Update state
       setDate(dateSlug);
     }
-  }, [scheduledRestaurants]);
+  }, [upcomingWeekRestaurants]);
 
   // Handle sign out
   async function handleSignOut() {

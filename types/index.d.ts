@@ -19,14 +19,17 @@ export interface IRestaurant {
   items: IItem[];
   address: string;
   createdAt: string;
-  scheduledOn: string;
+  schedules: string[];
 }
 
 export interface IScheduledRestaurant {
   _id: string;
   name: string;
-  items: Item[];
   scheduledOn: string;
+}
+
+export interface IUpcomingWeekRestaurant extends IScheduledRestaurant {
+  items: IItem[];
 }
 
 interface IItem {
@@ -67,6 +70,7 @@ export interface IDataContext {
   deliveredOrders: IOrder[];
   scheduledRestaurants: IScheduledRestaurant[];
   setVendors: Dispatch<SetStateAction<IVendor[]>>;
+  upcomingWeekRestaurants: IUpcomingWeekRestaurant[];
   setCompanies: Dispatch<SetStateAction<ICompany[]>>;
   setActiveOrders: Dispatch<SetStateAction<IOrder[]>>;
   setDeliveredOrders: Dispatch<SetStateAction<IOrder[]>>;
@@ -117,7 +121,7 @@ export interface IOrder {
 
 export interface IRestaurantsGroup {
   scheduledOn: string;
-  restaurants: IScheduledRestaurant[];
+  restaurants: IUpcomingWeekRestaurant[];
 }
 
 export interface IOrdersGroup {

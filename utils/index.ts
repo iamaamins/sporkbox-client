@@ -1,12 +1,6 @@
 import { SetStateAction } from "react";
 import { NextRouter } from "next/router";
-import {
-  IVendor,
-  IRestaurant,
-  IScheduledRestaurant,
-  Groups,
-  IFormData,
-} from "types";
+import { IVendor, IRestaurant, Groups, IFormData } from "types";
 
 // Current year
 export const currentYear = new Date().getFullYear();
@@ -71,20 +65,6 @@ export function updateVendors(
       }
     })
   );
-}
-
-// Update scheduled restaurants
-export function updateScheduledRestaurants(
-  newScheduledRestaurant: IScheduledRestaurant,
-  setScheduledRestaurants: React.Dispatch<
-    SetStateAction<IScheduledRestaurant[]>
-  >
-) {
-  // Update scheduled restaurants state
-  setScheduledRestaurants((currScheduledRestaurants) => [
-    ...currScheduledRestaurants,
-    newScheduledRestaurant,
-  ]);
 }
 
 // Group items by property

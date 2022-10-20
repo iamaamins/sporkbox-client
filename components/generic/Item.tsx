@@ -26,7 +26,7 @@ export default function Item() {
   };
   const router = useRouter();
   const { addItemToCart } = useCart();
-  const { scheduledRestaurants } = useData();
+  const { upcomingWeekRestaurants } = useData();
   const [item, setItem] = useState<IItem>();
   const [cartItem, setCarItem] = useState<ICartItem>(initialState);
 
@@ -35,11 +35,11 @@ export default function Item() {
 
   // Get item and date from schedules restaurants
   useEffect(() => {
-    if (scheduledRestaurants.length > 0 && router.isReady) {
+    if (upcomingWeekRestaurants.length > 0 && router.isReady) {
       // Find the restaurant
-      const restaurant = scheduledRestaurants.find(
-        (scheduledRestaurant) =>
-          scheduledRestaurant._id === router.query.restaurant
+      const restaurant = upcomingWeekRestaurants.find(
+        (upcomingWeekRestaurant) =>
+          upcomingWeekRestaurant._id === router.query.restaurant
       );
 
       // Find the item
@@ -69,7 +69,7 @@ export default function Item() {
         }));
       }
     }
-  }, [scheduledRestaurants, router.isReady]);
+  }, [upcomingWeekRestaurants, router.isReady]);
 
   // Increase quantity
   function increaseQuantity() {

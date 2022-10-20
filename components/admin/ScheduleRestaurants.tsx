@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useData } from "@context/Data";
-import { IFormData, IRestaurant } from "types";
+import { hasEmpty } from "@utils/index";
 import SubmitButton from "@components/layout/SubmitButton";
 import styles from "@styles/admin/ScheduleRestaurants.module.css";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { hasEmpty, updateScheduledRestaurants } from "@utils/index";
+import { IFormData, IRestaurant, IScheduledRestaurant } from "types";
 
 export default function ScheduleRestaurants() {
   // Initial state
@@ -67,10 +67,13 @@ export default function ScheduleRestaurants() {
         { withCredentials: true }
       );
 
-      console.log(res.data);
-
-      // Update scheduled restaurants
-      updateScheduledRestaurants(res.data, setScheduledRestaurants);
+      // Update scheduled restaurants state
+      setScheduledRestaurants(
+        (currScheduledRestaurants: IScheduledRestaurant[]) => [
+          ...currScheduledRestaurants,
+          res.data,
+        ]
+      );
 
       // Clear form data
       setFormData(initialState);

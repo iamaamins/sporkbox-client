@@ -9,25 +9,25 @@ import {
   convertDateToMilliseconds,
 } from "@utils/index";
 import Image from "next/image";
-import { IRestaurantsGroup, IScheduledRestaurant } from "types";
+import { IRestaurantsGroup, IUpcomingWeekRestaurant } from "types";
 import styles from "@styles/generic/Calendar.module.css";
 
 export default function Calendar() {
   // Hooks
   const router = useRouter();
   const { cartItems } = useCart();
-  const { scheduledRestaurants } = useData();
-  const [restaurants, setRestaurants] = useState<IScheduledRestaurant[]>([]);
+  const { upcomingWeekRestaurants } = useData();
+  const [restaurants, setRestaurants] = useState<IUpcomingWeekRestaurant[]>([]);
   const [restaurantGroups, setRestaurantGroups] = useState<IRestaurantsGroup[]>(
     []
   );
 
   useEffect(() => {
-    if (scheduledRestaurants.length > 0 && router.isReady) {
+    if (upcomingWeekRestaurants.length > 0 && router.isReady) {
       // Groups restaurants by scheduled on date
       const groups = groupBy(
         "scheduledOn",
-        scheduledRestaurants,
+        upcomingWeekRestaurants,
         "restaurants"
       );
 
@@ -44,7 +44,7 @@ export default function Calendar() {
       // Update groups
       setRestaurantGroups(groups);
     }
-  }, [scheduledRestaurants, router]);
+  }, [upcomingWeekRestaurants, router]);
 
   // Get the date
   const getDate = (date: string) =>
@@ -54,7 +54,6 @@ export default function Calendar() {
   const getDay = (date: string) =>
     new Date(date).toDateString().split(" ").slice(0, 1)[0].split("")[0];
 
-  console.log(restaurants);
   return (
     <section className={styles.calendar}>
       {/* If there are no restaurant groups */}
@@ -129,6 +128,8 @@ export default function Calendar() {
 
                               {cartItems.map(
                                 (cartItem) =>
+                                  cartItem.deliveryDate.toString() ===
+                                    router.query.date &&
                                   cartItem._id === item._id && (
                                     <span
                                       key={item._id}

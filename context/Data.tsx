@@ -7,6 +7,7 @@ import {
   IOrder,
   IContextProviderProps,
   IScheduledRestaurant,
+  IUpcomingWeekRestaurant,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
 
@@ -23,6 +24,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
   const [companies, setCompanies] = useState<ICompany[]>([]);
   const [scheduledRestaurants, setScheduledRestaurants] = useState<
     IScheduledRestaurant[]
+  >([]);
+  const [upcomingWeekRestaurants, setUpcomingWeekRestaurants] = useState<
+    IUpcomingWeekRestaurant[]
   >([]);
   const [allOrders, setAllOrders] = useState<IOrder[]>([]);
   const [activeOrders, setActiveOrders] = useState<IOrder[]>([]);
@@ -98,6 +102,20 @@ export default function DataProvider({ children }: IContextProviderProps) {
       } catch (err) {
         console.log(err);
       }
+
+      // Get scheduled restaurants
+      try {
+        // Make request to backend
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/restaurants/scheduled`,
+          { withCredentials: true }
+        );
+
+        // Update state
+        setScheduledRestaurants(res.data);
+      } catch (err) {
+        console.log(err);
+      }
     }
 
     // Run the function if there is an admin
@@ -113,11 +131,11 @@ export default function DataProvider({ children }: IContextProviderProps) {
       try {
         // Make request to backend
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/restaurants/scheduled`
+          `${process.env.NEXT_PUBLIC_API_URL}/restaurants/upcoming-week`
         );
 
         // Update state
-        setScheduledRestaurants(res.data);
+        setUpcomingWeekRestaurants(res.data);
       } catch (err) {
         console.log(err);
       }
@@ -140,6 +158,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
         deliveredOrders,
         setDeliveredOrders,
         scheduledRestaurants,
+        upcomingWeekRestaurants,
         setScheduledRestaurants,
       }}
     >
