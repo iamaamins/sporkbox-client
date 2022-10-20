@@ -39,7 +39,7 @@ export default function Item() {
       // Find the restaurant
       const restaurant = scheduledRestaurants.find(
         (scheduledRestaurant) =>
-          scheduledRestaurant.restaurantId === router.query.restaurant
+          scheduledRestaurant._id === router.query.restaurant
       );
 
       // Find the item
@@ -55,8 +55,6 @@ export default function Item() {
         // Get the date
         const deliveryDate = convertDateToMilliseconds(restaurant.scheduledOn);
 
-        console.log(restaurant.restaurantId, item._id);
-
         // Update initial item
         setCarItem((currItem) => ({
           ...currItem,
@@ -66,8 +64,8 @@ export default function Item() {
           name: item.name,
           price: item.price,
           total: item.price,
+          restaurantId: restaurant._id,
           restaurantName: restaurant.name,
-          restaurantId: restaurant.restaurantId,
         }));
       }
     }

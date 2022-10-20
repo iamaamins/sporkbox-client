@@ -113,7 +113,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       try {
         // Make request to backend
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/scheduled-restaurants`
+          `${process.env.NEXT_PUBLIC_API_URL}/restaurants/scheduled`
         );
 
         // Update state

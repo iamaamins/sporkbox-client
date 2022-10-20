@@ -61,11 +61,13 @@ export default function ScheduleRestaurants() {
       setIsLoading(true);
 
       // Make request to backend
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/scheduled-restaurants/schedule/${restaurantId}`,
+      const res = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/schedule/${restaurantId}`,
         { date },
         { withCredentials: true }
       );
+
+      console.log(res.data);
 
       // Update scheduled restaurants
       updateScheduledRestaurants(res.data, setScheduledRestaurants);
@@ -83,7 +85,6 @@ export default function ScheduleRestaurants() {
 
       // Remove loader and disable button
       setIsLoading(false);
-      setIsDisabled(true);
     }
   }
 

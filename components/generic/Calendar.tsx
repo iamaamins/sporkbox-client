@@ -16,18 +16,20 @@ export default function Calendar() {
   // Hooks
   const router = useRouter();
   const { cartItems } = useCart();
-  const { scheduledRestaurants: scheduled } = useData();
-  const [scheduledRestaurants, setScheduledRestaurants] = useState<
-    IScheduledRestaurant[]
-  >([]);
+  const { scheduledRestaurants } = useData();
+  const [restaurants, setRestaurants] = useState<IScheduledRestaurant[]>([]);
   const [restaurantGroups, setRestaurantGroups] = useState<IRestaurantsGroup[]>(
     []
   );
 
   useEffect(() => {
-    if (scheduled.length > 0 && router.isReady) {
+    if (scheduledRestaurants.length > 0 && router.isReady) {
       // Groups restaurants by scheduled on date
-      const groups = groupBy("scheduledOn", scheduled, "restaurants");
+      const groups = groupBy(
+        "scheduledOn",
+        scheduledRestaurants,
+        "restaurants"
+      );
 
       // Find the restaurant with date from slug
       const restaurants = groups.find(
@@ -37,12 +39,12 @@ export default function Calendar() {
       )?.restaurants;
 
       // Update restaurants
-      setScheduledRestaurants(restaurants || []);
+      setRestaurants(restaurants || []);
 
       // Update groups
       setRestaurantGroups(groups);
     }
-  }, [scheduled, router]);
+  }, [scheduledRestaurants, router]);
 
   // Get the date
   const getDate = (date: string) =>
@@ -52,6 +54,7 @@ export default function Calendar() {
   const getDay = (date: string) =>
     new Date(date).toDateString().split(" ").slice(0, 1)[0].split("")[0];
 
+  console.log(restaurants);
   return (
     <section className={styles.calendar}>
       {/* If there are no restaurant groups */}
@@ -91,23 +94,18 @@ export default function Calendar() {
             </div>
           </div>
 
-          {scheduledRestaurants.length > 0 && (
+          {restaurants.length > 0 && (
             <>
               {/* Show the scheduled restaurants */}
-              {scheduledRestaurants.map((scheduledRestaurant) => (
-                <div
-                  key={scheduledRestaurant._id}
-                  className={styles.restaurant}
-                >
-                  <h2 className={styles.restaurant_name}>
-                    {scheduledRestaurant.name}
-                  </h2>
+              {restaurants.map((restaurant) => (
+                <div key={restaurant._id} className={styles.restaurant}>
+                  <h2 className={styles.restaurant_name}>{restaurant.name}</h2>
 
                   <div className={styles.items}>
-                    {scheduledRestaurant.items.map((item) => (
+                    {restaurant.items.map((item) => (
                       <div key={item._id}>
                         <Link
-                          href={`/calendar/${router.query.date}/${scheduledRestaurant.restaurantId}/${item._id}`}
+                          href={`/calendar/${router.query.date}/${restaurant._id}/${item._id}`}
                         >
                           <a className={styles.item}>
                             <div className={styles.item_details}>

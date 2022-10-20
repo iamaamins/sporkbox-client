@@ -25,11 +25,11 @@ export default function ScheduledRestaurants() {
               </thead>
 
               <tbody>
-                {scheduledRestaurants.map((scheduledRestaurant) => (
-                  <tr key={scheduledRestaurant._id}>
+                {scheduledRestaurants.map((scheduledRestaurant, index) => (
+                  <tr key={index}>
                     <td className={styles.important}>
                       <Link
-                        href={`/admin/restaurants/${scheduledRestaurant.restaurantId}`}
+                        href={`/admin/restaurants/${scheduledRestaurant._id}`}
                       >
                         <a>{scheduledRestaurant.name}</a>
                       </Link>

@@ -1,7 +1,12 @@
-import { IFormData } from "./../types/index.d";
 import { SetStateAction } from "react";
 import { NextRouter } from "next/router";
-import { IVendor, IRestaurant, Groups } from "types";
+import {
+  IVendor,
+  IRestaurant,
+  IScheduledRestaurant,
+  Groups,
+  IFormData,
+} from "types";
 
 // Current year
 export const currentYear = new Date().getFullYear();
@@ -70,36 +75,16 @@ export function updateVendors(
 
 // Update scheduled restaurants
 export function updateScheduledRestaurants(
-  updatedData: IRestaurant,
-  setScheduledRestaurants: React.Dispatch<SetStateAction<IRestaurant[]>>
+  newScheduledRestaurant: IScheduledRestaurant,
+  setScheduledRestaurants: React.Dispatch<
+    SetStateAction<IScheduledRestaurant[]>
+  >
 ) {
   // Update scheduled restaurants state
-  setScheduledRestaurants((currScheduledRestaurants) => {
-    // If the restaurant isn't already
-    // in the scheduled restaurants array
-    if (
-      !currScheduledRestaurants.some(
-        (currScheduledRestaurant) =>
-          currScheduledRestaurant._id === updatedData._id
-      )
-    ) {
-      return [...currScheduledRestaurants, updatedData];
-
-      // If the restaurant is already
-      // in the scheduled restaurants array
-    } else {
-      return currScheduledRestaurants.map((currScheduledRestaurant) => {
-        if (currScheduledRestaurant._id === updatedData._id) {
-          return {
-            ...currScheduledRestaurant,
-            scheduledOn: updatedData.scheduledOn,
-          };
-        } else {
-          return currScheduledRestaurant;
-        }
-      });
-    }
-  });
+  setScheduledRestaurants((currScheduledRestaurants) => [
+    ...currScheduledRestaurants,
+    newScheduledRestaurant,
+  ]);
 }
 
 // Group items by property
