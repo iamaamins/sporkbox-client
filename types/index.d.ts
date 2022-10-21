@@ -55,6 +55,7 @@ export interface IContextProviderProps {
 }
 
 export interface IUserContext {
+  user: IUser | null;
   isLoading: boolean;
   isAdmin: boolean;
   isVendor: boolean;
@@ -66,13 +67,14 @@ export interface IDataContext {
   vendors: IVendor[];
   allOrders: IOrder[];
   companies: ICompany[];
-  activeOrders: IOrder[];
+  allActiveOrders: IOrder[];
   deliveredOrders: IOrder[];
+  customerActiveOrders: ICustomerOrder[];
   scheduledRestaurants: IScheduledRestaurant[];
   setVendors: Dispatch<SetStateAction<IVendor[]>>;
   upcomingWeekRestaurants: IUpcomingWeekRestaurant[];
   setCompanies: Dispatch<SetStateAction<ICompany[]>>;
-  setActiveOrders: Dispatch<SetStateAction<IOrder[]>>;
+  setAllActiveOrders: Dispatch<SetStateAction<IOrder[]>>;
   setDeliveredOrders: Dispatch<SetStateAction<IOrder[]>>;
   setScheduledRestaurants: Dispatch<SetStateAction<IScheduledRestaurant[]>>;
 }
@@ -117,6 +119,20 @@ export interface IOrder {
     total: number;
     quantity: number;
   };
+}
+
+export interface ICustomerOrder {
+  _id: string;
+  item: {
+    _id: string;
+    name: string;
+    total: number;
+    quantity: number;
+  };
+  status: string;
+  createdAt: string;
+  deliveryDate: string;
+  restaurantName: string;
 }
 
 export interface IRestaurantsGroup {

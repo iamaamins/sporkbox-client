@@ -58,9 +58,15 @@ export default function DesktopNav() {
       </div>
 
       <ul className={styles.navigation}>
-        <li className={isAdmin ? styles.hide : ""}>
+        <li className={isAdmin || !isCustomer ? styles.hide : ""}>
           <Link href="/dashboard">
             <a>Dashboard</a>
+          </Link>
+        </li>
+
+        <li className={!date ? styles.hide : ""}>
+          <Link href={`/calendar/${date}`}>
+            <a>Calendar</a>
           </Link>
         </li>
 
@@ -73,12 +79,6 @@ export default function DesktopNav() {
         <li className={isAdmin ? styles.hide : ""}>
           <Link href="/about-us">
             <a>About us</a>
-          </Link>
-        </li>
-
-        <li className={!date ? styles.hide : ""}>
-          <Link href={`/calendar/${date}`}>
-            <a>Calendar</a>
           </Link>
         </li>
 

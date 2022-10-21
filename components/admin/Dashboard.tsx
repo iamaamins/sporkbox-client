@@ -4,12 +4,12 @@ import { useData } from "@context/Data";
 import ScheduledRestaurants from "./ScheduledRestaurants";
 
 export default function Dashboard() {
-  const { activeOrders } = useData();
+  const { allActiveOrders } = useData();
 
   return (
     <>
       {/* Active orders */}
-      <Orders title="Active orders" orders={activeOrders} />
+      <Orders title="Active orders" orders={allActiveOrders} />
 
       {/* Scheduled restaurants */}
       <ScheduledRestaurants />

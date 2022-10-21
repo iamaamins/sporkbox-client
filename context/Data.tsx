@@ -8,6 +8,7 @@ import {
   IContextProviderProps,
   IScheduledRestaurant,
   IUpcomingWeekRestaurant,
+  ICustomerOrder,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
 
@@ -19,7 +20,7 @@ export const useData = () => useContext(DataContext);
 
 // Provider function
 export default function DataProvider({ children }: IContextProviderProps) {
-  const { isAdmin } = useUser();
+  const { isAdmin, isCustomer } = useUser();
   const [vendors, setVendors] = useState<IVendor[]>([]);
   const [companies, setCompanies] = useState<ICompany[]>([]);
   const [scheduledRestaurants, setScheduledRestaurants] = useState<
@@ -29,13 +30,16 @@ export default function DataProvider({ children }: IContextProviderProps) {
     IUpcomingWeekRestaurant[]
   >([]);
   const [allOrders, setAllOrders] = useState<IOrder[]>([]);
-  const [activeOrders, setActiveOrders] = useState<IOrder[]>([]);
+  const [allActiveOrders, setAllActiveOrders] = useState<IOrder[]>([]);
   const [deliveredOrders, setDeliveredOrders] = useState<IOrder[]>([]);
+  const [customerActiveOrders, setCustomerActiveOrders] = useState<
+    ICustomerOrder[]
+  >([]);
 
   // Create all orders
   useEffect(() => {
-    setAllOrders([...activeOrders, ...deliveredOrders]);
-  }, [activeOrders, deliveredOrders]);
+    setAllOrders([...allActiveOrders, ...deliveredOrders]);
+  }, [allActiveOrders, deliveredOrders]);
 
   // Get admin data
   useEffect(() => {
@@ -52,7 +56,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
         );
 
         // Update state
-        setActiveOrders(res.data);
+        setAllActiveOrders(res.data);
       } catch (err) {
         console.log(err);
       }
@@ -145,6 +149,33 @@ export default function DataProvider({ children }: IContextProviderProps) {
     getGenericData();
   }, []);
 
+  // Get customer data
+  useEffect(() => {
+    // Get customer data
+    async function getCustomerData() {
+      // Get active orders
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/orders/me/active`,
+          {
+            withCredentials: true,
+          }
+        );
+
+        setCustomerActiveOrders(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+
+      // Get all orders
+    }
+
+    // Only run this function if there is a customer
+    if (isCustomer) {
+      getCustomerData();
+    }
+  }, [isCustomer]);
+
   return (
     <DataContext.Provider
       value={{
@@ -153,10 +184,11 @@ export default function DataProvider({ children }: IContextProviderProps) {
         companies,
         allOrders,
         setCompanies,
-        activeOrders,
-        setActiveOrders,
         deliveredOrders,
+        allActiveOrders,
+        setAllActiveOrders,
         setDeliveredOrders,
+        customerActiveOrders,
         scheduledRestaurants,
         upcomingWeekRestaurants,
         setScheduledRestaurants,

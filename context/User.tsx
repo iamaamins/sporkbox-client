@@ -12,7 +12,7 @@ export const useUser = () => useContext(UserContext);
 // Provider function
 export default function UserProvider({ children }: IContextProviderProps) {
   const router = useRouter();
-  const [user, setUser] = useState<IUser>();
+  const [user, setUser] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Check if the user is admin
@@ -57,7 +57,7 @@ export default function UserProvider({ children }: IContextProviderProps) {
 
   return (
     <UserContext.Provider
-      value={{ isLoading, setUser, isAdmin, isVendor, isCustomer }}
+      value={{ isLoading, user, setUser, isAdmin, isVendor, isCustomer }}
     >
       {children}
     </UserContext.Provider>

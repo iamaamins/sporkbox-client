@@ -1,0 +1,86 @@
+.dashboard {
+  padding: var(--section_padding);
+}
+
+.details {
+  margin-bottom: 2rem;
+}
+
+.details h2 {
+  margin-bottom: 1rem;
+}
+
+.details p {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.details p span {
+  font-weight: 400;
+  color: var(--gray);
+}
+
+.active_orders h2 {
+  font-size: 18px;
+  margin-bottom: 1rem;
+}
+
+.active_orders table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.active_orders th {
+  text-align: left;
+  padding: 1rem;
+}
+
+.active_orders th:last-child {
+  text-align: right;
+}
+
+.active_orders thead tr {
+  background-color: var(--almost_white);
+}
+
+.active_orders tbody tr {
+  border-bottom: 1px solid var(--border_color);
+}
+
+.active_orders td {
+  padding: 1rem;
+  font-weight: 500;
+  color: var(--gray);
+  font-size: 0.9rem;
+}
+
+.active_orders td:last-child {
+  text-align: right;
+}
+
+.important a {
+  color: var(--black);
+  font-size: 1rem;
+}
+
+.hide_on_mobile {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .dashboard {
+    max-width: 85%;
+    margin: 0 auto;
+  }
+
+  .hide_on_mobile {
+    display: table-cell;
+  }
+}
+
+@media (min-width: 1024px) {
+  .dashboard {
+    max-width: 80%;
+    margin: 0 auto;
+  }
+}

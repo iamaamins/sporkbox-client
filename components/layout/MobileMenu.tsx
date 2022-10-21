@@ -72,7 +72,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
       <ul className={styles.nav_items}>
         {/* Customer nav items */}
         <li
-          className={!isCustomer ? styles.hide : ""}
+          className={isAdmin || !isCustomer ? styles.hide : ""}
           onClick={() => setIsOpen(false)}
         >
           <Link href="/dashboard">
