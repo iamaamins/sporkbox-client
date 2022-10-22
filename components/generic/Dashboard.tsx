@@ -1,13 +1,13 @@
+import Orders from "./Orders";
 import { useUser } from "@context/User";
-import { convertDateToText, formatCurrencyToUSD } from "@utils/index";
-import styles from "@styles/generic/Dashboard.module.css";
 import { useData } from "@context/Data";
-import OrderRow from "@components/admin/OrderRow";
-import Link from "next/link";
+import { formatCurrencyToUSD } from "@utils/index";
+import styles from "@styles/generic/Dashboard.module.css";
 
 export default function Dashboard() {
+  // Hooks
   const { user } = useUser();
-  const { customerActiveOrders } = useData();
+  const { customerActiveOrders, customerDeliveredOrders } = useData();
 
   return (
     <section className={styles.dashboard}>
@@ -27,47 +27,19 @@ export default function Dashboard() {
             </p>
           </div>
 
-          <div className={styles.active_orders}>
-            {customerActiveOrders.length === 0 && <h2>Previous orders</h2>}
+          {customerActiveOrders.length > 0 && (
+            <div className={styles.active_orders}>
+              <h2>Active orders</h2>
+              <Orders orders={customerActiveOrders} />
+            </div>
+          )}
 
-            {customerActiveOrders.length > 0 && (
-              <>
-                <h2>Active orders</h2>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Restaurant</th>
-                      <th className={styles.hide_on_mobile}>Item</th>
-
-                      <th className={styles.hide_on_mobile}>Quantity</th>
-                      <th>Delivery date</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {customerActiveOrders.map((customerActiveOrder) => (
-                      <tr key={customerActiveOrder._id}>
-                        <td className={styles.important}>
-                          <Link href={`/dashboard/${customerActiveOrder._id}`}>
-                            <a>{customerActiveOrder.restaurantName}</a>
-                          </Link>
-                        </td>
-                        <td className={styles.hide_on_mobile}>
-                          {customerActiveOrder.item.name}
-                        </td>
-                        <td className={styles.hide_on_mobile}>
-                          {customerActiveOrder.item.quantity}
-                        </td>
-                        <td>
-                          {convertDateToText(customerActiveOrder.deliveryDate)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </>
-            )}
-          </div>
+          {customerDeliveredOrders.length > 0 && (
+            <div className={styles.delivered_orders}>
+              <h2>Delivered orders</h2>
+              <Orders orders={customerDeliveredOrders} />
+            </div>
+          )}
         </>
       )}
     </section>

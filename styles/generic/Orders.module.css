@@ -1,0 +1,47 @@
+.orders {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orders th {
+  text-align: left;
+  padding: 1rem;
+}
+
+.orders th:last-child {
+  text-align: right;
+}
+
+.orders thead tr {
+  background-color: var(--almost_white);
+}
+
+.orders tbody tr {
+  border-bottom: 1px solid var(--border_color);
+}
+
+.orders td {
+  padding: 1rem;
+  font-weight: 500;
+  color: var(--gray);
+  font-size: 0.9rem;
+}
+
+.orders td:last-child {
+  text-align: right;
+}
+
+.important a {
+  color: var(--black);
+  font-size: 1rem;
+}
+
+.hide_on_mobile {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .hide_on_mobile {
+    display: table-cell;
+  }
+}

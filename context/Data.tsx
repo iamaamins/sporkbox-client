@@ -1,14 +1,14 @@
 import axios from "axios";
 import { useUser } from "./User";
 import {
+  IOrder,
   IVendor,
   ICompany,
   IDataContext,
-  IOrder,
+  ICustomerOrder,
   IContextProviderProps,
   IScheduledRestaurant,
   IUpcomingWeekRestaurant,
-  ICustomerOrder,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
 
@@ -33,6 +33,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
   const [allActiveOrders, setAllActiveOrders] = useState<IOrder[]>([]);
   const [deliveredOrders, setDeliveredOrders] = useState<IOrder[]>([]);
   const [customerActiveOrders, setCustomerActiveOrders] = useState<
+    ICustomerOrder[]
+  >([]);
+  const [customerDeliveredOrders, setCustomerDeliveredOrders] = useState<
     ICustomerOrder[]
   >([]);
 
@@ -167,7 +170,21 @@ export default function DataProvider({ children }: IContextProviderProps) {
         console.log(err);
       }
 
-      // Get all orders
+      // Get 25 latest delivered orders
+      try {
+        // Make request to backend
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/orders/me/delivered/25`,
+          {
+            withCredentials: true,
+          }
+        );
+
+        // Update state
+        setCustomerDeliveredOrders(res.data);
+      } catch (err) {
+        console.log(err);
+      }
     }
 
     // Only run this function if there is a customer
@@ -190,6 +207,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setDeliveredOrders,
         customerActiveOrders,
         scheduledRestaurants,
+        customerDeliveredOrders,
         upcomingWeekRestaurants,
         setScheduledRestaurants,
       }}

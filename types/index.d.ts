@@ -70,6 +70,7 @@ export interface IDataContext {
   allActiveOrders: IOrder[];
   deliveredOrders: IOrder[];
   customerActiveOrders: ICustomerOrder[];
+  customerDeliveredOrders: ICustomerOrder[];
   scheduledRestaurants: IScheduledRestaurant[];
   setVendors: Dispatch<SetStateAction<IVendor[]>>;
   upcomingWeekRestaurants: IUpcomingWeekRestaurant[];
@@ -133,6 +134,10 @@ export interface ICustomerOrder {
   createdAt: string;
   deliveryDate: string;
   restaurantName: string;
+}
+
+export interface ICustomerOrderProps {
+  orders: ICustomerOrder[];
 }
 
 export interface IRestaurantsGroup {
