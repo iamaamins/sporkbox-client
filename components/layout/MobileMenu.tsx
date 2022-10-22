@@ -13,7 +13,7 @@ import { useUser } from "@context/User";
 import { IoLogIn } from "react-icons/io5";
 import { IMobileMenuProps } from "types";
 import { FaUserAlt } from "react-icons/fa";
-import { AiTwotonePhone } from "react-icons/ai";
+import { AiTwotonePhone, AiTwotoneStar } from "react-icons/ai";
 import { BsFillCalendar2DateFill } from "react-icons/bs";
 import styles from "@styles/layout/MobileMenu.module.css";
 import { convertDateToMilliseconds, currentYear } from "@utils/index";
@@ -78,6 +78,17 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
           <Link href="/dashboard">
             <a>
               <MdSpaceDashboard /> Dashboard
+            </a>
+          </Link>
+        </li>
+
+        <li
+          className={isAdmin || !isCustomer ? styles.hide : ""}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href="/favorite">
+            <a>
+              <AiTwotoneStar /> Favorite
             </a>
           </Link>
         </li>

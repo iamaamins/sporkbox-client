@@ -70,6 +70,12 @@ export default function DesktopNav() {
           </Link>
         </li>
 
+        <li className={!isCustomer ? styles.hide : ""}>
+          <Link href={`/favorite`}>
+            <a>Favorite</a>
+          </Link>
+        </li>
+
         <li className={isAdmin ? styles.hide : ""}>
           <Link href="/contact-us">
             <a>Contact</a>

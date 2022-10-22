@@ -1,0 +1,28 @@
+.favorite {
+  padding: var(--section_padding);
+}
+
+.favorite_title {
+  margin-bottom: 1rem;
+}
+
+.items {
+  display: grid;
+  gap: 1.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.item {
+  display: flex;
+  color: var(--black);
+  justify-content: space-between;
+}
+
+.item_name {
+  margin-bottom: 1rem;
+}
+
+.cover_image {
+  width: 30%;
+  border-radius: 0.25rem;
+}
