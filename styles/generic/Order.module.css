@@ -1,0 +1,97 @@
+.order {
+  padding: var(--section_padding);
+}
+
+.order_top {
+  display: flex;
+  margin-bottom: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.order_top svg {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--orange);
+}
+
+.cover_image,
+.details p,
+.details h2,
+.details form textarea {
+  margin-bottom: 1rem;
+}
+
+.cover_image img {
+  border-radius: 0.25rem;
+}
+
+.details p span {
+  font-weight: 600;
+}
+
+.review_title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.details form {
+  display: flex;
+  flex-direction: column;
+}
+
+.details form textarea {
+  padding: 12px;
+  resize: none;
+  height: 10rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--border_color);
+}
+
+.details form textarea:focus {
+  outline: none;
+  border: 1px solid var(--teal);
+}
+
+@media (min-width: 768px) {
+  .order {
+    max-width: 85%;
+    margin: 0 auto;
+  }
+
+  .order_top {
+    justify-content: flex-start;
+  }
+
+  .order_top h2 {
+    margin-right: 1.5rem;
+  }
+
+  .details form textarea {
+    height: 12rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .order {
+    max-width: 80%;
+  }
+
+  .cover_image_and_details {
+    display: flex;
+  }
+
+  .cover_image {
+    width: 55%;
+    margin-bottom: 0rem;
+    margin-right: 4rem;
+  }
+
+  .details {
+    width: 45%;
+  }
+
+  .details form textarea {
+    height: 10rem;
+  }
+}

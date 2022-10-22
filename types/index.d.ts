@@ -40,6 +40,15 @@ interface IItem {
   description: string;
 }
 
+export interface ICustomerFavoriteItem {
+  _id: string;
+  itemId: string;
+  itemName: string;
+  customerId: string;
+  restaurantId: string;
+  restaurantName: string;
+}
+
 export interface ICompany {
   _id: string;
   name: string;
@@ -69,15 +78,18 @@ export interface IDataContext {
   companies: ICompany[];
   allActiveOrders: IOrder[];
   deliveredOrders: IOrder[];
+  customerAllOrders: ICustomerOrder[];
   customerActiveOrders: ICustomerOrder[];
   customerDeliveredOrders: ICustomerOrder[];
   scheduledRestaurants: IScheduledRestaurant[];
+  customerFavoriteItems: ICustomerFavoriteItem[];
   setVendors: Dispatch<SetStateAction<IVendor[]>>;
   upcomingWeekRestaurants: IUpcomingWeekRestaurant[];
   setCompanies: Dispatch<SetStateAction<ICompany[]>>;
   setAllActiveOrders: Dispatch<SetStateAction<IOrder[]>>;
   setDeliveredOrders: Dispatch<SetStateAction<IOrder[]>>;
   setScheduledRestaurants: Dispatch<SetStateAction<IScheduledRestaurant[]>>;
+  setCustomerFavoriteItems: Dispatch<SetStateAction<ICustomerFavoriteItem[]>>;
 }
 
 export interface ICartContext {
@@ -133,6 +145,7 @@ export interface ICustomerOrder {
   status: string;
   createdAt: string;
   deliveryDate: string;
+  restaurantId: string;
   restaurantName: string;
 }
 

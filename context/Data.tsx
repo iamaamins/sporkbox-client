@@ -38,11 +38,20 @@ export default function DataProvider({ children }: IContextProviderProps) {
   const [customerDeliveredOrders, setCustomerDeliveredOrders] = useState<
     ICustomerOrder[]
   >([]);
+  const [customerAllOrders, setCustomerAllOrders] = useState<ICustomerOrder[]>(
+    []
+  );
+  const [customerFavoriteItems, setCustomerFavoriteItems] = useState([]);
 
   // Create all orders
   useEffect(() => {
     setAllOrders([...allActiveOrders, ...deliveredOrders]);
   }, [allActiveOrders, deliveredOrders]);
+
+  // Create customer all orders
+  useEffect(() => {
+    setCustomerAllOrders([...customerActiveOrders, ...customerDeliveredOrders]);
+  }, [customerActiveOrders, customerDeliveredOrders]);
 
   // Get admin data
   useEffect(() => {
@@ -185,6 +194,22 @@ export default function DataProvider({ children }: IContextProviderProps) {
       } catch (err) {
         console.log(err);
       }
+
+      // Get favorite items
+      try {
+        // Make request to backend
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/favorites/me`,
+          {
+            withCredentials: true,
+          }
+        );
+
+        // Update data
+        setCustomerFavoriteItems(res.data);
+      } catch (err) {
+        console.log(err);
+      }
     }
 
     // Only run this function if there is a customer
@@ -203,13 +228,16 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setCompanies,
         deliveredOrders,
         allActiveOrders,
+        customerAllOrders,
         setAllActiveOrders,
         setDeliveredOrders,
         customerActiveOrders,
         scheduledRestaurants,
+        customerFavoriteItems,
         customerDeliveredOrders,
         upcomingWeekRestaurants,
         setScheduledRestaurants,
+        setCustomerFavoriteItems,
       }}
     >
       {children}
