@@ -24,8 +24,7 @@ export const formatCurrencyToUSD = (number: number) =>
   }).format(number);
 
 // Convert date to slug
-export const convertDateToMilliseconds = (date: string) =>
-  new Date(date).getTime();
+export const convertDateToMS = (date: string) => new Date(date).getTime();
 
 // Convert iso date to locale date string
 export const convertDateToText = (date: string | number) =>
@@ -144,4 +143,18 @@ export async function handleRemoveFromFavorite(
   } catch (err) {
     console.log(err);
   }
+}
+
+// Get future date
+export function getFutureDate(dayToAdd: number) {
+  // Today
+  const today = new Date();
+
+  // Day number of current week sunday
+  const sunday = today.getDate() - today.getDay();
+
+  // Return a future date
+  return convertDateToMS(
+    new Date(today.setDate(sunday + dayToAdd)).toDateString()
+  );
 }

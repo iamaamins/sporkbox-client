@@ -109,6 +109,7 @@ export interface ICartItem {
   price: number;
   total: number;
   quantity: number;
+  expiresIn: number;
   restaurantId: string;
   deliveryDate: number;
   restaurantName: string;

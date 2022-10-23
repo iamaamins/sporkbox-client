@@ -16,7 +16,7 @@ import { FaUserAlt } from "react-icons/fa";
 import { AiTwotonePhone, AiTwotoneStar } from "react-icons/ai";
 import { BsFillCalendar2DateFill } from "react-icons/bs";
 import styles from "@styles/layout/MobileMenu.module.css";
-import { convertDateToMilliseconds, currentYear } from "@utils/index";
+import { convertDateToMS, currentYear } from "@utils/index";
 import { TbBuildingStore, TbBuildingSkyscraper } from "react-icons/tb";
 
 export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
@@ -28,9 +28,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
   useEffect(() => {
     if (upcomingWeekRestaurants.length > 0) {
       // Convert the first group's scheduled date to slug
-      const date = convertDateToMilliseconds(
-        upcomingWeekRestaurants[0].scheduledOn
-      );
+      const date = convertDateToMS(upcomingWeekRestaurants[0].scheduledOn);
 
       // Update state
       setDate(date);

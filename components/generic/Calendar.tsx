@@ -6,7 +6,7 @@ import { useCart } from "@context/Cart";
 import {
   formatCurrencyToUSD,
   groupBy,
-  convertDateToMilliseconds,
+  convertDateToMS,
   getDate,
   getDay,
 } from "@utils/index";
@@ -36,8 +36,7 @@ export default function Calendar() {
       // Find the restaurant with date from slug
       const restaurants = groups.find(
         (group) =>
-          convertDateToMilliseconds(group.scheduledOn).toString() ===
-          router.query.date
+          convertDateToMS(group.scheduledOn).toString() === router.query.date
       )?.restaurants;
 
       // Update restaurants
@@ -64,14 +63,14 @@ export default function Calendar() {
               {restaurantGroups.map((restaurantGroup) => (
                 <div key={restaurantGroup.scheduledOn}>
                   <Link
-                    href={`/calendar/${convertDateToMilliseconds(
+                    href={`/calendar/${convertDateToMS(
                       restaurantGroup.scheduledOn
                     )}`}
                   >
                     <a
                       key={restaurantGroup.scheduledOn}
                       className={
-                        convertDateToMilliseconds(
+                        convertDateToMS(
                           restaurantGroup.scheduledOn
                         ).toString() === router.query.date
                           ? styles.active

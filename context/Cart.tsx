@@ -26,15 +26,26 @@ export default function CartProvider({ children }: IContextProviderProps) {
 
   // Get cart items from local storage on app reload
   useEffect(() => {
-    // Get today's day number
-    const today = new Date().getDay();
-
     // Get cart items from local storage
     setCartItems(JSON.parse(localStorage.getItem("cart") || "[]"));
+  }, [router.isReady]);
 
-    // If today is saturday then remove the cart
-    if (today === 6) {
-      localStorage.removeItem("cart");
+  // Remove cart item automatically
+  useEffect(() => {
+    if (cartItems.length > 0 && router.isReady) {
+      // Get now in milliseconds
+      const now = new Date().getTime();
+
+      // Filter the items by item id
+      const updatedItems = cartItems.filter(
+        (cartItem) => cartItem.expiresIn > now
+      );
+
+      // Set updated items to cart
+      setCartItems(updatedItems);
+
+      // Set updated items to local storage
+      localStorage.setItem("cart", JSON.stringify(updatedItems));
     }
   }, [router.isReady]);
 

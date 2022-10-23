@@ -6,7 +6,7 @@ import styles from "@styles/generic/Favorite.module.css";
 import {
   getDate,
   getDay,
-  convertDateToMilliseconds,
+  convertDateToMS,
   handleRemoveFromFavorite,
 } from "@utils/index";
 
@@ -49,7 +49,7 @@ export default function Favorite() {
                             customerFavoriteItem.restaurantId && (
                             <>
                               <Link
-                                href={`/calendar/${convertDateToMilliseconds(
+                                href={`/calendar/${convertDateToMS(
                                   upcomingWeekRestaurant.scheduledOn
                                 )}/${customerFavoriteItem.restaurantId}/${
                                   customerFavoriteItem.itemId

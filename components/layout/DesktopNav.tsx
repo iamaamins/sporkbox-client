@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import logo from "@public/layout/logo.png";
 import { useEffect, useState } from "react";
-import { convertDateToMilliseconds } from "@utils/index";
+import { convertDateToMS } from "@utils/index";
 import styles from "@styles/layout/DesktopNav.module.css";
 
 export default function DesktopNav() {
@@ -20,9 +20,7 @@ export default function DesktopNav() {
   useEffect(() => {
     if (upcomingWeekRestaurants.length > 0) {
       // Convert the first group's scheduled date to slug
-      const dateSlug = convertDateToMilliseconds(
-        upcomingWeekRestaurants[0].scheduledOn
-      );
+      const dateSlug = convertDateToMS(upcomingWeekRestaurants[0].scheduledOn);
 
       // Update state
       setDate(dateSlug);
