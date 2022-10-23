@@ -1,13 +1,15 @@
 import OrderRow from "./OrderRow";
-import Filters from "./Filters";
 import { useState } from "react";
-import { BsFilter } from "react-icons/bs";
+import { BiSort } from "react-icons/bi";
+import FilterAndSort from "./FilterAndSort";
 import { IOrder, IOrdersProps } from "types";
 import styles from "@styles/admin/Orders.module.css";
 
 export default function Orders({ title, orders }: IOrdersProps) {
-  const [showFilters, setShowFilters] = useState<boolean>(false);
-  const [filteredOrders, setFilteredOrders] = useState<IOrder[]>([]);
+  const [showController, setShowController] = useState<boolean>(false);
+  const [filteredAndSortedOrders, setFilteredAndSortedOrders] = useState<
+    IOrder[]
+  >([]);
 
   return (
     <section className={styles.orders}>
@@ -20,19 +22,20 @@ export default function Orders({ title, orders }: IOrdersProps) {
           {/* Title and filter icon */}
           <div className={styles.orders_top}>
             <h2>{title}</h2>
-            <div
+
+            <p
+              onClick={() => setShowController(!showController)}
               className={styles.filter}
-              onClick={() => setShowFilters(!showFilters)}
             >
-              <BsFilter />
-            </div>
+              Filter <BiSort />
+            </p>
           </div>
 
           {/* Filters */}
-          <Filters
+          <FilterAndSort
             orders={orders}
-            showFilters={showFilters}
-            setFilteredOrders={setFilteredOrders}
+            showController={showController}
+            setFilteredAndSortedOrders={setFilteredAndSortedOrders}
           />
 
           {/* Orders */}
@@ -47,7 +50,7 @@ export default function Orders({ title, orders }: IOrdersProps) {
             </thead>
 
             <tbody>
-              {filteredOrders.length === 0 ? (
+              {filteredAndSortedOrders.length === 0 ? (
                 <>
                   {orders.map((order, index) => (
                     <OrderRow key={index} order={order} />
@@ -55,7 +58,7 @@ export default function Orders({ title, orders }: IOrdersProps) {
                 </>
               ) : (
                 <>
-                  {filteredOrders.map((order, index) => (
+                  {filteredAndSortedOrders.map((order, index) => (
                     <OrderRow key={index} order={order} />
                   ))}
                 </>

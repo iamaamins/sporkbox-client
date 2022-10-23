@@ -1,18 +1,20 @@
-import { groupBy } from "@utils/index";
-import { ChangeEvent, useEffect, useState } from "react";
+import { convertDateToMS, groupBy } from "@utils/index";
 import styles from "@styles/admin/Filters.module.css";
-import { IFilterProps, IFiltersData, IOrdersGroup } from "types";
+import { ChangeEvent, useEffect, useState } from "react";
+import { IFilterAndSortProps, IFiltersData, IOrdersGroup } from "types";
 
-export default function Filters({
+export default function FilterAndSort({
   orders,
-  showFilters,
-  setFilteredOrders,
-}: IFilterProps) {
+  showController,
+  setFilteredAndSortedOrders,
+}: IFilterAndSortProps) {
   // Initial state
   const initialState = {
     category: "",
     subCategory: "",
   };
+
+  // Hooks
   const [filtersData, setFiltersData] = useState<IFiltersData>(initialState);
   const [categoryGroups, setCategoryGroups] = useState<IOrdersGroup[]>([]);
 
@@ -21,32 +23,35 @@ export default function Filters({
 
   // Update filtered data when sub category changes
   useEffect(() => {
-    setFilteredOrders(
+    setFilteredAndSortedOrders(
       orders.filter(
         (activeOrder) => activeOrder[category as keyof object] === subCategory
       )
     );
   }, [subCategory]);
 
-  // Group active order when category changes
+  // Update filtered data and group of
+  // active order when category changes
   useEffect(() => {
-    {
-      category === "companyName" &&
-        setCategoryGroups(groupBy(category, orders, "orders"));
-    }
-
-    {
-      category === "restaurantName" &&
-        setCategoryGroups(groupBy(category, orders, "orders"));
-    }
-
-    {
-      category === "deliveryDate" &&
-        setCategoryGroups(groupBy(category, orders, "orders"));
-    }
-
-    {
-      category === "all" && setFilteredOrders([]);
+    if (
+      category === "companyName" ||
+      category === "deliveryDate" ||
+      category === "restaurantName"
+    ) {
+      setCategoryGroups(groupBy(category, orders, "orders"));
+    } else if (category === "sortByCompany") {
+      setFilteredAndSortedOrders(
+        [...orders].sort((a, b) =>
+          a.companyName.localeCompare(b.companyName.toLowerCase())
+        )
+      );
+    } else if (category === "sortByDeliveryDate") {
+      setFilteredAndSortedOrders(
+        [...orders].sort(
+          (a, b) =>
+            convertDateToMS(a.deliveryDate) - convertDateToMS(b.deliveryDate)
+        )
+      );
     }
   }, [category]);
 
@@ -59,22 +64,31 @@ export default function Filters({
   }
 
   return (
-    <div className={`${styles.filters} ${showFilters && styles.show_filters}`}>
+    <div
+      className={`${styles.filters} ${showController && styles.show_filters}`}
+    >
       <select name="category" value={category} onChange={handleChange}>
         <option hidden aria-hidden>
           Category
         </option>
-        <option value="all">All</option>
         <option value="companyName">Company</option>
         <option value="restaurantName">Restaurant</option>
         <option value="deliveryDate">Delivery date</option>
+        <option value="sortByCompany">Sort by company</option>
+        <option value="sortByDeliveryDate">Sort by delivery date</option>
       </select>
 
       <select
         name="subCategory"
         value={subCategory}
         onChange={handleChange}
-        className={category === "all" ? styles.hide_select : ""}
+        className={
+          category === "all" ||
+          category === "sortByCompany" ||
+          category === "sortByDeliveryDate"
+            ? styles.hide_select
+            : ""
+        }
       >
         <option hidden aria-hidden>
           Sub category

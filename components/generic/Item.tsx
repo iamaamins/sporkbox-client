@@ -41,6 +41,8 @@ export default function Item() {
       // Find the restaurant
       const restaurant = upcomingWeekRestaurants.find(
         (upcomingWeekRestaurant) =>
+          convertDateToMS(upcomingWeekRestaurant.scheduledOn) ===
+            +(router.query.date as string) &&
           upcomingWeekRestaurant._id === router.query.restaurant
       );
 

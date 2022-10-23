@@ -1,15 +1,9 @@
+import axios from "axios";
 import { useUser } from "@context/User";
 import { useRouter } from "next/router";
-import { ICartContext, ICartItem, IContextProviderProps } from "types";
 import { formatNumberToUS } from "@utils/index";
-import React, {
-  useState,
-  useEffect,
-  createContext,
-  useContext,
-  FC,
-} from "react";
-import axios from "axios";
+import { ICartContext, ICartItem, IContextProviderProps } from "types";
+import { useState, useEffect, useContext, createContext } from "react";
 
 // Create context
 const CartContext = createContext({} as ICartContext);
@@ -23,6 +17,8 @@ export default function CartProvider({ children }: IContextProviderProps) {
   const { isCustomer } = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<ICartItem[]>([]);
+
+  console.log(cartItems);
 
   // Get cart items from local storage on app reload
   useEffect(() => {

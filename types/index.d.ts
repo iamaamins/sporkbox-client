@@ -177,10 +177,10 @@ export interface IOrdersProps {
   orders: IOrder[];
 }
 
-export interface IFilterProps {
+export interface IFilterAndSortProps {
   orders: IOrder[];
-  showFilters: boolean;
-  setFilteredOrders: Dispatch<SetStateAction<IOrder[]>>;
+  showController: boolean;
+  setFilteredAndSortedOrders: Dispatch<SetStateAction<IOrder[]>>;
 }
 
 export interface IButtons {
