@@ -3,7 +3,7 @@ import { ICustomerFavoriteItem, ICustomerOrder } from "types";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import { useEffect, useState } from "react";
-import { convertDateToText } from "@utils/index";
+import { convertDateToText, handleRemoveFromFavorite } from "@utils/index";
 import styles from "@styles/generic/Order.module.css";
 import LinkButton from "@components/layout/LinkButton";
 import SubmitButton from "@components/layout/SubmitButton";
@@ -72,28 +72,6 @@ export default function Order() {
     }
   }
 
-  // Handle remove from favorite
-  async function handleRemoveFromFavorite() {
-    try {
-      // Make request to backend
-      await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/favorites/${favoriteItem?._id}/remove`,
-        { withCredentials: true }
-      );
-
-      // Update state
-      setCustomerFavoriteItems(
-        (currCustomerFavoriteItems: ICustomerFavoriteItem[]) =>
-          currCustomerFavoriteItems.filter(
-            (currCustomerFavoriteItem) =>
-              currCustomerFavoriteItem._id !== favoriteItem?._id
-          )
-      );
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   return (
     <section className={styles.order}>
       {!order && <h2>No order found</h2>}
@@ -102,7 +80,14 @@ export default function Order() {
           <div className={styles.order_top}>
             <h2 className={styles.order_title}>Order summary</h2>
             {favoriteItem ? (
-              <AiTwotoneStar onClick={handleRemoveFromFavorite} />
+              <AiTwotoneStar
+                onClick={() =>
+                  handleRemoveFromFavorite(
+                    favoriteItem._id,
+                    setCustomerFavoriteItems
+                  )
+                }
+              />
             ) : (
               <AiOutlineStar onClick={handleAddToFavorite} />
             )}

@@ -1,18 +1,22 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useData } from "@context/Data";
-import LinkButton from "@components/layout/LinkButton";
+import { IoMdRemove } from "react-icons/io";
+import styles from "@styles/generic/Favorite.module.css";
 import {
-  convertDateToMilliseconds,
-  convertDateToText,
   getDate,
   getDay,
+  convertDateToMilliseconds,
+  handleRemoveFromFavorite,
 } from "@utils/index";
-import styles from "@styles/generic/Favorite.module.css";
-import Link from "next/link";
 
 export default function Favorite() {
   // Hooks
-  const { customerFavoriteItems, upcomingWeekRestaurants } = useData();
+  const {
+    customerFavoriteItems,
+    upcomingWeekRestaurants,
+    setCustomerFavoriteItems,
+  } = useData();
 
   return (
     <section className={styles.favorite}>
@@ -81,6 +85,18 @@ export default function Favorite() {
                     layout="responsive"
                     objectFit="cover"
                   />
+
+                  <div
+                    className={styles.remove}
+                    onClick={() =>
+                      handleRemoveFromFavorite(
+                        customerFavoriteItem._id,
+                        setCustomerFavoriteItems
+                      )
+                    }
+                  >
+                    <IoMdRemove />
+                  </div>
                 </div>
               </div>
             ))}

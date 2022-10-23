@@ -1,6 +1,13 @@
 import { SetStateAction } from "react";
 import { NextRouter } from "next/router";
-import { IVendor, IRestaurant, Groups, IFormData } from "types";
+import {
+  IVendor,
+  IRestaurant,
+  Groups,
+  IFormData,
+  ICustomerFavoriteItem,
+} from "types";
+import axios from "axios";
 
 // Current year
 export const currentYear = new Date().getFullYear();
@@ -112,3 +119,29 @@ export const getDate = (date: string) =>
 // Get the first letter of the day
 export const getDay = (date: string) =>
   new Date(date).toDateString().split(" ").slice(0, 1)[0].split("")[0];
+
+// Handle remove from favorite
+export async function handleRemoveFromFavorite(
+  itemId: string,
+  setCustomerFavoriteItems: React.Dispatch<
+    SetStateAction<ICustomerFavoriteItem[]>
+  >
+) {
+  try {
+    // Make request to backend
+    await axios.delete(
+      `${process.env.NEXT_PUBLIC_API_URL}/favorites/${itemId}/remove`,
+      { withCredentials: true }
+    );
+
+    // Update state
+    setCustomerFavoriteItems(
+      (currCustomerFavoriteItems: ICustomerFavoriteItem[]) =>
+        currCustomerFavoriteItems.filter(
+          (currCustomerFavoriteItem) => currCustomerFavoriteItem._id !== itemId
+        )
+    );
+  } catch (err) {
+    console.log(err);
+  }
+}

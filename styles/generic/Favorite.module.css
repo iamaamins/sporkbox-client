@@ -20,7 +20,7 @@
 
 .details {
   width: 70%;
-  margin-right: 1rem;
+  margin-right: 1.5rem;
 }
 
 .item_description {
@@ -52,10 +52,30 @@
 
 .cover_image {
   width: 30%;
+  position: relative;
 }
 
 .cover_image img {
   border-radius: 0.25rem;
+}
+
+.remove {
+  top: -8px;
+  right: -8px;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  cursor: pointer;
+  position: absolute;
+  border-radius: 100%;
+  align-items: center;
+  justify-content: center;
+  background: var(--orange);
+  color: var(--almost_white);
+}
+
+.cover_image svg {
+  font-size: 16px;
 }
 
 @media (min-width: 768px) {
