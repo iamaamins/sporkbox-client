@@ -104,3 +104,11 @@ export function groupBy<
 
   return groupsArr;
 }
+
+// Get the date
+export const getDate = (date: string) =>
+  new Date(date).toDateString().split(" ").slice(2, 3).join();
+
+// Get the first letter of the day
+export const getDay = (date: string) =>
+  new Date(date).toDateString().split(" ").slice(0, 1)[0].split("")[0];

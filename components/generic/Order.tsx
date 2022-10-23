@@ -55,9 +55,7 @@ export default function Order() {
         `${process.env.NEXT_PUBLIC_API_URL}/favorites/add`,
         {
           itemId: order?.item._id,
-          itemName: order?.item.name,
           restaurantId: order?.restaurantId,
-          restaurantName: order?.restaurantName,
         },
         { withCredentials: true }
       );

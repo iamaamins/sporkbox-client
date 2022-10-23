@@ -9,6 +9,7 @@ import {
   IContextProviderProps,
   IScheduledRestaurant,
   IUpcomingWeekRestaurant,
+  ICustomerFavoriteItem,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
 
@@ -41,7 +42,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
   const [customerAllOrders, setCustomerAllOrders] = useState<ICustomerOrder[]>(
     []
   );
-  const [customerFavoriteItems, setCustomerFavoriteItems] = useState([]);
+  const [customerFavoriteItems, setCustomerFavoriteItems] = useState<
+    ICustomerFavoriteItem[]
+  >([]);
 
   // Create all orders
   useEffect(() => {

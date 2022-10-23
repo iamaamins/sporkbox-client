@@ -7,6 +7,8 @@ import {
   formatCurrencyToUSD,
   groupBy,
   convertDateToMilliseconds,
+  getDate,
+  getDay,
 } from "@utils/index";
 import Image from "next/image";
 import { IRestaurantsGroup, IUpcomingWeekRestaurant } from "types";
@@ -45,14 +47,6 @@ export default function Calendar() {
       setRestaurantGroups(groups);
     }
   }, [upcomingWeekRestaurants, router]);
-
-  // Get the date
-  const getDate = (date: string) =>
-    new Date(date).toDateString().split(" ").slice(2, 3).join();
-
-  // Get the first letter of the day
-  const getDay = (date: string) =>
-    new Date(date).toDateString().split(" ").slice(0, 1)[0].split("")[0];
 
   return (
     <section className={styles.calendar}>

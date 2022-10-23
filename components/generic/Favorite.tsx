@@ -1,23 +1,18 @@
 import Image from "next/image";
 import { useData } from "@context/Data";
-import styles from "@styles/generic/Favorite.module.css";
-import { useEffect } from "react";
 import LinkButton from "@components/layout/LinkButton";
-import { convertDateToMilliseconds } from "@utils/index";
+import {
+  convertDateToMilliseconds,
+  convertDateToText,
+  getDate,
+  getDay,
+} from "@utils/index";
+import styles from "@styles/generic/Favorite.module.css";
+import Link from "next/link";
 
 export default function Favorite() {
   // Hooks
   const { customerFavoriteItems, upcomingWeekRestaurants } = useData();
-
-  // Find the favorite items that are scheduled in upcoming week
-
-  //   useEffect(() => {
-  //     if (upcomingWeekRestaurants.length > 0) {
-  //       const restaurants = upcomingWeekRestaurants.map(upcomingWeekRestaurant => upcomingWeekRestaurant._id === customerFavoriteItems.)
-
-  //       console.log(restaurants);
-  //     }
-  //   }, [upcomingWeekRestaurants]);
 
   return (
     <section className={styles.favorite}>
@@ -30,25 +25,51 @@ export default function Favorite() {
           <div className={styles.items}>
             {customerFavoriteItems.map((customerFavoriteItem) => (
               <div key={customerFavoriteItem._id} className={styles.item}>
-                <div>
-                  <p className={styles.item_name}>
+                <div className={styles.details}>
+                  <p className={styles.item_description}>
                     {customerFavoriteItem.itemName} from{" "}
                     {customerFavoriteItem.restaurantName}
                   </p>
 
-                  {upcomingWeekRestaurants.map(
+                  {upcomingWeekRestaurants.some(
                     (upcomingWeekRestaurant) =>
                       upcomingWeekRestaurant._id ===
-                        customerFavoriteItem.restaurantId && (
-                        <LinkButton
-                          text="Order again"
-                          href={`/calendar/${convertDateToMilliseconds(
-                            upcomingWeekRestaurant.scheduledOn
-                          )}/${customerFavoriteItem.restaurantId}/${
-                            customerFavoriteItem.itemId
-                          }`}
-                        />
-                      )
+                      customerFavoriteItem.restaurantId
+                  ) ? (
+                    <div className={styles.dates}>
+                      <p className={styles.available}>Available to order on</p>
+
+                      {upcomingWeekRestaurants.map(
+                        (upcomingWeekRestaurant) =>
+                          upcomingWeekRestaurant._id ===
+                            customerFavoriteItem.restaurantId && (
+                            <>
+                              <Link
+                                href={`/calendar/${convertDateToMilliseconds(
+                                  upcomingWeekRestaurant.scheduledOn
+                                )}/${customerFavoriteItem.restaurantId}/${
+                                  customerFavoriteItem.itemId
+                                }`}
+                              >
+                                <a>
+                                  <span>
+                                    {getDay(upcomingWeekRestaurant.scheduledOn)}
+                                  </span>
+                                  <span>
+                                    {getDate(
+                                      upcomingWeekRestaurant.scheduledOn
+                                    )}
+                                  </span>
+                                </a>
+                              </Link>
+                            </>
+                          )
+                      )}
+                    </div>
+                  ) : (
+                    <p className={styles.not_available}>
+                      Not available to order
+                    </p>
                   )}
                 </div>
 
