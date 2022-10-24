@@ -9,13 +9,13 @@ import type { AppProps } from "next/app";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <UserProvider>
-      <CartProvider>
-        <DataProvider>
+      <DataProvider>
+        <CartProvider>
           <Header />
           <Component {...pageProps} />
           <Footer />
-        </DataProvider>
-      </CartProvider>
+        </CartProvider>
+      </DataProvider>
     </UserProvider>
   );
 }

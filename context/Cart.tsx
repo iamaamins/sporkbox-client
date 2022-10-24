@@ -1,8 +1,14 @@
 import axios from "axios";
+import { useData } from "@context/Data";
 import { useUser } from "@context/User";
 import { useRouter } from "next/router";
 import { formatNumberToUS } from "@utils/index";
-import { ICartContext, ICartItem, IContextProviderProps } from "types";
+import {
+  ICartContext,
+  ICartItem,
+  ICustomerOrder,
+  IContextProviderProps,
+} from "types";
 import { useState, useEffect, useContext, createContext } from "react";
 
 // Create context
@@ -15,6 +21,7 @@ export const useCart = () => useContext(CartContext);
 export default function CartProvider({ children }: IContextProviderProps) {
   const router = useRouter();
   const { isCustomer } = useUser();
+  const { setCustomerActiveOrders } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<ICartItem[]>([]);
 
@@ -107,25 +114,41 @@ export default function CartProvider({ children }: IContextProviderProps) {
 
   // Checkout cart
   async function checkoutCart() {
-    {
-      !isCustomer && router.push("/login");
-    }
+    if (isCustomer) {
+      // Create an order
+      try {
+        // Show loader
+        setIsLoading(true);
 
-    // Create an order
-    try {
-      // Make request to the backend
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/orders/create`,
-        { items: cartItems },
-        {
-          withCredentials: true,
-        }
-      );
+        // Make request to the backend
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/orders/create`,
+          { items: cartItems },
+          {
+            withCredentials: true,
+          }
+        );
 
-      // Update customer's orders state
-      console.log(res);
-    } catch (err) {
-      console.log(err);
+        console.log(res.data);
+
+        // Update customer's active orders state
+        setCustomerActiveOrders((currActiveOrders: ICustomerOrder[]) => [
+          ...currActiveOrders,
+          ...res.data,
+        ]);
+
+        // Remove loader
+        setIsLoading(false);
+
+        // Push to the dashboard page
+        router.push("/dashboard");
+      } catch (err) {
+        // Remove loader
+        setIsLoading(false);
+        console.log(err);
+      }
+    } else {
+      router.push("/login");
     }
   }
 

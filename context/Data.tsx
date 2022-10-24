@@ -46,6 +46,8 @@ export default function DataProvider({ children }: IContextProviderProps) {
     ICustomerFavoriteItem[]
   >([]);
 
+  console.log(customerActiveOrders);
+
   // Create all orders
   useEffect(() => {
     setAllOrders([...allActiveOrders, ...deliveredOrders]);
@@ -239,6 +241,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
         customerFavoriteItems,
         customerDeliveredOrders,
         upcomingWeekRestaurants,
+        setCustomerActiveOrders,
         setScheduledRestaurants,
         setCustomerFavoriteItems,
       }}
