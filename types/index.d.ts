@@ -78,6 +78,7 @@ export interface IDataContext {
   companies: ICompany[];
   allActiveOrders: IOrder[];
   deliveredOrders: IOrder[];
+  customerActiveOrdersTotal: number;
   customerAllOrders: ICustomerOrder[];
   customerActiveOrders: ICustomerOrder[];
   customerDeliveredOrders: ICustomerOrder[];

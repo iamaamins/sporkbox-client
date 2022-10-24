@@ -15,15 +15,6 @@ export default function UserProvider({ children }: IContextProviderProps) {
   const [user, setUser] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Check if the user is admin
-  const isAdmin = user?.role === "ADMIN";
-
-  // Check if the user is customer
-  const isCustomer = user?.role === "CUSTOMER";
-
-  // Check if the user is customer
-  const isVendor = user?.role === "VENDOR";
-
   // Get user
   useEffect(() => {
     async function getUser() {
@@ -45,15 +36,25 @@ export default function UserProvider({ children }: IContextProviderProps) {
         // Remove the loader
         setIsLoading(false);
       } catch (err) {
-        console.log(err);
-
         // Remove the loader
         setIsLoading(false);
+
+        console.log(err);
       }
     }
 
+    // Always run get user function
     getUser();
   }, [router.isReady]);
+
+  // Check if the user is admin
+  const isAdmin = user?.role === "ADMIN";
+
+  // Check if the user is customer
+  const isCustomer = user?.role === "CUSTOMER";
+
+  // Check if the user is customer
+  const isVendor = user?.role === "VENDOR";
 
   return (
     <UserContext.Provider

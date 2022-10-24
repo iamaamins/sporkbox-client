@@ -12,6 +12,7 @@ import {
   ICustomerFavoriteItem,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
+import { formatNumberToUS } from "@utils/index";
 
 // Create context
 const DataContext = createContext({} as IDataContext);
@@ -46,17 +47,26 @@ export default function DataProvider({ children }: IContextProviderProps) {
     ICustomerFavoriteItem[]
   >([]);
 
-  console.log(customerActiveOrders);
-
-  // Create all orders
+  // Fetch generic data
   useEffect(() => {
-    setAllOrders([...allActiveOrders, ...deliveredOrders]);
-  }, [allActiveOrders, deliveredOrders]);
+    async function getGenericData() {
+      // Get scheduled restaurants
+      try {
+        // Make request to backend
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/restaurants/upcoming-week`
+        );
 
-  // Create customer all orders
-  useEffect(() => {
-    setCustomerAllOrders([...customerActiveOrders, ...customerDeliveredOrders]);
-  }, [customerActiveOrders, customerDeliveredOrders]);
+        // Update state
+        setUpcomingWeekRestaurants(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    // Call the function
+    getGenericData();
+  }, []);
 
   // Get admin data
   useEffect(() => {
@@ -145,26 +155,10 @@ export default function DataProvider({ children }: IContextProviderProps) {
     }
   }, [isAdmin]);
 
-  // Fetch generic data
+  // Create all orders
   useEffect(() => {
-    async function getGenericData() {
-      // Get scheduled restaurants
-      try {
-        // Make request to backend
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/restaurants/upcoming-week`
-        );
-
-        // Update state
-        setUpcomingWeekRestaurants(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    // Call the function
-    getGenericData();
-  }, []);
+    setAllOrders([...allActiveOrders, ...deliveredOrders]);
+  }, [allActiveOrders, deliveredOrders]);
 
   // Get customer data
   useEffect(() => {
@@ -223,6 +217,17 @@ export default function DataProvider({ children }: IContextProviderProps) {
     }
   }, [isCustomer]);
 
+  // Create customer all orders
+  useEffect(() => {
+    setCustomerAllOrders([...customerActiveOrders, ...customerDeliveredOrders]);
+  }, [customerActiveOrders, customerDeliveredOrders]);
+
+  // Calculate customer active orders total
+  const customerActiveOrdersTotal = customerActiveOrders.reduce(
+    (acc, order) => formatNumberToUS(acc + order.item.total),
+    0
+  );
+
   return (
     <DataContext.Provider
       value={{
@@ -244,6 +249,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setCustomerActiveOrders,
         setScheduledRestaurants,
         setCustomerFavoriteItems,
+        customerActiveOrdersTotal,
       }}
     >
       {children}

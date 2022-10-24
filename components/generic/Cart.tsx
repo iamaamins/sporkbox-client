@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useUser } from "@context/User";
+import { useData } from "@context/Data";
 import { useCart } from "@context/Cart";
 import { IoMdRemove } from "react-icons/io";
 import { useEffect, useState } from "react";
@@ -11,6 +12,7 @@ import { convertDateToText, formatCurrencyToUSD } from "@utils/index";
 export default function Cart() {
   // Hooks
   const { user } = useUser();
+  const { customerActiveOrdersTotal } = useData();
   const {
     cartItems,
     isLoading,
@@ -23,7 +25,9 @@ export default function Cart() {
   // Check if budget is exceeded
   useEffect(() => {
     if (user) {
-      setBudgetExceeded(totalCartPrice > (user.company?.budget || 0));
+      setBudgetExceeded(
+        customerActiveOrdersTotal + totalCartPrice > user.company?.budget!
+      );
     }
   }, [user, cartItems]);
 

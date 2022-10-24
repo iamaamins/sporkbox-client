@@ -129,13 +129,15 @@ export default function CartProvider({ children }: IContextProviderProps) {
           }
         );
 
-        console.log(res.data);
-
         // Update customer's active orders state
         setCustomerActiveOrders((currActiveOrders: ICustomerOrder[]) => [
           ...currActiveOrders,
           ...res.data,
         ]);
+
+        // Remove cart items
+        setCartItems([]);
+        localStorage.removeItem("cart");
 
         // Remove loader
         setIsLoading(false);
