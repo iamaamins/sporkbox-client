@@ -1,12 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useUser } from "@context/User";
 import { useCart } from "@context/Cart";
 import { IoMdRemove } from "react-icons/io";
+import { useEffect, useState } from "react";
 import styles from "@styles/generic/Cart.module.css";
 import ButtonLoader from "@components/layout/ButtonLoader";
 import { convertDateToText, formatCurrencyToUSD } from "@utils/index";
 
 export default function Cart() {
+  // Hooks
+  const { user } = useUser();
   const {
     cartItems,
     isLoading,
@@ -14,6 +18,14 @@ export default function Cart() {
     totalCartPrice,
     removeItemFromCart,
   } = useCart();
+  const [budgetExceeded, setBudgetExceeded] = useState(false);
+
+  // Check if budget is exceeded
+  useEffect(() => {
+    if (user) {
+      setBudgetExceeded(totalCartPrice > (user.company?.budget || 0));
+    }
+  }, [user, cartItems]);
 
   return (
     <section className={styles.cart}>
@@ -62,7 +74,16 @@ export default function Cart() {
             ))}
           </div>
 
-          <button onClick={checkoutCart} className={styles.button}>
+          {budgetExceeded && (
+            <p className={styles.budget_exceeded}>
+              Company budget exceeded! Please adjust your basket.
+            </p>
+          )}
+
+          <button
+            onClick={checkoutCart}
+            className={`${styles.button} ${budgetExceeded && styles.disable}`}
+          >
             {isLoading ? (
               <ButtonLoader />
             ) : (

@@ -18,8 +18,6 @@ export default function CartProvider({ children }: IContextProviderProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<ICartItem[]>([]);
 
-  console.log(cartItems);
-
   // Get cart items from local storage on app reload
   useEffect(() => {
     // Get cart items from local storage
@@ -107,8 +105,11 @@ export default function CartProvider({ children }: IContextProviderProps) {
     localStorage.setItem("cart", JSON.stringify(updatedItems));
   }
 
+  // Checkout cart
   async function checkoutCart() {
-    // if (!isCustomer) router.push("/login");
+    {
+      !isCustomer && router.push("/login");
+    }
 
     // Create an order
     try {
