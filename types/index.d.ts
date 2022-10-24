@@ -180,7 +180,7 @@ export interface IOrdersProps {
 export interface IFilterAndSortProps {
   orders: IOrder[];
   showController: boolean;
-  setFilteredAndSortedOrders: Dispatch<SetStateAction<IOrder[]>>;
+  setFilteredOrders: Dispatch<SetStateAction<IOrder[]>>;
 }
 
 export interface IButtons {

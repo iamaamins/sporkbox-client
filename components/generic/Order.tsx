@@ -1,14 +1,14 @@
+import axios from "axios";
 import Image from "next/image";
-import { ICustomerFavoriteItem, ICustomerOrder } from "types";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import { useEffect, useState } from "react";
-import { convertDateToText, handleRemoveFromFavorite } from "@utils/index";
 import styles from "@styles/generic/Order.module.css";
 import LinkButton from "@components/layout/LinkButton";
 import SubmitButton from "@components/layout/SubmitButton";
 import { AiOutlineStar, AiTwotoneStar } from "react-icons/ai";
-import axios from "axios";
+import { ICustomerFavoriteItem, ICustomerOrder } from "types";
+import { convertDateToText, handleRemoveFromFavorite } from "@utils/index";
 
 export default function Order() {
   // Hooks
@@ -79,18 +79,22 @@ export default function Order() {
         <>
           <div className={styles.order_top}>
             <h2 className={styles.order_title}>Order summary</h2>
-            {favoriteItem ? (
-              <AiTwotoneStar
-                onClick={() =>
-                  handleRemoveFromFavorite(
-                    favoriteItem._id,
-                    setCustomerFavoriteItems
-                  )
-                }
-              />
-            ) : (
-              <AiOutlineStar onClick={handleAddToFavorite} />
-            )}
+            <p
+              onClick={
+                favoriteItem
+                  ? () =>
+                      handleRemoveFromFavorite(
+                        favoriteItem._id,
+                        setCustomerFavoriteItems
+                      )
+                  : handleAddToFavorite
+              }
+              className={`${styles.not_favorite} ${
+                favoriteItem && styles.favorite
+              }`}
+            >
+              Favorite <AiOutlineStar />
+            </p>
           </div>
 
           <div className={styles.cover_image_and_details}>

@@ -4,15 +4,29 @@
 
 .order_top {
   display: flex;
-  margin-bottom: 1.5rem;
   align-items: center;
+  margin-bottom: 1.5rem;
   justify-content: space-between;
 }
 
-.order_top svg {
-  font-size: 1.5rem;
+.not_favorite {
+  display: flex;
   cursor: pointer;
+  align-items: center;
+  font-size: 0.9rem;
+  padding: 1px 10px;
+  border-radius: 2rem;
+  border: 1px solid var(--gray);
+  transition: all 100ms ease-in-out;
+}
+
+.not_favorite svg {
+  margin-left: 4px;
+}
+
+.favorite {
   color: var(--orange);
+  border: 1px solid var(--orange);
 }
 
 .cover_image,

@@ -44,10 +44,10 @@ export default function Favorite() {
                       <p className={styles.available}>Available to order on</p>
 
                       {upcomingWeekRestaurants.map(
-                        (upcomingWeekRestaurant) =>
+                        (upcomingWeekRestaurant, index) =>
                           upcomingWeekRestaurant._id ===
                             customerFavoriteItem.restaurantId && (
-                            <>
+                            <span key={index}>
                               <Link
                                 href={`/calendar/${convertDateToMS(
                                   upcomingWeekRestaurant.scheduledOn
@@ -66,7 +66,7 @@ export default function Favorite() {
                                   </span>
                                 </a>
                               </Link>
-                            </>
+                            </span>
                           )
                       )}
                     </div>

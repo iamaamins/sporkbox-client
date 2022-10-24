@@ -17,10 +17,16 @@
   cursor: pointer;
   border-radius: 2rem;
   border: 1px solid var(--gray);
+  transition: all 100ms ease-in-out;
 }
 
 .filter svg {
   margin-left: 4px;
+}
+
+.show_controller {
+  color: var(--orange);
+  border: 1px solid var(--orange);
 }
 
 .orders table {
@@ -43,6 +49,11 @@
 
 .hide_on_mobile {
   display: none;
+}
+
+.load_all {
+  margin-top: 1.25rem;
+  display: inline-block;
 }
 
 @media (min-width: 768px) {

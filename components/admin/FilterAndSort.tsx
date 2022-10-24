@@ -1,12 +1,12 @@
 import { convertDateToMS, groupBy } from "@utils/index";
-import styles from "@styles/admin/Filters.module.css";
+import styles from "@styles/admin/FilterAndSort.module.css";
 import { ChangeEvent, useEffect, useState } from "react";
 import { IFilterAndSortProps, IFiltersData, IOrdersGroup } from "types";
 
 export default function FilterAndSort({
   orders,
   showController,
-  setFilteredAndSortedOrders,
+  setFilteredOrders,
 }: IFilterAndSortProps) {
   // Initial state
   const initialState = {
@@ -23,7 +23,7 @@ export default function FilterAndSort({
 
   // Update filtered data when sub category changes
   useEffect(() => {
-    setFilteredAndSortedOrders(
+    setFilteredOrders(
       orders.filter(
         (activeOrder) => activeOrder[category as keyof object] === subCategory
       )
@@ -39,18 +39,20 @@ export default function FilterAndSort({
       category === "restaurantName"
     ) {
       setCategoryGroups(groupBy(category, orders, "orders"));
-    } else if (category === "sortByCompany") {
-      setFilteredAndSortedOrders(
-        [...orders].sort((a, b) =>
-          a.companyName.localeCompare(b.companyName.toLowerCase())
-        )
+    }
+
+    if (category === "sortByCompany") {
+      setFilteredOrders([]);
+      orders.sort((a, b) =>
+        a.companyName.localeCompare(b.companyName.toLowerCase())
       );
-    } else if (category === "sortByDeliveryDate") {
-      setFilteredAndSortedOrders(
-        [...orders].sort(
-          (a, b) =>
-            convertDateToMS(a.deliveryDate) - convertDateToMS(b.deliveryDate)
-        )
+    }
+
+    if (category === "sortByDeliveryDate") {
+      setFilteredOrders([]);
+      orders.sort(
+        (a, b) =>
+          convertDateToMS(a.deliveryDate) - convertDateToMS(b.deliveryDate)
       );
     }
   }, [category]);
@@ -65,7 +67,9 @@ export default function FilterAndSort({
 
   return (
     <div
-      className={`${styles.filters} ${showController && styles.show_filters}`}
+      className={`${styles.filter_and_sort} ${
+        showController && styles.show_controller
+      }`}
     >
       <select name="category" value={category} onChange={handleChange}>
         <option hidden aria-hidden>
@@ -86,7 +90,7 @@ export default function FilterAndSort({
           category === "all" ||
           category === "sortByCompany" ||
           category === "sortByDeliveryDate"
-            ? styles.hide_select
+            ? styles.hide_subcategory
             : ""
         }
       >
