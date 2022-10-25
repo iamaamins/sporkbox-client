@@ -12,7 +12,7 @@ import {
   ICustomerFavoriteItem,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
-import { formatNumberToUS } from "@utils/index";
+import { convertDateToMS, formatNumberToUS, gte } from "@utils/index";
 
 // Create context
 const DataContext = createContext({} as IDataContext);
@@ -223,10 +223,12 @@ export default function DataProvider({ children }: IContextProviderProps) {
   }, [customerActiveOrders, customerDeliveredOrders]);
 
   // Calculate customer active orders total
-  const customerActiveOrdersTotal = customerActiveOrders.reduce(
-    (acc, order) => formatNumberToUS(acc + order.item.total),
-    0
-  );
+  const customerActiveOrdersTotal = customerActiveOrders
+    .filter(
+      (customerActiveOrder) =>
+        convertDateToMS(customerActiveOrder.deliveryDate) >= gte
+    )
+    .reduce((acc, order) => formatNumberToUS(acc + order.item.total), 0);
 
   return (
     <DataContext.Provider

@@ -158,3 +158,15 @@ export function getFutureDate(dayToAdd: number) {
     new Date(today.setDate(sunday + dayToAdd)).toDateString()
   );
 }
+
+// Get dates in iso string
+const nextSaturday = getFutureDate(6);
+const nextMonday = getFutureDate(8);
+const nextWeekSaturday = getFutureDate(13);
+const followingMonday = getFutureDate(15);
+const followingSaturday = getFutureDate(20);
+const today = convertDateToMS(new Date().toDateString());
+
+// Filters
+export const gte = today < nextSaturday ? nextMonday : followingMonday;
+export const lt = today < nextSaturday ? nextWeekSaturday : followingSaturday;
