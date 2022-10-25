@@ -164,8 +164,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
   useEffect(() => {
     // Get customer data
     async function getCustomerData() {
-      // Get active orders
+      // Get all active orders
       try {
+        // Make request to backend
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/orders/me/active`,
           {
@@ -173,6 +174,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
           }
         );
 
+        // Update state
         setCustomerActiveOrders(res.data);
       } catch (err) {
         console.log(err);
@@ -182,7 +184,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       try {
         // Make request to backend
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/orders/me/delivered/25`,
+          `${process.env.NEXT_PUBLIC_API_URL}/orders/me/delivered/10`,
           {
             withCredentials: true,
           }
@@ -252,6 +254,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setScheduledRestaurants,
         setCustomerFavoriteItems,
         customerActiveOrdersTotal,
+        setCustomerDeliveredOrders,
       }}
     >
       {children}

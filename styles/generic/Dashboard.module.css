@@ -24,6 +24,11 @@
   margin-bottom: 2rem;
 }
 
+.load_all {
+  margin-top: 1.25rem;
+  display: inline-block;
+}
+
 @media (min-width: 768px) {
   .dashboard {
     max-width: 85%;

@@ -20,6 +20,9 @@ export default function Orders({ title, orders }: IOrdersProps) {
   async function handleLoadAllDeliveredOrders() {
     // Get all delivered orders
     try {
+      // Show loader
+      setIsLoading(true);
+
       // Make request to backend
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/orders/delivered/0`,
@@ -28,7 +31,12 @@ export default function Orders({ title, orders }: IOrdersProps) {
 
       // Update state
       setDeliveredOrders(res.data);
+
+      // Remove loader
+      setIsLoading(false);
     } catch (err) {
+      // Remove loader
+      setIsLoading(false);
       console.log(err);
     }
   }

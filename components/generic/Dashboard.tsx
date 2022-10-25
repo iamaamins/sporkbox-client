@@ -1,13 +1,44 @@
+import axios from "axios";
 import Orders from "./Orders";
+import { useState } from "react";
 import { useUser } from "@context/User";
 import { useData } from "@context/Data";
 import { formatCurrencyToUSD } from "@utils/index";
 import styles from "@styles/generic/Dashboard.module.css";
+import ActionButton from "@components/layout/ActionButton";
 
 export default function Dashboard() {
   // Hooks
   const { user } = useUser();
+  const { setCustomerDeliveredOrders } = useData();
+  const [isLoading, setIsLoading] = useState(false);
   const { customerActiveOrders, customerDeliveredOrders } = useData();
+
+  // Handle load all delivered orders
+  async function handleLoadAllDeliveredOrders() {
+    try {
+      // Show loader
+      setIsLoading(true);
+
+      // Make request to backend
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/orders/me/delivered/0`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      // Update state
+      setCustomerDeliveredOrders(res.data);
+
+      // Remove loader
+      setIsLoading(false);
+    } catch (err) {
+      // Remove loader
+      setIsLoading(false);
+      console.log(err);
+    }
+  }
 
   return (
     <section className={styles.dashboard}>
@@ -27,6 +58,7 @@ export default function Dashboard() {
             </p>
           </div>
 
+          {/* Active orders */}
           {customerActiveOrders.length > 0 && (
             <div className={styles.active_orders}>
               <h2>Active orders</h2>
@@ -34,10 +66,22 @@ export default function Dashboard() {
             </div>
           )}
 
+          {/* Delivered orders */}
           {customerDeliveredOrders.length > 0 && (
             <div className={styles.delivered_orders}>
               <h2>Delivered orders</h2>
+
               <Orders orders={customerDeliveredOrders} />
+
+              {customerDeliveredOrders.length === 10 && (
+                <span className={styles.load_all}>
+                  <ActionButton
+                    buttonText="Load all orders"
+                    isLoading={isLoading}
+                    handleClick={handleLoadAllDeliveredOrders}
+                  />
+                </span>
+              )}
             </div>
           )}
         </>

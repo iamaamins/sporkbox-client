@@ -90,6 +90,7 @@ export interface IDataContext {
   setAllActiveOrders: Dispatch<SetStateAction<IOrder[]>>;
   setDeliveredOrders: Dispatch<SetStateAction<IOrder[]>>;
   setCustomerActiveOrders: Dispatch<SetStateAction<ICustomerOrder[]>>;
+  setCustomerDeliveredOrders: Dispatch<SetStateAction<ICustomerOrder[]>>;
   setScheduledRestaurants: Dispatch<SetStateAction<IScheduledRestaurant[]>>;
   setCustomerFavoriteItems: Dispatch<SetStateAction<ICustomerFavoriteItem[]>>;
 }

@@ -28,11 +28,11 @@ export default function Restaurants() {
         }
       );
 
-      // Remove loader
-      setIsLoading(false);
-
       // Update state
       setVendors(res.data);
+
+      // Remove loader
+      setIsLoading(false);
     } catch (err) {
       // Remove loader
       setIsLoading(false);
