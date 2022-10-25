@@ -5,16 +5,33 @@ import { useRouter } from "next/router";
 import FilterAndSort from "./FilterAndSort";
 import { IOrder, IOrdersProps } from "types";
 import styles from "@styles/admin/Orders.module.css";
+import axios from "axios";
+import { useData } from "@context/Data";
 import ActionButton from "@components/layout/ActionButton";
 
 export default function Orders({ title, orders }: IOrdersProps) {
   // Hooks
   const router = useRouter();
+  const { setDeliveredOrders } = useData();
   const [isLoading, setIsLoading] = useState(false);
   const [showController, setShowController] = useState<boolean>(false);
   const [filteredOrders, setFilteredOrders] = useState<IOrder[]>([]);
 
-  async function handleLoadAll() {}
+  async function handleLoadAllDeliveredOrders() {
+    // Get all delivered orders
+    try {
+      // Make request to backend
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/orders/delivered/0`,
+        { withCredentials: true }
+      );
+
+      // Update state
+      setDeliveredOrders(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <section className={styles.orders}>
@@ -72,12 +89,12 @@ export default function Orders({ title, orders }: IOrdersProps) {
             </tbody>
           </table>
 
-          {router.pathname === "/admin/orders" && orders.length === 50 && (
+          {router.pathname === "/admin/orders" && orders.length === 25 && (
             <span className={styles.load_all}>
               <ActionButton
                 buttonText="Load all"
-                handleClick={handleLoadAll}
                 isLoading={isLoading}
+                handleClick={handleLoadAllDeliveredOrders}
               />
             </span>
           )}

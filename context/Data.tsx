@@ -120,11 +120,11 @@ export default function DataProvider({ children }: IContextProviderProps) {
         console.log(err);
       }
 
-      // Get 50 delivered orders
+      // Get 25 delivered orders
       try {
         // Make request to backend
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/orders/50}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/orders/delivered/25`,
           { withCredentials: true }
         );
 
