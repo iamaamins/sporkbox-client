@@ -88,11 +88,11 @@ export default function DataProvider({ children }: IContextProviderProps) {
         console.log(err);
       }
 
-      // Get 20 latest vendors
+      // Get 25 latest vendors
       try {
         // Make request to backend
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/vendors/20`,
+          `${process.env.NEXT_PUBLIC_API_URL}/vendors/25`,
           {
             withCredentials: true,
           }

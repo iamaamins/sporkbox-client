@@ -50,6 +50,14 @@
   display: none;
 }
 
+.buttons {
+  display: flex;
+}
+
+.buttons a {
+  margin-right: 2rem;
+}
+
 @media (min-width: 768px) {
   .all_restaurants {
     max-width: 85%;

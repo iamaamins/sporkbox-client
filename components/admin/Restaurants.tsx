@@ -1,11 +1,44 @@
+import axios from "axios";
 import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import { convertDateToText } from "@utils/index";
 import LinkButton from "@components/layout/LinkButton";
 import styles from "@styles/admin/Restaurants.module.css";
+import ActionButton from "@components/layout/ActionButton";
 
 export default function Restaurants() {
-  const { vendors } = useData();
+  // Hooks
+  const router = useRouter();
+  const { vendors, setVendors } = useData();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Handle load all vendors
+  async function handleLoadAllVendors() {
+    try {
+      // Show loader
+      setIsLoading(true);
+
+      // Make request to backend
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/vendors/0`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      // Remove loader
+      setIsLoading(false);
+
+      // Update state
+      setVendors(res.data);
+    } catch (err) {
+      // Remove loader
+      setIsLoading(false);
+      console.log(err);
+    }
+  }
 
   return (
     <section className={styles.all_restaurants}>
@@ -47,10 +80,20 @@ export default function Restaurants() {
         </>
       )}
 
-      <LinkButton
-        href="/admin/restaurants/add-restaurant"
-        text="Add restaurant"
-      />
+      <div className={styles.buttons}>
+        <LinkButton
+          linkText="Add a restaurant"
+          href="/admin/restaurants/add-restaurant"
+        />
+
+        {router.pathname === "/admin/restaurants" && vendors.length === 25 && (
+          <ActionButton
+            buttonText="Load all restaurants"
+            isLoading={isLoading}
+            handleClick={handleLoadAllVendors}
+          />
+        )}
+      </div>
     </section>
   );
 }

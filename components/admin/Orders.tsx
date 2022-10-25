@@ -92,7 +92,7 @@ export default function Orders({ title, orders }: IOrdersProps) {
           {router.pathname === "/admin/orders" && orders.length === 25 && (
             <span className={styles.load_all}>
               <ActionButton
-                buttonText="Load all"
+                buttonText="Load all orders"
                 isLoading={isLoading}
                 handleClick={handleLoadAllDeliveredOrders}
               />

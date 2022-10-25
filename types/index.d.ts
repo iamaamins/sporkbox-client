@@ -205,8 +205,8 @@ export interface ISubmitButtonProps {
 }
 
 export interface ILinkButtonProps {
-  text: string;
   href: string;
+  linkText: string;
 }
 
 export interface IMobileMenuProps {
