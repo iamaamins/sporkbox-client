@@ -3,10 +3,10 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import { useEffect, useState } from "react";
+import { AiOutlineStar } from "react-icons/ai";
 import styles from "@styles/generic/Order.module.css";
 import LinkButton from "@components/layout/LinkButton";
 import SubmitButton from "@components/layout/SubmitButton";
-import { AiOutlineStar, AiTwotoneStar } from "react-icons/ai";
 import { ICustomerFavoriteItem, ICustomerOrder } from "types";
 import { convertDateToText, handleRemoveFromFavorite } from "@utils/index";
 
@@ -17,9 +17,9 @@ export default function Order() {
   const [order, setOrder] = useState<ICustomerOrder>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const [favoriteItem, setFavoriteItem] = useState<ICustomerFavoriteItem>();
   const { customerAllOrders, customerFavoriteItems, setCustomerFavoriteItems } =
     useData();
-  const [favoriteItem, setFavoriteItem] = useState<ICustomerFavoriteItem>();
 
   // Find the order
   useEffect(() => {
@@ -63,8 +63,8 @@ export default function Order() {
       // Update state
       setCustomerFavoriteItems(
         (currCustomerFavoriteItems: ICustomerFavoriteItem[]) => [
-          ...currCustomerFavoriteItems,
           res.data,
+          ...currCustomerFavoriteItems,
         ]
       );
     } catch (err) {
