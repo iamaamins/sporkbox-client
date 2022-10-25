@@ -96,11 +96,13 @@
 
 .button {
   border: none;
+  height: 48px;
+  min-width: 100%;
   cursor: pointer;
   font-weight: 600;
   font-size: 16px;
   margin-top: 1rem;
-  padding: 1rem 1.5rem;
+  padding: 0rem 1.15rem;
   border-radius: 0.25rem;
   background: var(--black);
   color: var(--almost_white);
@@ -125,6 +127,7 @@
   }
 
   .button {
+    min-width: 220px;
     align-self: flex-start;
   }
 }
