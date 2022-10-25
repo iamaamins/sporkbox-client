@@ -25,6 +25,7 @@ export default function AddRestaurant() {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [formData, setFormData] = useState<IFormData>(initialState);
 
+  // Destructure form data
   const {
     name,
     email,
@@ -34,10 +35,13 @@ export default function AddRestaurant() {
     restaurantAddress,
   } = formData;
 
+  // Check if passwords match
+  const passwordsMatch = password === confirmPassword;
+
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    // Check for empty field
-    if (!hasEmpty(formData)) {
+    // // Enable button if no fields are empty and passwords match
+    if (!hasEmpty(formData) && passwordsMatch) {
       setIsDisabled(false);
     }
 
@@ -120,7 +124,9 @@ export default function AddRestaurant() {
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="confirmPassword">Confirm password</label>
+          <label htmlFor="confirmPassword">
+            Confirm password {!passwordsMatch && " - Passwords don't match"}
+          </label>
           <input
             type="password"
             id="confirmPassword"

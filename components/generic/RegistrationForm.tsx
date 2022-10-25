@@ -28,12 +28,17 @@ export default function RegistrationForm() {
   // If there is an empty field
   const { name, email, password, confirmPassword } = formData;
 
+  // Check if passwords match
+  const passwordsMatch = password === confirmPassword;
+
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    if (!hasEmpty(formData)) {
+    // Enable button if no fields are empty and passwords match
+    if (!hasEmpty(formData) && passwordsMatch) {
       setIsDisabled(false);
     }
 
+    // Update state
     setFormData((currData) => ({
       ...currData,
       [e.target.id]: e.target.value,
@@ -103,7 +108,9 @@ export default function RegistrationForm() {
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="confirmPassword">Confirm password</label>
+          <label htmlFor="confirmPassword">
+            Confirm password {!passwordsMatch && " - Passwords don't match"}
+          </label>
           <input
             type="password"
             id="confirmPassword"
