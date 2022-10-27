@@ -20,10 +20,10 @@ export default function DesktopNav() {
   useEffect(() => {
     if (upcomingWeekRestaurants.length > 0) {
       // Convert the first group's scheduled date to slug
-      const dateSlug = convertDateToMS(upcomingWeekRestaurants[0].scheduledOn);
+      const date = convertDateToMS(upcomingWeekRestaurants[0].scheduledOn);
 
       // Update state
-      setDate(dateSlug);
+      setDate(date);
     }
   }, [upcomingWeekRestaurants]);
 
@@ -58,31 +58,49 @@ export default function DesktopNav() {
       <ul className={styles.navigation}>
         <li className={isAdmin || !isCustomer ? styles.hide : ""}>
           <Link href="/dashboard">
-            <a>Dashboard</a>
+            <a className={pathName === "/dashboard" ? styles.active : ""}>
+              Dashboard
+            </a>
           </Link>
         </li>
 
         <li className={!date ? styles.hide : ""}>
           <Link href={`/calendar/${date}`}>
-            <a>Calendar</a>
+            <a className={pathName === "/calendar" ? styles.active : ""}>
+              Calendar
+            </a>
           </Link>
         </li>
 
         <li className={!isCustomer ? styles.hide : ""}>
           <Link href={`/favorite`}>
-            <a>Favorite</a>
+            <a className={pathName === "/favorite" ? styles.active : ""}>
+              Favorite
+            </a>
           </Link>
         </li>
 
         <li className={isAdmin ? styles.hide : ""}>
           <Link href="/contact-us">
-            <a>Contact</a>
+            <a className={pathName === "/contact-us" ? styles.active : ""}>
+              Contact
+            </a>
           </Link>
         </li>
 
         <li className={isAdmin ? styles.hide : ""}>
           <Link href="/about-us">
-            <a>About us</a>
+            <a className={pathName === "/about-us" ? styles.active : ""}>
+              About us
+            </a>
+          </Link>
+        </li>
+
+        <li>
+          <Link href="/project-scope">
+            <a className={pathName === "/project-scope" ? styles.active : ""}>
+              Project scope
+            </a>
           </Link>
         </li>
 
