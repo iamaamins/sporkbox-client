@@ -14,9 +14,10 @@ export default function DashboardPage() {
   }, [isLoading, isCustomer]);
 
   return (
-    <main>
-      {isLoading && <PageLoader />}
-      {isCustomer && <Dashboard />}
+    <main style={{ padding: "var(--section_padding" }}>
+      <h2>Customer dashboard</h2>
+      {/* {isLoading && <PageLoader />}
+      {isCustomer && <Dashboard />} */}
     </main>
   );
 }

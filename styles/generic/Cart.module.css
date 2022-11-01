@@ -106,7 +106,6 @@
   border-radius: 0.25rem;
   background: var(--black);
   color: var(--almost_white);
-  pointer-events: none; /* Remove this */
 }
 
 .disable {
