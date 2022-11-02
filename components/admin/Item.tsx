@@ -3,7 +3,11 @@ import Image from "next/image";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { formatCurrencyToUSD, updateVendors } from "@utils/index";
+import {
+  axiosInstance,
+  formatCurrencyToUSD,
+  updateVendors,
+} from "@utils/index";
 import Buttons from "@components/layout/Buttons";
 import styles from "@styles/admin/Item.module.css";
 import { IItem } from "types";
@@ -29,9 +33,8 @@ export default function Item() {
     // Delete an item
     try {
       // Send the request to backend
-      const res = await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${router.query.restaurant}/${router.query.item}/delete-item`,
-        { withCredentials: true }
+      const res = await axiosInstance.delete(
+        `/restaurants/${router.query.restaurant}/${router.query.item}/delete-item`
       );
 
       // Updated vendors array with updated items

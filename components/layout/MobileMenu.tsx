@@ -16,7 +16,7 @@ import { FaUserAlt } from "react-icons/fa";
 import { AiTwotonePhone, AiTwotoneStar } from "react-icons/ai";
 import { BsFillCalendar2DateFill } from "react-icons/bs";
 import styles from "@styles/layout/MobileMenu.module.css";
-import { convertDateToMS, currentYear } from "@utils/index";
+import { axiosInstance, convertDateToMS, currentYear } from "@utils/index";
 import { TbBuildingStore, TbBuildingSkyscraper } from "react-icons/tb";
 
 export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
@@ -49,11 +49,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
     // Sign a user out
     try {
       // Make request to backend
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/logout`,
-        {},
-        { withCredentials: true }
-      );
+      await axiosInstance.post(`/users/logout`, {});
 
       // Update user
       setUser(null);

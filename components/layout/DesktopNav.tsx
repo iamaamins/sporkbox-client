@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import logo from "@public/layout/logo.png";
 import { useEffect, useState } from "react";
-import { convertDateToMS } from "@utils/index";
+import { axiosInstance, convertDateToMS } from "@utils/index";
 import styles from "@styles/layout/DesktopNav.module.css";
 
 export default function DesktopNav() {
@@ -32,11 +32,7 @@ export default function DesktopNav() {
     // Log a user out
     try {
       // Make request to backend
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/logout`,
-        {},
-        { withCredentials: true }
-      );
+      await axiosInstance.post(`/users/logout`, {});
 
       // Update user
       setUser(null);

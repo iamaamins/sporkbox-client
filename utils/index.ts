@@ -128,10 +128,7 @@ export async function handleRemoveFromFavorite(
 ) {
   try {
     // Make request to backend
-    await axios.delete(
-      `${process.env.NEXT_PUBLIC_API_URL}/favorites/${itemId}/remove`,
-      { withCredentials: true }
-    );
+    await axiosInstance.delete(`/favorites/${itemId}/remove`);
 
     // Update state
     setCustomerFavoriteItems(
@@ -170,3 +167,12 @@ const today = convertDateToMS(new Date().toDateString());
 // Filters
 export const gte = today < nextSaturday ? nextMonday : followingMonday;
 export const lt = today < nextSaturday ? nextWeekSaturday : followingSaturday;
+
+// Create axios instance
+export const axiosInstance = axios.create({
+  withCredentials: true,
+  baseURL: "http://localhost:5100/api",
+});
+
+// http://localhost:5100/api
+// https://sporkbytes.cyclic.app/api

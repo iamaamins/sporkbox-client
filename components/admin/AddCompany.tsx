@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
-import { hasEmpty } from "@utils/index";
+import { axiosInstance, hasEmpty } from "@utils/index";
 import { ICompany, IFormData } from "types";
 import { ChangeEvent, FormEvent, useState } from "react";
 import styles from "@styles/admin/AddCompany.module.css";
@@ -55,13 +55,7 @@ export default function AddCompany() {
       setIsLoading(true);
 
       // Make request to backend
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/companies/add`,
-        formData,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axiosInstance.post(`/companies/add`, formData);
 
       // New company
       const newCompany = res.data;

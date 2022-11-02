@@ -2,6 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { IContextProviderProps, IUser, IUserContext } from "types";
 import { createContext, useContext, useEffect, useState } from "react";
+import { axiosInstance } from "@utils/index";
 
 // Create context
 const UserContext = createContext({} as IUserContext);
@@ -20,15 +21,11 @@ export default function UserProvider({ children }: IContextProviderProps) {
     async function getUser() {
       try {
         // Fetch the data
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
-          {
-            withCredentials: true,
-            headers: {
-              "Cache-Control": "no-cache",
-            },
-          }
-        );
+        const res = await axiosInstance.get(`/users/me`, {
+          headers: {
+            "Cache-Control": "no-cache",
+          },
+        });
 
         // Update state
         setUser(res.data);

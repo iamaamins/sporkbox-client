@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useData } from "@context/Data";
-import { hasEmpty } from "@utils/index";
+import { axiosInstance, hasEmpty } from "@utils/index";
 import SubmitButton from "@components/layout/SubmitButton";
 import styles from "@styles/admin/ScheduleRestaurants.module.css";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
@@ -61,10 +61,9 @@ export default function ScheduleRestaurants() {
       setIsLoading(true);
 
       // Make request to backend
-      const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/schedule/${restaurantId}`,
-        { date },
-        { withCredentials: true }
+      const res = await axiosInstance.put(
+        `/restaurants/schedule/${restaurantId}`,
+        { date }
       );
 
       // Update scheduled restaurants state

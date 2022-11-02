@@ -1,11 +1,10 @@
-import axios from "axios";
 import Orders from "./Orders";
 import { useState } from "react";
 import { useUser } from "@context/User";
 import { useData } from "@context/Data";
-import { formatCurrencyToUSD } from "@utils/index";
 import styles from "@styles/generic/Dashboard.module.css";
 import ActionButton from "@components/layout/ActionButton";
+import { axiosInstance, formatCurrencyToUSD } from "@utils/index";
 
 export default function Dashboard() {
   // Hooks
@@ -21,12 +20,7 @@ export default function Dashboard() {
       setIsLoading(true);
 
       // Make request to backend
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/orders/me/delivered/0`,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axiosInstance.get(`/orders/me/delivered/0`);
 
       // Update state
       setCustomerDeliveredOrders(res.data);

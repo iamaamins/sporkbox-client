@@ -7,7 +7,11 @@ import { useData } from "@context/Data";
 import Buttons from "@components/layout/Buttons";
 import { FormEvent, useEffect, useState } from "react";
 import styles from "@styles/admin/Restaurant.module.css";
-import { formatCurrencyToUSD, updateVendors } from "@utils/index";
+import {
+  axiosInstance,
+  formatCurrencyToUSD,
+  updateVendors,
+} from "@utils/index";
 
 export default function Restaurant() {
   const router = useRouter();
@@ -32,11 +36,9 @@ export default function Restaurant() {
 
     // Update restaurant status
     try {
-      const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/vendors/${vendor?._id}/status`,
-        { action },
-        { withCredentials: true }
-      );
+      const res = await axiosInstance.put(`/vendors/${vendor?._id}/status`, {
+        action,
+      });
 
       // Update vendors with updates status
       updateVendors(res.data, setVendors);

@@ -3,7 +3,7 @@ import { IFormData } from "types";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import styles from "@styles/admin/AddItem.module.css";
-import { hasEmpty, updateVendors } from "@utils/index";
+import { axiosInstance, hasEmpty, updateVendors } from "@utils/index";
 import { ChangeEvent, FormEvent, useState } from "react";
 import SubmitButton from "@components/layout/SubmitButton";
 
@@ -56,12 +56,9 @@ export default function AddItem() {
       setIsLoading(true);
 
       // Post the data to backend
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${router.query.restaurant}/add-item`,
-        formData,
-        {
-          withCredentials: true,
-        }
+      const res = await axiosInstance.post(
+        `/restaurants/${router.query.restaurant}/add-item`,
+        formData
       );
 
       // Update vendors with updated items

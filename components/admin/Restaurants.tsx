@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
-import { convertDateToText } from "@utils/index";
+import { axiosInstance, convertDateToText } from "@utils/index";
 import LinkButton from "@components/layout/LinkButton";
 import styles from "@styles/admin/Restaurants.module.css";
 import ActionButton from "@components/layout/ActionButton";
@@ -21,12 +21,7 @@ export default function Restaurants() {
       setIsLoading(true);
 
       // Make request to backend
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/vendors/0`,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axiosInstance.get(`/vendors/0`);
 
       // Update state
       setVendors(res.data);

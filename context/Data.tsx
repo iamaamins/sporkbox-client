@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useUser } from "./User";
 import {
   IOrder,
@@ -12,7 +11,12 @@ import {
   ICustomerFavoriteItem,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
-import { convertDateToMS, formatNumberToUS, gte } from "@utils/index";
+import {
+  axiosInstance,
+  convertDateToMS,
+  formatNumberToUS,
+  gte,
+} from "@utils/index";
 
 // Create context
 const DataContext = createContext({} as IDataContext);
@@ -53,9 +57,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get scheduled restaurants
       try {
         // Make request to backend
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/restaurants/upcoming-week`
-        );
+        const res = await axiosInstance.get(`/restaurants/upcoming-week`);
 
         // Update state
         setUpcomingWeekRestaurants(res.data);
@@ -75,12 +77,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get active orders
       try {
         // Make request to backend
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/orders/active`,
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await axiosInstance.get(`/orders/active`);
 
         // Update state
         setAllActiveOrders(res.data);
@@ -91,12 +88,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get 25 latest vendors
       try {
         // Make request to backend
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/vendors/25`,
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await axiosInstance.get(`/vendors/25`);
 
         // Update state
         setVendors(res.data);
@@ -107,12 +99,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get all companies
       try {
         // Make request to backend
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/companies`,
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await axiosInstance.get(`/companies`);
 
         // Update state
         setCompanies(res.data);
@@ -123,10 +110,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get 25 delivered orders
       try {
         // Make request to backend
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/orders/delivered/25`,
-          { withCredentials: true }
-        );
+        const res = await axiosInstance.get(`/orders/delivered/25`);
 
         // Update state
         setDeliveredOrders(res.data);
@@ -137,10 +121,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get scheduled restaurants
       try {
         // Make request to backend
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/restaurants/scheduled`,
-          { withCredentials: true }
-        );
+        const res = await axiosInstance.get(`/restaurants/scheduled`);
 
         // Update state
         setScheduledRestaurants(res.data);
@@ -167,12 +148,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get all active orders
       try {
         // Make request to backend
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/orders/me/active`,
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await axiosInstance.get(`/orders/me/active`);
 
         // Update state
         setCustomerActiveOrders(res.data);
@@ -183,12 +159,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get 25 latest delivered orders
       try {
         // Make request to backend
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/orders/me/delivered/10`,
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await axiosInstance.get(`/orders/me/delivered/10`);
 
         // Update state
         setCustomerDeliveredOrders(res.data);
@@ -199,12 +170,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get favorite items
       try {
         // Make request to backend
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/favorites/me`,
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await axiosInstance.get(`/favorites/me`);
 
         // Update data
         setCustomerFavoriteItems(res.data);

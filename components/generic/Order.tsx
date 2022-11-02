@@ -8,7 +8,11 @@ import styles from "@styles/generic/Order.module.css";
 import LinkButton from "@components/layout/LinkButton";
 import SubmitButton from "@components/layout/SubmitButton";
 import { ICustomerFavoriteItem, ICustomerOrder } from "types";
-import { convertDateToText, handleRemoveFromFavorite } from "@utils/index";
+import {
+  axiosInstance,
+  convertDateToText,
+  handleRemoveFromFavorite,
+} from "@utils/index";
 
 export default function Order() {
   // Hooks
@@ -51,14 +55,10 @@ export default function Order() {
   async function handleAddToFavorite() {
     try {
       // Make request to backend
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/favorites/add`,
-        {
-          itemId: order?.item._id,
-          restaurantId: order?.restaurantId,
-        },
-        { withCredentials: true }
-      );
+      const res = await axiosInstance.post(`/favorites/add`, {
+        itemId: order?.item._id,
+        restaurantId: order?.restaurantId,
+      });
 
       // Update state
       setCustomerFavoriteItems(

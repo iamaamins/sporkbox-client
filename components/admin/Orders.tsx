@@ -8,6 +8,7 @@ import styles from "@styles/admin/Orders.module.css";
 import axios from "axios";
 import { useData } from "@context/Data";
 import ActionButton from "@components/layout/ActionButton";
+import { axiosInstance } from "@utils/index";
 
 export default function Orders({ title, orders }: IOrdersProps) {
   // Hooks
@@ -24,10 +25,7 @@ export default function Orders({ title, orders }: IOrdersProps) {
       setIsLoading(true);
 
       // Make request to backend
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/orders/delivered/0`,
-        { withCredentials: true }
-      );
+      const res = await axiosInstance.get(`/orders/delivered/0`);
 
       // Update state
       setDeliveredOrders(res.data);

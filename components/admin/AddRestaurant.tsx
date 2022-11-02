@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import { hasEmpty } from "@utils/index";
+import { axiosInstance, hasEmpty } from "@utils/index";
 import { useData } from "@context/Data";
 import { IFormData, IVendor } from "types";
 import { ChangeEvent, FormEvent, useState } from "react";
@@ -61,13 +61,7 @@ export default function AddRestaurant() {
       setIsLoading(true);
 
       // Post data to backend
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/vendors/add`,
-        formData,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axiosInstance.post(`/vendors/add`, formData);
 
       // New restaurant
       const newVendor = res.data;

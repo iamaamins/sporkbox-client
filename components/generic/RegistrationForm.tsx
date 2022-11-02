@@ -3,7 +3,7 @@ import Link from "next/link";
 import { IFormData } from "types";
 import { useUser } from "@context/User";
 import { useRouter } from "next/router";
-import { hasEmpty } from "@utils/index";
+import { axiosInstance, hasEmpty } from "@utils/index";
 import { ChangeEvent, FormEvent, useState } from "react";
 import SubmitButton from "@components/layout/SubmitButton";
 import styles from "@styles/generic/RegistrationForm.module.css";
@@ -54,13 +54,7 @@ export default function RegistrationForm() {
       setIsLoading(true);
 
       // Make the request to backend
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/customers/register`,
-        formData,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axiosInstance.post(`/customers/register`, formData);
 
       // Update state
       setUser(res.data);

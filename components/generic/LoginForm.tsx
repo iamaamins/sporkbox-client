@@ -1,7 +1,7 @@
 import Link from "next/link";
 import axios from "axios";
 import { IFormData } from "types";
-import { hasEmpty } from "@utils/index";
+import { axiosInstance, hasEmpty } from "@utils/index";
 import { useUser } from "@context/User";
 import { ChangeEvent, FormEvent, useState } from "react";
 import styles from "@styles/generic/LoginForm.module.css";
@@ -44,13 +44,7 @@ export default function LoginForm() {
       setIsLoading(true);
 
       // Fetch data
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/login`,
-        formData,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axiosInstance.post(`/users/login`, formData);
 
       // Update state
       setUser(res.data);

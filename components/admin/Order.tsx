@@ -6,7 +6,11 @@ import { useData } from "@context/Data";
 import { useEffect, useState } from "react";
 import styles from "@styles/admin/Order.module.css";
 import ActionButton from "@components/layout/ActionButton";
-import { convertDateToText, formatCurrencyToUSD } from "@utils/index";
+import {
+  axiosInstance,
+  convertDateToText,
+  formatCurrencyToUSD,
+} from "@utils/index";
 
 export default function Order() {
   const router = useRouter();
@@ -30,11 +34,7 @@ export default function Order() {
       setIsLoading(true);
 
       // Make request to backend
-      const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/orders/${order?._id}/status`,
-        {},
-        { withCredentials: true }
-      );
+      const res = await axiosInstance.put(`/orders/${order?._id}/status`, {});
 
       // Update active orders
       setAllActiveOrders((currActiveOrders: IOrder[]) =>

@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import Buttons from "@components/layout/Buttons";
 import { FormEvent, useEffect, useState } from "react";
 import styles from "@styles/admin/Company.module.css";
+import { axiosInstance } from "@utils/index";
 
 export default function Company() {
   // Hooks
@@ -27,12 +28,7 @@ export default function Company() {
 
     try {
       // Make delete request to backend
-      await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/companies/${company?._id}`,
-        {
-          withCredentials: true,
-        }
-      );
+      await axiosInstance.delete(`/companies/${company?._id}`);
 
       // Update state
       setCompanies((currCompanies: ICompany[]) =>

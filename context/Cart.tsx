@@ -2,7 +2,7 @@ import axios from "axios";
 import { useData } from "@context/Data";
 import { useUser } from "@context/User";
 import { useRouter } from "next/router";
-import { formatNumberToUS } from "@utils/index";
+import { axiosInstance, formatNumberToUS } from "@utils/index";
 import {
   ICartContext,
   ICartItem,
@@ -121,13 +121,9 @@ export default function CartProvider({ children }: IContextProviderProps) {
         setIsLoading(true);
 
         // Make request to the backend
-        const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/orders/create`,
-          { items: cartItems },
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await axiosInstance.post(`/orders/create`, {
+          items: cartItems,
+        });
 
         // Update customer's active orders state
         setCustomerActiveOrders((currActiveOrders: ICustomerOrder[]) => [
