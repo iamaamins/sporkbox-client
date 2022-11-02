@@ -21,10 +21,10 @@ export default function Restaurants() {
       setIsLoading(true);
 
       // Make request to backend
-      const res = await axiosInstance.get(`/vendors/0`);
+      const response = await axiosInstance.get(`/vendors/0`);
 
       // Update state
-      setVendors(res.data);
+      setVendors(response.data);
 
       // Remove loader
       setIsLoading(false);

@@ -121,14 +121,14 @@ export default function CartProvider({ children }: IContextProviderProps) {
         setIsLoading(true);
 
         // Make request to the backend
-        const res = await axiosInstance.post(`/orders/create`, {
+        const response = await axiosInstance.post(`/orders/create`, {
           items: cartItems,
         });
 
         // Update customer's active orders state
         setCustomerActiveOrders((currActiveOrders: ICustomerOrder[]) => [
           ...currActiveOrders,
-          ...res.data,
+          ...response.data,
         ]);
 
         // Remove cart items

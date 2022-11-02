@@ -61,7 +61,7 @@ export default function ScheduleRestaurants() {
       setIsLoading(true);
 
       // Make request to backend
-      const res = await axiosInstance.put(
+      const response = await axiosInstance.put(
         `/restaurants/schedule/${restaurantId}`,
         { date }
       );
@@ -70,7 +70,7 @@ export default function ScheduleRestaurants() {
       setScheduledRestaurants(
         (currScheduledRestaurants: IScheduledRestaurant[]) => [
           ...currScheduledRestaurants,
-          res.data,
+          response.data,
         ]
       );
 

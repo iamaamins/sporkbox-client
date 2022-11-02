@@ -56,13 +56,13 @@ export default function AddItem() {
       setIsLoading(true);
 
       // Post the data to backend
-      const res = await axiosInstance.post(
+      const response = await axiosInstance.post(
         `/restaurants/${router.query.restaurant}/add-item`,
         formData
       );
 
       // Update vendors with updated items
-      updateVendors(res.data, setVendors);
+      updateVendors(response.data, setVendors);
 
       // Reset form data
       setFormData(initialState);

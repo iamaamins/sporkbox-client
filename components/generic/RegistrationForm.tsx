@@ -54,10 +54,13 @@ export default function RegistrationForm() {
       setIsLoading(true);
 
       // Make the request to backend
-      const res = await axiosInstance.post(`/customers/register`, formData);
+      const response = await axiosInstance.post(
+        `/customers/register`,
+        formData
+      );
 
       // Update state
-      setUser(res.data);
+      setUser(response.data);
 
       // Remove the loader and clear form
       setIsLoading(false);

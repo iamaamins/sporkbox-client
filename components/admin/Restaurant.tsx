@@ -36,12 +36,15 @@ export default function Restaurant() {
 
     // Update restaurant status
     try {
-      const res = await axiosInstance.put(`/vendors/${vendor?._id}/status`, {
-        action,
-      });
+      const response = await axiosInstance.put(
+        `/vendors/${vendor?._id}/status`,
+        {
+          action,
+        }
+      );
 
       // Update vendors with updates status
-      updateVendors(res.data, setVendors);
+      updateVendors(response.data, setVendors);
     } catch (err) {
       console.log(err);
     }

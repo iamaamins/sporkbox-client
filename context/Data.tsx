@@ -57,10 +57,10 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get scheduled restaurants
       try {
         // Make request to backend
-        const res = await axiosInstance.get(`/restaurants/upcoming-week`);
+        const response = await axiosInstance.get(`/restaurants/upcoming-week`);
 
         // Update state
-        setUpcomingWeekRestaurants(res.data);
+        setUpcomingWeekRestaurants(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -77,10 +77,10 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get active orders
       try {
         // Make request to backend
-        const res = await axiosInstance.get(`/orders/active`);
+        const response = await axiosInstance.get(`/orders/active`);
 
         // Update state
-        setAllActiveOrders(res.data);
+        setAllActiveOrders(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -88,10 +88,10 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get 25 latest vendors
       try {
         // Make request to backend
-        const res = await axiosInstance.get(`/vendors/25`);
+        const response = await axiosInstance.get(`/vendors/25`);
 
         // Update state
-        setVendors(res.data);
+        setVendors(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -99,10 +99,10 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get all companies
       try {
         // Make request to backend
-        const res = await axiosInstance.get(`/companies`);
+        const response = await axiosInstance.get(`/companies`);
 
         // Update state
-        setCompanies(res.data);
+        setCompanies(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -110,10 +110,10 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get 25 delivered orders
       try {
         // Make request to backend
-        const res = await axiosInstance.get(`/orders/delivered/25`);
+        const response = await axiosInstance.get(`/orders/delivered/25`);
 
         // Update state
-        setDeliveredOrders(res.data);
+        setDeliveredOrders(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -121,10 +121,10 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get scheduled restaurants
       try {
         // Make request to backend
-        const res = await axiosInstance.get(`/restaurants/scheduled`);
+        const response = await axiosInstance.get(`/restaurants/scheduled`);
 
         // Update state
-        setScheduledRestaurants(res.data);
+        setScheduledRestaurants(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -148,10 +148,10 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get all active orders
       try {
         // Make request to backend
-        const res = await axiosInstance.get(`/orders/me/active`);
+        const response = await axiosInstance.get(`/orders/me/active`);
 
         // Update state
-        setCustomerActiveOrders(res.data);
+        setCustomerActiveOrders(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -159,10 +159,10 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get 25 latest delivered orders
       try {
         // Make request to backend
-        const res = await axiosInstance.get(`/orders/me/delivered/10`);
+        const response = await axiosInstance.get(`/orders/me/delivered/10`);
 
         // Update state
-        setCustomerDeliveredOrders(res.data);
+        setCustomerDeliveredOrders(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -170,10 +170,10 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get favorite items
       try {
         // Make request to backend
-        const res = await axiosInstance.get(`/favorites/me`);
+        const response = await axiosInstance.get(`/favorites/me`);
 
         // Update data
-        setCustomerFavoriteItems(res.data);
+        setCustomerFavoriteItems(response.data);
       } catch (err) {
         console.log(err);
       }

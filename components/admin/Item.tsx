@@ -33,12 +33,12 @@ export default function Item() {
     // Delete an item
     try {
       // Send the request to backend
-      const res = await axiosInstance.delete(
+      const response = await axiosInstance.delete(
         `/restaurants/${router.query.restaurant}/${router.query.item}/delete-item`
       );
 
       // Updated vendors array with updated items
-      updateVendors(res.data, setVendors);
+      updateVendors(response.data, setVendors);
 
       // Bck to the restaurant page
       router.back();

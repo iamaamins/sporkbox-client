@@ -44,10 +44,10 @@ export default function LoginForm() {
       setIsLoading(true);
 
       // Fetch data
-      const res = await axiosInstance.post(`/users/login`, formData);
+      const response = await axiosInstance.post(`/users/login`, formData);
 
       // Update state
-      setUser(res.data);
+      setUser(response.data);
 
       // Clear form data
       setFormData({

@@ -34,7 +34,10 @@ export default function Order() {
       setIsLoading(true);
 
       // Make request to backend
-      const res = await axiosInstance.put(`/orders/${order?._id}/status`, {});
+      const response = await axiosInstance.put(
+        `/orders/${order?._id}/status`,
+        {}
+      );
 
       // Update active orders
       setAllActiveOrders((currActiveOrders: IOrder[]) =>
@@ -46,7 +49,7 @@ export default function Order() {
       // Update delivered orders
       setDeliveredOrders((currDeliveredOrders: IOrder[]) => [
         ...currDeliveredOrders,
-        res.data,
+        response.data,
       ]);
 
       // Remove the loader

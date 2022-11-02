@@ -21,14 +21,14 @@ export default function UserProvider({ children }: IContextProviderProps) {
     async function getUser() {
       try {
         // Fetch the data
-        const res = await axiosInstance.get(`/users/me`, {
+        const response = await axiosInstance.get(`/users/me`, {
           headers: {
             "Cache-Control": "no-cache",
           },
         });
 
         // Update state
-        setUser(res.data);
+        setUser(response.data);
 
         // Remove the loader
         setIsLoading(false);

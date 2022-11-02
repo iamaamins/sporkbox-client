@@ -55,7 +55,7 @@ export default function Order() {
   async function handleAddToFavorite() {
     try {
       // Make request to backend
-      const res = await axiosInstance.post(`/favorites/add`, {
+      const response = await axiosInstance.post(`/favorites/add`, {
         itemId: order?.item._id,
         restaurantId: order?.restaurantId,
       });
@@ -63,7 +63,7 @@ export default function Order() {
       // Update state
       setCustomerFavoriteItems(
         (currCustomerFavoriteItems: ICustomerFavoriteItem[]) => [
-          res.data,
+          response.data,
           ...currCustomerFavoriteItems,
         ]
       );

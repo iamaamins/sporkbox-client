@@ -20,10 +20,10 @@ export default function Dashboard() {
       setIsLoading(true);
 
       // Make request to backend
-      const res = await axiosInstance.get(`/orders/me/delivered/0`);
+      const response = await axiosInstance.get(`/orders/me/delivered/0`);
 
       // Update state
-      setCustomerDeliveredOrders(res.data);
+      setCustomerDeliveredOrders(response.data);
 
       // Remove loader
       setIsLoading(false);

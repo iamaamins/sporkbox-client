@@ -25,10 +25,10 @@ export default function Orders({ title, orders }: IOrdersProps) {
       setIsLoading(true);
 
       // Make request to backend
-      const res = await axiosInstance.get(`/orders/delivered/0`);
+      const response = await axiosInstance.get(`/orders/delivered/0`);
 
       // Update state
-      setDeliveredOrders(res.data);
+      setDeliveredOrders(response.data);
 
       // Remove loader
       setIsLoading(false);
