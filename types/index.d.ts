@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction, ReactNode, FormEvent } from "react";
+
 export interface IUser {
   _id: string;
   name: string;
@@ -60,7 +62,7 @@ export interface ICompany {
 }
 
 export interface IContextProviderProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export interface IUserContext {
@@ -69,7 +71,7 @@ export interface IUserContext {
   isAdmin: boolean;
   isVendor: boolean;
   isCustomer: boolean;
-  setUser: Dispatch<SetStateAction<IUser>>;
+  setUser: Dispatch<SetStateAction<IUser | null>>;
 }
 
 export interface IDataContext {

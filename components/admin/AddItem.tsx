@@ -1,11 +1,10 @@
-import axios from "axios";
 import { IFormData } from "types";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import styles from "@styles/admin/AddItem.module.css";
-import { axiosInstance, hasEmpty, updateVendors } from "@utils/index";
 import { ChangeEvent, FormEvent, useState } from "react";
 import SubmitButton from "@components/layout/SubmitButton";
+import { axiosInstance, hasEmpty, updateVendors } from "@utils/index";
 
 export default function AddItem() {
   // Initial state

@@ -1,8 +1,7 @@
-import axios from "axios";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
-import { axiosInstance, hasEmpty } from "@utils/index";
 import { ICompany, IFormData } from "types";
+import { axiosInstance, hasEmpty } from "@utils/index";
 import { ChangeEvent, FormEvent, useState } from "react";
 import styles from "@styles/admin/AddCompany.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
