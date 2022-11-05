@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useData } from "@context/Data";
 import { useUser } from "@context/User";
 import { useRouter } from "next/router";

@@ -1,8 +1,7 @@
 import Link from "next/link";
-import axios from "axios";
 import { IFormData } from "types";
-import { axiosInstance, hasEmpty } from "@utils/index";
 import { useUser } from "@context/User";
+import { axiosInstance, hasEmpty } from "@utils/index";
 import { ChangeEvent, FormEvent, useState } from "react";
 import styles from "@styles/generic/LoginForm.module.css";
 import SubmitButton from "@components/layout/SubmitButton";

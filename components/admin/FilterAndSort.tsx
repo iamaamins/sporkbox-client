@@ -1,6 +1,6 @@
 import { convertDateToMS, groupBy } from "@utils/index";
-import styles from "@styles/admin/FilterAndSort.module.css";
 import { ChangeEvent, useEffect, useState } from "react";
+import styles from "@styles/admin/FilterAndSort.module.css";
 import { IFilterAndSortProps, IFiltersData, IOrdersGroup } from "types";
 
 export default function FilterAndSort({

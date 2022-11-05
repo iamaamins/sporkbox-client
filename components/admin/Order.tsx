@@ -1,4 +1,3 @@
-import axios from "axios";
 import Link from "next/link";
 import { IOrder } from "types";
 import { useRouter } from "next/router";

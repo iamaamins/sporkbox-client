@@ -1,8 +1,7 @@
-import axios from "axios";
 import { useRouter } from "next/router";
+import { axiosInstance } from "@utils/index";
 import { IContextProviderProps, IUser, IUserContext } from "types";
 import { createContext, useContext, useEffect, useState } from "react";
-import { axiosInstance } from "@utils/index";
 
 // Create context
 const UserContext = createContext({} as IUserContext);

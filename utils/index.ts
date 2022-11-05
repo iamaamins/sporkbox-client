@@ -1,3 +1,4 @@
+import axios from "axios";
 import { SetStateAction } from "react";
 import { NextRouter } from "next/router";
 import {
@@ -7,7 +8,6 @@ import {
   IFormData,
   ICustomerFavoriteItem,
 } from "types";
-import axios from "axios";
 
 // Current year
 export const currentYear = new Date().getFullYear();

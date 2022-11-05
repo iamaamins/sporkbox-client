@@ -11,8 +11,8 @@ import {
   getDay,
 } from "@utils/index";
 import Image from "next/image";
-import { IRestaurantsGroup, IUpcomingWeekRestaurant } from "types";
 import styles from "@styles/generic/Calendar.module.css";
+import { IRestaurantsGroup, IUpcomingWeekRestaurant } from "types";
 
 export default function Calendar() {
   // Hooks

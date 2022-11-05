@@ -1,11 +1,10 @@
-import axios from "axios";
 import { ICompany } from "types";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
+import { axiosInstance } from "@utils/index";
 import Buttons from "@components/layout/Buttons";
 import { FormEvent, useEffect, useState } from "react";
 import styles from "@styles/admin/Company.module.css";
-import { axiosInstance } from "@utils/index";
 
 export default function Company() {
   // Hooks

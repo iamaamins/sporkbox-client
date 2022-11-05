@@ -1,8 +1,7 @@
-import axios from "axios";
 import { useRouter } from "next/router";
-import { axiosInstance, hasEmpty } from "@utils/index";
 import { useData } from "@context/Data";
 import { IFormData, IVendor } from "types";
+import { axiosInstance, hasEmpty } from "@utils/index";
 import { ChangeEvent, FormEvent, useState } from "react";
 import SubmitButton from "@components/layout/SubmitButton";
 import styles from "@styles/admin/AddRestaurant.module.css";

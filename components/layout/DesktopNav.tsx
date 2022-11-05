@@ -1,4 +1,3 @@
-import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
 import CartIcon from "./CartIcon";
@@ -7,8 +6,8 @@ import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import logo from "@public/layout/logo.png";
 import { useEffect, useState } from "react";
-import { axiosInstance, convertDateToMS } from "@utils/index";
 import styles from "@styles/layout/DesktopNav.module.css";
+import { axiosInstance, convertDateToMS } from "@utils/index";
 
 export default function DesktopNav() {
   // Hooks

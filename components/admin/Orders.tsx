@@ -1,14 +1,13 @@
 import OrderRow from "./OrderRow";
 import { useState } from "react";
+import { useData } from "@context/Data";
 import { BiSort } from "react-icons/bi";
 import { useRouter } from "next/router";
 import FilterAndSort from "./FilterAndSort";
+import { axiosInstance } from "@utils/index";
 import { IOrder, IOrdersProps } from "types";
 import styles from "@styles/admin/Orders.module.css";
-import axios from "axios";
-import { useData } from "@context/Data";
 import ActionButton from "@components/layout/ActionButton";
-import { axiosInstance } from "@utils/index";
 
 export default function Orders({ title, orders }: IOrdersProps) {
   // Hooks

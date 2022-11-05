@@ -1,10 +1,10 @@
-import logo from "@public/layout/logo.png";
-import Image from "next/image";
 import Link from "next/link";
-import { AiFillInstagram, AiOutlineTwitter } from "react-icons/ai";
+import Image from "next/image";
+import logo from "@public/layout/logo.png";
+import { currentYear } from "@utils/index";
 import { FaFacebookSquare } from "react-icons/fa";
 import styles from "@styles/layout/Footer.module.css";
-import { currentYear } from "@utils/index";
+import { AiFillInstagram, AiOutlineTwitter } from "react-icons/ai";
 
 export default function Footer() {
   return (
