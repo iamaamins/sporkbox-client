@@ -10,7 +10,7 @@ import ActionButton from "@components/layout/ActionButton";
 export default function Restaurants() {
   // Hooks
   const router = useRouter();
-  const { vendors, setVendors } = useData();
+  const { vendors, setVendors, isAllVendorsLoading } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Handle load all vendors
@@ -36,7 +36,9 @@ export default function Restaurants() {
 
   return (
     <section className={styles.all_restaurants}>
-      {vendors.length === 0 && (
+      {isAllVendorsLoading && <h2>Loading...</h2>}
+
+      {!isAllVendorsLoading && vendors.length === 0 && (
         <h2 className={styles.no_vendors_title}>No Restaurants</h2>
       )}
 

@@ -74,6 +74,7 @@ export default function Order() {
   return (
     <section className={styles.order}>
       {!order && <h2>No order found</h2>}
+
       {order && (
         <>
           <div className={styles.order_top}>

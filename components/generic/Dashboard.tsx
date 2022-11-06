@@ -9,7 +9,11 @@ import { axiosInstance, formatCurrencyToUSD } from "@utils/index";
 export default function Dashboard() {
   // Hooks
   const { user } = useUser();
-  const { setCustomerDeliveredOrders } = useData();
+  const {
+    setCustomerDeliveredOrders,
+    isCustomerActiveOrdersLoading,
+    isCustomerDeliveredOrdersLoading,
+  } = useData();
   const [isLoading, setIsLoading] = useState(false);
   const { customerActiveOrders, customerDeliveredOrders } = useData();
 
@@ -52,6 +56,8 @@ export default function Dashboard() {
             </p>
           </div>
 
+          {isCustomerActiveOrdersLoading && <h2>Loading...</h2>}
+
           {/* Active orders */}
           {customerActiveOrders.length > 0 && (
             <div className={styles.active_orders}>
@@ -59,6 +65,8 @@ export default function Dashboard() {
               <Orders orders={customerActiveOrders} />
             </div>
           )}
+
+          {isCustomerDeliveredOrdersLoading && <h2>Loading...</h2>}
 
           {/* Delivered orders */}
           {customerDeliveredOrders.length > 0 && (

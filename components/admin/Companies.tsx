@@ -4,11 +4,15 @@ import styles from "@styles/admin/Companies.module.css";
 import LinkButton from "@components/layout/LinkButton";
 
 export default function Companies() {
-  const { companies } = useData();
+  const { companies, isAllCompaniesLoading } = useData();
 
   return (
     <section className={styles.all_companies}>
-      {companies.length === 0 && <h2>No companies</h2>}
+      {isAllCompaniesLoading && <h2>Loading...</h2>}
+
+      {!isAllCompaniesLoading && companies.length === 0 && (
+        <h2>No companies</h2>
+      )}
 
       {companies.length > 0 && (
         <>

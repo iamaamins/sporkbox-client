@@ -18,7 +18,8 @@ export default function Calendar() {
   // Hooks
   const router = useRouter();
   const { cartItems } = useCart();
-  const { upcomingWeekRestaurants } = useData();
+  const { upcomingWeekRestaurants, isUpcomingWeekRestaurantsLoading } =
+    useData();
   const [restaurants, setRestaurants] = useState<IUpcomingWeekRestaurant[]>([]);
   const [restaurantGroups, setRestaurantGroups] = useState<IRestaurantsGroup[]>(
     []
@@ -49,8 +50,12 @@ export default function Calendar() {
 
   return (
     <section className={styles.calendar}>
+      {isUpcomingWeekRestaurantsLoading && <h2>Loading...</h2>}
+
       {/* If there are no restaurant groups */}
-      {restaurantGroups.length === 0 && <h2>No restaurants</h2>}
+      {!isUpcomingWeekRestaurantsLoading && restaurantGroups.length === 0 && (
+        <h2>No restaurants</h2>
+      )}
 
       {/* If there are restaurant groups */}
       {restaurantGroups.length > 0 && (

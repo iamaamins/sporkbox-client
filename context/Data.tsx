@@ -27,7 +27,6 @@ export const useData = () => useContext(DataContext);
 // Provider function
 export default function DataProvider({ children }: IContextProviderProps) {
   const { isAdmin, isCustomer } = useUser();
-  const [isDataLoading, setIsDataLoading] = useState(false);
   const [vendors, setVendors] = useState<IVendor[]>([]);
   const [companies, setCompanies] = useState<ICompany[]>([]);
   const [scheduledRestaurants, setScheduledRestaurants] = useState<
@@ -52,6 +51,28 @@ export default function DataProvider({ children }: IContextProviderProps) {
     ICustomerFavoriteItem[]
   >([]);
 
+  // Loading states
+  const [
+    isUpcomingWeekRestaurantsLoading,
+    setIsUpcomingWeekRestaurantsLoading,
+  ] = useState(true);
+  const [isAllActiveOrdersLoading, setIsAllActiveOrdersLoading] =
+    useState(true);
+  const [isAllVendorsLoading, setIsAllVendorsLoading] = useState(true);
+  const [isAllCompaniesLoading, setIsAllCompaniesLoading] = useState(true);
+  const [isAllDeliveredOrdersLoading, setIsAllDeliveredOrdersLoading] =
+    useState(true);
+  const [isScheduledRestaurantsLoading, setIsScheduledRestaurantsLoading] =
+    useState(true);
+  const [isCustomerActiveOrdersLoading, setIsCustomerActiveOrdersLoading] =
+    useState(true);
+  const [
+    isCustomerDeliveredOrdersLoading,
+    setIsCustomerDeliveredOrdersLoading,
+  ] = useState(true);
+  const [isCustomerFavoriteItemsLoading, setIsCustomerFavoriteItemsLoading] =
+    useState(true);
+
   // Fetch generic data
   useEffect(() => {
     async function getGenericData() {
@@ -64,6 +85,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setUpcomingWeekRestaurants(response.data);
       } catch (err) {
         console.log(err);
+      } finally {
+        // Remove loader
+        setIsUpcomingWeekRestaurantsLoading(false);
       }
     }
 
@@ -84,6 +108,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setAllActiveOrders(response.data);
       } catch (err) {
         console.log(err);
+      } finally {
+        // Remove loader
+        setIsAllActiveOrdersLoading(false);
       }
 
       // Get 25 latest vendors
@@ -95,6 +122,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setVendors(response.data);
       } catch (err) {
         console.log(err);
+      } finally {
+        // Remove loader
+        setIsAllVendorsLoading(false);
       }
 
       // Get all companies
@@ -106,6 +136,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setCompanies(response.data);
       } catch (err) {
         console.log(err);
+      } finally {
+        // Remove loader
+        setIsAllCompaniesLoading(false);
       }
 
       // Get 25 delivered orders
@@ -117,6 +150,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setDeliveredOrders(response.data);
       } catch (err) {
         console.log(err);
+      } finally {
+        // Remove loader
+        setIsAllDeliveredOrdersLoading(false);
       }
 
       // Get scheduled restaurants
@@ -128,6 +164,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setScheduledRestaurants(response.data);
       } catch (err) {
         console.log(err);
+      } finally {
+        // Remove loader
+        setIsScheduledRestaurantsLoading(false);
       }
     }
 
@@ -148,9 +187,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
     async function getCustomerData() {
       // Get all active orders
       try {
-        // Show loader
-        setIsDataLoading(true);
-
         // Make request to backend
         const response = await axiosInstance.get(`/orders/me/active`);
 
@@ -161,14 +197,11 @@ export default function DataProvider({ children }: IContextProviderProps) {
         console.log(err);
       } finally {
         // Remove loader
-        setIsDataLoading(false);
+        setIsCustomerActiveOrdersLoading(false);
       }
 
       // Get 25 latest delivered orders
       try {
-        // Show loader
-        setIsDataLoading(true);
-
         // Make request to backend
         const response = await axiosInstance.get(`/orders/me/delivered/10`);
 
@@ -178,14 +211,11 @@ export default function DataProvider({ children }: IContextProviderProps) {
         console.log(err);
       } finally {
         // Remove loader
-        setIsDataLoading(false);
+        setIsCustomerDeliveredOrdersLoading(false);
       }
 
       // Get favorite items
       try {
-        // Show loader
-        setIsDataLoading(true);
-
         // Make request to backend
         const response = await axiosInstance.get(`/favorites/me`);
 
@@ -195,7 +225,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
         console.log(err);
       } finally {
         // Remove loader
-        setIsDataLoading(false);
+        setIsCustomerFavoriteItemsLoading(false);
       }
     }
 
@@ -226,22 +256,30 @@ export default function DataProvider({ children }: IContextProviderProps) {
         companies,
         allOrders,
         setCompanies,
-        isDataLoading,
         deliveredOrders,
         allActiveOrders,
         customerAllOrders,
         setAllActiveOrders,
         setDeliveredOrders,
+        isAllVendorsLoading,
         customerActiveOrders,
         scheduledRestaurants,
+        isAllCompaniesLoading,
         customerFavoriteItems,
         customerDeliveredOrders,
         upcomingWeekRestaurants,
         setCustomerActiveOrders,
         setScheduledRestaurants,
+        isAllActiveOrdersLoading,
         setCustomerFavoriteItems,
         customerActiveOrdersTotal,
         setCustomerDeliveredOrders,
+        isAllDeliveredOrdersLoading,
+        isCustomerActiveOrdersLoading,
+        isScheduledRestaurantsLoading,
+        isCustomerFavoriteItemsLoading,
+        isCustomerDeliveredOrdersLoading,
+        isUpcomingWeekRestaurantsLoading,
       }}
     >
       {children}

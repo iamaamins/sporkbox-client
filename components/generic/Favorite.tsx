@@ -16,11 +16,15 @@ export default function Favorite() {
     customerFavoriteItems,
     upcomingWeekRestaurants,
     setCustomerFavoriteItems,
+    isCustomerFavoriteItemsLoading,
   } = useData();
 
   return (
     <section className={styles.favorite}>
-      {customerFavoriteItems.length === 0 && <h2>No favorite items</h2>}
+      {isCustomerFavoriteItemsLoading && <h2>Loading...</h2>}
+
+      {!isCustomerFavoriteItemsLoading &&
+        customerFavoriteItems.length === 0 && <h2>No favorite items</h2>}
 
       {customerFavoriteItems.length > 0 && (
         <>

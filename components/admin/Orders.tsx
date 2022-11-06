@@ -12,8 +12,12 @@ import ActionButton from "@components/layout/ActionButton";
 export default function Orders({ title, orders }: IOrdersProps) {
   // Hooks
   const router = useRouter();
-  const { setDeliveredOrders } = useData();
   const [isLoading, setIsLoading] = useState(false);
+  const {
+    setDeliveredOrders,
+    isAllActiveOrdersLoading,
+    isAllDeliveredOrdersLoading,
+  } = useData();
   const [showController, setShowController] = useState<boolean>(false);
   const [filteredOrders, setFilteredOrders] = useState<IOrder[]>([]);
 
@@ -40,8 +44,14 @@ export default function Orders({ title, orders }: IOrdersProps) {
 
   return (
     <section className={styles.orders}>
+      {isAllActiveOrdersLoading ||
+        (isAllDeliveredOrdersLoading && <h2>Loading...</h2>)}
+
       {/* If there are no active orders */}
-      {orders.length === 0 && <h2>No {title.toLowerCase()}</h2>}
+      {!isAllActiveOrdersLoading &&
+        !isAllDeliveredOrdersLoading &&
+        orders.length === 0 && <h2>No {title.toLowerCase()}</h2>}
+
       {/* If there are active orders */}
       {orders.length > 0 && (
         <>

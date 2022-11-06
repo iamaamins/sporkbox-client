@@ -5,11 +5,15 @@ import LinkButton from "@components/layout/LinkButton";
 import styles from "@styles/admin/ScheduledRestaurants.module.css";
 
 export default function ScheduledRestaurants() {
-  const { scheduledRestaurants } = useData();
+  const { scheduledRestaurants, isScheduledRestaurantsLoading } = useData();
 
   return (
     <section className={styles.scheduled_restaurants}>
-      {scheduledRestaurants.length === 0 && <h2>No scheduled restaurants</h2>}
+      {isScheduledRestaurantsLoading && <h2>Loading...</h2>}
+
+      {!isScheduledRestaurantsLoading && scheduledRestaurants.length === 0 && (
+        <h2>No scheduled restaurants</h2>
+      )}
 
       {scheduledRestaurants.length > 0 && (
         <>
