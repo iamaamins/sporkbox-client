@@ -28,7 +28,7 @@ export const convertDateToMS = (date: string) => new Date(date).getTime();
 
 // Convert iso date to locale date string
 export const convertDateToText = (date: string | number) =>
-  new Date(date).toDateString().split(" ").slice(0, 3).join(" ");
+  new Date(date).toUTCString().split(" ").slice(0, 3).join(" ");
 
 // Check if any input field is empty
 export const hasEmpty = (formData: IFormData): boolean =>
@@ -112,12 +112,11 @@ export function groupBy<
 }
 
 // Get the date
-export const getDate = (date: string) =>
-  new Date(date).toDateString().split(" ").slice(2, 3).join();
+export const getDate = (date: string) => new Date(date).getUTCDate();
 
 // Get the first letter of the day
 export const getDay = (date: string) =>
-  new Date(date).toDateString().split(" ").slice(0, 1)[0].split("")[0];
+  new Date(date).toUTCString().split("").slice(0, 1);
 
 // Handle remove from favorite
 export async function handleRemoveFromFavorite(
@@ -150,19 +149,28 @@ export function getFutureDate(dayToAdd: number) {
   // Day number of current week sunday
   const sunday = today.getDate() - today.getDay();
 
-  // Return a future date
-  return convertDateToMS(
-    new Date(today.setDate(sunday + dayToAdd)).toDateString()
-  );
+  // Get future date in MS
+  const futureDate = today.setDate(sunday + dayToAdd);
+
+  // Get future date without hours in MS
+  const futureDateInMS = new Date(futureDate).setHours(0, 0, 0, 0);
+
+  // Convert time zone difference in MS
+  const timeZoneInMS = new Date(futureDateInMS).getTimezoneOffset() * 60000;
+
+  // Return a future date - time zone in MS
+  return futureDateInMS - timeZoneInMS;
 }
 
 // Get dates in iso string
+// const today = new Date().getTime();
 const nextSaturday = getFutureDate(6);
 const nextMonday = getFutureDate(8);
 const nextWeekSaturday = getFutureDate(13);
 const followingMonday = getFutureDate(15);
 const followingSaturday = getFutureDate(20);
-const today = convertDateToMS(new Date().toDateString());
+const timeZoneInMs = new Date().getTimezoneOffset() * 60000;
+const today = new Date().setHours(0, 0, 0, 0) - timeZoneInMs;
 
 // Filters
 export const gte = today < nextSaturday ? nextMonday : followingMonday;

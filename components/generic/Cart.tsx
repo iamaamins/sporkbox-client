@@ -12,7 +12,7 @@ import { convertDateToText, formatCurrencyToUSD } from "@utils/index";
 export default function Cart() {
   // Hooks
   const { user } = useUser();
-  const { customerActiveOrdersTotal } = useData();
+  const { isDataLoading, customerActiveOrdersTotal } = useData();
   const {
     cartItems,
     isLoading,
@@ -24,12 +24,12 @@ export default function Cart() {
 
   // Check if budget is exceeded
   useEffect(() => {
-    if (user) {
+    if (user && !isDataLoading) {
       setBudgetExceeded(
         customerActiveOrdersTotal + totalCartPrice > user.company?.budget!
       );
     }
-  }, [user, cartItems]);
+  }, [user, cartItems, isDataLoading]);
 
   return (
     <section className={styles.cart}>

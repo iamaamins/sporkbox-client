@@ -12,10 +12,10 @@ import {
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
 import {
+  gte,
   axiosInstance,
   convertDateToMS,
   formatNumberToUS,
-  gte,
 } from "@utils/index";
 
 // Create context
@@ -27,6 +27,7 @@ export const useData = () => useContext(DataContext);
 // Provider function
 export default function DataProvider({ children }: IContextProviderProps) {
   const { isAdmin, isCustomer } = useUser();
+  const [isDataLoading, setIsDataLoading] = useState(false);
   const [vendors, setVendors] = useState<IVendor[]>([]);
   const [companies, setCompanies] = useState<ICompany[]>([]);
   const [scheduledRestaurants, setScheduledRestaurants] = useState<
@@ -147,17 +148,27 @@ export default function DataProvider({ children }: IContextProviderProps) {
     async function getCustomerData() {
       // Get all active orders
       try {
+        // Show loader
+        setIsDataLoading(true);
+
         // Make request to backend
         const response = await axiosInstance.get(`/orders/me/active`);
 
         // Update state
         setCustomerActiveOrders(response.data);
       } catch (err) {
+        // Log error
         console.log(err);
+      } finally {
+        // Remove loader
+        setIsDataLoading(false);
       }
 
       // Get 25 latest delivered orders
       try {
+        // Show loader
+        setIsDataLoading(true);
+
         // Make request to backend
         const response = await axiosInstance.get(`/orders/me/delivered/10`);
 
@@ -165,10 +176,16 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setCustomerDeliveredOrders(response.data);
       } catch (err) {
         console.log(err);
+      } finally {
+        // Remove loader
+        setIsDataLoading(false);
       }
 
       // Get favorite items
       try {
+        // Show loader
+        setIsDataLoading(true);
+
         // Make request to backend
         const response = await axiosInstance.get(`/favorites/me`);
 
@@ -176,6 +193,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setCustomerFavoriteItems(response.data);
       } catch (err) {
         console.log(err);
+      } finally {
+        // Remove loader
+        setIsDataLoading(false);
       }
     }
 
@@ -206,6 +226,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
         companies,
         allOrders,
         setCompanies,
+        isDataLoading,
         deliveredOrders,
         allActiveOrders,
         customerAllOrders,
