@@ -36,11 +36,11 @@ export const hasEmpty = (formData: IFormData): boolean =>
 
 // Check if there is an admin
 export function checkUser(
-  isLoading: boolean,
+  isUserLoading: boolean,
   user: boolean,
   router: NextRouter
 ) {
-  if (!isLoading && !user) {
+  if (!isUserLoading && !user) {
     router.push("/login");
   }
 }

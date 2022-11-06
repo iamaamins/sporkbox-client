@@ -1,7 +1,6 @@
 .page_loader {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  padding-top: 20rem;
-  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
 }

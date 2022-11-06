@@ -7,15 +7,15 @@ import PageLoader from "@components/layout/PageLoader";
 
 export default function OrderPage() {
   const router = useRouter();
-  const { isLoading, isCustomer } = useUser();
+  const { isUserLoading, isCustomer } = useUser();
 
   useEffect(() => {
-    checkUser(isLoading, isCustomer, router);
-  }, [isLoading, isCustomer]);
+    checkUser(isUserLoading, isCustomer, router);
+  }, [isUserLoading, isCustomer]);
 
   return (
     <main>
-      {isLoading && <PageLoader />}
+      {isUserLoading && <PageLoader />}
       {isCustomer && <Order />}
     </main>
   );

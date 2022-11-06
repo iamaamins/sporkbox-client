@@ -6,7 +6,7 @@ import PageLoader from "@components/layout/PageLoader";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { isLoading, isAdmin, isCustomer } = useUser();
+  const { isUserLoading, isAdmin, isCustomer } = useUser();
 
   // Push to a page depending on user role
   useEffect(() => {
@@ -19,8 +19,8 @@ export default function LoginPage() {
 
   return (
     <main>
-      {isLoading && <PageLoader />}
-      {!isLoading && <LoginForm />}
+      {isUserLoading && <PageLoader />}
+      {!isUserLoading && <LoginForm />}
     </main>
   );
 }

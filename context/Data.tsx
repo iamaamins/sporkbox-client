@@ -26,6 +26,7 @@ export const useData = () => useContext(DataContext);
 
 // Provider function
 export default function DataProvider({ children }: IContextProviderProps) {
+  // Hooks and states
   const { isAdmin, isCustomer } = useUser();
   const [vendors, setVendors] = useState<IVendor[]>([]);
   const [companies, setCompanies] = useState<ICompany[]>([]);

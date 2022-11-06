@@ -67,10 +67,10 @@ export interface IContextProviderProps {
 
 export interface IUserContext {
   user: IUser | null;
-  isLoading: boolean;
   isAdmin: boolean;
   isVendor: boolean;
   isCustomer: boolean;
+  isUserLoading: boolean;
   setUser: Dispatch<SetStateAction<IUser | null>>;
 }
 

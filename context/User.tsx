@@ -13,7 +13,7 @@ export const useUser = () => useContext(UserContext);
 export default function UserProvider({ children }: IContextProviderProps) {
   const router = useRouter();
   const [user, setUser] = useState<IUser | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isUserLoading, setIsUserLoading] = useState<boolean>(true);
 
   // Get user
   useEffect(() => {
@@ -28,14 +28,11 @@ export default function UserProvider({ children }: IContextProviderProps) {
 
         // Update state
         setUser(response.data);
-
-        // Remove the loader
-        setIsLoading(false);
       } catch (err) {
-        // Remove the loader
-        setIsLoading(false);
-
         console.log(err);
+      } finally {
+        // Remove loader
+        setIsUserLoading(false);
       }
     }
 
@@ -54,7 +51,7 @@ export default function UserProvider({ children }: IContextProviderProps) {
 
   return (
     <UserContext.Provider
-      value={{ isLoading, user, setUser, isAdmin, isVendor, isCustomer }}
+      value={{ isUserLoading, user, setUser, isAdmin, isVendor, isCustomer }}
     >
       {children}
     </UserContext.Provider>

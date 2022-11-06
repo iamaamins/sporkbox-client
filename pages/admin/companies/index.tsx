@@ -7,15 +7,15 @@ import PageLoader from "@components/layout/PageLoader";
 
 export default function CompaniesPage() {
   const router = useRouter();
-  const { isLoading, isAdmin } = useUser();
+  const { isUserLoading, isAdmin } = useUser();
 
   useEffect(() => {
-    checkUser(isLoading, isAdmin, router);
-  }, [isLoading, isAdmin]);
+    checkUser(isUserLoading, isAdmin, router);
+  }, [isUserLoading, isAdmin]);
 
   return (
     <main>
-      {isLoading && <PageLoader />}
+      {isUserLoading && <PageLoader />}
       {isAdmin && <Companies />}
     </main>
   );
