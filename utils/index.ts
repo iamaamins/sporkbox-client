@@ -155,22 +155,17 @@ export function getFutureDate(dayToAdd: number) {
   // Get future date without hours in MS
   const futureDateInMS = new Date(futureDate).setHours(0, 0, 0, 0);
 
-  // Convert time zone difference in MS
-  const timeZoneInMS = new Date(futureDateInMS).getTimezoneOffset() * 60000;
-
   // Return a future date - time zone in MS
-  return futureDateInMS - timeZoneInMS;
+  return futureDateInMS;
 }
 
-// Get dates in iso string
-// const today = new Date().getTime();
+// Get future dates in MS
+const today = Date.now();
 const nextSaturday = getFutureDate(6);
 const nextMonday = getFutureDate(8);
 const nextWeekSaturday = getFutureDate(13);
 const followingMonday = getFutureDate(15);
 const followingSaturday = getFutureDate(20);
-const timeZoneInMs = new Date().getTimezoneOffset() * 60000;
-const today = new Date().setHours(0, 0, 0, 0) - timeZoneInMs;
 
 // Filters
 export const gte = today < nextSaturday ? nextMonday : followingMonday;

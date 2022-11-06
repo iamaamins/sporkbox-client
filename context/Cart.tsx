@@ -33,12 +33,9 @@ export default function CartProvider({ children }: IContextProviderProps) {
   // Remove cart item automatically
   useEffect(() => {
     if (cartItems.length > 0 && router.isReady) {
-      // Get now in milliseconds
-      const now = new Date().getTime();
-
       // Filter the items by item id
       const updatedItems = cartItems.filter(
-        (cartItem) => cartItem.expiresIn > now
+        (cartItem) => cartItem.expiresIn > Date.now()
       );
 
       // Set updated items to cart
