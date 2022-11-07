@@ -61,16 +61,16 @@ export default function RegistrationForm() {
       // Update state
       setUser(response.data);
 
-      // Remove the loader and clear form
-      setIsLoading(false);
+      // Clear form
       setFormData(initialSate);
 
       // Push to dashboard page
       router.push("/dashboard");
     } catch (err) {
-      // Remove the loader
-      setIsLoading(false);
       console.log(err);
+    } finally {
+      // Remove loader
+      setIsLoading(false);
     }
   }
 

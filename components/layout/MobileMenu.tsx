@@ -75,7 +75,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
           </Link>
         </li>
 
-        {/* <li
+        <li
           className={isAdmin || !isCustomer ? styles.hide : ""}
           onClick={() => setIsOpen(false)}
         >
@@ -84,7 +84,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
               <AiTwotoneStar /> Favorite
             </a>
           </Link>
-        </li> */}
+        </li>
 
         {/* Admin nav items */}
         <li
@@ -143,7 +143,6 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
         </li>
 
         {/* Generic nav items */}
-
         <li onClick={() => setIsOpen(false)}>
           <Link href={`/calendar/${date}`}>
             <a>

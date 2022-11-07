@@ -72,13 +72,13 @@ export default function AddRestaurant() {
       setFormData(initialState);
 
       // Remove loader
-      setIsLoading(false);
       setIsDisabled(true);
 
       // Push to dashboard
       router.push("/admin/restaurants");
     } catch (err) {
       console.log(err);
+    } finally {
       // Remove loader
       setIsLoading(false);
     }

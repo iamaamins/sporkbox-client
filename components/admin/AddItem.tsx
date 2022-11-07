@@ -66,13 +66,12 @@ export default function AddItem() {
       // Reset form data
       setFormData(initialState);
 
-      // Remove loader
-      setIsLoading(false);
-
       // Back to the restaurant page
       router.push(`/admin/restaurants/${router.query.restaurant}`);
     } catch (err) {
       console.log(err);
+    } finally {
+      // Remove loader
       setIsLoading(false);
     }
   }

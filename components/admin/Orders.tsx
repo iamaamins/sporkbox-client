@@ -32,13 +32,11 @@ export default function Orders({ title, orders }: IOrdersProps) {
 
       // Update state
       setDeliveredOrders(response.data);
-
-      // Remove loader
-      setIsLoading(false);
     } catch (err) {
+      console.log(err);
+    } finally {
       // Remove loader
       setIsLoading(false);
-      console.log(err);
     }
   }
 

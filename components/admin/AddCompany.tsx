@@ -69,15 +69,15 @@ export default function AddCompany() {
       setFormData(initialState);
 
       // Update states
-      setIsLoading(false);
       setIsDisabled(true);
 
       // Push to dashboard
       router.push("/admin/companies");
     } catch (err) {
+      console.log(err);
+    } finally {
       // Remove loader
       setIsLoading(false);
-      console.log(err);
     }
   }
 

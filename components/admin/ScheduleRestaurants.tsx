@@ -76,15 +76,12 @@ export default function ScheduleRestaurants() {
       // Clear form data
       setFormData(initialState);
 
-      // Remove loader
-      setIsLoading(false);
-
       // Disable button
       setIsDisabled(true);
     } catch (err) {
       console.log(err);
-
-      // Remove loader and disable button
+    } finally {
+      // Remove loader
       setIsLoading(false);
     }
   }

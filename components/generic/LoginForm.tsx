@@ -53,13 +53,10 @@ export default function LoginForm() {
         email: "",
         password: "",
       });
-
-      // Remove the loader
-      setIsLoading(false);
     } catch (err) {
       console.log(err);
-
-      // Remove the loader
+    } finally {
+      // Remove loader
       setIsLoading(false);
     }
   }

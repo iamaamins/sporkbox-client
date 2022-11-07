@@ -51,15 +51,13 @@ export default function Order() {
         response.data,
       ]);
 
-      // Remove the loader
-      setIsLoading(false);
-
       // Back to admin page
       router.back();
     } catch (err) {
-      // Remove the loader
-      setIsLoading(false);
       console.log(err);
+    } finally {
+      // Remove loader
+      setIsLoading(false);
     }
   }
 

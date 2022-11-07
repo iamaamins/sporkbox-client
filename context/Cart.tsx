@@ -131,15 +131,13 @@ export default function CartProvider({ children }: IContextProviderProps) {
         setCartItems([]);
         localStorage.removeItem("cart");
 
-        // Remove loader
-        setIsLoading(false);
-
         // Push to the dashboard page
         router.push("/dashboard");
       } catch (err) {
+        console.log(err);
+      } finally {
         // Remove loader
         setIsLoading(false);
-        console.log(err);
       }
     } else {
       router.push("/login");

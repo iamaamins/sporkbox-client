@@ -24,13 +24,11 @@ export default function Restaurants() {
 
       // Update state
       setVendors(response.data);
-
-      // Remove loader
-      setIsLoading(false);
     } catch (err) {
+      console.log(err);
+    } finally {
       // Remove loader
       setIsLoading(false);
-      console.log(err);
     }
   }
 
