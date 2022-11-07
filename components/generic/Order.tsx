@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
-import { useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { AiFillStar } from "react-icons/ai";
 import { AiOutlineStar } from "react-icons/ai";
 import styles from "@styles/generic/Order.module.css";
 import LinkButton from "@components/layout/LinkButton";
@@ -16,8 +17,9 @@ import {
 export default function Order() {
   // Hooks
   const router = useRouter();
-  const [message, setMessage] = useState<string>("");
+  const [comment, setComment] = useState<string>("");
   const [order, setOrder] = useState<ICustomerOrder>();
+  const [rating, setRating] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [favoriteItem, setFavoriteItem] = useState<ICustomerFavoriteItem>();
@@ -68,6 +70,50 @@ export default function Order() {
       );
     } catch (err) {
       console.log(err);
+    }
+  }
+
+  // Stars array
+  const stars = [];
+
+  // Create stars array
+  for (let i = 0; i < 5; i++) {
+    stars.push(
+      <AiFillStar
+        key={i + 1}
+        onClick={() => setRating(i + 1)}
+        className={` ${styles.star} ${i < rating && styles.filled}`}
+      />
+    );
+  }
+
+  // Handle change comment
+  function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
+    if (comment !== "" && rating > 0) {
+      // Enable submit button
+      setIsDisabled(false);
+    }
+
+    // Update comment state
+    setComment(e.target.value);
+  }
+
+  // Handle add review
+  async function handleAddReview(e: FormEvent) {
+    e.preventDefault();
+
+    try {
+      // const response = await axiosInstance.post('/')
+      console.log({
+        rating,
+        comment,
+      });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      // Update state
+      setIsLoading(false);
+      setIsDisabled(true);
     }
   }
 
@@ -140,11 +186,15 @@ export default function Order() {
 
                   <p className={styles.review_title}>Leave a review</p>
 
-                  <form action="submit">
+                  <div className={styles.ratings}>
+                    {stars.map((star) => star)}
+                  </div>
+
+                  <form onSubmit={handleAddReview}>
                     <textarea
-                      id="message"
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
+                      id="comment"
+                      value={comment}
+                      onChange={handleChange}
                     />
 
                     <SubmitButton
