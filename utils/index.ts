@@ -147,34 +147,28 @@ export function getFutureDate(dayToAdd: number) {
   const today = new Date();
 
   // Day number of current week sunday
-  const sunday = today.getDate() - today.getDay();
+  const sunday = today.getUTCDate() - today.getUTCDay();
 
   // Get future date in MS
-  const futureDate = today.setDate(sunday + dayToAdd);
+  const futureDate = today.setUTCDate(sunday + dayToAdd);
 
   // Get future date without hours in MS
-  const futureDateInMS = new Date(futureDate).setHours(0, 0, 0, 0);
-
-  // Return a future date - time zone in MS
-  return futureDateInMS;
+  return new Date(futureDate).setUTCHours(0, 0, 0, 0);
 }
 
 // Get future dates in MS
-const today = Date.now();
 const nextSaturday = getFutureDate(6);
 const nextMonday = getFutureDate(8);
-const nextWeekSaturday = getFutureDate(13);
 const followingMonday = getFutureDate(15);
-const followingSaturday = getFutureDate(20);
+export const today = new Date().setUTCHours(0, 0, 0, 0);
 
 // Filters
 export const gte = today < nextSaturday ? nextMonday : followingMonday;
-export const lt = today < nextSaturday ? nextWeekSaturday : followingSaturday;
 
 // Create axios instance
 export const axiosInstance = axios.create({
   withCredentials: true,
-  baseURL: "https://sporkbytes.cyclic.app/api",
+  baseURL: "http://localhost:5100/api",
 });
 
 // http://localhost:5100/api

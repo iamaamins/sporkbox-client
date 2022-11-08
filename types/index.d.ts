@@ -159,6 +159,7 @@ export interface ICustomerOrder {
   };
   status: string;
   createdAt: string;
+  hasReviewed: boolean;
   deliveryDate: string;
   restaurantId: string;
   restaurantName: string;

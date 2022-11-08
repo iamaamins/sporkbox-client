@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { AiFillStar } from "react-icons/ai";
 import { AiOutlineStar } from "react-icons/ai";
 import styles from "@styles/generic/Order.module.css";
@@ -13,6 +12,7 @@ import {
   convertDateToText,
   handleRemoveFromFavorite,
 } from "@utils/index";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 export default function Order() {
   // Hooks
@@ -23,8 +23,12 @@ export default function Order() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [favoriteItem, setFavoriteItem] = useState<ICustomerFavoriteItem>();
-  const { customerAllOrders, customerFavoriteItems, setCustomerFavoriteItems } =
-    useData();
+  const {
+    customerAllOrders,
+    customerFavoriteItems,
+    setCustomerFavoriteItems,
+    setCustomerDeliveredOrders,
+  } = useData();
 
   // Find the order
   useEffect(() => {
@@ -103,11 +107,34 @@ export default function Order() {
     e.preventDefault();
 
     try {
-      // const response = await axiosInstance.post('/')
-      console.log({
-        rating,
-        comment,
-      });
+      // Make request to the backend
+      const response = await axiosInstance.post(
+        `/restaurants/${order?.restaurantId}/${order?.item._id}`,
+        {
+          rating,
+          comment,
+          orderId: order?._id,
+        }
+      );
+
+      // Create updated order
+      const updatedCustomerDeliveredOrder = response.data;
+
+      // Update customer delivered orders
+      setCustomerDeliveredOrders((currCustomerDeliveredOrders) =>
+        currCustomerDeliveredOrders.map((currCustomerDeliveredOrder) => {
+          if (
+            currCustomerDeliveredOrder._id === updatedCustomerDeliveredOrder._id
+          ) {
+            return {
+              ...currCustomerDeliveredOrder,
+              hasReviewed: updatedCustomerDeliveredOrder.hasReviewed,
+            };
+          } else {
+            return currCustomerDeliveredOrder;
+          }
+        })
+      );
     } catch (err) {
       console.log(err);
     } finally {
@@ -184,25 +211,31 @@ export default function Order() {
                     <span>{convertDateToText(order.deliveryDate)}</span>.
                   </p>
 
-                  <p className={styles.review_title}>Leave a review</p>
+                  <p>{order.hasReviewed}</p>
 
-                  <div className={styles.ratings}>
-                    {stars.map((star) => star)}
-                  </div>
+                  {!order.hasReviewed && (
+                    <>
+                      <p className={styles.review_title}>Leave a review</p>
 
-                  <form onSubmit={handleAddReview}>
-                    <textarea
-                      id="comment"
-                      value={comment}
-                      onChange={handleChange}
-                    />
+                      <div className={styles.ratings}>
+                        {stars.map((star) => star)}
+                      </div>
 
-                    <SubmitButton
-                      text="Submit review"
-                      isLoading={isLoading}
-                      isDisabled={isDisabled}
-                    />
-                  </form>
+                      <form onSubmit={handleAddReview}>
+                        <textarea
+                          id="comment"
+                          value={comment}
+                          onChange={handleChange}
+                        />
+
+                        <SubmitButton
+                          text="Submit review"
+                          isLoading={isLoading}
+                          isDisabled={isDisabled}
+                        />
+                      </form>
+                    </>
+                  )}
                 </>
               )}
             </div>

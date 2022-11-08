@@ -1,7 +1,7 @@
 import { useData } from "@context/Data";
 import { useUser } from "@context/User";
 import { useRouter } from "next/router";
-import { axiosInstance, formatNumberToUS } from "@utils/index";
+import { axiosInstance, formatNumberToUS, today } from "@utils/index";
 import {
   ICartContext,
   ICartItem,
@@ -35,7 +35,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
     if (cartItems.length > 0 && router.isReady) {
       // Filter the items by item id
       const updatedItems = cartItems.filter(
-        (cartItem) => cartItem.expiresIn > Date.now()
+        (cartItem) => cartItem.expiresIn > today
       );
 
       // Set updated items to cart
