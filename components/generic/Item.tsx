@@ -29,9 +29,9 @@ export default function Item() {
   };
   const router = useRouter();
   const { user } = useUser();
-  const { addItemToCart } = useCart();
-  const { upcomingWeekRestaurants } = useData();
+  const { addItemToCart, cartItems } = useCart();
   const [item, setItem] = useState<IItem>();
+  const { upcomingWeekRestaurants } = useData();
   const [cartItem, setCarItem] = useState<ICartItem>(initialState);
 
   // Price and quantity
