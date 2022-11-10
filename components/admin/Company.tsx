@@ -53,7 +53,7 @@ export default function Company() {
               <span>Code:</span> {company.code}
             </p>
             <p>
-              <span>Weekly budget:</span> USD ${company.budget}
+              <span>Daily budget:</span> USD ${company.dailyBudget}
             </p>
             <p>
               <span>Address:</span> {company.address}

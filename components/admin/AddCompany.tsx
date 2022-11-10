@@ -11,7 +11,7 @@ export default function AddCompany() {
   const initialState = {
     name: "",
     code: "",
-    budget: 0,
+    dailyBudget: 0,
     address: "",
     website: "",
   };
@@ -24,7 +24,7 @@ export default function AddCompany() {
   const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Destructure data
-  const { name, website, address, code, budget } = formData;
+  const { name, website, address, code, dailyBudget } = formData;
 
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -40,7 +40,7 @@ export default function AddCompany() {
     // Update state
     setFormData((currData) => ({
       ...currData,
-      [id]: id === "budget" ? +value : value,
+      [id]: id === "dailyBudget" ? +value : value,
     }));
   }
 
@@ -117,11 +117,11 @@ export default function AddCompany() {
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="budget">Budget</label>
+          <label htmlFor="dailyBudget">Daily budget</label>
           <input
             type="number"
-            id="budget"
-            value={budget}
+            id="dailyBudget"
+            value={dailyBudget}
             onChange={handleChange}
           />
         </div>

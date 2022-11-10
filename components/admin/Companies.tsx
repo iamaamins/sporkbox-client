@@ -24,7 +24,7 @@ export default function Companies() {
                 <th>Name</th>
                 <th className={styles.hide_on_mobile}>Website</th>
                 <th className={styles.hide_on_mobile}>Code</th>
-                <th>Budget</th>
+                <th>Budget/day</th>
               </tr>
             </thead>
 
@@ -38,7 +38,7 @@ export default function Companies() {
                   </td>
                   <td className={styles.hide_on_mobile}>{company.website}</td>
                   <td className={styles.hide_on_mobile}>{company.code}</td>
-                  <td>${company.budget}</td>
+                  <td>${company.dailyBudget}</td>
                 </tr>
               ))}
             </tbody>

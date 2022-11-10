@@ -31,9 +31,9 @@
 }
 
 .controller a.active {
-  color: var(--almost_white);
   font-weight: 700;
   background: var(--orange);
+  color: var(--almost_white);
 }
 
 .restaurant {

@@ -55,10 +55,10 @@ export interface ICompany {
   _id: string;
   name: string;
   code: string;
-  budget: number;
   website: string;
   address: string;
   createdAt: string;
+  dailyBudget: number;
 }
 
 export interface IContextProviderProps {

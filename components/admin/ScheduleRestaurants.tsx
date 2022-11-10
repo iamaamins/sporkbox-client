@@ -46,7 +46,7 @@ export default function ScheduleRestaurants() {
     // Update state
     setFormData((currData) => ({
       ...currData,
-      [e.target.name]: e.target.value,
+      [e.target.id]: e.target.value,
     }));
   }
 
@@ -86,6 +86,12 @@ export default function ScheduleRestaurants() {
     }
   }
 
+  // Create min date for date picker
+  const today = new Date();
+
+  // Format date like 2022-11-08
+  const minDate = today.toISOString().split("T")[0];
+
   return (
     <section className={styles.schedule_restaurants}>
       {approvedRestaurants?.length === 0 && <h2>No approved restaurants</h2>}
@@ -101,15 +107,16 @@ export default function ScheduleRestaurants() {
               <label htmlFor="date">Select a date</label>
               <input
                 type="date"
-                name="date"
+                id="date"
                 value={date}
+                min={minDate}
                 onChange={handleChange}
               />
             </div>
 
             <div className={styles.item}>
               <select
-                name="restaurantId"
+                id="restaurantId"
                 value={restaurantId}
                 onChange={handleChange}
               >

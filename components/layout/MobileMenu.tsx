@@ -15,7 +15,7 @@ import { FaUserAlt } from "react-icons/fa";
 import { AiTwotonePhone, AiTwotoneStar } from "react-icons/ai";
 import { BsFillCalendar2DateFill } from "react-icons/bs";
 import styles from "@styles/layout/MobileMenu.module.css";
-import { axiosInstance, convertDateToMS, currentYear } from "@utils/index";
+import { currentYear, axiosInstance, convertDateToMS } from "@utils/index";
 import { TbBuildingStore, TbBuildingSkyscraper } from "react-icons/tb";
 
 export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
@@ -64,6 +64,17 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
     <div className={`${styles.mobile_menu} ${isOpen && styles.open}`}>
       <ul className={styles.nav_items}>
         {/* Customer nav items */}
+        <li
+          className={!isAdmin && !isCustomer ? styles.hide : ""}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href={`/calendar/${date}`}>
+            <a>
+              <BsFillCalendar2DateFill /> Calendar
+            </a>
+          </Link>
+        </li>
+
         <li
           className={isAdmin || !isCustomer ? styles.hide : ""}
           onClick={() => setIsOpen(false)}
@@ -143,13 +154,6 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
         </li>
 
         {/* Generic nav items */}
-        <li onClick={() => setIsOpen(false)}>
-          <Link href={`/calendar/${date}`}>
-            <a>
-              <BsFillCalendar2DateFill /> Calendar
-            </a>
-          </Link>
-        </li>
 
         <li
           className={isAdmin || isVendor || isCustomer ? styles.hide : ""}

@@ -9,7 +9,7 @@
   margin-top: 0.5rem;
   pointer-events: none;
   border-radius: 0.25rem;
-  color: var(--disable_font);
+  color: var(--disabled_font);
   background: var(--border_color);
   transition: all 150ms ease-in-out;
 }

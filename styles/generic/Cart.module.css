@@ -110,7 +110,7 @@
 
 .disable {
   pointer-events: none;
-  color: var(--disable_font);
+  color: var(--disabled_font);
   background: var(--border_color);
 }
 

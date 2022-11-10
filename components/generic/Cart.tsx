@@ -27,7 +27,8 @@ export default function Cart() {
   useEffect(() => {
     if (user && !isCustomerActiveOrdersLoading) {
       setBudgetExceeded(
-        customerActiveOrdersTotal + totalCartPrice > user.company?.budget!
+        customerActiveOrdersTotal + totalCartPrice >
+          user.company?.dailyBudget! * 5
       );
     }
   }, [user, cartItems, isCustomerActiveOrdersLoading]);

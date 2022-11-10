@@ -291,8 +291,8 @@ export default function Dashboard() {
           <div className={styles.details}>
             <h2>Welcome {user.name}</h2>
             <p>
-              Weekly budget:{" "}
-              <span>{formatCurrencyToUSD(user.company?.budget!)}</span>
+              Daily budget:{" "}
+              <span>{formatCurrencyToUSD(user.company?.dailyBudget!)}</span>
             </p>
             <p>
               Company: <span>{user.company?.name}</span>

@@ -59,7 +59,7 @@ export default function DesktopNav() {
           </Link>
         </li>
 
-        <li className={!date ? styles.hide : ""}>
+        <li className={!date || !isCustomer ? styles.hide : ""}>
           <Link href={`/calendar/${date}`}>
             <a className={pathName === "/calendar" ? styles.active : ""}>
               Calendar
