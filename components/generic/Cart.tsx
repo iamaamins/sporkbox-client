@@ -42,7 +42,10 @@ export default function Cart() {
           <h2 className={styles.cart_title}>Your basket</h2>
           <div className={styles.items}>
             {cartItems.map((cartItem) => (
-              <div key={cartItem._id} className={styles.item}>
+              <div
+                key={cartItem._id + cartItem.deliveryDate}
+                className={styles.item}
+              >
                 <div className={styles.cover_image}>
                   <Image
                     src="https://images.unsplash.com/photo-1613987245117-50933bcb3240?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"
@@ -54,7 +57,7 @@ export default function Cart() {
 
                   <div
                     className={styles.remove}
-                    onClick={() => removeItemFromCart(cartItem._id)}
+                    onClick={() => removeItemFromCart(cartItem)}
                   >
                     <IoMdRemove />
                   </div>

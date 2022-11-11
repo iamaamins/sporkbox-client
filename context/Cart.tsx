@@ -64,13 +64,22 @@ export default function CartProvider({ children }: IContextProviderProps) {
 
     // Add item to cart if the
     // item ins't already in cart
-    if (!cartItems.some((cartItem) => cartItem._id === item._id)) {
+    if (
+      !cartItems.some(
+        (cartItem) =>
+          cartItem._id === item._id &&
+          cartItem.deliveryDate === item.deliveryDate
+      )
+    ) {
       updatedItems = [...cartItems, item];
     } else {
       // If the item is already
       // in cart update the quantity
       updatedItems = cartItems.map((cartItem) => {
-        if (cartItem._id === item._id) {
+        if (
+          cartItem._id === item._id &&
+          cartItem.deliveryDate === item.deliveryDate
+        ) {
           return {
             ...cartItem,
             quantity: item.quantity,
@@ -93,10 +102,14 @@ export default function CartProvider({ children }: IContextProviderProps) {
   }
 
   // Remove cart item
-  function removeItemFromCart(itemId: string) {
+  function removeItemFromCart(item: ICartItem) {
     // Filter the items by item id
     const updatedItems = cartItems.filter(
-      (cartItem) => cartItem._id !== itemId
+      (cartItem) =>
+        !(
+          cartItem._id === item._id &&
+          cartItem.deliveryDate === item.deliveryDate
+        )
     );
 
     // Set updated items to cart
@@ -141,6 +154,8 @@ export default function CartProvider({ children }: IContextProviderProps) {
       router.push("/login");
     }
   }
+
+  console.log(cartItems);
 
   return (
     <CartContext.Provider
