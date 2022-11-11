@@ -11,6 +11,8 @@ import {
   getFutureDate,
   convertDateToMS,
   formatCurrencyToUSD,
+  groupBy,
+  formatNumberToUS,
 } from "@utils/index";
 
 export default function Item() {
@@ -28,8 +30,8 @@ export default function Item() {
   // Hooks
   const router = useRouter();
   const { user } = useUser();
-  const { addItemToCart } = useCart();
   const [item, setItem] = useState<IItem>();
+  const { cartItems, addItemToCart } = useCart();
   const { upcomingWeekRestaurants } = useData();
   const [cartItem, setCarItem] = useState<ICartItem>(initialState);
 
@@ -98,8 +100,20 @@ export default function Item() {
   }
 
   // Check if total price has exceed company's daily budget
-  const hasBudgetExceeded =
-    cartItem.price * cartItem.quantity > user?.company?.dailyBudget!;
+  const hasExceededDailyBudget =
+    cartItems
+      .filter(
+        (item) =>
+          item.deliveryDate === cartItem.deliveryDate &&
+          item._id !== cartItem._id
+      )
+      .reduce(
+        (acc, curr) => formatNumberToUS(acc + curr.price * curr.quantity),
+        0
+      ) +
+      price * quantity >
+      user?.company?.dailyBudget! ||
+    price * quantity > user?.company?.dailyBudget!;
 
   return (
     <section className={styles.item}>
@@ -116,7 +130,6 @@ export default function Item() {
               objectFit="cover"
             />
           </div>
-
           <div className={styles.details_controller_and_button}>
             <div className={styles.item_details}>
               <p className={styles.item_name}>{item.name}</p>
@@ -141,7 +154,7 @@ export default function Item() {
               <div
                 onClick={increaseQuantity}
                 className={`${styles.icon} ${
-                  hasBudgetExceeded && styles.disabled
+                  hasExceededDailyBudget && styles.disabled
                 }`}
               >
                 <HiPlus />
@@ -150,7 +163,7 @@ export default function Item() {
 
             <button
               className={`${styles.button} ${
-                hasBudgetExceeded && styles.disabled
+                hasExceededDailyBudget && styles.disabled
               }`}
               onClick={() => addItemToCart(cartItem)}
             >
