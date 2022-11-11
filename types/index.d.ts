@@ -119,14 +119,11 @@ export interface ICartContext {
 
 export interface ICartItem {
   _id: string;
-  name: string;
   price: number;
-  total: number;
   quantity: number;
   expiresIn: number;
   restaurantId: string;
   deliveryDate: number;
-  restaurantName: string;
 }
 
 export interface IOrder {

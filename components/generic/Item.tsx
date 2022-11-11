@@ -18,18 +18,17 @@ export default function Item() {
   // Initial state
   const initialState = {
     _id: "",
-    name: "",
     price: 0,
-    total: 0,
     quantity: 1,
     expiresIn: 0,
     restaurantId: "",
     deliveryDate: 0,
-    restaurantName: "",
   };
+
+  // Hooks
   const router = useRouter();
   const { user } = useUser();
-  const { addItemToCart, cartItems } = useCart();
+  const { addItemToCart } = useCart();
   const [item, setItem] = useState<IItem>();
   const { upcomingWeekRestaurants } = useData();
   const [cartItem, setCarItem] = useState<ICartItem>(initialState);
@@ -70,12 +69,9 @@ export default function Item() {
           quantity: 1,
           deliveryDate,
           _id: item._id,
-          name: item.name,
-          total: item.price,
           price: item.price,
           expiresIn: nextSaturday,
           restaurantId: restaurant._id,
-          restaurantName: restaurant.name,
         }));
       }
     }
@@ -86,7 +82,6 @@ export default function Item() {
     setCarItem((currItem) => ({
       ...currItem,
       quantity: currItem.quantity + 1,
-      total: formatNumberToUS(currItem.price * (currItem.quantity + 1)),
     }));
   }
 
@@ -95,12 +90,12 @@ export default function Item() {
     setCarItem((currItem) => ({
       ...currItem,
       quantity: currItem.quantity - 1,
-      total: formatNumberToUS(currItem.price * (currItem.quantity - 1)),
     }));
   }
 
   // Check if total price has exceed company's daily budget
-  const hasBudgetExceeded = cartItem.total > user?.company?.dailyBudget!;
+  const hasBudgetExceeded =
+    cartItem.price * cartItem.quantity > user?.company?.dailyBudget!;
 
   return (
     <section className={styles.item}>

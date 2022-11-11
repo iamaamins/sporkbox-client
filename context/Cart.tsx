@@ -118,7 +118,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
 
         // Make request to the backend
         const response = await axiosInstance.post(`/orders/create`, {
-          items: cartItems,
+          orderItems: cartItems,
         });
 
         // Update customer's active orders state
