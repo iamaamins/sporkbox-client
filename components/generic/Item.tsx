@@ -8,10 +8,9 @@ import { useEffect, useState } from "react";
 import { HiMinus, HiPlus } from "react-icons/hi";
 import styles from "@styles/generic/Item.module.css";
 import {
+  getFutureDate,
   convertDateToMS,
   formatCurrencyToUSD,
-  formatNumberToUS,
-  getFutureDate,
 } from "@utils/index";
 
 export default function Item() {
@@ -71,9 +70,12 @@ export default function Item() {
           deliveryDate,
           _id: item._id,
           name: item.name,
-          price: item.price,
           expiresIn: nextSaturday,
           restaurantId: restaurant._id,
+          price:
+            item.price > user?.company?.dailyBudget!
+              ? user?.company?.dailyBudget!
+              : item.price,
         }));
       }
     }

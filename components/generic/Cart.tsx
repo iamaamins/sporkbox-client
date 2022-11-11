@@ -28,7 +28,7 @@ export default function Cart() {
     if (user && !isCustomerActiveOrdersLoading) {
       setBudgetExceeded(
         customerActiveOrdersTotal + totalCartPrice >
-          user.company?.dailyBudget! * 5
+          user.company?.dailyBudget! * 10
       );
     }
   }, [user, cartItems, isCustomerActiveOrdersLoading]);
