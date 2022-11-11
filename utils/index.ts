@@ -170,7 +170,7 @@ export const gte = today < nextSaturday ? nextMonday : followingMonday;
 // Create axios instance
 export const axiosInstance = axios.create({
   withCredentials: true,
-  baseURL: "http://localhost:5100/api",
+  baseURL: "https://sporkbytes.cyclic.app/api",
 });
 
 // http://localhost:5100/api
