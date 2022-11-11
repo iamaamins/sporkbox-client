@@ -18,6 +18,7 @@ export default function Item() {
   // Initial state
   const initialState = {
     _id: "",
+    name: "",
     price: 0,
     quantity: 1,
     expiresIn: 0,
@@ -69,6 +70,7 @@ export default function Item() {
           quantity: 1,
           deliveryDate,
           _id: item._id,
+          name: item.name,
           price: item.price,
           expiresIn: nextSaturday,
           restaurantId: restaurant._id,

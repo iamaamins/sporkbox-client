@@ -54,7 +54,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
 
   // Calculate total price
   const totalCartPrice = cartItems.reduce(
-    (acc, item) => formatNumberToUS(acc + item.total),
+    (acc, item) => formatNumberToUS(acc + item.price * item.quantity),
     0
   );
 
@@ -62,20 +62,18 @@ export default function CartProvider({ children }: IContextProviderProps) {
   function addItemToCart(item: ICartItem) {
     let updatedItems = [];
 
-    // Add item to cart
-    // If the item ins't already
-    //  in cart add it to the cart
+    // Add item to cart if the
+    // item ins't already in cart
     if (!cartItems.some((cartItem) => cartItem._id === item._id)) {
       updatedItems = [...cartItems, item];
     } else {
-      // If the item is already in cart
-      // update teh quantity and total
+      // If the item is already
+      // in cart update the quantity
       updatedItems = cartItems.map((cartItem) => {
         if (cartItem._id === item._id) {
           return {
             ...cartItem,
             quantity: item.quantity,
-            total: item.total,
           };
         } else {
           // Return other cart items
