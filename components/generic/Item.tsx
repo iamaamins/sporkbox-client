@@ -8,11 +8,10 @@ import { useEffect, useState } from "react";
 import { HiMinus, HiPlus } from "react-icons/hi";
 import styles from "@styles/generic/Item.module.css";
 import {
-  getFutureDate,
+  expiresIn,
   convertDateToMS,
-  formatCurrencyToUSD,
-  groupBy,
   formatNumberToUS,
+  formatCurrencyToUSD,
 } from "@utils/index";
 
 export default function Item() {
@@ -59,9 +58,6 @@ export default function Item() {
         // Update item
         setItem(item);
 
-        // Create expires in milliseconds
-        const nextSaturday = getFutureDate(6);
-
         // Get the date
         const deliveryDate = convertDateToMS(restaurant.scheduledOn);
 
@@ -72,7 +68,7 @@ export default function Item() {
           deliveryDate,
           _id: item._id,
           name: item.name,
-          expiresIn: nextSaturday,
+          expiresIn: expiresIn,
           restaurantId: restaurant._id,
           price:
             item.price > user?.company?.dailyBudget!

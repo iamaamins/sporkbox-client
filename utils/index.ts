@@ -160,11 +160,26 @@ export function getFutureDate(dayToAdd: number) {
 // Get future dates in MS
 const nextSaturday = getFutureDate(6);
 const nextMonday = getFutureDate(8);
+const followingSaturday = getFutureDate(12);
 const followingMonday = getFutureDate(15);
-export const today = new Date().setHours(0, 0, 0, 0);
+
+// PST date
+const PSTDate = new Date().toLocaleDateString("en-US", {
+  timeZone: "America/Los_Angeles",
+});
+
+// Client time zone offset in MS
+const timeZoneOffsetInMS = new Date().getTimezoneOffset() * 60000;
+
+// PST timestamp without client timezone
+const today = new Date(PSTDate).getTime() - timeZoneOffsetInMS;
 
 // Filters
 export const gte = today < nextSaturday ? nextMonday : followingMonday;
+export const expiresIn =
+  today < nextSaturday
+    ? nextSaturday + timeZoneOffsetInMS
+    : followingSaturday + timeZoneOffsetInMS;
 
 // Create axios instance
 export const axiosInstance = axios.create({
