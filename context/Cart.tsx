@@ -155,8 +155,6 @@ export default function CartProvider({ children }: IContextProviderProps) {
     }
   }
 
-  console.log(cartItems);
-
   return (
     <CartContext.Provider
       value={{

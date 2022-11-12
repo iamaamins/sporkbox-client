@@ -7,8 +7,6 @@ import {
   Groups,
   IFormData,
   ICustomerFavoriteItem,
-  ICustomerOrder,
-  IUpcomingWeekRestaurant,
 } from "types";
 
 // Current year
@@ -28,8 +26,8 @@ export const formatCurrencyToUSD = (number: number) =>
 // Convert date to slug
 export const convertDateToMS = (date: string) => new Date(date).getTime();
 
-// Convert iso date to locale date string
-export const convertDateToText = (date: string | number) =>
+// Convert date to string
+export const convertDateToText = (date: Date | string): string =>
   new Date(date).toUTCString().split(" ").slice(0, 3).join(" ");
 
 // Check if any input field is empty
@@ -113,10 +111,10 @@ export function groupBy<
   return groupsArr;
 }
 
-// Get the date
+// Get the UTC date
 export const getDate = (date: string) => new Date(date).getUTCDate();
 
-// Get the first letter of the day
+// Get the first letter of the UTC day
 export const getDay = (date: string) =>
   new Date(date).toUTCString().split("").slice(0, 1);
 
@@ -143,7 +141,8 @@ export async function handleRemoveFromFavorite(
   }
 }
 
-// Get future date
+// Get future date in UCT as the restaurant
+// schedule date and delivery date has no timezone
 export function getFutureDate(dayToAdd: number) {
   // Today
   const today = new Date();
@@ -162,7 +161,7 @@ export function getFutureDate(dayToAdd: number) {
 const nextSaturday = getFutureDate(6);
 const nextMonday = getFutureDate(8);
 const followingMonday = getFutureDate(15);
-export const today = new Date().setUTCHours(0, 0, 0, 0);
+export const today = new Date().setHours(0, 0, 0, 0);
 
 // Filters
 export const gte = today < nextSaturday ? nextMonday : followingMonday;
@@ -170,7 +169,7 @@ export const gte = today < nextSaturday ? nextMonday : followingMonday;
 // Create axios instance
 export const axiosInstance = axios.create({
   withCredentials: true,
-  baseURL: "https://sporkbytes.cyclic.app/api",
+  baseURL: "http://localhost:5100/api",
 });
 
 // http://localhost:5100/api
