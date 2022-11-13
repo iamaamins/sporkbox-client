@@ -8,6 +8,7 @@ import {
   IFormData,
   ICustomerFavoriteItem,
 } from "types";
+import moment from "moment-timezone";
 
 // Current year
 export const currentYear = new Date().getFullYear();
@@ -141,7 +142,7 @@ export async function handleRemoveFromFavorite(
   }
 }
 
-// Get future date in UCT as the restaurant
+// Get future date in UTC as the restaurant
 // schedule date and delivery date has no timezone
 export function getFutureDate(dayToAdd: number) {
   // Today
@@ -158,33 +159,40 @@ export function getFutureDate(dayToAdd: number) {
 }
 
 // Get future dates in MS
-const nextSaturday = getFutureDate(6);
-const nextMonday = getFutureDate(8);
-const followingSaturday = getFutureDate(12);
-const followingMonday = getFutureDate(15);
+const nextSaturdayUTCTimestamp = getFutureDate(6);
+const nextWeekMondayUTCTimestamp = getFutureDate(8);
+const followingWeekSaturdayUTCTimestamp = getFutureDate(12);
+const followingWeekMondayUTCTimestamp = getFutureDate(15);
 
-// Today's PST date
-const PSTDate = new Date().toLocaleDateString("en-US", {
-  timeZone: "America/Los_Angeles",
-});
+// Current timestamp
+const now = Date.now();
 
-// Client time zone offset in MS
-const timeZoneOffsetInMS = new Date().getTimezoneOffset() * 60000;
+// Check if isDST
+const isDST = moment.tz(new Date(), "America/Los_Angeles").isDST();
 
-// PST timestamp without client timezone
-const today = Date.parse(PSTDate) - timeZoneOffsetInMS;
+// Los Angeles time zone offset
+const timeZoneOffsetInMS = isDST ? 420 : 480 * 60000;
+
+// Convert UTC timestamp to Los Angeles timestamp
+const nextSaturdayLosAngelesTimestamp =
+  nextSaturdayUTCTimestamp + timeZoneOffsetInMS;
+const followingWeekSaturdayLosAngelesTimestamp =
+  followingWeekSaturdayUTCTimestamp + timeZoneOffsetInMS;
 
 // Filters
-export const gte = today < nextSaturday ? nextMonday : followingMonday;
+export const gte =
+  now < nextSaturdayLosAngelesTimestamp
+    ? nextWeekMondayUTCTimestamp
+    : followingWeekMondayUTCTimestamp;
 export const expiresIn =
-  today < nextSaturday
-    ? nextSaturday + timeZoneOffsetInMS
-    : followingSaturday + timeZoneOffsetInMS;
+  now < nextSaturdayLosAngelesTimestamp
+    ? nextSaturdayLosAngelesTimestamp
+    : followingWeekSaturdayLosAngelesTimestamp;
 
 // Create axios instance
 export const axiosInstance = axios.create({
   withCredentials: true,
-  baseURL: "http://localhost:5100/api",
+  baseURL: "https://sporkbytes.cyclic.app/api",
 });
 
 // http://localhost:5100/api
