@@ -78,6 +78,7 @@ export interface IDataContext {
   vendors: IVendor[];
   allOrders: IOrder[];
   companies: ICompany[];
+  nextWeekDates: number[];
   allActiveOrders: IOrder[];
   deliveredOrders: IOrder[];
   isAllVendorsLoading: boolean;
@@ -165,11 +166,6 @@ export interface ICustomerOrder {
 
 export interface ICustomerOrderProps {
   orders: ICustomerOrder[];
-}
-
-export interface IRestaurantsGroup {
-  scheduledOn: string;
-  restaurants: IUpcomingWeekRestaurant[];
 }
 
 export interface IOrdersGroup {

@@ -5,87 +5,74 @@ import { useData } from "@context/Data";
 import { useCart } from "@context/Cart";
 import { useUser } from "@context/User";
 import {
-  formatCurrencyToUSD,
-  groupBy,
-  convertDateToMS,
-  getDate,
   getDay,
+  getDate,
+  formatCurrencyToUSD,
+  convertDateToMS,
 } from "@utils/index";
 import Image from "next/image";
+import { IUpcomingWeekRestaurant } from "types";
 import styles from "@styles/generic/Calendar.module.css";
-import { IRestaurantsGroup, IUpcomingWeekRestaurant } from "types";
 
 export default function Calendar() {
   // Hooks
   const { user } = useUser();
   const router = useRouter();
   const { cartItems } = useCart();
-  const { upcomingWeekRestaurants, isUpcomingWeekRestaurantsLoading } =
-    useData();
+  const {
+    nextWeekDates,
+    upcomingWeekRestaurants,
+    isUpcomingWeekRestaurantsLoading,
+  } = useData();
   const [restaurants, setRestaurants] = useState<IUpcomingWeekRestaurant[]>([]);
-  const [restaurantGroups, setRestaurantGroups] = useState<IRestaurantsGroup[]>(
-    []
-  );
 
   useEffect(() => {
-    if (upcomingWeekRestaurants.length > 0 && router.isReady) {
-      // Groups restaurants by scheduled on date
-      const groups = groupBy(
-        "scheduledOn",
-        upcomingWeekRestaurants,
-        "restaurants"
+    if (nextWeekDates.length > 0 && router.isReady) {
+      // Next week date
+      const nextWeekDate = nextWeekDates.find(
+        (nextWeekDate) => nextWeekDate.toString() === router.query.date
       );
 
-      // Find the restaurant with date from slug
-      const restaurants = groups.find(
-        (group) =>
-          convertDateToMS(group.scheduledOn).toString() === router.query.date
-      )?.restaurants;
-
-      // Update restaurants
-      setRestaurants(restaurants || []);
-
-      // Update groups
-      setRestaurantGroups(groups);
+      // Update restaurants state
+      setRestaurants(
+        upcomingWeekRestaurants.filter(
+          (upcomingWeekRestaurant) =>
+            convertDateToMS(upcomingWeekRestaurant.scheduledOn) === nextWeekDate
+        )
+      );
     }
-  }, [upcomingWeekRestaurants, router]);
+  }, [nextWeekDates, router]);
 
   return (
     <section className={styles.calendar}>
       {isUpcomingWeekRestaurantsLoading && <h2>Loading...</h2>}
 
       {/* If there are no restaurant groups */}
-      {!isUpcomingWeekRestaurantsLoading && restaurantGroups.length === 0 && (
+      {!isUpcomingWeekRestaurantsLoading && nextWeekDates.length === 0 && (
         <h2>No restaurants</h2>
       )}
 
       {/* If there are restaurant groups */}
-      {restaurantGroups.length > 0 && (
+      {nextWeekDates.length > 0 && (
         <>
           {/* Show next week's and scheduled date */}
           <div className={styles.title_and_controller}>
             <h2 className={styles.calendar_title}>Upcoming week</h2>
 
             <div className={styles.controller}>
-              {restaurantGroups.map((restaurantGroup) => (
-                <div key={restaurantGroup.scheduledOn}>
-                  <Link
-                    href={`/calendar/${convertDateToMS(
-                      restaurantGroup.scheduledOn
-                    )}`}
-                  >
+              {nextWeekDates.map((nextWeekDate) => (
+                <div key={nextWeekDate}>
+                  <Link href={`/calendar/${nextWeekDate}`}>
                     <a
-                      key={restaurantGroup.scheduledOn}
+                      key={nextWeekDate}
                       className={
-                        convertDateToMS(
-                          restaurantGroup.scheduledOn
-                        ).toString() === router.query.date
+                        nextWeekDate.toString() === router.query.date
                           ? styles.active
                           : ""
                       }
                     >
-                      <span>{getDate(restaurantGroup.scheduledOn)}</span>
-                      <span>{getDay(restaurantGroup.scheduledOn)}</span>
+                      <span>{getDate(nextWeekDate)}</span>
+                      <span>{getDay(nextWeekDate)}</span>
                     </a>
                   </Link>
                 </div>

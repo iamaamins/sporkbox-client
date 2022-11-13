@@ -12,27 +12,24 @@ import { useUser } from "@context/User";
 import { IoLogIn } from "react-icons/io5";
 import { IMobileMenuProps } from "types";
 import { FaUserAlt } from "react-icons/fa";
-import { AiTwotonePhone, AiTwotoneStar } from "react-icons/ai";
 import { BsFillCalendar2DateFill } from "react-icons/bs";
 import styles from "@styles/layout/MobileMenu.module.css";
-import { currentYear, axiosInstance, convertDateToMS } from "@utils/index";
+import { currentYear, axiosInstance } from "@utils/index";
+import { AiTwotonePhone, AiTwotoneStar } from "react-icons/ai";
 import { TbBuildingStore, TbBuildingSkyscraper } from "react-icons/tb";
 
 export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
   // Hooks
+  const { nextWeekDates } = useData();
   const [date, setDate] = useState<number>();
-  const { upcomingWeekRestaurants } = useData();
   const { isAdmin, isVendor, isCustomer, setUser } = useUser();
 
+  // Get first scheduled date of next week
   useEffect(() => {
-    if (upcomingWeekRestaurants.length > 0) {
-      // Convert the first group's scheduled date to slug
-      const date = convertDateToMS(upcomingWeekRestaurants[0].scheduledOn);
-
-      // Update state
-      setDate(date);
+    if (nextWeekDates.length > 0) {
+      setDate(nextWeekDates[0]);
     }
-  }, [upcomingWeekRestaurants]);
+  }, [nextWeekDates]);
 
   // Disable body scroll if MobileMenu is open
   useEffect(() => {

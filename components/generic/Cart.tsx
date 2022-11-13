@@ -1,18 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useUser } from "@context/User";
-import { useData } from "@context/Data";
 import { useCart } from "@context/Cart";
 import { IoMdRemove } from "react-icons/io";
-import { useEffect, useState } from "react";
 import styles from "@styles/generic/Cart.module.css";
 import ButtonLoader from "@components/layout/ButtonLoader";
 import { convertDateToText, formatCurrencyToUSD } from "@utils/index";
 
 export default function Cart() {
   // Hooks
-  const { user } = useUser();
-  const { isCustomerActiveOrdersLoading } = useData();
   const {
     cartItems,
     isLoading,

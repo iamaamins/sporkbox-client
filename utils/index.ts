@@ -113,10 +113,10 @@ export function groupBy<
 }
 
 // Get the UTC date
-export const getDate = (date: string) => new Date(date).getUTCDate();
+export const getDate = (date: number | string) => new Date(date).getUTCDate();
 
 // Get the first letter of the UTC day
-export const getDay = (date: string) =>
+export const getDay = (date: number | string) =>
   new Date(date).toUTCString().split("").slice(0, 1);
 
 // Handle remove from favorite

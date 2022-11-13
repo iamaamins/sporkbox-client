@@ -6,25 +6,22 @@ import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import logo from "@public/layout/logo.png";
 import { useEffect, useState } from "react";
+import { axiosInstance } from "@utils/index";
 import styles from "@styles/layout/DesktopNav.module.css";
-import { axiosInstance, convertDateToMS } from "@utils/index";
 
 export default function DesktopNav() {
   // Hooks
+  const { nextWeekDates } = useData();
   const pathName = useRouter().pathname;
   const [date, setDate] = useState<number>();
-  const { upcomingWeekRestaurants } = useData();
   const { isAdmin, isCustomer, isVendor, setUser } = useUser();
 
+  // Get first scheduled date of next week
   useEffect(() => {
-    if (upcomingWeekRestaurants.length > 0) {
-      // Convert the first group's scheduled date to slug
-      const date = convertDateToMS(upcomingWeekRestaurants[0].scheduledOn);
-
-      // Update state
-      setDate(date);
+    if (nextWeekDates.length > 0) {
+      setDate(nextWeekDates[0]);
     }
-  }, [upcomingWeekRestaurants]);
+  }, [nextWeekDates]);
 
   // Handle sign out
   async function handleSignOut() {
