@@ -293,8 +293,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
     }
   }, [isCustomer, customerActiveOrders, nextWeekDates]);
 
-  console.log(nextWeekBudgetAndDates);
-
   return (
     <DataContext.Provider
       value={{

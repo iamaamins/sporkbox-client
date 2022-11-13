@@ -102,13 +102,14 @@ export default function Item() {
         item.deliveryDate === cartItem.deliveryDate && item._id !== cartItem._id
     )
     .reduce(
-      (acc, curr) => formatNumberToUS(acc + curr.price * curr.quantity),
+      (acc, item) => formatNumberToUS(acc + item.price * item.quantity),
       0
     );
 
   // Find budget on hand
   const budgetOnHand = nextWeekBudgetAndDates.find(
-    (el) => el.nextWeekDate === cartItem.deliveryDate
+    (nextWeekBudgetAndDate) =>
+      nextWeekBudgetAndDate.nextWeekDate === cartItem.deliveryDate
   )?.budgetOnHand!;
 
   // Find if daily budget is exceeded
