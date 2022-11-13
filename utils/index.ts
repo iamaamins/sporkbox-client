@@ -28,7 +28,7 @@ export const formatCurrencyToUSD = (number: number) =>
 export const convertDateToMS = (date: string) => new Date(date).getTime();
 
 // Convert date to string
-export const convertDateToText = (date: Date | string): string =>
+export const convertDateToText = (date: Date | string | number): string =>
   new Date(date).toUTCString().split(" ").slice(0, 3).join(" ");
 
 // Check if any input field is empty

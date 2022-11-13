@@ -31,7 +31,7 @@ export default function Item() {
   const { user } = useUser();
   const [item, setItem] = useState<IItem>();
   const { cartItems, addItemToCart } = useCart();
-  const { upcomingWeekRestaurants } = useData();
+  const { upcomingWeekRestaurants, nextWeekBudget } = useData();
   const [cartItem, setCarItem] = useState<ICartItem>(initialState);
 
   // Price and quantity
@@ -95,21 +95,25 @@ export default function Item() {
     }));
   }
 
-  // Check if total price has exceed company's daily budget
+  // Get total of any cart items but the current one
+  const cartDayTotal = cartItems
+    .filter(
+      (item) =>
+        item.deliveryDate === cartItem.deliveryDate && item._id !== cartItem._id
+    )
+    .reduce(
+      (acc, curr) => formatNumberToUS(acc + curr.price * curr.quantity),
+      0
+    );
+
+  // Find budget on hand
+  const budgetOnHand = nextWeekBudget.find(
+    (el) => el.nextWeekDate === cartItem.deliveryDate
+  )?.budgetOnHand!;
+
+  // Find if daily budget is exceeded
   const hasExceededDailyBudget =
-    cartItems
-      .filter(
-        (item) =>
-          item.deliveryDate === cartItem.deliveryDate &&
-          item._id !== cartItem._id
-      )
-      .reduce(
-        (acc, curr) => formatNumberToUS(acc + curr.price * curr.quantity),
-        0
-      ) +
-      price * quantity >
-      user?.company?.dailyBudget! ||
-    price * quantity > user?.company?.dailyBudget!;
+    formatNumberToUS(budgetOnHand - cartDayTotal - price * quantity) < 0;
 
   return (
     <section className={styles.item}>

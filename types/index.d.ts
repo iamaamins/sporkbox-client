@@ -84,7 +84,6 @@ export interface IDataContext {
   isAllCompaniesLoading: boolean;
   nextWeekBudget: INextWeekBudget[];
   isAllActiveOrdersLoading: boolean;
-  customerActiveOrdersTotal: number;
   customerAllOrders: ICustomerOrder[];
   isAllDeliveredOrdersLoading: boolean;
   isScheduledRestaurantsLoading: boolean;
@@ -242,5 +241,5 @@ export interface IFormData {
 
 export interface INextWeekBudget {
   nextWeekDate: number;
-  budgetLeft: number;
+  budgetOnHand: number;
 }

@@ -12,8 +12,7 @@ import { convertDateToText, formatCurrencyToUSD } from "@utils/index";
 export default function Cart() {
   // Hooks
   const { user } = useUser();
-  const { isCustomerActiveOrdersLoading, customerActiveOrdersTotal } =
-    useData();
+  const { isCustomerActiveOrdersLoading } = useData();
   const {
     cartItems,
     isLoading,
@@ -21,17 +20,6 @@ export default function Cart() {
     totalCartPrice,
     removeItemFromCart,
   } = useCart();
-  const [budgetExceeded, setBudgetExceeded] = useState(false);
-
-  // Check if budget is exceeded
-  useEffect(() => {
-    if (user && !isCustomerActiveOrdersLoading) {
-      setBudgetExceeded(
-        customerActiveOrdersTotal + totalCartPrice >
-          user.company?.dailyBudget! * 5
-      );
-    }
-  }, [user, cartItems, isCustomerActiveOrdersLoading]);
 
   return (
     <section className={styles.cart}>
@@ -84,16 +72,7 @@ export default function Cart() {
             ))}
           </div>
 
-          {budgetExceeded && (
-            <p className={styles.budget_exceeded}>
-              Company budget exceeded! Please adjust your basket.
-            </p>
-          )}
-
-          <button
-            onClick={checkoutCart}
-            className={`${styles.button} ${budgetExceeded && styles.disable}`}
-          >
+          <button onClick={checkoutCart} className={`${styles.button}`}>
             {isLoading ? (
               <ButtonLoader />
             ) : (

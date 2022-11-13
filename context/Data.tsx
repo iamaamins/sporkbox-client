@@ -77,28 +77,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
   const [isCustomerFavoriteItemsLoading, setIsCustomerFavoriteItemsLoading] =
     useState(true);
 
-  // Fetch generic data
-  useEffect(() => {
-    async function getGenericData() {
-      // Get scheduled restaurants
-      try {
-        // Make request to backend
-        const response = await axiosInstance.get(`/restaurants/upcoming-week`);
-
-        // Update state
-        setUpcomingWeekRestaurants(response.data);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        // Remove loader
-        setIsUpcomingWeekRestaurantsLoading(false);
-      }
-    }
-
-    // Call the function
-    getGenericData();
-  }, []);
-
   // Get admin data
   useEffect(() => {
     // Get admin data
@@ -189,6 +167,20 @@ export default function DataProvider({ children }: IContextProviderProps) {
   useEffect(() => {
     // Get customer data
     async function getCustomerData() {
+      // Get upcoming week restaurants
+      try {
+        // Make request to backend
+        const response = await axiosInstance.get(`/restaurants/upcoming-week`);
+
+        // Update state
+        setUpcomingWeekRestaurants(response.data);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        // Remove loader
+        setIsUpcomingWeekRestaurantsLoading(false);
+      }
+
       // Get all active orders
       try {
         // Make request to backend
@@ -247,7 +239,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
   // Create next week budget
   useEffect(() => {
     if (
-      user &&
+      isCustomer &&
       !isCustomerActiveOrdersLoading &&
       !isUpcomingWeekRestaurantsLoading
     ) {
@@ -285,8 +277,8 @@ export default function DataProvider({ children }: IContextProviderProps) {
             // Return the date and company budget - active orders total
             return {
               nextWeekDate,
-              budgetLeft: formatNumberToUS(
-                user.company?.dailyBudget! - activeOrdersTotal
+              budgetOnHand: formatNumberToUS(
+                user?.company?.dailyBudget! - activeOrdersTotal
               ),
             };
           } else {
@@ -294,21 +286,13 @@ export default function DataProvider({ children }: IContextProviderProps) {
             // Return the date and company budget
             return {
               nextWeekDate,
-              budgetLeft: user.company?.dailyBudget!,
+              budgetOnHand: user?.company?.dailyBudget!,
             };
           }
         })
       );
     }
-  }, [customerActiveOrders, upcomingWeekRestaurants, user]);
-
-  // Calculate customer active orders total
-  const customerActiveOrdersTotal = customerActiveOrders
-    .filter(
-      (customerActiveOrder) =>
-        convertDateToMS(customerActiveOrder.deliveryDate) >= gte
-    )
-    .reduce((acc, order) => formatNumberToUS(acc + order.item.total), 0);
+  }, [customerActiveOrders, upcomingWeekRestaurants, isCustomer]);
 
   return (
     <DataContext.Provider
@@ -335,7 +319,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setScheduledRestaurants,
         isAllActiveOrdersLoading,
         setCustomerFavoriteItems,
-        customerActiveOrdersTotal,
         setCustomerDeliveredOrders,
         isAllDeliveredOrdersLoading,
         isCustomerActiveOrdersLoading,
