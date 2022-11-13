@@ -83,7 +83,6 @@ export interface IDataContext {
   deliveredOrders: IOrder[];
   isAllVendorsLoading: boolean;
   isAllCompaniesLoading: boolean;
-  nextWeekBudget: INextWeekBudget[];
   isAllActiveOrdersLoading: boolean;
   customerAllOrders: ICustomerOrder[];
   isAllDeliveredOrdersLoading: boolean;
@@ -97,6 +96,7 @@ export interface IDataContext {
   scheduledRestaurants: IScheduledRestaurant[];
   customerFavoriteItems: ICustomerFavoriteItem[];
   setVendors: Dispatch<SetStateAction<IVendor[]>>;
+  nextWeekBudgetAndDates: INextWeekBudgetAndDates[];
   upcomingWeekRestaurants: IUpcomingWeekRestaurant[];
   setCompanies: Dispatch<SetStateAction<ICompany[]>>;
   setAllActiveOrders: Dispatch<SetStateAction<IOrder[]>>;
@@ -235,7 +235,7 @@ export interface IFormData {
   [key: string]: string | number; // Index type
 }
 
-export interface INextWeekBudget {
+export interface INextWeekBudgetAndDates {
   nextWeekDate: number;
   budgetOnHand: number;
 }

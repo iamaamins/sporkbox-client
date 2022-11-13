@@ -9,16 +9,10 @@ import {
   IScheduledRestaurant,
   IUpcomingWeekRestaurant,
   ICustomerFavoriteItem,
-  INextWeekBudget,
+  INextWeekBudgetAndDates,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
-import {
-  gte,
-  axiosInstance,
-  convertDateToMS,
-  formatNumberToUS,
-  groupBy,
-} from "@utils/index";
+import { axiosInstance, convertDateToMS, formatNumberToUS } from "@utils/index";
 
 // Create context
 const DataContext = createContext({} as IDataContext);
@@ -53,7 +47,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
   const [customerFavoriteItems, setCustomerFavoriteItems] = useState<
     ICustomerFavoriteItem[]
   >([]);
-  const [nextWeekBudget, setNextWeekBudget] = useState<INextWeekBudget[]>([]);
+  const [nextWeekBudgetAndDates, setNextWeekBudgetAndDates] = useState<
+    INextWeekBudgetAndDates[]
+  >([]);
   const [nextWeekDates, setNextWeekDates] = useState<number[]>([]);
 
   // Loading states
@@ -261,7 +257,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       !isCustomerActiveOrdersLoading
     ) {
       // Set next week budgets
-      setNextWeekBudget(
+      setNextWeekBudgetAndDates(
         nextWeekDates.map((nextWeekDate) => {
           // Find the orders those match the date
           const activeOrders = customerActiveOrders.filter(
@@ -297,6 +293,8 @@ export default function DataProvider({ children }: IContextProviderProps) {
     }
   }, [isCustomer, customerActiveOrders, nextWeekDates]);
 
+  console.log(nextWeekBudgetAndDates);
+
   return (
     <DataContext.Provider
       value={{
@@ -306,7 +304,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
         allOrders,
         setCompanies,
         nextWeekDates,
-        nextWeekBudget,
         deliveredOrders,
         allActiveOrders,
         customerAllOrders,
@@ -317,6 +314,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
         scheduledRestaurants,
         isAllCompaniesLoading,
         customerFavoriteItems,
+        nextWeekBudgetAndDates,
         customerDeliveredOrders,
         upcomingWeekRestaurants,
         setCustomerActiveOrders,

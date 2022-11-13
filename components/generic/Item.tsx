@@ -31,8 +31,8 @@ export default function Item() {
   const { user } = useUser();
   const [item, setItem] = useState<IItem>();
   const { cartItems, addItemToCart } = useCart();
-  const { upcomingWeekRestaurants, nextWeekBudget } = useData();
   const [cartItem, setCarItem] = useState<ICartItem>(initialState);
+  const { upcomingWeekRestaurants, nextWeekBudgetAndDates } = useData();
 
   // Price and quantity
   const { quantity, price } = cartItem;
@@ -107,7 +107,7 @@ export default function Item() {
     );
 
   // Find budget on hand
-  const budgetOnHand = nextWeekBudget.find(
+  const budgetOnHand = nextWeekBudgetAndDates.find(
     (el) => el.nextWeekDate === cartItem.deliveryDate
   )?.budgetOnHand!;
 
