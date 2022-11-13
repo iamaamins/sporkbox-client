@@ -9,6 +9,7 @@ import {
   IScheduledRestaurant,
   IUpcomingWeekRestaurant,
   ICustomerFavoriteItem,
+  INextWeekBudget,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
 import {
@@ -16,6 +17,7 @@ import {
   axiosInstance,
   convertDateToMS,
   formatNumberToUS,
+  groupBy,
 } from "@utils/index";
 
 // Create context
@@ -27,7 +29,7 @@ export const useData = () => useContext(DataContext);
 // Provider function
 export default function DataProvider({ children }: IContextProviderProps) {
   // Hooks and states
-  const { isAdmin, isCustomer } = useUser();
+  const { isAdmin, isCustomer, user } = useUser();
   const [vendors, setVendors] = useState<IVendor[]>([]);
   const [companies, setCompanies] = useState<ICompany[]>([]);
   const [scheduledRestaurants, setScheduledRestaurants] = useState<
@@ -51,6 +53,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
   const [customerFavoriteItems, setCustomerFavoriteItems] = useState<
     ICustomerFavoriteItem[]
   >([]);
+  const [nextWeekBudget, setNextWeekBudget] = useState<INextWeekBudget[]>([]);
 
   // Loading states
   const [
@@ -241,6 +244,64 @@ export default function DataProvider({ children }: IContextProviderProps) {
     setCustomerAllOrders([...customerActiveOrders, ...customerDeliveredOrders]);
   }, [customerActiveOrders, customerDeliveredOrders]);
 
+  // Create next week budget
+  useEffect(() => {
+    if (
+      user &&
+      !isCustomerActiveOrdersLoading &&
+      !isUpcomingWeekRestaurantsLoading
+    ) {
+      // Next week dates
+      const nextWeekDates = groupBy(
+        "scheduledOn",
+        upcomingWeekRestaurants,
+        "restaurants"
+      ).map((el) => convertDateToMS(el.scheduledOn));
+
+      // Groups of active orders
+      const activeOrdersGroups = groupBy(
+        "deliveryDate",
+        customerActiveOrders,
+        "orders"
+      );
+
+      // Set next week budgets
+      setNextWeekBudget(
+        nextWeekDates.map((nextWeekDate) => {
+          // Find a group that matches a date of next week
+          const activeOrdersGroup = activeOrdersGroups.find(
+            (activeOrdersGroup) =>
+              convertDateToMS(activeOrdersGroup.deliveryDate) === nextWeekDate
+          );
+
+          // If a group is found
+          if (activeOrdersGroup) {
+            // Calculate the active orders total
+            const activeOrdersTotal = activeOrdersGroup.orders.reduce(
+              (acc, order) => acc + order.item.total,
+              0
+            );
+
+            // Return the date and company budget - active orders total
+            return {
+              nextWeekDate,
+              budgetLeft: formatNumberToUS(
+                user.company?.dailyBudget! - activeOrdersTotal
+              ),
+            };
+          } else {
+            // If no group is found with a next week date
+            // Return the date and company budget
+            return {
+              nextWeekDate,
+              budgetLeft: user.company?.dailyBudget!,
+            };
+          }
+        })
+      );
+    }
+  }, [customerActiveOrders, upcomingWeekRestaurants, user]);
+
   // Calculate customer active orders total
   const customerActiveOrdersTotal = customerActiveOrders
     .filter(
@@ -257,6 +318,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
         companies,
         allOrders,
         setCompanies,
+        nextWeekBudget,
         deliveredOrders,
         allActiveOrders,
         customerAllOrders,

@@ -82,6 +82,7 @@ export interface IDataContext {
   deliveredOrders: IOrder[];
   isAllVendorsLoading: boolean;
   isAllCompaniesLoading: boolean;
+  nextWeekBudget: INextWeekBudget[];
   isAllActiveOrdersLoading: boolean;
   customerActiveOrdersTotal: number;
   customerAllOrders: ICustomerOrder[];
@@ -237,4 +238,9 @@ export type Groups<
 
 export interface IFormData {
   [key: string]: string | number; // Index type
+}
+
+export interface INextWeekBudget {
+  nextWeekDate: number;
+  budgetLeft: number;
 }
