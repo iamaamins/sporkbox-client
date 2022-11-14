@@ -26,6 +26,7 @@ export default function Calendar() {
   } = useData();
   const [restaurants, setRestaurants] = useState<IUpcomingWeekRestaurant[]>([]);
 
+  // Get restaurants for a date
   useEffect(() => {
     if (nextWeekDates.length > 0 && router.isReady) {
       // Next week date
@@ -48,9 +49,8 @@ export default function Calendar() {
       {isUpcomingWeekRestaurantsLoading && <h2>Loading...</h2>}
 
       {/* If there are no restaurant groups */}
-      {!isUpcomingWeekRestaurantsLoading && nextWeekDates.length === 0 && (
-        <h2>No restaurants</h2>
-      )}
+      {!isUpcomingWeekRestaurantsLoading &&
+        upcomingWeekRestaurants.length === 0 && <h2>No restaurants</h2>}
 
       {/* If there are restaurant groups */}
       {nextWeekDates.length > 0 && (

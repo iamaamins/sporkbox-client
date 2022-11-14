@@ -62,7 +62,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
       <ul className={styles.nav_items}>
         {/* Customer nav items */}
         <li
-          className={!isAdmin && !isCustomer ? styles.hide : ""}
+          className={!date || !isCustomer ? styles.hide : ""}
           onClick={() => setIsOpen(false)}
         >
           <Link href={`/calendar/${date}`}>
@@ -151,7 +151,6 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
         </li>
 
         {/* Generic nav items */}
-
         <li
           className={isAdmin || isVendor || isCustomer ? styles.hide : ""}
           onClick={() => setIsOpen(false)}

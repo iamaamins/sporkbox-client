@@ -88,7 +88,7 @@ export default function DesktopNav() {
           </Link>
         </li>
 
-        <li>
+        <li className={!isAdmin ? styles.hide : ""}>
           <Link href="/project-scope">
             <a className={pathName === "/project-scope" ? styles.active : ""}>
               Project scope
@@ -146,8 +146,10 @@ export default function DesktopNav() {
 
       {/* Call to actions */}
       <div className={styles.ctas}>
-        <CartIcon />
+        {/* Only show cart icon if there a customer */}
+        {isCustomer && <CartIcon />}
 
+        {/* Sign out button */}
         <button
           onClick={handleSignOut}
           className={`${styles.sign_out} ${
@@ -157,6 +159,7 @@ export default function DesktopNav() {
           Sign out
         </button>
 
+        {/* Login button */}
         <Link href="/login">
           <a
             className={`${styles.sing_in} ${

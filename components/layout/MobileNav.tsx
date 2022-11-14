@@ -2,12 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import CartIcon from "./CartIcon";
 import { IMobileNavProps } from "types";
+import { useUser } from "@context/User";
 import logo from "@public/layout/logo.png";
 import styles from "@styles/layout/MobileNav.module.css";
 
 export default function MobileNav({ isOpen, setIsOpen }: IMobileNavProps) {
+  // Hooks
+  const { isCustomer } = useUser();
+
   return (
     <nav className={styles.mobile_nav}>
+      {/* Hamburger */}
       <div
         className={`${styles.hamburger} ${isOpen && styles.open}`}
         onClick={() => setIsOpen(!isOpen)}
@@ -15,6 +20,7 @@ export default function MobileNav({ isOpen, setIsOpen }: IMobileNavProps) {
         <div className={styles.line}></div>
       </div>
 
+      {/* Logo */}
       <div className={styles.logo} onClick={() => setIsOpen(false)}>
         <Link href="/">
           <a>
@@ -23,7 +29,8 @@ export default function MobileNav({ isOpen, setIsOpen }: IMobileNavProps) {
         </Link>
       </div>
 
-      <CartIcon />
+      {/* Only show cart icon if the user is a customer */}
+      {isCustomer && <CartIcon />}
     </nav>
   );
 }
