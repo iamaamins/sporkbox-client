@@ -193,7 +193,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setIsCustomerActiveOrdersLoading(false);
       }
 
-      // Get 25 latest delivered orders
+      // Get 10 latest delivered orders
       try {
         // Make request to backend
         const response = await axiosInstance.get(`/orders/me/delivered/10`);

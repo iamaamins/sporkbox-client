@@ -27,7 +27,6 @@
 .load_all {
   margin-top: 1.25rem;
   display: inline-block;
-  pointer-events: none; /* remove this */
 }
 
 @media (min-width: 768px) {
