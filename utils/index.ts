@@ -192,7 +192,7 @@ export const expiresIn =
 // Create axios instance
 export const axiosInstance = axios.create({
   withCredentials: true,
-  baseURL: "https://sporkbytes.cyclic.app/api",
+  baseURL: "https://api.araqo.com/api",
 });
 
 // http://localhost:5100/api
