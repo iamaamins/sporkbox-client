@@ -188,7 +188,7 @@ export const expiresIn =
 // Create axios instance
 export const axiosInstance = axios.create({
   withCredentials: true,
-  baseURL: "http://localhost:5100",
+  baseURL: "https://api.araqo.com",
 });
 
 // http://localhost:5100
