@@ -184,10 +184,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
           </Link>
         </li>
 
-        <li
-          className={isAdmin ? styles.hide : ""}
-          onClick={() => setIsOpen(false)}
-        >
+        <li className={styles.hide} onClick={() => setIsOpen(false)}>
           <Link href="/about-us">
             <a>
               <MdGroups /> About us
