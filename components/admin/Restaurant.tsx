@@ -61,7 +61,7 @@ export default function Restaurant() {
                 {vendor.restaurant.name}
               </h2>
               <p>
-                <span>Owner:</span> {vendor.name}
+                <span>Contact:</span> {vendor.name}
               </p>
               <p>
                 <span>Email:</span> {vendor.email}
