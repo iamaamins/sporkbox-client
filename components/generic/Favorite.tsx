@@ -53,7 +53,7 @@ export default function Favorite() {
                             customerFavoriteItem.restaurantId && (
                             <span key={index}>
                               <Link
-                                href={`/calendar/${convertDateToMS(
+                                href={`/place-order/${convertDateToMS(
                                   upcomingWeekRestaurant.scheduledOn
                                 )}/${customerFavoriteItem.restaurantId}/${
                                   customerFavoriteItem.itemId

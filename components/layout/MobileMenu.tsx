@@ -65,9 +65,9 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
           className={!date || !isCustomer ? styles.hide : ""}
           onClick={() => setIsOpen(false)}
         >
-          <Link href={`/calendar/${date}`}>
+          <Link href={`/place-order/${date}`}>
             <a>
-              <BsFillCalendar2DateFill /> Calendar
+              <BsFillCalendar2DateFill /> Place order
             </a>
           </Link>
         </li>

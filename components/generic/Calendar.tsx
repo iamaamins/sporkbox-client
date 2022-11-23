@@ -62,7 +62,7 @@ export default function Calendar() {
             <div className={styles.controller}>
               {nextWeekDates.map((nextWeekDate) => (
                 <div key={nextWeekDate}>
-                  <Link href={`/calendar/${nextWeekDate}`}>
+                  <Link href={`/place-order/${nextWeekDate}`}>
                     <a
                       key={nextWeekDate}
                       className={
@@ -91,7 +91,7 @@ export default function Calendar() {
                     {restaurant.items.map((item) => (
                       <div key={item._id}>
                         <Link
-                          href={`/calendar/${router.query.date}/${restaurant._id}/${item._id}`}
+                          href={`/place-order/${router.query.date}/${restaurant._id}/${item._id}`}
                         >
                           <a className={styles.item}>
                             <div className={styles.item_details}>
