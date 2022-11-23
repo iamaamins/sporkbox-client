@@ -20,8 +20,7 @@ export default function Footer() {
           </div>
 
           <p className={styles.about}>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam
-            explicabo minima atque similique! Voluptatum, id?
+            Portland restaurants catered to your office.
           </p>
         </div>
 
