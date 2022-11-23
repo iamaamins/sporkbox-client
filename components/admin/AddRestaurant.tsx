@@ -12,9 +12,13 @@ export default function AddRestaurant() {
     name: "",
     email: "",
     password: "",
+    city: "",
+    state: "",
+    zip: "",
     confirmPassword: "",
     restaurantName: "",
-    restaurantAddress: "",
+    address_line_1: "",
+    address_line_2: "",
   };
 
   // Hooks
@@ -28,9 +32,13 @@ export default function AddRestaurant() {
     name,
     email,
     password,
+    city,
+    state,
+    zip,
     confirmPassword,
     restaurantName,
-    restaurantAddress,
+    address_line_1,
+    address_line_2,
   } = formData;
 
   // Check if passwords match
@@ -132,13 +140,45 @@ export default function AddRestaurant() {
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="restaurantAddress">Address</label>
+          <label htmlFor="address_line_1">Address line 1</label>
           <input
             type="text"
-            id="restaurantAddress"
-            value={restaurantAddress}
+            id="address_line_1"
+            value={address_line_1}
             onChange={handleChange}
           />
+        </div>
+
+        <div className={styles.item}>
+          <label htmlFor="address_line_2">Address line 2</label>
+          <input
+            type="text"
+            id="address_line_2"
+            value={address_line_2}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className={styles.city_state_zip}>
+          <div className={styles.item}>
+            <label htmlFor="city">City</label>
+            <input type="text" id="city" value={city} onChange={handleChange} />
+          </div>
+
+          <div className={styles.item}>
+            <label htmlFor="state">State</label>
+            <input
+              type="text"
+              id="state"
+              value={state}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className={styles.item}>
+            <label htmlFor="zip">Zip</label>
+            <input type="text" id="zip" value={zip} onChange={handleChange} />
+          </div>
         </div>
 
         <SubmitButton text="Add restaurant" isLoading={isLoading} />

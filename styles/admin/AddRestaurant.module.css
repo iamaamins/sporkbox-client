@@ -23,6 +23,15 @@
   margin-bottom: 1.5rem;
 }
 
+.city_state_zip {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
+}
+
+.city_state_zip .item:first-child {
+  margin-right: 1rem;
+}
+
 .item label {
   font-size: 0.9rem;
   color: var(--gray);
