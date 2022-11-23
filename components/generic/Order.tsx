@@ -188,7 +188,7 @@ export default function Order() {
                     <span>{convertDateToText(order.deliveryDate)}</span>
                   </p>
 
-                  <LinkButton linkText="Contact support" href="/contact" />
+                  <LinkButton linkText="Contact support" href="/contact-us" />
                 </>
               )}
 

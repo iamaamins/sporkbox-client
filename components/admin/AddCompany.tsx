@@ -11,9 +11,13 @@ export default function AddCompany() {
   const initialState = {
     name: "",
     code: "",
-    dailyBudget: 0,
-    address: "",
+    city: "",
+    state: "",
+    zip: "",
     website: "",
+    dailyBudget: 0,
+    address_line_1: "",
+    address_line_2: "",
   };
 
   // Hooks
@@ -23,7 +27,17 @@ export default function AddCompany() {
   const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Destructure data
-  const { name, website, address, code, dailyBudget } = formData;
+  const {
+    name,
+    code,
+    city,
+    state,
+    zip,
+    website,
+    dailyBudget,
+    address_line_1,
+    address_line_2,
+  } = formData;
 
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -93,13 +107,45 @@ export default function AddCompany() {
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="address">Address</label>
+          <label htmlFor="address_line_1">Address line 1</label>
           <input
             type="text"
-            id="address"
-            value={address}
+            id="address_line_1"
+            value={address_line_1}
             onChange={handleChange}
           />
+        </div>
+
+        <div className={styles.item}>
+          <label htmlFor="address_line_2">Address line 2</label>
+          <input
+            type="text"
+            id="address_line_2"
+            value={address_line_2}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className={styles.city_state_zip}>
+          <div className={styles.item}>
+            <label htmlFor="city">City</label>
+            <input type="text" id="city" value={city} onChange={handleChange} />
+          </div>
+
+          <div className={styles.item}>
+            <label htmlFor="state">State</label>
+            <input
+              type="text"
+              id="state"
+              value={state}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className={styles.item}>
+            <label htmlFor="zip">Zip</label>
+            <input type="text" id="zip" value={zip} onChange={handleChange} />
+          </div>
         </div>
 
         <div className={styles.item}>

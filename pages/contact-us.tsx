@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function ContactPage() {
   return (
     <main style={{ padding: "1.25rem" }}>

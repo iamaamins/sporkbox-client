@@ -80,7 +80,7 @@ export default function DesktopNav() {
           </Link>
         </li>
 
-        <li className={isAdmin ? styles.hide : ""}>
+        <li className={styles.hide}>
           <Link href="/about-us">
             <a className={pathName === "/about-us" ? styles.active : ""}>
               About us
