@@ -19,7 +19,7 @@ export const useCart = () => useContext(CartContext);
 // Provider function
 export default function CartProvider({ children }: IContextProviderProps) {
   const router = useRouter();
-  const { isCustomer } = useUser();
+  const { user, isCustomer } = useUser();
   const { setCustomerActiveOrders } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<ICartItem[]>([]);
@@ -27,8 +27,8 @@ export default function CartProvider({ children }: IContextProviderProps) {
   // Get cart items from local storage on app reload
   useEffect(() => {
     // Get cart items from local storage
-    setCartItems(JSON.parse(localStorage.getItem("cart") || "[]"));
-  }, [router.isReady]);
+    setCartItems(JSON.parse(localStorage.getItem(`cart-${user?._id}`) || "[]"));
+  }, [user, router.isReady]);
 
   // Remove cart item automatically
   useEffect(() => {
@@ -42,9 +42,9 @@ export default function CartProvider({ children }: IContextProviderProps) {
       setCartItems(updatedItems);
 
       // Set updated items to local storage
-      localStorage.setItem("cart", JSON.stringify(updatedItems));
+      localStorage.setItem(`cart-${user?._id}`, JSON.stringify(updatedItems));
     }
-  }, [router.isReady]);
+  }, [user, router.isReady]);
 
   // Calculate total quantity
   const totalCartQuantity = cartItems.reduce(
@@ -95,7 +95,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
     setCartItems(updatedItems);
 
     // Save cart to local storage
-    localStorage.setItem("cart", JSON.stringify(updatedItems));
+    localStorage.setItem(`cart-${user?._id}`, JSON.stringify(updatedItems));
 
     // Back to calendar page
     router.back();
@@ -116,7 +116,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
     setCartItems(updatedItems);
 
     // Set updated items to local storage
-    localStorage.setItem("cart", JSON.stringify(updatedItems));
+    localStorage.setItem(`cart-${user?._id}`, JSON.stringify(updatedItems));
   }
 
   // Checkout cart
@@ -140,7 +140,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
 
         // Remove cart items
         setCartItems([]);
-        localStorage.removeItem("cart");
+        localStorage.removeItem(`cart-${user?._id}`);
 
         // Push to the dashboard page
         router.push("/dashboard");

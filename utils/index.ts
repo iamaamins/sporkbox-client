@@ -31,10 +31,6 @@ export const convertDateToMS = (date: string) => new Date(date).getTime();
 export const convertDateToText = (date: Date | string | number): string =>
   new Date(date).toUTCString().split(" ").slice(0, 3).join(" ");
 
-// Check if any input field is empty
-export const hasEmpty = (formData: IFormData): boolean =>
-  Object.values(formData).some((data) => data === "");
-
 // Check if there is an admin
 export function checkUser(
   isUserLoading: boolean,
@@ -192,7 +188,7 @@ export const expiresIn =
 // Create axios instance
 export const axiosInstance = axios.create({
   withCredentials: true,
-  baseURL: "http://localhost:5100",
+  baseURL: "https://api.araqo.com",
 });
 
 // http://localhost:5100
