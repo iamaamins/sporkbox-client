@@ -7,15 +7,12 @@
   font-weight: 500;
   font-size: 0.9rem;
   margin-top: 0.5rem;
-  pointer-events: none;
   border-radius: 0.25rem;
-  color: var(--disabled_font);
-  background: var(--border_color);
+  background: var(--teal);
+  color: var(--almost_white);
   transition: all 150ms ease-in-out;
 }
 
-.active {
-  pointer-events: all;
-  background: var(--teal);
-  color: var(--almost_white);
+.disabled {
+  pointer-events: none;
 }

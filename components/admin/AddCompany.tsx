@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import { ICompany, IFormData } from "types";
-import { axiosInstance, hasEmpty } from "@utils/index";
+import { axiosInstance } from "@utils/index";
 import { ChangeEvent, FormEvent, useState } from "react";
 import styles from "@styles/admin/AddCompany.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
@@ -20,7 +20,6 @@ export default function AddCompany() {
   const router = useRouter();
   const { setCompanies } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Destructure data
@@ -28,11 +27,6 @@ export default function AddCompany() {
 
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    // Check if any field is empty
-    if (!hasEmpty(formData)) {
-      setIsDisabled(false);
-    }
-
     // Id and value
     const id = e.target.id;
     const value = e.target.value;
@@ -67,9 +61,6 @@ export default function AddCompany() {
 
       // Clear the form
       setFormData(initialState);
-
-      // Update states
-      setIsDisabled(true);
 
       // Push to dashboard
       router.push("/admin/companies");
@@ -126,11 +117,7 @@ export default function AddCompany() {
           />
         </div>
 
-        <SubmitButton
-          text="Add company"
-          isLoading={isLoading}
-          isDisabled={isDisabled}
-        />
+        <SubmitButton text="Add company" isLoading={isLoading} />
       </form>
     </section>
   );

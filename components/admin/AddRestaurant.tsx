@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import { IFormData, IVendor } from "types";
-import { axiosInstance, hasEmpty } from "@utils/index";
+import { axiosInstance } from "@utils/index";
 import { ChangeEvent, FormEvent, useState } from "react";
 import SubmitButton from "@components/layout/SubmitButton";
 import styles from "@styles/admin/AddRestaurant.module.css";
@@ -21,7 +21,6 @@ export default function AddRestaurant() {
   const router = useRouter();
   const { setVendors } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Destructure form data
@@ -39,11 +38,6 @@ export default function AddRestaurant() {
 
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    // // Enable button if no fields are empty and passwords match
-    if (!hasEmpty(formData) && passwordsMatch) {
-      setIsDisabled(false);
-    }
-
     // Update state
     setFormData((currData) => ({
       ...currData,
@@ -70,9 +64,6 @@ export default function AddRestaurant() {
 
       // Reset form data
       setFormData(initialState);
-
-      // Remove loader
-      setIsDisabled(true);
 
       // Push to dashboard
       router.push("/admin/restaurants");
@@ -150,11 +141,7 @@ export default function AddRestaurant() {
           />
         </div>
 
-        <SubmitButton
-          text="Add restaurant"
-          isLoading={isLoading}
-          isDisabled={isDisabled}
-        />
+        <SubmitButton text="Add restaurant" isLoading={isLoading} />
       </form>
     </section>
   );

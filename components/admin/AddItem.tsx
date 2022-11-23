@@ -4,7 +4,7 @@ import { useData } from "@context/Data";
 import styles from "@styles/admin/AddItem.module.css";
 import { ChangeEvent, FormEvent, useState } from "react";
 import SubmitButton from "@components/layout/SubmitButton";
-import { axiosInstance, hasEmpty, updateVendors } from "@utils/index";
+import { axiosInstance, updateVendors } from "@utils/index";
 
 export default function AddItem() {
   // Initial state
@@ -20,7 +20,6 @@ export default function AddItem() {
   const router = useRouter();
   const { setVendors } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Destructure form data and check
@@ -30,10 +29,6 @@ export default function AddItem() {
   function handleChange(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
-    if (!hasEmpty(formData)) {
-      setIsDisabled(false);
-    }
-
     // Id and value
     const id = e.target.id;
     const value = e.target.value;
@@ -110,11 +105,7 @@ export default function AddItem() {
           />
         </div>
 
-        <SubmitButton
-          text="Add Item"
-          isLoading={isLoading}
-          isDisabled={isDisabled}
-        />
+        <SubmitButton text="Add Item" isLoading={isLoading} />
       </form>
     </section>
   );

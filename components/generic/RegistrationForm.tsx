@@ -2,7 +2,7 @@ import Link from "next/link";
 import { IFormData } from "types";
 import { useUser } from "@context/User";
 import { useRouter } from "next/router";
-import { axiosInstance, hasEmpty } from "@utils/index";
+import { axiosInstance } from "@utils/index";
 import { ChangeEvent, FormEvent, useState } from "react";
 import SubmitButton from "@components/layout/SubmitButton";
 import styles from "@styles/generic/RegistrationForm.module.css";
@@ -20,7 +20,6 @@ export default function RegistrationForm() {
   const router = useRouter();
   const { setUser } = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [formData, setFormData] = useState<IFormData>(initialSate);
 
   // Destructure form data and check
@@ -32,11 +31,6 @@ export default function RegistrationForm() {
 
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    // Enable button if no fields are empty and passwords match
-    if (!hasEmpty(formData) && passwordsMatch) {
-      setIsDisabled(false);
-    }
-
     // Update state
     setFormData((currData) => ({
       ...currData,
@@ -115,11 +109,7 @@ export default function RegistrationForm() {
           />
         </div>
 
-        <SubmitButton
-          text="Create account"
-          isLoading={isLoading}
-          isDisabled={isDisabled}
-        />
+        <SubmitButton text="Create account" isLoading={isLoading} />
       </form>
 
       <p className={styles.action}>

@@ -208,7 +208,6 @@ export interface IActionButton {
 export interface ISubmitButtonProps {
   text: string;
   isLoading: boolean;
-  isDisabled: boolean;
 }
 
 export interface ILinkButtonProps {

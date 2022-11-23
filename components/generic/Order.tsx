@@ -21,7 +21,6 @@ export default function Order() {
   const [order, setOrder] = useState<ICustomerOrder>();
   const [rating, setRating] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [favoriteItem, setFavoriteItem] = useState<ICustomerFavoriteItem>();
   const {
     customerAllOrders,
@@ -93,11 +92,6 @@ export default function Order() {
 
   // Handle change comment
   function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
-    if (comment !== "" && rating > 0) {
-      // Enable submit button
-      setIsDisabled(false);
-    }
-
     // Update comment state
     setComment(e.target.value);
   }
@@ -140,7 +134,6 @@ export default function Order() {
     } finally {
       // Update state
       setIsLoading(false);
-      setIsDisabled(true);
     }
   }
 
@@ -231,7 +224,6 @@ export default function Order() {
                         <SubmitButton
                           text="Submit review"
                           isLoading={isLoading}
-                          isDisabled={isDisabled}
                         />
                       </form>
                     </>

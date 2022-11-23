@@ -1,5 +1,5 @@
 import { useData } from "@context/Data";
-import { axiosInstance, hasEmpty } from "@utils/index";
+import { axiosInstance } from "@utils/index";
 import SubmitButton from "@components/layout/SubmitButton";
 import styles from "@styles/admin/ScheduleRestaurants.module.css";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
@@ -14,7 +14,6 @@ export default function ScheduleRestaurants() {
 
   // Hooks
   const { vendors, setScheduledRestaurants } = useData();
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [approvedRestaurants, setApprovedRestaurants] = useState<IRestaurant[]>(
     []
@@ -38,11 +37,6 @@ export default function ScheduleRestaurants() {
 
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-    // If any field is empty
-    if (hasEmpty(formData)) {
-      setIsDisabled(false);
-    }
-
     // Update state
     setFormData((currData) => ({
       ...currData,
@@ -75,9 +69,6 @@ export default function ScheduleRestaurants() {
 
       // Clear form data
       setFormData(initialState);
-
-      // Disable button
-      setIsDisabled(true);
     } catch (err) {
       console.log(err);
     } finally {
@@ -135,11 +126,7 @@ export default function ScheduleRestaurants() {
               </select>
             </div>
 
-            <SubmitButton
-              text="Schedule"
-              isLoading={isLoading}
-              isDisabled={isDisabled}
-            />
+            <SubmitButton text="Schedule" isLoading={isLoading} />
           </form>
         </>
       )}

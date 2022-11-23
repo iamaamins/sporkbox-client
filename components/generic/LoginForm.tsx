@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { IFormData } from "types";
 import { useUser } from "@context/User";
-import { axiosInstance, hasEmpty } from "@utils/index";
+import { axiosInstance } from "@utils/index";
 import { ChangeEvent, FormEvent, useState } from "react";
 import styles from "@styles/generic/LoginForm.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
@@ -13,7 +13,6 @@ export default function LoginForm() {
   };
   // Hooks
   const { setUser } = useUser();
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<IFormData>(initialSate);
 
@@ -23,10 +22,6 @@ export default function LoginForm() {
 
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    if (!hasEmpty(formData)) {
-      setIsDisabled(false);
-    }
-
     // Update state
     setFormData((currData) => ({
       ...currData,
@@ -85,11 +80,7 @@ export default function LoginForm() {
           />
         </div>
 
-        <SubmitButton
-          text="Sign in"
-          isLoading={isLoading}
-          isDisabled={isDisabled}
-        />
+        <SubmitButton text="Sign in" isLoading={isLoading} />
       </form>
 
       <div className={styles.actions}>
