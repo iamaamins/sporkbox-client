@@ -24,12 +24,13 @@
 }
 
 .city_state_zip {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
-.city_state_zip .item:first-child {
-  margin-right: 1rem;
+.city_state_zip .item {
+  width: 48%;
 }
 
 .item label {
