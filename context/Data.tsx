@@ -92,18 +92,18 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setIsAllActiveOrdersLoading(false);
       }
 
-      // Get 25 latest vendors
+      // Get scheduled restaurants
       try {
         // Make request to backend
-        const response = await axiosInstance.get(`/vendors/25`);
+        const response = await axiosInstance.get(`/restaurants/scheduled`);
 
         // Update state
-        setVendors(response.data);
+        setScheduledRestaurants(response.data);
       } catch (err) {
         console.log(err);
       } finally {
         // Remove loader
-        setIsAllVendorsLoading(false);
+        setIsScheduledRestaurantsLoading(false);
       }
 
       // Get all companies
@@ -120,6 +120,20 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setIsAllCompaniesLoading(false);
       }
 
+      // Get 25 latest vendors
+      try {
+        // Make request to backend
+        const response = await axiosInstance.get(`/vendors/25`);
+
+        // Update state
+        setVendors(response.data);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        // Remove loader
+        setIsAllVendorsLoading(false);
+      }
+
       // Get 25 delivered orders
       try {
         // Make request to backend
@@ -132,20 +146,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
       } finally {
         // Remove loader
         setIsAllDeliveredOrdersLoading(false);
-      }
-
-      // Get scheduled restaurants
-      try {
-        // Make request to backend
-        const response = await axiosInstance.get(`/restaurants/scheduled`);
-
-        // Update state
-        setScheduledRestaurants(response.data);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        // Remove loader
-        setIsScheduledRestaurantsLoading(false);
       }
     }
 
@@ -164,20 +164,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
   useEffect(() => {
     // Get customer data
     async function getCustomerData() {
-      // Get upcoming week restaurants
-      try {
-        // Make request to backend
-        const response = await axiosInstance.get(`/restaurants/upcoming-week`);
-
-        // Update state
-        setUpcomingWeekRestaurants(response.data);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        // Remove loader
-        setIsUpcomingWeekRestaurantsLoading(false);
-      }
-
       // Get all active orders
       try {
         // Make request to backend
@@ -205,6 +191,20 @@ export default function DataProvider({ children }: IContextProviderProps) {
       } finally {
         // Remove loader
         setIsCustomerDeliveredOrdersLoading(false);
+      }
+
+      // Get upcoming week restaurants
+      try {
+        // Make request to backend
+        const response = await axiosInstance.get(`/restaurants/upcoming-week`);
+
+        // Update state
+        setUpcomingWeekRestaurants(response.data);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        // Remove loader
+        setIsUpcomingWeekRestaurantsLoading(false);
       }
 
       // Get favorite items
