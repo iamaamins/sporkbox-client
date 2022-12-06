@@ -1,3 +1,4 @@
+import { IItem } from "types";
 import Image from "next/image";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
@@ -9,7 +10,6 @@ import {
 } from "@utils/index";
 import Buttons from "@components/layout/Buttons";
 import styles from "@styles/admin/Item.module.css";
-import { IItem } from "types";
 
 export default function Item() {
   const router = useRouter();
