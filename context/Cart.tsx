@@ -1,7 +1,7 @@
 import { useData } from "@context/Data";
 import { useUser } from "@context/User";
 import { useRouter } from "next/router";
-import { axiosInstance, formatNumberToUS, getFutureDate } from "@utils/index";
+import { axiosInstance, formatNumberToUS } from "@utils/index";
 import {
   ICartContext,
   ICartItem,
