@@ -1,14 +1,8 @@
 import axios from "axios";
+import moment from "moment-timezone";
 import { SetStateAction } from "react";
 import { NextRouter } from "next/router";
-import {
-  IVendor,
-  IRestaurant,
-  Groups,
-  IFormData,
-  ICustomerFavoriteItem,
-} from "types";
-import moment from "moment-timezone";
+import { IVendor, IRestaurant, Groups, ICustomerFavoriteItem } from "types";
 
 // Current year
 export const currentYear = new Date().getFullYear();
