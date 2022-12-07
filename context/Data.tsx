@@ -4,6 +4,7 @@ import {
   IVendor,
   ICompany,
   IDataContext,
+  IOrderGroup,
   ICustomerOrder,
   IContextProviderProps,
   IScheduledRestaurant,
@@ -32,7 +33,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
   const [upcomingWeekRestaurants, setUpcomingWeekRestaurants] = useState<
     IUpcomingWeekRestaurant[]
   >([]);
-  const [allOrders, setAllOrders] = useState<IOrder[]>([]);
+  // const [allOrders, setAllOrders] = useState<IOrder[]>([]);
   const [allActiveOrders, setAllActiveOrders] = useState<IOrder[]>([]);
   const [deliveredOrders, setDeliveredOrders] = useState<IOrder[]>([]);
   const [customerActiveOrders, setCustomerActiveOrders] = useState<
@@ -41,16 +42,16 @@ export default function DataProvider({ children }: IContextProviderProps) {
   const [customerDeliveredOrders, setCustomerDeliveredOrders] = useState<
     ICustomerOrder[]
   >([]);
-  const [customerAllOrders, setCustomerAllOrders] = useState<ICustomerOrder[]>(
-    []
-  );
+  // const [customerAllOrders, setCustomerAllOrders] = useState<ICustomerOrder[]>(
+  //   []
+  // );
   const [customerFavoriteItems, setCustomerFavoriteItems] = useState<
     ICustomerFavoriteItem[]
   >([]);
-  const [nextWeekBudgetAndDates, setNextWeekBudgetAndDates] = useState<
-    INextWeekBudgetAndDates[]
-  >([]);
-  const [nextWeekDates, setNextWeekDates] = useState<number[]>([]);
+  // const [nextWeekBudgetAndDates, setNextWeekBudgetAndDates] = useState<
+  //   INextWeekBudgetAndDates[]
+  // >([]);
+  // const [nextWeekDates, setNextWeekDates] = useState<number[]>([]);
 
   // Loading states
   const [
@@ -73,6 +74,98 @@ export default function DataProvider({ children }: IContextProviderProps) {
   ] = useState(true);
   const [isCustomerFavoriteItemsLoading, setIsCustomerFavoriteItemsLoading] =
     useState(true);
+
+  // All admin orders
+  const allOrders: IOrder[] = [...allActiveOrders, ...deliveredOrders];
+
+  // All customer orders
+  const customerAllOrders: ICustomerOrder[] = [
+    ...customerActiveOrders,
+    ...customerDeliveredOrders,
+  ];
+
+  // Order groups
+  const orderGroups = allActiveOrders.reduce(
+    (orderGroups: IOrderGroup[], curr): IOrderGroup[] => {
+      if (
+        !orderGroups.some(
+          (orderGroup) =>
+            orderGroup.companyName === curr.companyName &&
+            orderGroup.deliveryDate === curr.deliveryDate
+        )
+      ) {
+        return [
+          ...orderGroups,
+          {
+            orders: [curr],
+            companyName: curr.companyName,
+            deliveryDate: curr.deliveryDate,
+          },
+        ] as IOrderGroup[];
+      } else {
+        return orderGroups.map((orderGroup) => {
+          if (
+            orderGroup.companyName === curr.companyName &&
+            orderGroup.deliveryDate === curr.deliveryDate
+          ) {
+            return {
+              ...orderGroup,
+              orders: [...orderGroup.orders, curr],
+            };
+          } else {
+            return orderGroup;
+          }
+        });
+      }
+    },
+    []
+  );
+
+  // Next week dates
+  const nextWeekDates =
+    !isUpcomingWeekRestaurantsLoading && upcomingWeekRestaurants.length > 0
+      ? upcomingWeekRestaurants
+          .map((upcomingWeekRestaurant) =>
+            convertDateToMS(upcomingWeekRestaurant.scheduledOn)
+          )
+          .filter((date, index, dates) => dates.indexOf(date) === index)
+      : [];
+
+  // Next week budget and dates
+  const nextWeekBudgetAndDates =
+    isCustomer && nextWeekDates.length > 0 && !isCustomerActiveOrdersLoading
+      ? nextWeekDates.map((nextWeekDate) => {
+          // Find the orders those match the date
+          const activeOrders = customerActiveOrders.filter(
+            (customerActiveOrder) =>
+              convertDateToMS(customerActiveOrder.deliveryDate) === nextWeekDate
+          );
+
+          // If active orders are found on the date
+          if (activeOrders.length > 0) {
+            // Calculate the active orders total
+            const activeOrdersTotal = activeOrders.reduce(
+              (acc, order) => acc + order.item.total,
+              0
+            );
+
+            // Return the date and company budget - active orders total
+            return {
+              nextWeekDate,
+              budgetOnHand: formatNumberToUS(
+                user?.company?.dailyBudget! - activeOrdersTotal
+              ),
+            };
+          } else {
+            // If no active orders are found with the
+            // date then return the date and company budget
+            return {
+              nextWeekDate,
+              budgetOnHand: user?.company?.dailyBudget!,
+            };
+          }
+        })
+      : [];
 
   // Get admin data
   useEffect(() => {
@@ -155,10 +248,10 @@ export default function DataProvider({ children }: IContextProviderProps) {
     }
   }, [isAdmin]);
 
-  // Create all orders
-  useEffect(() => {
-    setAllOrders([...allActiveOrders, ...deliveredOrders]);
-  }, [allActiveOrders, deliveredOrders]);
+  // // Create all orders
+  // useEffect(() => {
+  //   setAllOrders([...allActiveOrders, ...deliveredOrders]);
+  // }, [allActiveOrders, deliveredOrders]);
 
   // Get customer data
   useEffect(() => {
@@ -228,70 +321,70 @@ export default function DataProvider({ children }: IContextProviderProps) {
     }
   }, [isCustomer]);
 
-  // Create customer all orders
-  useEffect(() => {
-    setCustomerAllOrders([...customerActiveOrders, ...customerDeliveredOrders]);
-  }, [customerActiveOrders, customerDeliveredOrders]);
+  // // Create customer all orders
+  // useEffect(() => {
+  //   setCustomerAllOrders([...customerActiveOrders, ...customerDeliveredOrders]);
+  // }, [customerActiveOrders, customerDeliveredOrders]);
 
   // Create next week's dates with upcoming weeks restaurant
-  useEffect(() => {
-    if (
-      !isUpcomingWeekRestaurantsLoading &&
-      upcomingWeekRestaurants.length > 0
-    ) {
-      setNextWeekDates(
-        upcomingWeekRestaurants
-          .map((upcomingWeekRestaurant) =>
-            convertDateToMS(upcomingWeekRestaurant.scheduledOn)
-          )
-          .filter((date, index, dates) => dates.indexOf(date) === index)
-      );
-    }
-  }, [upcomingWeekRestaurants]);
+  // useEffect(() => {
+  //   if (
+  //     !isUpcomingWeekRestaurantsLoading &&
+  //     upcomingWeekRestaurants.length > 0
+  //   ) {
+  //     setNextWeekDates(
+  //       upcomingWeekRestaurants
+  //         .map((upcomingWeekRestaurant) =>
+  //           convertDateToMS(upcomingWeekRestaurant.scheduledOn)
+  //         )
+  //         .filter((date, index, dates) => dates.indexOf(date) === index)
+  //     );
+  //   }
+  // }, [upcomingWeekRestaurants]);
 
-  // Create next week budget
-  useEffect(() => {
-    if (
-      isCustomer &&
-      nextWeekDates.length > 0 &&
-      !isCustomerActiveOrdersLoading
-    ) {
-      // Set next week budgets
-      setNextWeekBudgetAndDates(
-        nextWeekDates.map((nextWeekDate) => {
-          // Find the orders those match the date
-          const activeOrders = customerActiveOrders.filter(
-            (customerActiveOrder) =>
-              convertDateToMS(customerActiveOrder.deliveryDate) === nextWeekDate
-          );
+  // // Create next week budget
+  // useEffect(() => {
+  //   if (
+  //     isCustomer &&
+  //     nextWeekDates.length > 0 &&
+  //     !isCustomerActiveOrdersLoading
+  //   ) {
+  //     // Set next week budgets
+  //     setNextWeekBudgetAndDates(
+  //       nextWeekDates.map((nextWeekDate) => {
+  //         // Find the orders those match the date
+  //         const activeOrders = customerActiveOrders.filter(
+  //           (customerActiveOrder) =>
+  //             convertDateToMS(customerActiveOrder.deliveryDate) === nextWeekDate
+  //         );
 
-          // If active orders are found on the date
-          if (activeOrders.length > 0) {
-            // Calculate the active orders total
-            const activeOrdersTotal = activeOrders.reduce(
-              (acc, order) => acc + order.item.total,
-              0
-            );
+  //         // If active orders are found on the date
+  //         if (activeOrders.length > 0) {
+  //           // Calculate the active orders total
+  //           const activeOrdersTotal = activeOrders.reduce(
+  //             (acc, order) => acc + order.item.total,
+  //             0
+  //           );
 
-            // Return the date and company budget - active orders total
-            return {
-              nextWeekDate,
-              budgetOnHand: formatNumberToUS(
-                user?.company?.dailyBudget! - activeOrdersTotal
-              ),
-            };
-          } else {
-            // If no active orders are found with the
-            // date then return the date and company budget
-            return {
-              nextWeekDate,
-              budgetOnHand: user?.company?.dailyBudget!,
-            };
-          }
-        })
-      );
-    }
-  }, [isCustomer, customerActiveOrders, nextWeekDates]);
+  //           // Return the date and company budget - active orders total
+  //           return {
+  //             nextWeekDate,
+  //             budgetOnHand: formatNumberToUS(
+  //               user?.company?.dailyBudget! - activeOrdersTotal
+  //             ),
+  //           };
+  //         } else {
+  //           // If no active orders are found with the
+  //           // date then return the date and company budget
+  //           return {
+  //             nextWeekDate,
+  //             budgetOnHand: user?.company?.dailyBudget!,
+  //           };
+  //         }
+  //       })
+  //     );
+  //   }
+  // }, [isCustomer, customerActiveOrders, nextWeekDates]);
 
   return (
     <DataContext.Provider

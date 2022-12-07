@@ -238,3 +238,9 @@ export interface INextWeekBudgetAndDates {
   nextWeekDate: number;
   budgetOnHand: number;
 }
+
+export interface IOrderGroup {
+  orders: IOrder[];
+  companyName: string;
+  deliveryDate: string;
+}
