@@ -100,6 +100,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
             orders: [curr],
             companyName: curr.companyName,
             deliveryDate: curr.deliveryDate,
+            restaurants: [curr.restaurantName],
           },
         ] as IOrderGroup[];
       } else {
@@ -111,6 +112,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
             return {
               ...orderGroup,
               orders: [...orderGroup.orders, curr],
+              restaurants: orderGroup.restaurants.includes(curr.restaurantName)
+                ? [...orderGroup.restaurants]
+                : [...orderGroup.restaurants, curr.restaurantName],
             };
           } else {
             return orderGroup;
@@ -120,6 +124,8 @@ export default function DataProvider({ children }: IContextProviderProps) {
     },
     []
   );
+
+  console.log(orderGroups);
 
   // Next week dates
   const nextWeekDates =
@@ -326,7 +332,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
   //   setCustomerAllOrders([...customerActiveOrders, ...customerDeliveredOrders]);
   // }, [customerActiveOrders, customerDeliveredOrders]);
 
-  // Create next week's dates with upcoming weeks restaurant
+  // // Create next week's dates with upcoming weeks restaurant
   // useEffect(() => {
   //   if (
   //     !isUpcomingWeekRestaurantsLoading &&

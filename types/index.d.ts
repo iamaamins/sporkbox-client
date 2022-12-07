@@ -241,6 +241,7 @@ export interface INextWeekBudgetAndDates {
 
 export interface IOrderGroup {
   orders: IOrder[];
+  restaurants: string[];
   companyName: string;
   deliveryDate: string;
 }
