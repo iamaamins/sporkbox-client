@@ -6,9 +6,8 @@ import {
   IVendor,
   IRestaurant,
   Groups,
-  ICustomerFavoriteItem,
-  ICustomerFavoriteItemsCtx,
-  IVendorsCtx,
+  IVendors,
+  ICustomerFavoriteItems,
 } from "types";
 
 // Current year
@@ -46,7 +45,7 @@ export function checkUser(
 // Update restaurants items
 export function updateVendors(
   updatedData: IVendor | IRestaurant,
-  setVendors: React.Dispatch<SetStateAction<IVendorsCtx>>
+  setVendors: React.Dispatch<SetStateAction<IVendors>>
 ) {
   // Update the restaurants state
   setVendors((currState) => ({
@@ -121,7 +120,7 @@ export const getDay = (date: number | string) =>
 export async function handleRemoveFromFavorite(
   itemId: string,
   setCustomerFavoriteItems: React.Dispatch<
-    SetStateAction<ICustomerFavoriteItemsCtx>
+    SetStateAction<ICustomerFavoriteItems>
   >
 ) {
   try {
