@@ -4,17 +4,17 @@ import styles from "@styles/admin/Companies.module.css";
 import LinkButton from "@components/layout/LinkButton";
 
 export default function Companies() {
-  const { companies, isAllCompaniesLoading } = useData();
+  const { companies } = useData();
 
   return (
     <section className={styles.all_companies}>
-      {isAllCompaniesLoading && <h2>Loading...</h2>}
+      {companies.isLoading && <h2>Loading...</h2>}
 
-      {!isAllCompaniesLoading && companies.length === 0 && (
+      {!companies.isLoading && companies.data.length === 0 && (
         <h2>No companies</h2>
       )}
 
-      {companies.length > 0 && (
+      {companies.data.length > 0 && (
         <>
           <h2>All companies</h2>
 
@@ -29,7 +29,7 @@ export default function Companies() {
             </thead>
 
             <tbody>
-              {companies.map((company) => (
+              {companies.data.map((company) => (
                 <tr key={company._id}>
                   <td className={styles.important}>
                     <Link href={`/admin/companies/${company._id}`}>

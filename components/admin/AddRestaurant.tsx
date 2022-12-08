@@ -64,11 +64,11 @@ export default function AddRestaurant() {
       // Post data to backend
       const response = await axiosInstance.post(`/vendors/add`, formData);
 
-      // New restaurant
-      const newVendor = response.data;
-
       // Update state
-      setVendors((currVendors: IVendor[]) => [...currVendors, newVendor]);
+      setVendors((currState) => ({
+        ...currState,
+        data: [...currState.data, response.data],
+      }));
 
       // Reset form data
       setFormData(initialState);

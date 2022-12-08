@@ -14,9 +14,9 @@ export default function Company() {
 
   // Get the company
   useEffect(() => {
-    if (companies.length > 0 && router.isReady) {
+    if (companies.data.length > 0 && router.isReady) {
       setCompany(
-        companies.find((company) => company._id === router.query.company)
+        companies.data.find((company) => company._id === router.query.company)
       );
     }
   }, [companies, router.isReady]);
@@ -30,9 +30,12 @@ export default function Company() {
       await axiosInstance.delete(`/companies/${company?._id}`);
 
       // Update state
-      setCompanies((currCompanies: ICompany[]) =>
-        currCompanies.filter((currCompany) => currCompany._id !== company?._id)
-      );
+      setCompanies((currState) => ({
+        ...currState,
+        data: currState.data.filter(
+          (currCompany) => currCompany._id !== company?._id
+        ),
+      }));
 
       // Back to companies page
       router.back();

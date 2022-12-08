@@ -19,11 +19,7 @@ export default function Calendar() {
   const { user } = useUser();
   const router = useRouter();
   const { cartItems } = useCart();
-  const {
-    nextWeekDates,
-    upcomingWeekRestaurants,
-    isUpcomingWeekRestaurantsLoading,
-  } = useData();
+  const { nextWeekDates, upcomingWeekRestaurants } = useData();
   const [restaurants, setRestaurants] = useState<IUpcomingWeekRestaurant[]>([]);
 
   // Get restaurants for a date
@@ -36,7 +32,7 @@ export default function Calendar() {
 
       // Update restaurants state
       setRestaurants(
-        upcomingWeekRestaurants.filter(
+        upcomingWeekRestaurants.data.filter(
           (upcomingWeekRestaurant) =>
             convertDateToMS(upcomingWeekRestaurant.scheduledOn) === nextWeekDate
         )
@@ -46,11 +42,11 @@ export default function Calendar() {
 
   return (
     <section className={styles.calendar}>
-      {isUpcomingWeekRestaurantsLoading && <h2>Loading...</h2>}
+      {upcomingWeekRestaurants.isLoading && <h2>Loading...</h2>}
 
       {/* If there are no restaurant groups */}
-      {!isUpcomingWeekRestaurantsLoading &&
-        upcomingWeekRestaurants.length === 0 && <h2>No restaurants</h2>}
+      {!upcomingWeekRestaurants.isLoading &&
+        upcomingWeekRestaurants.data.length === 0 && <h2>No restaurants</h2>}
 
       {/* If there are restaurant groups */}
       {nextWeekDates.length > 0 && (

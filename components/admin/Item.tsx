@@ -18,9 +18,9 @@ export default function Item() {
 
   // Get the item
   useEffect(() => {
-    if (vendors.length > 0 && router.isReady) {
+    if (vendors.data.length > 0 && router.isReady) {
       setItem(
-        vendors
+        vendors.data
           .find((vendor) => vendor.restaurant._id === router.query.restaurant)
           ?.restaurant.items.find((item) => item._id === router.query.item)
       );

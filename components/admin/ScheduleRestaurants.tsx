@@ -25,10 +25,10 @@ export default function ScheduleRestaurants() {
 
   // Get the approved restaurants
   useEffect(() => {
-    if (vendors.length > 0) {
+    if (vendors.data.length > 0) {
       // Filter approved restaurants
       setApprovedRestaurants(
-        vendors
+        vendors.data
           .filter((vendor) => vendor.status === "APPROVED")
           .map((vendor) => vendor.restaurant)
       );
@@ -60,12 +60,10 @@ export default function ScheduleRestaurants() {
       );
 
       // Update scheduled restaurants state
-      setScheduledRestaurants(
-        (currScheduledRestaurants: IScheduledRestaurant[]) => [
-          ...currScheduledRestaurants,
-          response.data,
-        ]
-      );
+      setScheduledRestaurants((currState) => ({
+        ...currState,
+        data: [...currState.data, response.data],
+      }));
 
       // Clear form data
       setFormData(initialState);

@@ -9,13 +9,12 @@ import { axiosInstance, formatCurrencyToUSD } from "@utils/index";
 export default function Dashboard() {
   // Hooks
   const { user } = useUser();
-  const {
-    setCustomerDeliveredOrders,
-    isCustomerActiveOrdersLoading,
-    isCustomerDeliveredOrdersLoading,
-  } = useData();
   const [isLoading, setIsLoading] = useState(false);
-  const { customerActiveOrders, customerDeliveredOrders } = useData();
+  const {
+    customerActiveOrders,
+    customerDeliveredOrders,
+    setCustomerDeliveredOrders,
+  } = useData();
 
   // Handle load all delivered orders
   async function handleLoadAllDeliveredOrders() {
@@ -54,26 +53,26 @@ export default function Dashboard() {
             </p>
           </div>
 
-          {isCustomerActiveOrdersLoading && <h2>Loading...</h2>}
+          {customerActiveOrders.isLoading && <h2>Loading...</h2>}
 
           {/* Active orders */}
-          {customerActiveOrders.length > 0 && (
+          {customerActiveOrders.data.length > 0 && (
             <div className={styles.active_orders}>
               <h2>Active orders</h2>
-              <Orders orders={customerActiveOrders} />
+              <Orders orders={customerActiveOrders.data} />
             </div>
           )}
 
-          {isCustomerDeliveredOrdersLoading && <h2>Loading...</h2>}
+          {customerDeliveredOrders.isLoading && <h2>Loading...</h2>}
 
           {/* Delivered orders */}
-          {customerDeliveredOrders.length > 0 && (
+          {customerDeliveredOrders.data.length > 0 && (
             <div className={styles.delivered_orders}>
               <h2>Delivered orders</h2>
 
-              <Orders orders={customerDeliveredOrders} />
+              <Orders orders={customerDeliveredOrders.data} />
 
-              {customerDeliveredOrders.length === 10 && (
+              {customerDeliveredOrders.data.length === 10 && (
                 <span className={styles.load_all}>
                   <ActionButton
                     buttonText="Load all orders"

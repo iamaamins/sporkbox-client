@@ -39,9 +39,9 @@ export default function Item() {
 
   // Get item and date from schedules restaurants
   useEffect(() => {
-    if (upcomingWeekRestaurants.length > 0 && router.isReady) {
+    if (upcomingWeekRestaurants.data.length > 0 && router.isReady) {
       // Find the restaurant
-      const restaurant = upcomingWeekRestaurants.find(
+      const restaurant = upcomingWeekRestaurants.data.find(
         (upcomingWeekRestaurant) =>
           convertDateToMS(upcomingWeekRestaurant.scheduledOn) ===
             +(router.query.date as string) &&

@@ -133,10 +133,10 @@ export default function CartProvider({ children }: IContextProviderProps) {
         });
 
         // Update customer's active orders state
-        setCustomerActiveOrders((currActiveOrders: ICustomerOrder[]) => [
-          ...currActiveOrders,
-          ...response.data,
-        ]);
+        setCustomerActiveOrders((currState) => ({
+          ...currState,
+          data: [...currState.data, ...response.data],
+        }));
 
         // Remove cart items
         setCartItems([]);

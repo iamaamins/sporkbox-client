@@ -10,7 +10,7 @@ import ActionButton from "@components/layout/ActionButton";
 export default function Restaurants() {
   // Hooks
   const router = useRouter();
-  const { vendors, setVendors, isAllVendorsLoading } = useData();
+  const { vendors, setVendors } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Handle load all vendors
@@ -34,13 +34,13 @@ export default function Restaurants() {
 
   return (
     <section className={styles.all_restaurants}>
-      {isAllVendorsLoading && <h2>Loading...</h2>}
+      {vendors.isLoading && <h2>Loading...</h2>}
 
-      {!isAllVendorsLoading && vendors.length === 0 && (
+      {!vendors.isLoading && vendors.data.length === 0 && (
         <h2 className={styles.no_vendors_title}>No Restaurants</h2>
       )}
 
-      {vendors.length > 0 && (
+      {vendors.data.length > 0 && (
         <>
           <h2 className={styles.all_restaurants_title}>All Restaurants</h2>
 
@@ -55,7 +55,7 @@ export default function Restaurants() {
             </thead>
 
             <tbody>
-              {vendors.map((vendor) => (
+              {vendors.data.map((vendor) => (
                 <tr key={vendor._id}>
                   <td className={styles.important}>
                     <Link href={`/admin/restaurants/${vendor.restaurant._id}`}>
@@ -80,13 +80,14 @@ export default function Restaurants() {
           href="/admin/restaurants/add-restaurant"
         />
 
-        {router.pathname === "/admin/restaurants" && vendors.length === 25 && (
-          <ActionButton
-            buttonText="Load all restaurants"
-            isLoading={isLoading}
-            handleClick={handleLoadAllVendors}
-          />
-        )}
+        {router.pathname === "/admin/restaurants" &&
+          vendors.data.length === 25 && (
+            <ActionButton
+              buttonText="Load all restaurants"
+              isLoading={isLoading}
+              handleClick={handleLoadAllVendors}
+            />
+          )}
       </div>
     </section>
   );

@@ -2,7 +2,14 @@ import axios from "axios";
 import moment from "moment-timezone";
 import { SetStateAction } from "react";
 import { NextRouter } from "next/router";
-import { IVendor, IRestaurant, Groups, ICustomerFavoriteItem } from "types";
+import {
+  IVendor,
+  IRestaurant,
+  Groups,
+  ICustomerFavoriteItem,
+  ICustomerFavoriteItemsCtx,
+  IVendorsCtx,
+} from "types";
 
 // Current year
 export const currentYear = new Date().getFullYear();
@@ -39,11 +46,12 @@ export function checkUser(
 // Update restaurants items
 export function updateVendors(
   updatedData: IVendor | IRestaurant,
-  setVendors: React.Dispatch<SetStateAction<IVendor[]>>
+  setVendors: React.Dispatch<SetStateAction<IVendorsCtx>>
 ) {
   // Update the restaurants state
-  setVendors((currVendors) =>
-    currVendors.map((currVendor) => {
+  setVendors((currState) => ({
+    ...currState,
+    data: currState.data.map((currVendor) => {
       if (currVendor._id === updatedData._id && "status" in updatedData) {
         return {
           ...currVendor,
@@ -60,8 +68,8 @@ export function updateVendors(
       } else {
         return currVendor;
       }
-    })
-  );
+    }),
+  }));
 }
 
 // Group items by property
@@ -113,7 +121,7 @@ export const getDay = (date: number | string) =>
 export async function handleRemoveFromFavorite(
   itemId: string,
   setCustomerFavoriteItems: React.Dispatch<
-    SetStateAction<ICustomerFavoriteItem[]>
+    SetStateAction<ICustomerFavoriteItemsCtx>
   >
 ) {
   try {
@@ -121,12 +129,12 @@ export async function handleRemoveFromFavorite(
     await axiosInstance.delete(`/favorites/${itemId}/remove`);
 
     // Update state
-    setCustomerFavoriteItems(
-      (currCustomerFavoriteItems: ICustomerFavoriteItem[]) =>
-        currCustomerFavoriteItems.filter(
-          (currCustomerFavoriteItem) => currCustomerFavoriteItem._id !== itemId
-        )
-    );
+    setCustomerFavoriteItems((currState) => ({
+      ...currState,
+      data: currState.data.filter(
+        (customerFavoriteItem) => customerFavoriteItem._id !== itemId
+      ),
+    }));
   } catch (err) {
     console.log(err);
   }

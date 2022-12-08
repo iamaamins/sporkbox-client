@@ -47,7 +47,7 @@ export default function Order() {
   useEffect(() => {
     if (order) {
       setFavoriteItem(
-        customerFavoriteItems.find(
+        customerFavoriteItems.data.find(
           (customerFavoriteItem) =>
             customerFavoriteItem.itemId === order.item._id
         )
@@ -65,12 +65,10 @@ export default function Order() {
       });
 
       // Update state
-      setCustomerFavoriteItems(
-        (currCustomerFavoriteItems: ICustomerFavoriteItem[]) => [
-          response.data,
-          ...currCustomerFavoriteItems,
-        ]
-      );
+      setCustomerFavoriteItems((currState) => ({
+        ...currState,
+        data: [...currState.data, response.data],
+      }));
     } catch (err) {
       console.log(err);
     }
@@ -115,20 +113,21 @@ export default function Order() {
       const updatedCustomerDeliveredOrder = response.data;
 
       // Update customer delivered orders
-      setCustomerDeliveredOrders((currCustomerDeliveredOrders) =>
-        currCustomerDeliveredOrders.map((currCustomerDeliveredOrder) => {
+      setCustomerDeliveredOrders((currState) => ({
+        ...currState,
+        data: currState.data.map((customerDeliveredOrder) => {
           if (
-            currCustomerDeliveredOrder._id === updatedCustomerDeliveredOrder._id
+            customerDeliveredOrder._id === updatedCustomerDeliveredOrder._id
           ) {
             return {
-              ...currCustomerDeliveredOrder,
+              ...customerDeliveredOrder,
               hasReviewed: updatedCustomerDeliveredOrder.hasReviewed,
             };
           } else {
-            return currCustomerDeliveredOrder;
+            return customerDeliveredOrder;
           }
-        })
-      );
+        }),
+      }));
     } catch (err) {
       console.log(err);
     } finally {

@@ -19,9 +19,9 @@ export default function Restaurant() {
 
   // Get the restaurant
   useEffect(() => {
-    if (vendors.length > 0 && router.isReady) {
+    if (vendors.data.length > 0 && router.isReady) {
       setVendor(
-        vendors.find(
+        vendors.data.find(
           (vendor) => vendor.restaurant._id === router.query.restaurant
         )
       );

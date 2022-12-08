@@ -16,22 +16,21 @@ export default function Favorite() {
     customerFavoriteItems,
     upcomingWeekRestaurants,
     setCustomerFavoriteItems,
-    isCustomerFavoriteItemsLoading,
   } = useData();
 
   return (
     <section className={styles.favorite}>
-      {isCustomerFavoriteItemsLoading && <h2>Loading...</h2>}
+      {customerFavoriteItems.isLoading && <h2>Loading...</h2>}
 
-      {!isCustomerFavoriteItemsLoading &&
-        customerFavoriteItems.length === 0 && <h2>No favorite items</h2>}
+      {!customerFavoriteItems.isLoading &&
+        customerFavoriteItems.data.length === 0 && <h2>No favorite items</h2>}
 
-      {customerFavoriteItems.length > 0 && (
+      {customerFavoriteItems.data.length > 0 && (
         <>
           <h2 className={styles.favorite_title}>Favorite items</h2>
 
           <div className={styles.items}>
-            {customerFavoriteItems.map((customerFavoriteItem) => (
+            {customerFavoriteItems.data.map((customerFavoriteItem) => (
               <div key={customerFavoriteItem._id} className={styles.item}>
                 <div className={styles.details}>
                   <p className={styles.item_description}>
@@ -39,7 +38,7 @@ export default function Favorite() {
                     {customerFavoriteItem.restaurantName}
                   </p>
 
-                  {upcomingWeekRestaurants.some(
+                  {upcomingWeekRestaurants.data.some(
                     (upcomingWeekRestaurant) =>
                       upcomingWeekRestaurant._id ===
                       customerFavoriteItem.restaurantId
@@ -47,7 +46,7 @@ export default function Favorite() {
                     <div className={styles.dates}>
                       <p className={styles.available}>Available to order on</p>
 
-                      {upcomingWeekRestaurants.map(
+                      {upcomingWeekRestaurants.data.map(
                         (upcomingWeekRestaurant, index) =>
                           upcomingWeekRestaurant._id ===
                             customerFavoriteItem.restaurantId && (

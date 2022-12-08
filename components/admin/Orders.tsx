@@ -13,11 +13,8 @@ export default function Orders({ title, orders }: IOrdersProps) {
   // Hooks
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const {
-    setDeliveredOrders,
-    isAllActiveOrdersLoading,
-    isAllDeliveredOrdersLoading,
-  } = useData();
+  const { allActiveOrders, allDeliveredOrders, setAllDeliveredOrders } =
+    useData();
   const [showController, setShowController] = useState<boolean>(false);
   const [filteredOrders, setFilteredOrders] = useState<IOrder[]>([]);
 
@@ -31,7 +28,7 @@ export default function Orders({ title, orders }: IOrdersProps) {
       const response = await axiosInstance.get(`/orders/delivered/0`);
 
       // Update state
-      setDeliveredOrders(response.data);
+      setAllDeliveredOrders(response.data);
     } catch (err) {
       console.log(err);
     } finally {
@@ -42,12 +39,13 @@ export default function Orders({ title, orders }: IOrdersProps) {
 
   return (
     <section className={styles.orders}>
-      {isAllActiveOrdersLoading ||
-        (isAllDeliveredOrdersLoading && <h2>Loading...</h2>)}
+      {(allActiveOrders.isLoading || allDeliveredOrders.isLoading) && (
+        <h2>Loading...</h2>
+      )}
 
       {/* If there are no active orders */}
-      {!isAllActiveOrdersLoading &&
-        !isAllDeliveredOrdersLoading &&
+      {!allActiveOrders.isLoading &&
+        !allDeliveredOrders.isLoading &&
         orders.length === 0 && <h2>No {title.toLowerCase()}</h2>}
 
       {/* If there are active orders */}

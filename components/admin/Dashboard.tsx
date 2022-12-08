@@ -9,7 +9,7 @@ export default function Dashboard() {
   return (
     <>
       {/* Active orders */}
-      <Orders title="Active orders" orders={allActiveOrders} />
+      <Orders title="Active orders" orders={allActiveOrders.data} />
 
       {/* Scheduled restaurants */}
       <ScheduledRestaurants />

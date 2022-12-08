@@ -1,3 +1,4 @@
+import { IScheduledRestaurant } from "types";
 import { Dispatch, SetStateAction, ReactNode, FormEvent } from "react";
 
 export interface IUser {
@@ -74,37 +75,75 @@ export interface IUserContext {
   setUser: Dispatch<SetStateAction<IUser | null>>;
 }
 
+export interface IAllActiveOrdersCtx {
+  data: IOrder[];
+  isLoading: boolean;
+}
+
+export interface IScheduledRestaurantsCtx {
+  data: IScheduledRestaurant[];
+  isLoading: boolean;
+}
+
+export interface ICompaniesCtx {
+  data: ICompany[];
+  isLoading: boolean;
+}
+
+export interface IVendorsCtx {
+  data: IVendor[];
+  isLoading: boolean;
+}
+
+export interface IAllDeliveredOrdersCtx {
+  data: IOrder[];
+  isLoading: boolean;
+}
+
+export interface ICustomerActiveOrdersCtx {
+  data: ICustomerOrder[];
+  isLoading: boolean;
+}
+
+export interface ICustomerDeliveredOrdersCtx {
+  data: ICustomerOrder[];
+  isLoading: boolean;
+}
+
+export interface IUpcomingWeekRestaurantsCtx {
+  data: IUpcomingWeekRestaurant[];
+  isLoading: boolean;
+}
+
+export interface ICustomerFavoriteItemsCtx {
+  data: ICustomerFavoriteItem[];
+  isLoading: boolean;
+}
+
 export interface IDataContext {
-  vendors: IVendor[];
+  vendors: IVendorsCtx;
   allOrders: IOrder[];
-  companies: ICompany[];
+  companies: ICompaniesCtx;
   nextWeekDates: number[];
-  allActiveOrders: IOrder[];
-  deliveredOrders: IOrder[];
-  isAllVendorsLoading: boolean;
-  isAllCompaniesLoading: boolean;
-  isAllActiveOrdersLoading: boolean;
+  allActiveOrders: IAllActiveOrdersCtx;
+  allDeliveredOrders: IAllDeliveredOrdersCtx;
   customerAllOrders: ICustomerOrder[];
-  isAllDeliveredOrdersLoading: boolean;
-  isScheduledRestaurantsLoading: boolean;
-  isCustomerFavoriteItemsLoading: boolean;
-  isCustomerActiveOrdersLoading: boolean;
-  customerActiveOrders: ICustomerOrder[];
-  customerDeliveredOrders: ICustomerOrder[];
-  isCustomerDeliveredOrdersLoading: boolean;
-  isUpcomingWeekRestaurantsLoading: boolean;
-  scheduledRestaurants: IScheduledRestaurant[];
-  customerFavoriteItems: ICustomerFavoriteItem[];
-  setVendors: Dispatch<SetStateAction<IVendor[]>>;
+  customerActiveOrders: ICustomerActiveOrdersCtx;
+  customerDeliveredOrders: ICustomerDeliveredOrdersCtx;
+  scheduledRestaurants: IScheduledRestaurantsCtx;
+  customerFavoriteItems: ICustomerFavoriteItemsCtx;
+  setVendors: Dispatch<SetStateAction<IVendorsCtx>>;
   nextWeekBudgetAndDates: INextWeekBudgetAndDates[];
-  upcomingWeekRestaurants: IUpcomingWeekRestaurant[];
-  setCompanies: Dispatch<SetStateAction<ICompany[]>>;
-  setAllActiveOrders: Dispatch<SetStateAction<IOrder[]>>;
-  setDeliveredOrders: Dispatch<SetStateAction<IOrder[]>>;
-  setCustomerActiveOrders: Dispatch<SetStateAction<ICustomerOrder[]>>;
-  setCustomerDeliveredOrders: Dispatch<SetStateAction<ICustomerOrder[]>>;
-  setScheduledRestaurants: Dispatch<SetStateAction<IScheduledRestaurant[]>>;
-  setCustomerFavoriteItems: Dispatch<SetStateAction<ICustomerFavoriteItem[]>>;
+  upcomingWeekRestaurants: IUpcomingWeekRestaurantsCtx;
+  setCompanies: Dispatch<SetStateAction<ICompaniesCtx>>;
+  setAllActiveOrders: Dispatch<SetStateAction<IAllActiveOrdersCtx>>;
+  setAllDeliveredOrders: Dispatch<SetStateAction<IAllDeliveredOrdersCtx>>;
+  setCustomerActiveOrders: Dispatch<SetStateAction<ICustomerActiveOrdersCtx>>;
+  setCustomerDeliveredOrders: Dispatch<
+    SetStateAction<ICustomerDeliveredOrdersCtx>
+  >;
+  setScheduledRestaurants: Dispatch<SetStateAction<IScheduledRestaurantsCtx>>;
+  setCustomerFavoriteItems: Dispatch<SetStateAction<ICustomerFavoriteItemsCtx>>;
 }
 
 export interface ICartContext {
