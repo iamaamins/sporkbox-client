@@ -2,12 +2,7 @@ import { useData } from "@context/Data";
 import { useUser } from "@context/User";
 import { useRouter } from "next/router";
 import { axiosInstance, formatNumberToUS } from "@utils/index";
-import {
-  ICartContext,
-  ICartItem,
-  ICustomerOrder,
-  IContextProviderProps,
-} from "types";
+import { ICartContext, ICartItem, IContextProviderProps } from "types";
 import { useState, useEffect, useContext, createContext } from "react";
 
 // Create context
