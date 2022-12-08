@@ -4,15 +4,15 @@ import {
   IOrderGroup,
   ICustomerOrder,
   IContextProviderProps,
-  IScheduledRestaurantsCtx,
-  IAllActiveOrdersCtx,
-  ICompaniesCtx,
-  IVendorsCtx,
-  IAllDeliveredOrdersCtx,
-  ICustomerActiveOrdersCtx,
-  ICustomerDeliveredOrdersCtx,
-  IUpcomingWeekRestaurantsCtx,
-  ICustomerFavoriteItemsCtx,
+  IScheduledRestaurants,
+  IAllActiveOrders,
+  ICompanies,
+  IVendors,
+  IAllDeliveredOrders,
+  ICustomerActiveOrders,
+  ICustomerDeliveredOrders,
+  IUpcomingWeekRestaurants,
+  ICustomerFavoriteItems,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
 import { axiosInstance, convertDateToMS, formatNumberToUS } from "@utils/index";
@@ -35,21 +35,21 @@ export default function DataProvider({ children }: IContextProviderProps) {
   };
 
   const [allActiveOrders, setAllActiveOrders] =
-    useState<IAllActiveOrdersCtx>(initialState);
+    useState<IAllActiveOrders>(initialState);
   const [scheduledRestaurants, setScheduledRestaurants] =
-    useState<IScheduledRestaurantsCtx>(initialState);
-  const [companies, setCompanies] = useState<ICompaniesCtx>(initialState);
-  const [vendors, setVendors] = useState<IVendorsCtx>(initialState);
-  const [upcomingWeekRestaurants, setUpcomingWeekRestaurants] =
-    useState<IUpcomingWeekRestaurantsCtx>(initialState);
+    useState<IScheduledRestaurants>(initialState);
+  const [companies, setCompanies] = useState<ICompanies>(initialState);
+  const [vendors, setVendors] = useState<IVendors>(initialState);
   const [allDeliveredOrders, setAllDeliveredOrders] =
-    useState<IAllDeliveredOrdersCtx>(initialState);
+    useState<IAllDeliveredOrders>(initialState);
   const [customerActiveOrders, setCustomerActiveOrders] =
-    useState<ICustomerActiveOrdersCtx>(initialState);
+    useState<ICustomerActiveOrders>(initialState);
   const [customerDeliveredOrders, setCustomerDeliveredOrders] =
-    useState<ICustomerDeliveredOrdersCtx>(initialState);
+    useState<ICustomerDeliveredOrders>(initialState);
+  const [upcomingWeekRestaurants, setUpcomingWeekRestaurants] =
+    useState<IUpcomingWeekRestaurants>(initialState);
   const [customerFavoriteItems, setCustomerFavoriteItems] =
-    useState<ICustomerFavoriteItemsCtx>(initialState);
+    useState<ICustomerFavoriteItems>(initialState);
 
   // All admin orders
   const allOrders = [...allActiveOrders.data, ...allDeliveredOrders.data];
