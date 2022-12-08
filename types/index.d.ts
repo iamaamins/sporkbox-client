@@ -1,4 +1,3 @@
-import { IScheduledRestaurant } from "types";
 import { Dispatch, SetStateAction, ReactNode, FormEvent } from "react";
 
 export interface IUser {
@@ -118,6 +117,11 @@ export interface IUpcomingWeekRestaurantsCtx {
 export interface ICustomerFavoriteItemsCtx {
   data: ICustomerFavoriteItem[];
   isLoading: boolean;
+}
+
+export interface INextWeekBudgetAndDates {
+  nextWeekDate: number;
+  budgetOnHand: number;
 }
 
 export interface IDataContext {
@@ -271,11 +275,6 @@ export type Groups<
 
 export interface IFormData {
   [key: string]: string | number; // Index type
-}
-
-export interface INextWeekBudgetAndDates {
-  nextWeekDate: number;
-  budgetOnHand: number;
 }
 
 export interface IOrderGroup {

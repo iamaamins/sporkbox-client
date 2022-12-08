@@ -52,8 +52,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
   const [customerFavoriteItems, setCustomerFavoriteItems] =
     useState<ICustomerFavoriteItemsCtx>(initialState);
 
-  console.log("hello");
-
   // All admin orders
   const allOrders: IOrder[] = [
     ...allActiveOrders.data,
