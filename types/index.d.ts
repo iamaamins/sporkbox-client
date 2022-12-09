@@ -134,6 +134,8 @@ export interface IDataContext {
   setVendors: Dispatch<SetStateAction<IVendors>>;
   nextWeekBudgetAndDates: INextWeekBudgetAndDates[];
   upcomingWeekRestaurants: IUpcomingWeekRestaurants;
+  activeOrdersGroups: IOrdersGroup[];
+  deliveredOrdersGroups: IOrdersGroup[];
   setCompanies: Dispatch<SetStateAction<ICompanies>>;
   setAllActiveOrders: Dispatch<SetStateAction<IAllActiveOrders>>;
   setAllDeliveredOrders: Dispatch<SetStateAction<IAllDeliveredOrders>>;
@@ -215,13 +217,13 @@ export interface IFiltersData {
   subCategory: string;
 }
 
-export interface IOrderProps {
-  order: IOrder;
+export interface IOrdersGroupProps {
+  ordersGroup: IOrdersGroup;
 }
 
-export interface IOrdersProps {
+export interface IOrdersGroupsProps {
   title: string;
-  orders: IOrder[];
+  ordersGroups: IOrdersGroup[];
 }
 
 export interface IFilterAndSortProps {
@@ -272,7 +274,7 @@ export interface IFormData {
   [key: string]: string | number; // Index type
 }
 
-export interface IOrdersByCompanyAndDeliveryDate {
+export interface IOrdersGroup {
   orders: IOrder[];
   restaurants: string[];
   companyName: string;

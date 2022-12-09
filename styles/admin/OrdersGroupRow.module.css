@@ -1,16 +1,23 @@
-.order_row {
+.orders_group_row {
   border-bottom: 1px solid var(--border_color);
 }
 
-.order_row td {
+.orders_group_row td {
   padding: 1rem;
   font-weight: 500;
   color: var(--gray);
   font-size: 0.9rem;
 }
 
-.order_row td:last-child {
-  text-align: right;
+.orders_group_row td:last-child {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.orders_group_row td:last-child svg {
+  font-size: 18px;
+  margin-left: 0.5rem;
 }
 
 .important a {
@@ -20,6 +27,11 @@
 
 .hide_on_mobile {
   display: none;
+}
+
+.restaurants span {
+  display: block;
+  padding: 2px 0px;
 }
 
 @media (min-width: 768px) {

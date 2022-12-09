@@ -1,4 +1,4 @@
-.orders {
+.orders_groups {
   padding: var(--section_padding);
 }
 
@@ -29,17 +29,17 @@
   border: 1px solid var(--orange);
 }
 
-.orders table {
+.orders_groups table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.orders th {
+.orders_groups th {
   text-align: left;
   padding: 1rem;
 }
 
-.orders th:last-child {
+.orders_groups th:last-child {
   text-align: right;
 }
 
@@ -57,7 +57,7 @@
 }
 
 @media (min-width: 768px) {
-  .orders {
+  .orders_groups {
     max-width: 85%;
     margin: 0 auto;
   }
@@ -76,7 +76,7 @@
 }
 
 @media (min-width: 1024px) {
-  .orders {
+  .orders_groups {
     max-width: 80%;
     margin: 0 auto;
   }

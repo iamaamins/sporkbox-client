@@ -3,12 +3,12 @@ import { useUser } from "@context/User";
 import { checkUser } from "@utils/index";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
-import Orders from "@components/admin/Orders";
+import Orders from "@components/admin/OrdersGroups";
 import PageLoader from "@components/layout/PageLoader";
 
 export default function OrdersPage() {
   const router = useRouter();
-  const { allDeliveredOrders } = useData();
+  const { deliveredOrdersGroups } = useData();
   const { isUserLoading, isAdmin } = useUser();
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function OrdersPage() {
     <main>
       {isUserLoading && <PageLoader />}
       {isAdmin && (
-        <Orders orders={allDeliveredOrders.data} title="Delivered orders" />
+        <Orders ordersGroups={deliveredOrdersGroups} title="Delivered orders" />
       )}
     </main>
   );

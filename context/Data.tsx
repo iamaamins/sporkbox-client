@@ -1,7 +1,6 @@
 import { useUser } from "./User";
 import {
   IDataContext,
-  IOrdersByCompanyAndDeliveryDate,
   ICustomerOrder,
   IContextProviderProps,
   IScheduledRestaurants,
@@ -16,7 +15,12 @@ import {
   IOrdersByRestaurant,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
-import { axiosInstance, convertDateToMS, formatNumberToUS } from "@utils/index";
+import {
+  axiosInstance,
+  convertDateToMS,
+  formatNumberToUS,
+  createOrdersGroups,
+} from "@utils/index";
 
 // Create context
 const DataContext = createContext({} as IDataContext);
@@ -61,75 +65,36 @@ export default function DataProvider({ children }: IContextProviderProps) {
     ...customerDeliveredOrders.data,
   ];
 
-  // Group orders by company and delivery date
-  const ordersByCompaniesAndDeliveryDates = allActiveOrders.data.reduce(
-    (
-      acc: IOrdersByCompanyAndDeliveryDate[],
-      curr
-    ): IOrdersByCompanyAndDeliveryDate[] => {
-      if (
-        !acc.some(
-          (orderGroup) =>
-            orderGroup.companyName === curr.companyName &&
-            orderGroup.deliveryDate === curr.deliveryDate
-        )
-      ) {
-        return [
-          ...acc,
-          {
-            orders: [curr],
-            companyName: curr.companyName,
-            deliveryDate: curr.deliveryDate,
-            restaurants: [curr.restaurantName],
-          },
-        ] as IOrdersByCompanyAndDeliveryDate[];
-      } else {
-        return acc.map((orderGroup) => {
-          if (
-            orderGroup.companyName === curr.companyName &&
-            orderGroup.deliveryDate === curr.deliveryDate
-          ) {
-            return {
-              ...orderGroup,
-              orders: [...orderGroup.orders, curr],
-              restaurants: orderGroup.restaurants.includes(curr.restaurantName)
-                ? [...orderGroup.restaurants]
-                : [...orderGroup.restaurants, curr.restaurantName],
-            };
-          } else {
-            return orderGroup;
-          }
-        });
-      }
-    },
-    []
-  );
+  // Group active orders by company and delivery date
+  const activeOrdersGroups = createOrdersGroups(allActiveOrders.data);
+
+  // Group delivered orders by company and delivery date
+  const deliveredOrdersGroups = createOrdersGroups(allDeliveredOrders.data);
 
   // Find an order group with a company and delivery date
-  const ordersByCompanyAndDeliveryDate = ordersByCompaniesAndDeliveryDates.find(
+  const ordersGroup = activeOrdersGroups.find(
     (ordersGroup) =>
       ordersGroup.deliveryDate === "Mon, 12 Dec" &&
       ordersGroup.companyName === "Spork Bytes"
   );
 
   // Separate orders for each restaurant
-  const ordersByRestaurants =
-    ordersByCompanyAndDeliveryDate?.restaurants.reduce(
-      (acc: IOrdersByRestaurant[], curr) => {
-        return [
-          ...acc,
-          {
-            restaurantName: curr,
-            companyName: ordersByCompanyAndDeliveryDate.companyName,
-            deliveryDate: ordersByCompanyAndDeliveryDate.deliveryDate,
-            orders: ordersByCompanyAndDeliveryDate.orders.filter(
-              (order) => order.restaurantName === curr
-            ),
-          },
-        ];
-      },
-      []
-    );
+  const ordersByRestaurants = ordersGroup?.restaurants.reduce(
+    (acc: IOrdersByRestaurant[], curr) => {
+      return [
+        ...acc,
+        {
+          restaurantName: curr,
+          companyName: ordersGroup.companyName,
+          deliveryDate: ordersGroup.deliveryDate,
+          orders: ordersGroup.orders.filter(
+            (order) => order.restaurantName === curr
+          ),
+        },
+      ];
+    },
+    []
+  );
 
   // Next week dates
   const nextWeekDates =
@@ -354,6 +319,8 @@ export default function DataProvider({ children }: IContextProviderProps) {
         allOrders,
         setCompanies,
         nextWeekDates,
+        activeOrdersGroups,
+        deliveredOrdersGroups,
         allDeliveredOrders,
         allActiveOrders,
         customerAllOrders,

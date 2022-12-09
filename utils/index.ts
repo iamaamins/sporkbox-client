@@ -8,6 +8,8 @@ import {
   Groups,
   IVendors,
   ICustomerFavoriteItems,
+  IOrder,
+  IOrdersGroup,
 } from "types";
 
 // Current year
@@ -24,7 +26,7 @@ export const formatCurrencyToUSD = (number: number) =>
     currency: "USD",
   }).format(number);
 
-// Convert date to slug
+// Convert date to milliseconds
 export const convertDateToMS = (date: string) => new Date(date).getTime();
 
 // Convert date to string
@@ -185,6 +187,49 @@ export const expiresIn =
   now < nextSaturdayLosAngelesTimestamp
     ? nextSaturdayLosAngelesTimestamp
     : followingWeekSaturdayLosAngelesTimestamp;
+
+// Create text to slug
+export const textToSlug = (text: string) =>
+  text.toLowerCase().split(" ").join("-");
+
+// Group orders by company name and delivery date
+export const createOrdersGroups = (orders: IOrder[]) =>
+  orders.reduce((acc: IOrdersGroup[], curr): IOrdersGroup[] => {
+    if (
+      !acc.some(
+        (ordersGroup) =>
+          ordersGroup.companyName === curr.companyName &&
+          ordersGroup.deliveryDate === curr.deliveryDate
+      )
+    ) {
+      return [
+        ...acc,
+        {
+          orders: [curr],
+          companyName: curr.companyName,
+          deliveryDate: curr.deliveryDate,
+          restaurants: [curr.restaurantName],
+        },
+      ] as IOrdersGroup[];
+    } else {
+      return acc.map((ordersGroup) => {
+        if (
+          ordersGroup.companyName === curr.companyName &&
+          ordersGroup.deliveryDate === curr.deliveryDate
+        ) {
+          return {
+            ...ordersGroup,
+            orders: [...ordersGroup.orders, curr],
+            restaurants: ordersGroup.restaurants.includes(curr.restaurantName)
+              ? [...ordersGroup.restaurants]
+              : [...ordersGroup.restaurants, curr.restaurantName],
+          };
+        } else {
+          return ordersGroup;
+        }
+      }) as IOrdersGroup[];
+    }
+  }, []);
 
 // Create axios instance
 export const axiosInstance = axios.create({

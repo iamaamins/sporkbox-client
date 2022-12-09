@@ -1,21 +1,17 @@
-import Orders from "./Orders";
-import Companies from "./Companies";
+import Orders from "./OrdersGroups";
 import { useData } from "@context/Data";
 import ScheduledRestaurants from "./ScheduledRestaurants";
 
 export default function Dashboard() {
-  const { allActiveOrders } = useData();
+  const { activeOrdersGroups } = useData();
 
   return (
     <>
       {/* Active orders */}
-      <Orders title="Active orders" orders={allActiveOrders.data} />
+      <Orders title="Active orders" ordersGroups={activeOrdersGroups} />
 
       {/* Scheduled restaurants */}
       <ScheduledRestaurants />
-
-      {/* Companies */}
-      <Companies />
     </>
   );
 }
