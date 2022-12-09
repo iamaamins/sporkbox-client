@@ -1,7 +1,7 @@
 import { useUser } from "./User";
 import {
   IDataContext,
-  IOrderGroup,
+  IOrdersByCompanyAndDeliveryDate,
   ICustomerOrder,
   IContextProviderProps,
   IScheduledRestaurants,
@@ -13,6 +13,7 @@ import {
   ICustomerDeliveredOrders,
   IUpcomingWeekRestaurants,
   ICustomerFavoriteItems,
+  IOrdersByRestaurant,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
 import { axiosInstance, convertDateToMS, formatNumberToUS } from "@utils/index";
@@ -60,27 +61,30 @@ export default function DataProvider({ children }: IContextProviderProps) {
     ...customerDeliveredOrders.data,
   ];
 
-  // Order groups
-  const orderGroups = allActiveOrders.data.reduce(
-    (orderGroups: IOrderGroup[], curr): IOrderGroup[] => {
+  // Group orders by company and delivery date
+  const ordersByCompaniesAndDeliveryDates = allActiveOrders.data.reduce(
+    (
+      acc: IOrdersByCompanyAndDeliveryDate[],
+      curr
+    ): IOrdersByCompanyAndDeliveryDate[] => {
       if (
-        !orderGroups.some(
+        !acc.some(
           (orderGroup) =>
             orderGroup.companyName === curr.companyName &&
             orderGroup.deliveryDate === curr.deliveryDate
         )
       ) {
         return [
-          ...orderGroups,
+          ...acc,
           {
             orders: [curr],
             companyName: curr.companyName,
             deliveryDate: curr.deliveryDate,
             restaurants: [curr.restaurantName],
           },
-        ] as IOrderGroup[];
+        ] as IOrdersByCompanyAndDeliveryDate[];
       } else {
-        return orderGroups.map((orderGroup) => {
+        return acc.map((orderGroup) => {
           if (
             orderGroup.companyName === curr.companyName &&
             orderGroup.deliveryDate === curr.deliveryDate
@@ -100,6 +104,32 @@ export default function DataProvider({ children }: IContextProviderProps) {
     },
     []
   );
+
+  // Find an order group with a company and delivery date
+  const ordersByCompanyAndDeliveryDate = ordersByCompaniesAndDeliveryDates.find(
+    (ordersGroup) =>
+      ordersGroup.deliveryDate === "Mon, 12 Dec" &&
+      ordersGroup.companyName === "Spork Bytes"
+  );
+
+  // Separate orders for each restaurant
+  const ordersByRestaurants =
+    ordersByCompanyAndDeliveryDate?.restaurants.reduce(
+      (acc: IOrdersByRestaurant[], curr) => {
+        return [
+          ...acc,
+          {
+            restaurantName: curr,
+            companyName: ordersByCompanyAndDeliveryDate.companyName,
+            deliveryDate: ordersByCompanyAndDeliveryDate.deliveryDate,
+            orders: ordersByCompanyAndDeliveryDate.orders.filter(
+              (order) => order.restaurantName === curr
+            ),
+          },
+        ];
+      },
+      []
+    );
 
   // Next week dates
   const nextWeekDates =

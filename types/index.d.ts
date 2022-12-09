@@ -272,9 +272,16 @@ export interface IFormData {
   [key: string]: string | number; // Index type
 }
 
-export interface IOrderGroup {
+export interface IOrdersByCompanyAndDeliveryDate {
   orders: IOrder[];
   restaurants: string[];
   companyName: string;
+  deliveryDate: string;
+}
+
+export interface IOrdersByRestaurant {
+  companyName: string;
+  restaurantName: string;
+  orders: IOrder[];
   deliveryDate: string;
 }
