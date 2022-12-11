@@ -54,12 +54,12 @@ export default function OrdersGroupDetails({
       )}
 
       {ordersByRestaurants.length > 0 && (
-        <>
+        <div>
           <h2>Order details - {convertDateToText(+router.query.date!)}</h2>
           <table>
             <thead>
               <tr>
-                <th>Date</th>
+                <th className={styles.hide_on_mobile}>Date</th>
                 <th>Company</th>
                 <th>Restaurant</th>
                 <th>Orders</th>
@@ -68,20 +68,22 @@ export default function OrdersGroupDetails({
             </thead>
 
             <tbody>
-              {ordersByRestaurants.map((ordersByRestaurant) => (
-                <tr>
-                  <td>{ordersByRestaurant.deliveryDate}</td>
+              {ordersByRestaurants.map((ordersByRestaurant, index) => (
+                <tr key={index}>
+                  <td className={styles.hide_on_mobile}>
+                    {ordersByRestaurant.deliveryDate}
+                  </td>
                   <td>{ordersByRestaurant.companyName}</td>
                   <td>{ordersByRestaurant.restaurantName}</td>
                   <td>{ordersByRestaurant.orders.length}</td>
-                  <td>Send delivery email</td>
+                  <td>Email</td>
                 </tr>
               ))}
             </tbody>
           </table>
 
-          {ordersByRestaurants.map((ordersByRestaurant) => (
-            <>
+          {ordersByRestaurants.map((ordersByRestaurant, index) => (
+            <div key={index}>
               <h2>
                 Order summary - {ordersByRestaurant.restaurantName} -{" "}
                 {ordersByRestaurant.deliveryDate}
@@ -90,22 +92,28 @@ export default function OrdersGroupDetails({
               <table>
                 <thead>
                   <tr>
-                    <td>Dish</td>
-                    <td>Item price</td>
-                    <td>Quantity</td>
+                    <th>Dish</th>
+                    <th>Item price</th>
+                    <th>Quantity</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  {ordersByRestaurant.orders.map((order) => (
-                    <tr>
+                  {ordersByRestaurant.orders.map((order, index) => (
+                    <tr key={index}>
                       <td>{order.item.name}</td>
-                      <td>{order.item.total / order.item.quantity}</td>
+                      <td>{order.item.total}</td>
                       <td>{order.item.quantity}</td>
                     </tr>
                   ))}
-                  <tr>
+                  <tr className={styles.total}>
                     <td>Total</td>
+                    <td>
+                      {ordersByRestaurant.orders.reduce(
+                        (acc, curr) => acc + curr.item.total,
+                        0
+                      )}
+                    </td>
                     <td>
                       {ordersByRestaurant.orders.reduce(
                         (acc, curr) => acc + curr.item.quantity,
@@ -124,15 +132,15 @@ export default function OrdersGroupDetails({
               <table>
                 <thead>
                   <tr>
-                    <td>Name</td>
-                    <td>Email</td>
-                    <td>Dish</td>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Dish</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  {ordersByRestaurant.orders.map((order) => (
-                    <tr>
+                  {ordersByRestaurant.orders.map((order, index) => (
+                    <tr key={index}>
                       <td>{order.customerName}</td>
                       <td>{order.customerEmail}</td>
                       <td>{order.item.name}</td>
@@ -140,9 +148,9 @@ export default function OrdersGroupDetails({
                   ))}
                 </tbody>
               </table>
-            </>
+            </div>
           ))}
-        </>
+        </div>
       )}
     </section>
   );
