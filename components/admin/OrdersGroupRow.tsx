@@ -1,15 +1,18 @@
 import Link from "next/link";
-import { IOrdersGroupProps } from "types";
+import { IOrdersGroupRowProps } from "types";
+import { FiDownload } from "react-icons/fi";
 import { convertDateToMS, textToSlug } from "@utils/index";
 import styles from "@styles/admin/OrdersGroupRow.module.css";
-import { FiDownload } from "react-icons/fi";
 
-export default function OrdersGroupRow({ ordersGroup }: IOrdersGroupProps) {
+export default function OrdersGroupRow({
+  slug,
+  ordersGroup,
+}: IOrdersGroupRowProps) {
   return (
     <tr className={styles.orders_group_row}>
       <td className={styles.important}>
         <Link
-          href={`/admin/orders-groups/${textToSlug(
+          href={`/admin/${slug}/${textToSlug(
             ordersGroup.companyName
           )}/${convertDateToMS(ordersGroup.deliveryDate)}`}
         >

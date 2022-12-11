@@ -8,7 +8,11 @@ export default function Dashboard() {
   return (
     <>
       {/* Active orders groups */}
-      <OrdersGroups title="Active orders" ordersGroups={activeOrdersGroups} />
+      <OrdersGroups
+        slug="upcoming-orders"
+        title="Upcoming orders"
+        ordersGroups={activeOrdersGroups}
+      />
 
       {/* Scheduled restaurants */}
       <ScheduledRestaurants />

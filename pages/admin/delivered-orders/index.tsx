@@ -1,14 +1,14 @@
 import { useEffect } from "react";
-import { useData } from "@context/Data";
 import { useUser } from "@context/User";
 import { checkUser } from "@utils/index";
 import { useRouter } from "next/router";
-import OrdersGroup from "@components/admin/OrdersGroup";
+import { useData } from "@context/Data";
+import OrdersGroups from "@components/admin/OrdersGroups";
 import PageLoader from "@components/layout/PageLoader";
 
-export default function OrdersGroupPage() {
+export default function DeliveredOrdersGroupsPage() {
   const router = useRouter();
-  const { activeOrdersGroups, allActiveOrders } = useData();
+  const { deliveredOrdersGroups } = useData();
   const { isUserLoading, isAdmin } = useUser();
 
   useEffect(() => {
@@ -19,9 +19,10 @@ export default function OrdersGroupPage() {
     <main>
       {isUserLoading && <PageLoader />}
       {isAdmin && (
-        <OrdersGroup
-          ordersGroups={activeOrdersGroups}
-          isLoading={allActiveOrders.isLoading}
+        <OrdersGroups
+          slug="delivered-orders"
+          title="Delivered orders"
+          ordersGroups={deliveredOrdersGroups}
         />
       )}
     </main>

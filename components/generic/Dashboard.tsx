@@ -11,7 +11,7 @@ export default function Dashboard() {
   const { user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const {
-    customerActiveOrders,
+    customerUpcomingOrders,
     customerDeliveredOrders,
     setCustomerDeliveredOrders,
   } = useData();
@@ -53,13 +53,13 @@ export default function Dashboard() {
             </p>
           </div>
 
-          {customerActiveOrders.isLoading && <h2>Loading...</h2>}
+          {customerUpcomingOrders.isLoading && <h2>Loading...</h2>}
 
           {/* Active orders */}
-          {customerActiveOrders.data.length > 0 && (
+          {customerUpcomingOrders.data.length > 0 && (
             <div className={styles.active_orders}>
               <h2>Active orders</h2>
-              <Orders orders={customerActiveOrders.data} />
+              <Orders orders={customerUpcomingOrders.data} />
             </div>
           )}
 

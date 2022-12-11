@@ -110,7 +110,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
           className={!isAdmin ? styles.hide : ""}
           onClick={() => setIsOpen(false)}
         >
-          <Link href="/admin/delivered">
+          <Link href="/admin/delivered-orders">
             <a>
               <MdOutlineRestaurantMenu /> Delivered
             </a>

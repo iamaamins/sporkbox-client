@@ -106,8 +106,12 @@ export default function DesktopNav() {
         </li>
 
         <li className={!isAdmin ? styles.hide : ""}>
-          <Link href="/admin/delivered">
-            <a className={pathName === "/admin/delivered" ? styles.active : ""}>
+          <Link href="/admin/delivered-orders">
+            <a
+              className={
+                pathName === "/admin/delivered-orders" ? styles.active : ""
+              }
+            >
               Delivered
             </a>
           </Link>

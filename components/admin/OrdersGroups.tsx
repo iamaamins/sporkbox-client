@@ -10,13 +10,14 @@ import styles from "@styles/admin/OrdersGroups.module.css";
 import ActionButton from "@components/layout/ActionButton";
 
 export default function OrdersGroups({
+  slug,
   title,
   ordersGroups,
 }: IOrdersGroupsProps) {
   // Hooks
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const { allActiveOrders, allDeliveredOrders, setAllDeliveredOrders } =
+  const { allUpcomingOrders, allDeliveredOrders, setAllDeliveredOrders } =
     useData();
   const [showController, setShowController] = useState<boolean>(false);
   const [filteredOrders, setFilteredOrders] = useState<IOrder[]>([]);
@@ -42,12 +43,12 @@ export default function OrdersGroups({
 
   return (
     <section className={styles.orders_groups}>
-      {(allActiveOrders.isLoading || allDeliveredOrders.isLoading) && (
+      {(allUpcomingOrders.isLoading || allDeliveredOrders.isLoading) && (
         <h2>Loading...</h2>
       )}
 
       {/* If there are no orders groups */}
-      {!allActiveOrders.isLoading &&
+      {!allUpcomingOrders.isLoading &&
         !allDeliveredOrders.isLoading &&
         ordersGroups.length === 0 && <h2>No {title.toLowerCase()}</h2>}
 
@@ -103,7 +104,11 @@ export default function OrdersGroups({
               )} */}
 
               {ordersGroups.map((ordersGroup, index) => (
-                <OrdersGroupRow key={index} ordersGroup={ordersGroup} />
+                <OrdersGroupRow
+                  key={index}
+                  slug={slug}
+                  ordersGroup={ordersGroup}
+                />
               ))}
             </tbody>
           </table>

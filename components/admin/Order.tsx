@@ -15,7 +15,7 @@ export default function Order() {
   const router = useRouter();
   const [order, setOrder] = useState<IOrder>();
   const [isLoading, setIsLoading] = useState(false);
-  const { allOrders, setAllActiveOrders, setAllDeliveredOrders } = useData();
+  const { allOrders, setAllUpcomingOrders, setAllDeliveredOrders } = useData();
 
   // Get the order
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function Order() {
       );
 
       // Update active orders
-      setAllActiveOrders((currState) => ({
+      setAllUpcomingOrders((currState) => ({
         ...currState,
         data: currState.data.filter(
           (currActiveOrder) => currActiveOrder._id !== order?._id

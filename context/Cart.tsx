@@ -15,7 +15,7 @@ export const useCart = () => useContext(CartContext);
 export default function CartProvider({ children }: IContextProviderProps) {
   const router = useRouter();
   const { user, isCustomer } = useUser();
-  const { setCustomerActiveOrders } = useData();
+  const { setCustomerUpcomingOrders } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<ICartItem[]>([]);
 
@@ -128,7 +128,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
         });
 
         // Update customer's active orders state
-        setCustomerActiveOrders((currState) => ({
+        setCustomerUpcomingOrders((currState) => ({
           ...currState,
           data: [...currState.data, ...response.data],
         }));

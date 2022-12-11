@@ -4,15 +4,14 @@ import {
   ICustomerOrder,
   IContextProviderProps,
   IScheduledRestaurants,
-  IAllActiveOrders,
+  IAllUpcomingOrders,
   ICompanies,
   IVendors,
   IAllDeliveredOrders,
-  ICustomerActiveOrders,
+  ICustomerUpcomingOrders,
   ICustomerDeliveredOrders,
   IUpcomingWeekRestaurants,
   ICustomerFavoriteItems,
-  IOrdersByRestaurant,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
 import {
@@ -39,16 +38,16 @@ export default function DataProvider({ children }: IContextProviderProps) {
     isLoading: true,
   };
 
-  const [allActiveOrders, setAllActiveOrders] =
-    useState<IAllActiveOrders>(initialState);
+  const [allUpcomingOrders, setAllUpcomingOrders] =
+    useState<IAllUpcomingOrders>(initialState);
   const [scheduledRestaurants, setScheduledRestaurants] =
     useState<IScheduledRestaurants>(initialState);
   const [companies, setCompanies] = useState<ICompanies>(initialState);
   const [vendors, setVendors] = useState<IVendors>(initialState);
   const [allDeliveredOrders, setAllDeliveredOrders] =
     useState<IAllDeliveredOrders>(initialState);
-  const [customerActiveOrders, setCustomerActiveOrders] =
-    useState<ICustomerActiveOrders>(initialState);
+  const [customerUpcomingOrders, setCustomerUpcomingOrders] =
+    useState<ICustomerUpcomingOrders>(initialState);
   const [customerDeliveredOrders, setCustomerDeliveredOrders] =
     useState<ICustomerDeliveredOrders>(initialState);
   const [upcomingWeekRestaurants, setUpcomingWeekRestaurants] =
@@ -57,44 +56,19 @@ export default function DataProvider({ children }: IContextProviderProps) {
     useState<ICustomerFavoriteItems>(initialState);
 
   // All admin orders
-  const allOrders = [...allActiveOrders.data, ...allDeliveredOrders.data];
+  const allOrders = [...allUpcomingOrders.data, ...allDeliveredOrders.data];
 
   // All customer orders
   const customerAllOrders: ICustomerOrder[] = [
-    ...customerActiveOrders.data,
+    ...customerUpcomingOrders.data,
     ...customerDeliveredOrders.data,
   ];
 
   // Group active orders by company and delivery date
-  const activeOrdersGroups = createOrdersGroups(allActiveOrders.data);
+  const activeOrdersGroups = createOrdersGroups(allUpcomingOrders.data);
 
   // Group delivered orders by company and delivery date
   const deliveredOrdersGroups = createOrdersGroups(allDeliveredOrders.data);
-
-  // // Find an order group with a company and delivery date
-  // const ordersGroup = activeOrdersGroups.find(
-  //   (ordersGroup) =>
-  //     ordersGroup.deliveryDate === "Mon, 12 Dec" &&
-  //     ordersGroup.companyName === "Spork Bytes"
-  // );
-
-  // // Separate orders for each restaurant
-  // const ordersByRestaurants = ordersGroup?.restaurants.reduce(
-  //   (acc: IOrdersByRestaurant[], curr) => {
-  //     return [
-  //       ...acc,
-  //       {
-  //         restaurantName: curr,
-  //         companyName: ordersGroup.companyName,
-  //         deliveryDate: ordersGroup.deliveryDate,
-  //         orders: ordersGroup.orders.filter(
-  //           (order) => order.restaurantName === curr
-  //         ),
-  //       },
-  //     ];
-  //   },
-  //   []
-  // );
 
   // Next week dates
   const nextWeekDates =
@@ -109,12 +83,13 @@ export default function DataProvider({ children }: IContextProviderProps) {
 
   // Next week budget and dates
   const nextWeekBudgetAndDates =
-    isCustomer && nextWeekDates.length > 0 && !customerActiveOrders.isLoading
+    isCustomer && nextWeekDates.length > 0 && !customerUpcomingOrders.isLoading
       ? nextWeekDates.map((nextWeekDate) => {
           // Find the orders those match the date
-          const activeOrders = customerActiveOrders.data.filter(
-            (customerActiveOrder) =>
-              convertDateToMS(customerActiveOrder.deliveryDate) === nextWeekDate
+          const activeOrders = customerUpcomingOrders.data.filter(
+            (customerUpcomingOrder) =>
+              convertDateToMS(customerUpcomingOrder.deliveryDate) ===
+              nextWeekDate
           );
 
           // If active orders are found on the date
@@ -153,11 +128,11 @@ export default function DataProvider({ children }: IContextProviderProps) {
         const response = await axiosInstance.get(`/orders/active`);
 
         // Update state
-        setAllActiveOrders({ isLoading: false, data: response.data });
+        setAllUpcomingOrders({ isLoading: false, data: response.data });
       } catch (err) {
         console.log(err);
         // Remove loader
-        setAllActiveOrders((currState) => ({
+        setAllUpcomingOrders((currState) => ({
           ...currState,
           isLoading: false,
         }));
@@ -244,12 +219,12 @@ export default function DataProvider({ children }: IContextProviderProps) {
         const response = await axiosInstance.get(`/orders/me/active`);
 
         // Update state
-        setCustomerActiveOrders({ isLoading: false, data: response.data });
+        setCustomerUpcomingOrders({ isLoading: false, data: response.data });
       } catch (err) {
         // Log error
         console.log(err);
         // Remove loader
-        setCustomerActiveOrders((currState) => ({
+        setCustomerUpcomingOrders((currState) => ({
           ...currState,
           isLoading: false,
         }));
@@ -322,17 +297,17 @@ export default function DataProvider({ children }: IContextProviderProps) {
         activeOrdersGroups,
         deliveredOrdersGroups,
         allDeliveredOrders,
-        allActiveOrders,
+        allUpcomingOrders,
         customerAllOrders,
-        setAllActiveOrders,
+        setAllUpcomingOrders,
         setAllDeliveredOrders,
-        customerActiveOrders,
+        customerUpcomingOrders,
         scheduledRestaurants,
         customerFavoriteItems,
         nextWeekBudgetAndDates,
         customerDeliveredOrders,
         upcomingWeekRestaurants,
-        setCustomerActiveOrders,
+        setCustomerUpcomingOrders,
         setScheduledRestaurants,
         setCustomerFavoriteItems,
         setCustomerDeliveredOrders,

@@ -78,7 +78,7 @@ interface IIsLoading {
   isLoading: boolean;
 }
 
-export interface IAllActiveOrders extends IIsLoading {
+export interface IAllUpcomingOrders extends IIsLoading {
   data: IOrder[];
 }
 
@@ -98,7 +98,7 @@ export interface IAllDeliveredOrders extends IIsLoading {
   data: IOrder[];
 }
 
-export interface ICustomerActiveOrders extends IIsLoading {
+export interface ICustomerUpcomingOrders extends IIsLoading {
   data: ICustomerOrder[];
 }
 
@@ -124,10 +124,10 @@ export interface IDataContext {
   allOrders: IOrder[];
   companies: ICompanies;
   nextWeekDates: number[];
-  allActiveOrders: IAllActiveOrders;
+  allUpcomingOrders: IAllUpcomingOrders;
   allDeliveredOrders: IAllDeliveredOrders;
   customerAllOrders: ICustomerOrder[];
-  customerActiveOrders: ICustomerActiveOrders;
+  customerUpcomingOrders: ICustomerUpcomingOrders;
   customerDeliveredOrders: ICustomerDeliveredOrders;
   scheduledRestaurants: IScheduledRestaurants;
   customerFavoriteItems: ICustomerFavoriteItems;
@@ -137,9 +137,9 @@ export interface IDataContext {
   activeOrdersGroups: IOrdersGroup[];
   deliveredOrdersGroups: IOrdersGroup[];
   setCompanies: Dispatch<SetStateAction<ICompanies>>;
-  setAllActiveOrders: Dispatch<SetStateAction<IAllActiveOrders>>;
+  setAllUpcomingOrders: Dispatch<SetStateAction<IAllUpcomingOrders>>;
   setAllDeliveredOrders: Dispatch<SetStateAction<IAllDeliveredOrders>>;
-  setCustomerActiveOrders: Dispatch<SetStateAction<ICustomerActiveOrders>>;
+  setCustomerUpcomingOrders: Dispatch<SetStateAction<ICustomerUpcomingOrders>>;
   setCustomerDeliveredOrders: Dispatch<
     SetStateAction<ICustomerDeliveredOrders>
   >;
@@ -217,11 +217,13 @@ export interface IFiltersData {
   subCategory: string;
 }
 
-export interface IOrdersGroupProps {
+export interface IOrdersGroupRowProps {
+  slug: string;
   ordersGroup: IOrdersGroup;
 }
 
 export interface IOrdersGroupsProps {
+  slug: string;
   title: string;
   ordersGroups: IOrdersGroup[];
 }

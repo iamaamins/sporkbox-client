@@ -2,8 +2,9 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { IOrdersByRestaurant, IOrdersGroupDetailsProps } from "types";
 import { convertDateToMS, convertDateToText, textToSlug } from "@utils/index";
+import styles from "@styles/admin/OrdersGroupDetails.module.css";
 
-export default function OrdersGroup({
+export default function OrdersGroupDetails({
   isLoading,
   ordersGroups,
 }: IOrdersGroupDetailsProps) {
@@ -45,7 +46,7 @@ export default function OrdersGroup({
   }, [router.isReady, isLoading]);
 
   return (
-    <section>
+    <section className={styles.orders_group_details}>
       {isLoading && <h2>Loading...</h2>}
 
       {!isLoading && ordersByRestaurants.length === 0 && (
