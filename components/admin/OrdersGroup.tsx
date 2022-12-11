@@ -1,19 +1,19 @@
-import { convertDateToMS, convertDateToText, textToSlug } from "@utils/index";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { IOrdersByRestaurant, IOrdersGroupDetailsProps } from "types";
+import { convertDateToMS, convertDateToText, textToSlug } from "@utils/index";
 
 export default function OrdersGroup({
   isLoading,
   ordersGroups,
 }: IOrdersGroupDetailsProps) {
+  // Hooks
   const router = useRouter();
   const [ordersByRestaurants, setOrdersByRestaurants] = useState<
     IOrdersByRestaurant[]
   >([]);
 
-  console.log(ordersByRestaurants);
-
+  // Separate order for each restaurant
   useEffect(() => {
     if (router.isReady && !isLoading) {
       // Find the orders group
@@ -97,13 +97,11 @@ export default function OrdersGroup({
 
                 <tbody>
                   {ordersByRestaurant.orders.map((order) => (
-                    <>
-                      <tr>
-                        <td>{order.item.name}</td>
-                        <td>{order.item.total / order.item.quantity}</td>
-                        <td>{order.item.quantity}</td>
-                      </tr>
-                    </>
+                    <tr>
+                      <td>{order.item.name}</td>
+                      <td>{order.item.total / order.item.quantity}</td>
+                      <td>{order.item.quantity}</td>
+                    </tr>
                   ))}
                   <tr>
                     <td>Total</td>
