@@ -34,6 +34,11 @@
   padding: 2px 0px;
 }
 
+.action a {
+  display: flex;
+  color: var(--orange);
+}
+
 @media (min-width: 768px) {
   .hide_on_mobile {
     display: table-cell;

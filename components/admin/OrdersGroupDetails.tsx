@@ -54,7 +54,7 @@ export default function OrdersGroupDetails({
       )}
 
       {ordersByRestaurants.length > 0 && (
-        <div>
+        <>
           <h2>Order details - {convertDateToText(+router.query.date!)}</h2>
           <table>
             <thead>
@@ -150,7 +150,7 @@ export default function OrdersGroupDetails({
               </table>
             </div>
           ))}
-        </div>
+        </>
       )}
     </section>
   );
