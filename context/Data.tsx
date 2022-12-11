@@ -71,30 +71,30 @@ export default function DataProvider({ children }: IContextProviderProps) {
   // Group delivered orders by company and delivery date
   const deliveredOrdersGroups = createOrdersGroups(allDeliveredOrders.data);
 
-  // Find an order group with a company and delivery date
-  const ordersGroup = activeOrdersGroups.find(
-    (ordersGroup) =>
-      ordersGroup.deliveryDate === "Mon, 12 Dec" &&
-      ordersGroup.companyName === "Spork Bytes"
-  );
+  // // Find an order group with a company and delivery date
+  // const ordersGroup = activeOrdersGroups.find(
+  //   (ordersGroup) =>
+  //     ordersGroup.deliveryDate === "Mon, 12 Dec" &&
+  //     ordersGroup.companyName === "Spork Bytes"
+  // );
 
-  // Separate orders for each restaurant
-  const ordersByRestaurants = ordersGroup?.restaurants.reduce(
-    (acc: IOrdersByRestaurant[], curr) => {
-      return [
-        ...acc,
-        {
-          restaurantName: curr,
-          companyName: ordersGroup.companyName,
-          deliveryDate: ordersGroup.deliveryDate,
-          orders: ordersGroup.orders.filter(
-            (order) => order.restaurantName === curr
-          ),
-        },
-      ];
-    },
-    []
-  );
+  // // Separate orders for each restaurant
+  // const ordersByRestaurants = ordersGroup?.restaurants.reduce(
+  //   (acc: IOrdersByRestaurant[], curr) => {
+  //     return [
+  //       ...acc,
+  //       {
+  //         restaurantName: curr,
+  //         companyName: ordersGroup.companyName,
+  //         deliveryDate: ordersGroup.deliveryDate,
+  //         orders: ordersGroup.orders.filter(
+  //           (order) => order.restaurantName === curr
+  //         ),
+  //       },
+  //     ];
+  //   },
+  //   []
+  // );
 
   // Next week dates
   const nextWeekDates =

@@ -287,3 +287,8 @@ export interface IOrdersByRestaurant {
   orders: IOrder[];
   deliveryDate: string;
 }
+
+export interface IOrdersGroupDetailsProps {
+  isLoading: boolean;
+  ordersGroups: IOrdersGroup[];
+}

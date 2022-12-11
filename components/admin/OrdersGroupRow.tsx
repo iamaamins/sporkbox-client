@@ -9,7 +9,7 @@ export default function OrdersGroupRow({ ordersGroup }: IOrdersGroupProps) {
     <tr className={styles.orders_group_row}>
       <td className={styles.important}>
         <Link
-          href={`/admin/orders/${textToSlug(
+          href={`/admin/orders-groups/${textToSlug(
             ordersGroup.companyName
           )}/${convertDateToMS(ordersGroup.deliveryDate)}`}
         >

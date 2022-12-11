@@ -1,4 +1,4 @@
-import Orders from "./OrdersGroups";
+import OrdersGroups from "./OrdersGroups";
 import { useData } from "@context/Data";
 import ScheduledRestaurants from "./ScheduledRestaurants";
 
@@ -7,8 +7,8 @@ export default function Dashboard() {
 
   return (
     <>
-      {/* Active orders */}
-      <Orders title="Active orders" ordersGroups={activeOrdersGroups} />
+      {/* Active orders groups */}
+      <OrdersGroups title="Active orders" ordersGroups={activeOrdersGroups} />
 
       {/* Scheduled restaurants */}
       <ScheduledRestaurants />
