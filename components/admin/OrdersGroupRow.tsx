@@ -2,7 +2,7 @@ import Link from "next/link";
 import { IOrdersGroupRowProps } from "types";
 import { FiDownload } from "react-icons/fi";
 import { CSVLink } from "react-csv";
-import { convertDateToMS, textToSlug } from "@utils/index";
+import { convertDateToMS, createSlug } from "@utils/index";
 import styles from "@styles/admin/OrdersGroupRow.module.css";
 
 export default function OrdersGroupRow({
@@ -18,6 +18,8 @@ export default function OrdersGroupRow({
     restaurantName: order.restaurantName,
     itemName: order.item.name,
     price: order.item.total,
+    tags: order.item.tags,
+    description: order.item.description,
   }));
 
   // CSV headers
@@ -46,14 +48,14 @@ export default function OrdersGroupRow({
       label: "Item",
       key: "itemName",
     },
-    // {
-    //   label: "Dietary Tags",
-    //   key: "dietaryTags",
-    // },
-    // {
-    //   label: "Description",
-    //   key: "description",
-    // },
+    {
+      label: "Dietary Tags",
+      key: "tags",
+    },
+    {
+      label: "Description",
+      key: "description",
+    },
     {
       label: "Price",
       key: "price",
@@ -67,7 +69,7 @@ export default function OrdersGroupRow({
     <tr className={styles.orders_group_row}>
       <td className={styles.important}>
         <Link
-          href={`/admin/${slug}/${textToSlug(
+          href={`/admin/${slug}/${createSlug(
             ordersGroup.companyName
           )}/${convertDateToMS(ordersGroup.deliveryDate)}`}
         >

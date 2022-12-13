@@ -189,7 +189,7 @@ export const expiresIn =
     : followingWeekSaturdayLosAngelesTimestamp;
 
 // Create text to slug
-export const textToSlug = (text: string) =>
+export const createSlug = (text: string) =>
   text.toLowerCase().split(" ").join("-");
 
 // Group orders by company name and delivery date

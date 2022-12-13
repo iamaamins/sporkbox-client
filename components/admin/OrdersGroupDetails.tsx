@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { IOrdersByRestaurant, IOrdersGroupDetailsProps } from "types";
-import { convertDateToMS, convertDateToText, textToSlug } from "@utils/index";
+import { convertDateToMS, convertDateToText, createSlug } from "@utils/index";
 import styles from "@styles/admin/OrdersGroupDetails.module.css";
 
 export default function OrdersGroupDetails({
@@ -21,7 +21,7 @@ export default function OrdersGroupDetails({
       const ordersGroup = ordersGroups.find(
         (ordersGroup) =>
           convertDateToMS(ordersGroup.deliveryDate) === +router.query.date! &&
-          textToSlug(ordersGroup.companyName) === router.query.company
+          createSlug(ordersGroup.companyName) === router.query.company
       );
 
       // Separate orders for each restaurant

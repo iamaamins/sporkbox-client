@@ -182,9 +182,11 @@ export interface IOrder {
   deliveryAddress: string;
   item: {
     _id: string;
+    tags: string[];
     name: string;
     total: number;
     quantity: number;
+    description: string;
   };
 }
 
