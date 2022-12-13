@@ -88,7 +88,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
           // Find the orders those match the date
           const activeOrders = customerUpcomingOrders.data.filter(
             (customerUpcomingOrder) =>
-              convertDateToMS(customerUpcomingOrder.deliveryDate) ===
+              convertDateToMS(customerUpcomingOrder.delivery.date) ===
               nextWeekDate
           );
 

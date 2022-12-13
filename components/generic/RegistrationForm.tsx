@@ -10,7 +10,8 @@ import styles from "@styles/generic/RegistrationForm.module.css";
 export default function RegistrationForm() {
   // Initial state
   const initialSate = {
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -24,7 +25,7 @@ export default function RegistrationForm() {
 
   // Destructure form data and check
   // If there is an empty field
-  const { name, email, password, confirmPassword } = formData;
+  const { firstName, lastName, email, password, confirmPassword } = formData;
 
   // Check if passwords match
   const passwordsMatch = password === confirmPassword;
@@ -73,8 +74,23 @@ export default function RegistrationForm() {
       <p className={styles.title}>Create your account</p>
       <form onSubmit={handleSubmit}>
         <div className={styles.item}>
-          <label htmlFor="name">Your name</label>
-          <input type="text" id="name" value={name} onChange={handleChange} />
+          <label htmlFor="firstName">First name</label>
+          <input
+            type="text"
+            id="firstName"
+            value={firstName}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className={styles.item}>
+          <label htmlFor="lastName">Last name</label>
+          <input
+            type="text"
+            id="lastName"
+            value={lastName}
+            onChange={handleChange}
+          />
         </div>
 
         <div className={styles.item}>

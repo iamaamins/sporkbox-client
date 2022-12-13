@@ -12,6 +12,7 @@ import {
   convertDateToMS,
   formatNumberToUS,
   formatCurrencyToUSD,
+  convertDateToText,
 } from "@utils/index";
 
 export default function Item() {
@@ -133,12 +134,19 @@ export default function Item() {
           </div>
           <div className={styles.details_controller_and_button}>
             <div className={styles.item_details}>
-              <p className={styles.item_name}>{item.name}</p>
+              <p className={styles.item_name}>
+                {item.name} - {formatCurrencyToUSD(item.price)}
+              </p>
               <p className={styles.item_description}>{item.description}</p>
               <p className={styles.tags}>
                 {item.tags.split(",").map((tag, index) => (
                   <span key={index}>{tag}</span>
                 ))}
+              </p>
+
+              <p className={styles.delivery_date}>
+                Delivery date -{" "}
+                {convertDateToText(+(router.query.date as string))}
               </p>
             </div>
 

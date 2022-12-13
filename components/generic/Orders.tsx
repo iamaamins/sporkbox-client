@@ -4,6 +4,7 @@ import { convertDateToText } from "@utils/index";
 import styles from "@styles/generic/Orders.module.css";
 
 export default function Orders({ orders }: ICustomerOrderProps) {
+  console.log(orders);
   return (
     <table className={styles.orders}>
       <thead>
@@ -18,13 +19,13 @@ export default function Orders({ orders }: ICustomerOrderProps) {
       <tbody>
         {orders.map((order) => (
           <tr key={order._id}>
-            <td>{convertDateToText(order.deliveryDate)}</td>
-            <td className={styles.hide_on_mobile}>{order.restaurantName}</td>
             <td className={styles.important}>
               <Link href={`/dashboard/${order._id}`}>
-                <a>{order.item.name}</a>
+                <a>{convertDateToText(order.delivery.date)}</a>
               </Link>
             </td>
+            <td className={styles.hide_on_mobile}>{order.restaurant.name}</td>
+            <td>{order.item.name}</td>
             <td>{order.item.quantity}</td>
           </tr>
         ))}

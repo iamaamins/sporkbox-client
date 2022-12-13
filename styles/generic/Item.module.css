@@ -80,6 +80,12 @@
   background: var(--border_color);
 }
 
+.delivery_date {
+  margin-top: 1rem;
+  font-weight: 500;
+  font-size: 16px;
+}
+
 @media (min-width: 768px) {
   .item {
     display: flex;

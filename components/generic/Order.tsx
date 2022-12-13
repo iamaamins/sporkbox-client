@@ -10,6 +10,7 @@ import { ICustomerFavoriteItem, ICustomerOrder } from "types";
 import {
   axiosInstance,
   convertDateToText,
+  formatCurrencyToUSD,
   handleRemoveFromFavorite,
 } from "@utils/index";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
@@ -33,7 +34,7 @@ export default function Order() {
   useEffect(() => {
     if (customerAllOrders.length > 0 && router.isReady) {
       const order = customerAllOrders.find(
-        (customerAllOrder) => customerAllOrder._id === router.query.order
+        (customerOrder) => customerOrder._id === router.query.order
       );
 
       // Update state if the order is found
@@ -61,7 +62,7 @@ export default function Order() {
       // Make request to backend
       const response = await axiosInstance.post(`/favorites/add`, {
         itemId: order?.item._id,
-        restaurantId: order?.restaurantId,
+        restaurantId: order?.restaurant.id,
       });
 
       // Update state
@@ -101,7 +102,7 @@ export default function Order() {
     try {
       // Make request to the backend
       const response = await axiosInstance.post(
-        `/restaurants/${order?.restaurantId}/${order?.item._id}`,
+        `/restaurants/${order?.restaurant.id}/${order?.item._id}`,
         {
           rating,
           comment,
@@ -179,15 +180,16 @@ export default function Order() {
                   <p>
                     Your order for{" "}
                     <span>
-                      {order.item.quantity} {order.item.name}
+                      {order.item.quantity} {order.item.name} -{" "}
+                      {formatCurrencyToUSD(order.item.total)}
                     </span>{" "}
-                    from <span>{order.restaurantName}</span> is currently{" "}
+                    from <span>{order.restaurant.name}</span> is currently{" "}
                     <span>{order.status.toLowerCase()}</span>. The order will be
                     delivered on{" "}
-                    <span>{convertDateToText(order.deliveryDate)}</span>
+                    <span>{convertDateToText(order.delivery.date)}</span>
                   </p>
 
-                  <LinkButton linkText="Contact support" href="/contact-us" />
+                  <a href="mailto:portland@sporkbytes.com">Contact support</a>
                 </>
               )}
 
@@ -198,9 +200,9 @@ export default function Order() {
                     <span>
                       {order.item.quantity} {order.item.name}
                     </span>{" "}
-                    from <span>{order.restaurantName}</span> was{" "}
+                    from <span>{order.restaurant.name}</span> was{" "}
                     <span>{order.status.toLowerCase()}</span> on{" "}
-                    <span>{convertDateToText(order.deliveryDate)}</span>.
+                    <span>{convertDateToText(order.delivery.date)}</span>.
                   </p>
 
                   <p>{order.hasReviewed}</p>

@@ -9,7 +9,8 @@ import styles from "@styles/admin/AddRestaurant.module.css";
 export default function AddRestaurant() {
   // Initial state
   const initialState = {
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     city: "",
@@ -29,7 +30,8 @@ export default function AddRestaurant() {
 
   // Destructure form data
   const {
-    name,
+    firstName,
+    lastName,
     email,
     password,
     city,
@@ -91,8 +93,23 @@ export default function AddRestaurant() {
         <p className={styles.form_title}>Owner info</p>
 
         <div className={styles.item}>
-          <label htmlFor="name">Name</label>
-          <input type="text" id="name" value={name} onChange={handleChange} />
+          <label htmlFor="firstName">First name</label>
+          <input
+            type="text"
+            id="firstName"
+            value={firstName}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className={styles.item}>
+          <label htmlFor="lastName">Last name</label>
+          <input
+            type="text"
+            id="lastName"
+            value={lastName}
+            onChange={handleChange}
+          />
         </div>
 
         <div className={styles.item}>

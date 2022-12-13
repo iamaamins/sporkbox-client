@@ -2,7 +2,8 @@ import { Dispatch, SetStateAction, ReactNode, FormEvent } from "react";
 
 export interface IUser {
   _id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   role: string;
   status?: string;
@@ -198,12 +199,16 @@ export interface ICustomerOrder {
     total: number;
     quantity: number;
   };
+  delivery: {
+    date: string;
+  };
+  restaurant: {
+    id: string;
+    name: string;
+  };
   status: string;
   createdAt: string;
   hasReviewed: boolean;
-  deliveryDate: string;
-  restaurantId: string;
-  restaurantName: string;
 }
 
 export interface ICustomerOrderProps {

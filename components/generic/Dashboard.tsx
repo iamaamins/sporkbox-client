@@ -40,7 +40,7 @@ export default function Dashboard() {
       {user && (
         <>
           <div className={styles.details}>
-            <h2>Welcome {user.name}</h2>
+            <h2>Welcome {user.lastName}</h2>
             <p>
               Daily budget:{" "}
               <span>{formatCurrencyToUSD(user.company?.dailyBudget!)}</span>
