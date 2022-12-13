@@ -1,7 +1,12 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { IOrdersByRestaurant, IOrdersGroupDetailsProps } from "types";
-import { convertDateToMS, convertDateToText, createSlug } from "@utils/index";
+import {
+  convertDateToMS,
+  convertDateToText,
+  createSlug,
+  formatCurrencyToUSD,
+} from "@utils/index";
 import styles from "@styles/admin/OrdersGroupDetails.module.css";
 
 export default function OrdersGroupDetails({
@@ -102,16 +107,18 @@ export default function OrdersGroupDetails({
                   {ordersByRestaurant.orders.map((order, index) => (
                     <tr key={index}>
                       <td>{order.item.name}</td>
-                      <td>{order.item.total}</td>
+                      <td>{formatCurrencyToUSD(order.item.total)}</td>
                       <td>{order.item.quantity}</td>
                     </tr>
                   ))}
                   <tr className={styles.total}>
                     <td>Total</td>
                     <td>
-                      {ordersByRestaurant.orders.reduce(
-                        (acc, curr) => acc + curr.item.total,
-                        0
+                      {formatCurrencyToUSD(
+                        ordersByRestaurant.orders.reduce(
+                          (acc, curr) => acc + curr.item.total,
+                          0
+                        )
                       )}
                     </td>
                     <td>
