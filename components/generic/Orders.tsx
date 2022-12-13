@@ -4,7 +4,6 @@ import { convertDateToText } from "@utils/index";
 import styles from "@styles/generic/Orders.module.css";
 
 export default function Orders({ orders }: ICustomerOrderProps) {
-  console.log(orders);
   return (
     <table className={styles.orders}>
       <thead>

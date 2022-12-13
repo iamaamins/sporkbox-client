@@ -171,23 +171,33 @@ export interface ICartItem {
 
 export interface IOrder {
   _id: string;
+  customer: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  restaurant: {
+    id: string;
+    name: string;
+  };
+  company: {
+    name: string;
+  };
+  delivery: {
+    date: string;
+    address: string;
+  };
   status: string;
-  customerId: string;
+  hasReviewed: boolean;
   createdAt: string;
-  restaurantId: string;
-  companyName: string;
-  customerName: string;
-  deliveryDate: string;
-  customerEmail: string;
-  restaurantName: string;
-  deliveryAddress: string;
   item: {
     _id: string;
-    tags: string[];
     name: string;
-    total: number;
-    quantity: number;
+    tags: string;
     description: string;
+    quantity: number;
+    total: number;
   };
 }
 

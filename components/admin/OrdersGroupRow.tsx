@@ -11,11 +11,12 @@ export default function OrdersGroupRow({
 }: IOrdersGroupRowProps) {
   // CSV data
   const data = ordersGroup.orders.map((order) => ({
-    deliveryDate: order.deliveryDate,
-    companyName: order.companyName,
-    customerName: order.customerName,
-    customerEmail: order.customerEmail,
-    restaurantName: order.restaurantName,
+    deliveryDate: order.delivery.date,
+    companyName: order.company.name,
+    firstName: order.customer.firstName,
+    lastName: order.customer.lastName,
+    customerEmail: order.customer.email,
+    restaurantName: order.restaurant.name,
     itemName: order.item.name,
     price: order.item.total,
     tags: order.item.tags,

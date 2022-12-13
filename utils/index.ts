@@ -198,31 +198,31 @@ export const createOrdersGroups = (orders: IOrder[]) =>
     if (
       !acc.some(
         (ordersGroup) =>
-          ordersGroup.companyName === curr.companyName &&
-          ordersGroup.deliveryDate === curr.deliveryDate
+          ordersGroup.companyName === curr.company.name &&
+          ordersGroup.deliveryDate === curr.delivery.date
       )
     ) {
       return [
         ...acc,
         {
           orders: [curr],
-          companyName: curr.companyName,
-          deliveryDate: curr.deliveryDate,
-          restaurants: [curr.restaurantName],
+          companyName: curr.company.name,
+          deliveryDate: curr.delivery.date,
+          restaurants: [curr.restaurant.name],
         },
       ] as IOrdersGroup[];
     } else {
       return acc.map((ordersGroup) => {
         if (
-          ordersGroup.companyName === curr.companyName &&
-          ordersGroup.deliveryDate === curr.deliveryDate
+          ordersGroup.companyName === curr.company.name &&
+          ordersGroup.deliveryDate === curr.delivery.date
         ) {
           return {
             ...ordersGroup,
             orders: [...ordersGroup.orders, curr],
-            restaurants: ordersGroup.restaurants.includes(curr.restaurantName)
+            restaurants: ordersGroup.restaurants.includes(curr.restaurant.name)
               ? [...ordersGroup.restaurants]
-              : [...ordersGroup.restaurants, curr.restaurantName],
+              : [...ordersGroup.restaurants, curr.restaurant.name],
           };
         } else {
           return ordersGroup;

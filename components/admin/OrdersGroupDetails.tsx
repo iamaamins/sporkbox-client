@@ -35,7 +35,7 @@ export default function OrdersGroupDetails({
                 companyName: ordersGroup.companyName,
                 deliveryDate: ordersGroup.deliveryDate,
                 orders: ordersGroup.orders.filter(
-                  (order) => order.restaurantName === curr
+                  (order) => order.restaurant.name === curr
                 ),
               },
             ];
@@ -141,8 +141,10 @@ export default function OrdersGroupDetails({
                 <tbody>
                   {ordersByRestaurant.orders.map((order, index) => (
                     <tr key={index}>
-                      <td>{order.customerName}</td>
-                      <td>{order.customerEmail}</td>
+                      <td>
+                        {order.customer.firstName} {order.customer.lastName}
+                      </td>
+                      <td>{order.customer.email}</td>
                       <td>{order.item.name}</td>
                     </tr>
                   ))}
