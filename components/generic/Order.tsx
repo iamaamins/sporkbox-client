@@ -4,7 +4,6 @@ import { useData } from "@context/Data";
 import { AiFillStar } from "react-icons/ai";
 import { AiOutlineStar } from "react-icons/ai";
 import styles from "@styles/generic/Order.module.css";
-import LinkButton from "@components/layout/LinkButton";
 import SubmitButton from "@components/layout/SubmitButton";
 import { ICustomerFavoriteItem, ICustomerOrder } from "types";
 import {
@@ -62,7 +61,7 @@ export default function Order() {
       // Make request to backend
       const response = await axiosInstance.post(`/favorites/add`, {
         itemId: order?.item._id,
-        restaurantId: order?.restaurant.id,
+        restaurantId: order?.restaurant._id,
       });
 
       // Update state
@@ -102,7 +101,7 @@ export default function Order() {
     try {
       // Make request to the backend
       const response = await axiosInstance.post(
-        `/restaurants/${order?.restaurant.id}/${order?.item._id}`,
+        `/restaurants/${order?.restaurant._id}/${order?.item._id}`,
         {
           rating,
           comment,

@@ -172,13 +172,13 @@ export interface ICartItem {
 export interface IOrder {
   _id: string;
   customer: {
-    id: string;
+    _id: string;
     firstName: string;
     lastName: string;
     email: string;
   };
   restaurant: {
-    id: string;
+    _id: string;
     name: string;
   };
   company: {
@@ -204,7 +204,7 @@ export interface IOrder {
 export interface ICustomerOrder {
   _id: string;
   item: {
-    id: string;
+    _id: string;
     name: string;
     total: number;
     quantity: number;
@@ -213,7 +213,7 @@ export interface ICustomerOrder {
     date: string;
   };
   restaurant: {
-    id: string;
+    _id: string;
     name: string;
   };
   status: string;

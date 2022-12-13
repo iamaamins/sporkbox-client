@@ -135,6 +135,8 @@ export default function CartProvider({ children }: IContextProviderProps) {
           ordersPayload,
         });
 
+        console.log(response);
+
         // Update customer's active orders state
         setCustomerUpcomingOrders((currState) => ({
           ...currState,
