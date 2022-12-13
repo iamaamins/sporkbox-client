@@ -117,13 +117,23 @@ export default function CartProvider({ children }: IContextProviderProps) {
   // Checkout cart
   async function checkoutCart() {
     if (isCustomer) {
+      // Create orders payload
+      const ordersPayload = cartItems.map((cartItem) => ({
+        itemId: cartItem._id,
+        quantity: cartItem.quantity,
+        restaurantId: cartItem.restaurantId,
+        deliveryDate: cartItem.deliveryDate,
+      }));
+
       // Create an order
       try {
         // Show loader
         setIsLoading(true);
 
         // Make request to the backend
-        const response = await axiosInstance.post(`/orders/create`, cartItems);
+        const response = await axiosInstance.post(`/orders/create`, {
+          ordersPayload,
+        });
 
         // Update customer's active orders state
         setCustomerUpcomingOrders((currState) => ({

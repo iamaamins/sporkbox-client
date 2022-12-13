@@ -43,7 +43,7 @@
   text-align: right;
 }
 
-.orders thead tr {
+.orders_groups thead tr {
   background-color: var(--almost_white);
 }
 

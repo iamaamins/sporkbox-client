@@ -135,7 +135,7 @@ export interface IDataContext {
   setVendors: Dispatch<SetStateAction<IVendors>>;
   nextWeekBudgetAndDates: INextWeekBudgetAndDates[];
   upcomingWeekRestaurants: IUpcomingWeekRestaurants;
-  activeOrdersGroups: IOrdersGroup[];
+  upcomingOrdersGroups: IOrdersGroup[];
   deliveredOrdersGroups: IOrdersGroup[];
   setCompanies: Dispatch<SetStateAction<ICompanies>>;
   setAllUpcomingOrders: Dispatch<SetStateAction<IAllUpcomingOrders>>;
@@ -204,7 +204,7 @@ export interface IOrder {
 export interface ICustomerOrder {
   _id: string;
   item: {
-    _id: string;
+    id: string;
     name: string;
     total: number;
     quantity: number;

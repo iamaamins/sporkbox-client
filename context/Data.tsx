@@ -64,8 +64,8 @@ export default function DataProvider({ children }: IContextProviderProps) {
     ...customerDeliveredOrders.data,
   ];
 
-  // Group active orders by company and delivery date
-  const activeOrdersGroups = createOrdersGroups(allUpcomingOrders.data);
+  // Group upcoming orders by company and delivery date
+  const upcomingOrdersGroups = createOrdersGroups(allUpcomingOrders.data);
 
   // Group delivered orders by company and delivery date
   const deliveredOrdersGroups = createOrdersGroups(allDeliveredOrders.data);
@@ -86,29 +86,29 @@ export default function DataProvider({ children }: IContextProviderProps) {
     isCustomer && nextWeekDates.length > 0 && !customerUpcomingOrders.isLoading
       ? nextWeekDates.map((nextWeekDate) => {
           // Find the orders those match the date
-          const activeOrders = customerUpcomingOrders.data.filter(
+          const upcomingOrders = customerUpcomingOrders.data.filter(
             (customerUpcomingOrder) =>
               convertDateToMS(customerUpcomingOrder.delivery.date) ===
               nextWeekDate
           );
 
-          // If active orders are found on the date
-          if (activeOrders.length > 0) {
-            // Calculate the active orders total
-            const activeOrdersTotal = activeOrders.reduce(
+          // If upcoming orders are found on the date
+          if (upcomingOrders.length > 0) {
+            // Calculate the upcoming orders total
+            const upcomingOrdersTotal = upcomingOrders.reduce(
               (acc, order) => acc + order.item.total,
               0
             );
 
-            // Return the date and company budget - active orders total
+            // Return the date and company budget - upcoming orders total
             return {
               nextWeekDate,
               budgetOnHand: formatNumberToUS(
-                user?.company?.dailyBudget! - activeOrdersTotal
+                user?.company?.dailyBudget! - upcomingOrdersTotal
               ),
             };
           } else {
-            // If no active orders are found with the
+            // If no upcoming orders are found with the
             // date then return the date and company budget
             return {
               nextWeekDate,
@@ -122,10 +122,10 @@ export default function DataProvider({ children }: IContextProviderProps) {
   useEffect(() => {
     // Get admin data
     async function getAdminData() {
-      // Get active orders
+      // Get all upcoming orders
       try {
         // Make request to backend
-        const response = await axiosInstance.get(`/orders/active`);
+        const response = await axiosInstance.get(`/orders/upcoming`);
 
         // Update state
         setAllUpcomingOrders({ isLoading: false, data: response.data });
@@ -213,10 +213,10 @@ export default function DataProvider({ children }: IContextProviderProps) {
   useEffect(() => {
     // Get customer data
     async function getCustomerData() {
-      // Get all active orders
+      // Get all upcoming orders
       try {
         // Make request to backend
-        const response = await axiosInstance.get(`/orders/me/active`);
+        const response = await axiosInstance.get(`/orders/me/upcoming`);
 
         // Update state
         setCustomerUpcomingOrders({ isLoading: false, data: response.data });
@@ -294,7 +294,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
         allOrders,
         setCompanies,
         nextWeekDates,
-        activeOrdersGroups,
+        upcomingOrdersGroups,
         deliveredOrdersGroups,
         allDeliveredOrders,
         allUpcomingOrders,
