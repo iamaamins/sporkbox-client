@@ -34,8 +34,12 @@ export default function OrdersGroupRow({
       key: "companyName",
     },
     {
-      label: "Name",
-      key: "customerName",
+      label: "First name",
+      key: "firstName",
+    },
+    {
+      label: "Last name",
+      key: "lastName",
     },
     {
       label: "Email",
