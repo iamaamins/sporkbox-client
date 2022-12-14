@@ -78,7 +78,7 @@ export default function ProjectScopePage() {
             </ol>
           </li>
 
-          <li>3. Change 'Item tags' to 'Dietary tags'.</li>
+          <li>3. Change &apos;Item tags&apos; to &apos;Dietary tags&apos;.</li>
           <li>
             4. Ability to remove and deactivate a scheduled restaurant from a
             date.
@@ -89,7 +89,7 @@ export default function ProjectScopePage() {
               </li>
               <li>
                 2. When deactivated, upcoming orders related to that restaurant
-                won't be archived.
+                won&apos;t be archived.
               </li>
             </ol>
           </li>
@@ -98,7 +98,7 @@ export default function ProjectScopePage() {
             <ol style={subListStyle}>
               <li>
                 1. Restaurant logo will be shown as item image if the item
-                doesn't have a dedicated image.
+                doesn&apos;t have a dedicated image.
               </li>
             </ol>
           </li>
@@ -151,7 +151,8 @@ export default function ProjectScopePage() {
             3 pm Friday.
           </li>
           <li>
-            4. Change of "Active order" to "Upcoming orders". on the dashboard
+            4. Change of &apos;Active order&apos; to &apos;Upcoming
+            orders&apos;. on the dashboard
           </li>
           <li>5. Shows scheduled restaurants with no date restrictions.</li>
           <li>6. Shows delivery date on the individual item page.</li>
