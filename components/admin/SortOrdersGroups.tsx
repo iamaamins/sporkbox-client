@@ -45,10 +45,10 @@ export default function SortOrdersGroups({
         onChange={(e) => setCategory(e.target.value)}
       >
         <option hidden aria-hidden>
-          Sort orders by
+          Sort orders
         </option>
-        <option value="company">Company</option>
-        <option value="deliveryDate">Delivery date</option>
+        <option value="company">By company</option>
+        <option value="deliveryDate">By delivery date</option>
       </select>
     </div>
   );

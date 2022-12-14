@@ -1,67 +1,185 @@
 export default function ProjectScopePage() {
   return (
-    <main style={{ width: "80%", margin: "0 auto", padding: "2rem" }}>
-      <div style={{ marginBottom: "2rem" }}>
-        <h2 style={{ marginBottom: ".5rem" }}>
-          Admin Dashboard - Built with React - 2 weeks timeline{" "}
-        </h2>
-        <h3 style={{ marginBottom: ".5rem" }}>Admin:</h3>
+    <main style={mainStyle}>
+      <div style={sectionStyle}>
+        <h2 style={headerStyle}>Admin Dashboard</h2>
         <ul>
-          <li>1. can add and remove a restaurant.</li>
-          <li>2. can add and remove meals for a restaurant. </li>
-          <li>3. can add and remove a company. </li>
           <li>
-            4. can select the restaurants for each weekday to show on the front
-            end.
+            1. Shows Upcoming Orders grouped by Company and Delivery date.
           </li>
-          <li>5. can see all active orders.</li>
           <li>
-            6. can mark an order as completed once it’s delivered and the
-            employee will receive a notification either via slack or email.
+            2. “Orders Details Page” for each group by clicking on the delivery
+            date.
+          </li>
+          <li>
+            3. Button to export orders details of a group with following fields
+            as CSV.
+            <ol style={subListStyle}>
+              <li>1. Delivery date</li>
+              <li>2. First name</li>
+              <li> 3. Last name</li>
+              <li> 4. Email</li>
+              <li> 5. Restaurant name</li>
+              <li> 6. Item name</li>
+              <li> 7. Dietary tags</li>
+              <li> 8. Description</li>
+              <li> 9. Total price</li>
+            </ol>
+          </li>
+          <li>4. Ability to sort orders groups by date and company.</li>
+          <li>
+            5. Shows Scheduled Restaurants with the date and the company they
+            are scheduled for.
           </li>
         </ul>
       </div>
 
-      <div style={{ marginBottom: "2rem" }}>
-        <h2 style={{ marginBottom: ".5rem" }}>
-          Frontend - Built with React - 2 weeks timeline
+      <div style={sectionStyle}>
+        <h2 style={headerStyle}>
+          Orders details page for a delivery date and a company
         </h2>
-        <h3 style={{ marginBottom: ".5rem" }}>The website:</h3>
         <ul>
-          <li>1. will have a homepage.</li>
-          <li>2. will have login and registration pages for employees.</li>
           <li>
-            3. will have a week page where available meals will be shown for
-            each day for the upcoming week.
+            1. Orders details section with a row for each restaurant with
+            delivery date, company, restaurant name, and number of orders with a
+            button to email all the customers once orders are delivered.
           </li>
           <li>
-            4. will have a customizable basket/cart to save the selected meals
-            by an employee.
+            2. Orders summary section for each restaurant with a row for each
+            order with dish name, total price, quantity and a row in the bottom
+            with total price and total quantity.
           </li>
           <li>
-            5. will have a checkout page (no payment gateway integration) for an
-            employee to order meals.
+            3. Customer information section for each restaurant with a row for
+            each customer with name, email and name of the dish they ordered.
           </li>
         </ul>
       </div>
 
-      <div style={{ marginBottom: "2rem" }}>
-        <h2 style={{ marginBottom: ".5rem" }}>
-          Employee Dashboard - Built with React - 2 weeks timeline
-        </h2>
-        <h3 style={{ marginBottom: ".5rem" }}>Employee:</h3>
+      <div style={sectionStyle}>
+        <h2 style={headerStyle}>Other admin features</h2>
         <ul>
-          <li>1. can log in and see the current and previous orders. </li>
-          <li>2. can add a meal to their favorite list. </li>
-          <li>3. can leave a review on a meal</li>
+          <li>
+            1. Ability to edit a company, customer, restaurant, and item
+            details.
+          </li>
+          <li>
+            2. Ability to archive and unarchive a company, customer, restaurant,
+            item, and an order.
+            <ol style={subListStyle}>
+              <li>1. Confirm archive action with a popup.</li>
+              <li>
+                2. When an order is archived, it will be removed both from
+                customer and admin side. Customer will be notified by email and
+                can reorder for that date.
+              </li>
+            </ol>
+          </li>
+
+          <li>3. Change 'Item tags' to 'Dietary tags'.</li>
+          <li>
+            4. Ability to remove and deactivate a scheduled restaurant from a
+            date.
+            <ol style={subListStyle}>
+              <li>
+                1. When removed, upcoming orders related to that restaurant will
+                be archived.
+              </li>
+              <li>
+                2. When deactivated, upcoming orders related to that restaurant
+                won't be archived.
+              </li>
+            </ol>
+          </li>
+          <li>
+            5. Ability to upload and change the item image.
+            <ol style={subListStyle}>
+              <li>
+                1. Restaurant logo will be shown as item image if the item
+                doesn't have a dedicated image.
+              </li>
+            </ol>
+          </li>
+          <li>
+            6. Ability to see registered customers on the related company page
+            (sorted alphabetically by last name, two sections for active and
+            archived customers, and ability to change status) with:
+            <ol style={subListStyle}>
+              <li>1. First name</li>
+              <li>2. Last name</li>
+              <li>3. Email address</li>
+              <li>4. Date joined</li>
+            </ol>
+          </li>
+          <li>
+            7. Separate page for each customer with:
+            <ol style={subListStyle}>
+              <li>1. Name, company address.</li>
+              <li> 2. All upcoming orders.</li>
+              <li> 3. All delivered orders. </li>
+            </ol>
+          </li>
+
+          <li>
+            8. Ability to create new admins from the admin side with:
+            <ol style={subListStyle}>
+              <li>1. First name</li>
+              <li>2. Last name</li>
+              <li>3. Email address</li>
+              <li>4. Password</li>
+            </ol>
+          </li>
+
+          <li>
+            9. Ability to reset the password by oneself only when logged in.
+          </li>
+          <li>10. Change of the “Orders” tab to “Delivered”</li>
+          <li>11. Ability to upload logo for a restaurant during creation.</li>
         </ul>
       </div>
 
-      <h2 style={{ marginBottom: "2rem" }}>
-        Backend and APIs - Built with NodeJs - 2 weeks timeline
-      </h2>
+      <div style={sectionStyle}>
+        <h2 style={headerStyle}>Client features</h2>
+        <ul>
+          <li>
+            1. Shows portland@sporkbytes.com & 503-821-7709 on the contact page.
+          </li>
+          <li>
+            2. Ordering close and automatic cart items removal functionality at
+            3 pm Friday.
+          </li>
+          <li>
+            4. Change of "Active order" to "Upcoming orders". on the dashboard
+          </li>
+          <li>5. Shows scheduled restaurants with no date restrictions.</li>
+          <li>6. Shows delivery date on the individual item page.</li>
+          <li>7. Shows price next to the item name on the item page.</li>
+          <li>8. Shows total price on the order summary item page.</li>
+          <li>
+            9. Contact support button opens the mail app with
+            portland@sporkbytes.com.
+          </li>
+        </ul>
+      </div>
 
-      <div style={{ marginBottom: "2rem" }}>
+      <div style={sectionStyle}>
+        <h2 style={headerStyle}>General features</h2>
+        <ul>
+          <li>1. Show alert for error, success, and over budget.</li>
+        </ul>
+      </div>
+
+      <div style={sectionStyle}>
+        <h2 style={headerStyle}>Bug fix</h2>
+        <ul>
+          <li>
+            1. Can not check out an item that has been discounted down to the
+            budget allowance. .
+          </li>
+        </ul>
+      </div>
+
+      {/* <div style={{ marginBottom: "2rem" }}>
         <h2 style={{ marginBottom: ".5rem" }}>Payment milestones:</h2>
         <ul>
           <li>
@@ -94,7 +212,12 @@ export default function ProjectScopePage() {
       <p>
         Project completion and final milestone approval when the employee
         dashboard is connected with the backend.
-      </p>
+      </p> */}
     </main>
   );
 }
+
+const sectionStyle = { marginBottom: "2rem" };
+const subListStyle = { marginLeft: "2rem" };
+const headerStyle = { marginBottom: ".5rem" };
+const mainStyle = { width: "80%", margin: "0 auto", padding: "2rem" };
