@@ -9,26 +9,6 @@
   justify-content: space-between;
 }
 
-.filter {
-  display: flex;
-  align-items: center;
-  font-size: 0.9rem;
-  padding: 0px 10px;
-  cursor: pointer;
-  border-radius: 2rem;
-  border: 1px solid var(--gray);
-  transition: all 100ms ease-in-out;
-}
-
-.filter svg {
-  margin-left: 4px;
-}
-
-.show_controller {
-  color: var(--orange);
-  border: 1px solid var(--orange);
-}
-
 .orders_groups table {
   width: 100%;
   border-collapse: collapse;

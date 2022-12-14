@@ -3,9 +3,9 @@ import { useState } from "react";
 import { useData } from "@context/Data";
 import { BiSort } from "react-icons/bi";
 import { useRouter } from "next/router";
-import FilterAndSort from "./FilterAndSort";
+import SortOrdersGroups from "./SortOrdersGroups";
 import { axiosInstance } from "@utils/index";
-import { IOrder, IOrdersGroupsProps } from "types";
+import { IOrder, IOrdersGroup, IOrdersGroupsProps, ISorted } from "types";
 import styles from "@styles/admin/OrdersGroups.module.css";
 import ActionButton from "@components/layout/ActionButton";
 
@@ -19,8 +19,12 @@ export default function OrdersGroups({
   const [isLoading, setIsLoading] = useState(false);
   const { allUpcomingOrders, allDeliveredOrders, setAllDeliveredOrders } =
     useData();
-  const [showController, setShowController] = useState<boolean>(false);
-  const [filteredOrders, setFilteredOrders] = useState<IOrder[]>([]);
+  const [sorted, setSorted] = useState<ISorted>({
+    byCompany: false,
+    byDeliveryDate: false,
+  });
+
+  // console.log(ordersGroups);
 
   async function handleLoadAllDeliveredOrders() {
     // Get all delivered orders
@@ -59,24 +63,14 @@ export default function OrdersGroups({
           <div className={styles.orders_top}>
             <h2>{title}</h2>
 
-            <p
-              className={`${styles.filter} ${
-                showController && styles.show_controller
-              }`}
-              onClick={() => setShowController(!showController)}
-            >
-              Filter <BiSort />
-            </p>
+            {/* Sort orders groups by company and delivery date */}
+            <SortOrdersGroups
+              setSorted={setSorted}
+              ordersGroups={ordersGroups}
+            />
           </div>
 
-          {/* Filters */}
-          {/* <FilterAndSort
-            orders={ordersGroups}
-            showController={showController}
-            setFilteredOrders={setFilteredOrders}
-          /> */}
-
-          {/* Orders */}
+          {/* Orders groups */}
           <table>
             <thead>
               <tr>
@@ -89,20 +83,6 @@ export default function OrdersGroups({
             </thead>
 
             <tbody>
-              {/* {filteredOrders.length === 0 ? (
-                <>
-                  {ordersGroups.map((ordersGroup, index) => (
-                    <OrderRow key={index} ordersGroup={ordersGroup} />
-                  ))}
-                </>
-              ) : (
-                <>
-                  {filteredOrders.map((order, index) => (
-                    <OrderRow key={index} ordersGroup={order} />
-                  ))}
-                </>
-              )} */}
-
               {ordersGroups.map((ordersGroup, index) => (
                 <OrdersGroupRow
                   key={index}
@@ -113,6 +93,7 @@ export default function OrdersGroups({
             </tbody>
           </table>
 
+          {/* Load all orders button */}
           {router.pathname === "/admin/orders" &&
             ordersGroups.length === 25 && (
               <span className={styles.load_all}>

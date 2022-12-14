@@ -245,10 +245,14 @@ export interface IOrdersGroupsProps {
   ordersGroups: IOrdersGroup[];
 }
 
+export interface ISorted {
+  byCompany: boolean;
+  byDeliveryDate: boolean;
+}
+
 export interface IFilterAndSortProps {
-  orders: IOrder[];
-  showController: boolean;
-  setFilteredOrders: Dispatch<SetStateAction<IOrder[]>>;
+  ordersGroups: IOrdersGroup[];
+  setSorted: Dispatch<SetStateAction<ISorted>>;
 }
 
 export interface IButtons {
