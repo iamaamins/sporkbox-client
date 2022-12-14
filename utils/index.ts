@@ -234,9 +234,9 @@ export const createOrdersGroups = (orders: IOrder[]) =>
 // Create axios instance
 export const axiosInstance = axios.create({
   withCredentials: true,
-  baseURL: "https://api.araqo.com",
+  baseURL: "https://api.sporkbox.octib.com",
 });
 
 // http://localhost:5100
-// https://api.araqo.com
 // https://api.sporkbox.app
+// https://api.sporkbox.octib.com
