@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function ProjectScopePage() {
   return (
     <main style={mainStyle}>
@@ -177,6 +179,46 @@ export default function ProjectScopePage() {
             budget allowance. .
           </li>
         </ul>
+      </div>
+
+      <div style={sectionStyle}>
+        <h2 style={headerStyle}>Admin dashboard</h2>
+        <Image
+          src="/project-scope/admin-dashboard.png"
+          height="100%"
+          width="100%"
+          layout="responsive"
+        />
+      </div>
+
+      <div style={sectionStyle}>
+        <h2 style={headerStyle}>Orders details page</h2>
+        <Image
+          src="/project-scope/orders-details.png"
+          height="100%"
+          width="100%"
+          layout="responsive"
+        />
+      </div>
+
+      <div style={sectionStyle}>
+        <h2 style={headerStyle}>Company page</h2>
+        <Image
+          src="/project-scope/company.png"
+          height="100%"
+          width="100%"
+          layout="responsive"
+        />
+      </div>
+
+      <div style={sectionStyle}>
+        <h2 style={headerStyle}>Customer details page</h2>
+        <Image
+          src="/project-scope/customer-details.png"
+          height="100%"
+          width="100%"
+          layout="responsive"
+        />
       </div>
 
       {/* <div style={{ marginBottom: "2rem" }}>
