@@ -3,6 +3,7 @@ import Image from "next/image";
 export default function ProjectScopePage() {
   return (
     <main style={mainStyle}>
+      <h1 style={headerStyle}>Sprint II</h1>
       <div style={sectionStyle}>
         <h2 style={headerStyle}>Admin Dashboard</h2>
         <ul>
@@ -14,8 +15,8 @@ export default function ProjectScopePage() {
             date.
           </li>
           <li>
-            3. Button to export orders details of a group with following fields
-            as CSV.
+            3. Button to export a group of orders with the following fields as
+            CSV.
             <ol style={subListStyle}>
               <li>1. Delivery date</li>
               <li>2. First name</li>
@@ -28,7 +29,7 @@ export default function ProjectScopePage() {
               <li> 9. Total price</li>
             </ol>
           </li>
-          <li>4. Ability to sort orders groups by date and company.</li>
+          <li>4. Ability to sort groups of orders by date and company.</li>
           <li>
             5. Shows Scheduled Restaurants with the date and the company they
             are scheduled for.
@@ -37,23 +38,21 @@ export default function ProjectScopePage() {
       </div>
 
       <div style={sectionStyle}>
-        <h2 style={headerStyle}>
-          Orders details page for a delivery date and a company
-        </h2>
+        <h2 style={headerStyle}>The orders details page</h2>
         <ul>
           <li>
             1. Orders details section with a row for each restaurant with
-            delivery date, company, restaurant name, and number of orders with a
-            button to email all the customers once orders are delivered.
+            delivery date, company, restaurant name, and the number of orders
+            with a button to email all the customers once orders are delivered.
           </li>
           <li>
             2. Orders summary section for each restaurant with a row for each
-            order with dish name, total price, quantity and a row in the bottom
-            with total price and total quantity.
+            order with dish name, total price, and quantity and a row at the
+            bottom with the total price and total quantity.
           </li>
           <li>
             3. Customer information section for each restaurant with a row for
-            each customer with name, email and name of the dish they ordered.
+            each customer with name, email, and name of the dish they ordered.
           </li>
         </ul>
       </div>
@@ -62,18 +61,17 @@ export default function ProjectScopePage() {
         <h2 style={headerStyle}>Other admin features</h2>
         <ul>
           <li>
-            1. Ability to edit a company, customer, restaurant, and item
-            details.
+            1. Ability to edit company, customer, restaurant, and item details.
           </li>
           <li>
-            2. Ability to archive and unarchive a company, customer, restaurant,
-            item, and an order.
+            2. Ability to archive and unarchive company, customer, restaurant,
+            item, and order.
             <ol style={subListStyle}>
               <li>1. Confirm archive action with a popup.</li>
               <li>
-                2. When an order is archived, it will be removed both from
-                customer and admin side. Customer will be notified by email and
-                can reorder for that date.
+                2. When an order is archived, it will be removed both from the
+                customer and admin dashboard. The customer will be notified by
+                email and can reorder for that date.
               </li>
             </ol>
           </li>
@@ -97,7 +95,7 @@ export default function ProjectScopePage() {
             5. Ability to upload and change the item image.
             <ol style={subListStyle}>
               <li>
-                1. Restaurant logo will be shown as item image if the item
+                1. Restaurant logo will be shown as the item image if the item
                 doesn&apos;t have a dedicated image.
               </li>
             </ol>
@@ -105,18 +103,18 @@ export default function ProjectScopePage() {
           <li>
             6. Ability to see registered customers on the related company page
             (sorted alphabetically by last name, two sections for active and
-            archived customers, and ability to change status) with:
+            archived customers, and the ability to change status) with:
             <ol style={subListStyle}>
               <li>1. First name</li>
               <li>2. Last name</li>
               <li>3. Email address</li>
-              <li>4. Date joined</li>
+              <li>4. Joined date</li>
             </ol>
           </li>
           <li>
             7. Separate page for each customer with:
             <ol style={subListStyle}>
-              <li>1. Name, company address.</li>
+              <li>1. Name, and company address.</li>
               <li> 2. All upcoming orders.</li>
               <li> 3. All delivered orders. </li>
             </ol>
@@ -135,8 +133,11 @@ export default function ProjectScopePage() {
           <li>
             9. Ability to reset the password by oneself only when logged in.
           </li>
-          <li>10. Change of the “Orders” tab to “Delivered”</li>
-          <li>11. Ability to upload logo for a restaurant during creation.</li>
+          <li>10. Change the “Orders” tab to “Delivered”.</li>
+          <li>
+            11. Ability to upload a logo for a restaurant during creation.
+          </li>
+          <li>12. Ability to schedule restaurants from the company page.</li>
         </ul>
       </div>
 
@@ -151,15 +152,15 @@ export default function ProjectScopePage() {
             3 pm Friday.
           </li>
           <li>
-            4. Change of &apos;Active order&apos; to &apos;Upcoming
-            orders&apos;. on the dashboard
+            3. Change &apos;Active order&apos; to &apos;Upcoming orders&apos; on
+            the dashboard
           </li>
-          <li>5. Shows scheduled restaurants with no date restrictions.</li>
-          <li>6. Shows delivery date on the individual item page.</li>
-          <li>7. Shows price next to the item name on the item page.</li>
-          <li>8. Shows total price on the order summary item page.</li>
+          <li>4. Shows scheduled restaurants with no date restrictions.</li>
+          <li>5. Shows delivery date on the individual item page.</li>
+          <li>6. Shows price next to the item name on the item page.</li>
+          <li>7. Shows the total price on the order summary (item) page.</li>
           <li>
-            9. Contact support button opens the mail app with
+            8. Contact support button opens the mail app with
             portland@sporkbytes.com.
           </li>
         </ul>
@@ -177,7 +178,7 @@ export default function ProjectScopePage() {
         <ul>
           <li>
             1. Can not check out an item that has been discounted down to the
-            budget allowance. .
+            budget allowance.
           </li>
         </ul>
       </div>
