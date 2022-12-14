@@ -16,8 +16,8 @@ export default function AddCompany() {
     zip: "",
     website: "",
     dailyBudget: 0,
-    address_line_1: "",
-    address_line_2: "",
+    addressLine1: "",
+    addressLine2: "",
   };
 
   // Hooks
@@ -35,8 +35,8 @@ export default function AddCompany() {
     zip,
     website,
     dailyBudget,
-    address_line_1,
-    address_line_2,
+    addressLine1,
+    addressLine2,
   } = formData;
 
   // Handle change
@@ -104,21 +104,21 @@ export default function AddCompany() {
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="address_line_1">Address line 1</label>
+          <label htmlFor="addressLine1">Address line 1</label>
           <input
             type="text"
-            id="address_line_1"
-            value={address_line_1}
+            id="addressLine1"
+            value={addressLine1}
             onChange={handleChange}
           />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="address_line_2">Address line 2</label>
+          <label htmlFor="addressLine2">Address line 2</label>
           <input
             type="text"
-            id="address_line_2"
-            value={address_line_2}
+            id="addressLine2"
+            value={addressLine2}
             onChange={handleChange}
           />
         </div>
