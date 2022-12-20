@@ -130,9 +130,7 @@ export default function ProjectScopePage() {
             </ol>
           </li>
 
-          <li>
-            9. Ability to reset the password by oneself only when logged in.
-          </li>
+          <li>9. Ability to reset the password by email.</li>
           <li>10. Change the “Orders” tab to “Delivered”.</li>
           <li>
             11. Ability to upload a logo for a restaurant during creation.
