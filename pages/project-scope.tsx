@@ -136,6 +136,8 @@ export default function ProjectScopePage() {
             11. Ability to upload a logo for a restaurant during creation.
           </li>
           <li>12. Ability to schedule restaurants from the company page.</li>
+          <li>13. Stripe payment method integration.</li>
+          <li>14. Ability to add addable and removable item ingredients.</li>
         </ul>
       </div>
 
@@ -160,6 +162,9 @@ export default function ProjectScopePage() {
           <li>
             8. Contact support button opens the mail app with
             portland@sporkbytes.com.
+          </li>
+          <li>
+            9. Ability to add and remove ingredients of an item in an order.
           </li>
         </ul>
       </div>
