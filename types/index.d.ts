@@ -315,3 +315,8 @@ export interface IOrdersGroupDetailsProps {
   isLoading: boolean;
   ordersGroups: IOrdersGroup[];
 }
+
+export interface IModalProps {
+  showModal: boolean;
+  setShowModal: Dispatch<SetStateAction<boolean>>;
+}
