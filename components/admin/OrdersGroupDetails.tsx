@@ -1,13 +1,16 @@
 import { useRouter } from "next/router";
+import { useData } from "@context/Data";
 import { useEffect, useState } from "react";
-import { IOrdersByRestaurant, IOrdersGroupDetailsProps } from "types";
+import { IOrdersByRestaurant, IOrdersGroupDetailsProps, IOrder } from "types";
 import {
+  axiosInstance,
   convertDateToMS,
   convertDateToText,
   createSlug,
   formatCurrencyToUSD,
 } from "@utils/index";
 import styles from "@styles/admin/OrdersGroupDetails.module.css";
+import ButtonLoader from "@components/layout/ButtonLoader";
 
 export default function OrdersGroupDetails({
   isLoading,
@@ -15,6 +18,8 @@ export default function OrdersGroupDetails({
 }: IOrdersGroupDetailsProps) {
   // Hooks
   const router = useRouter();
+  const [isUpdatingOrderStatus, setIsUpdatingOrderStatus] = useState(false);
+  const { setAllUpcomingOrders, setAllDeliveredOrders } = useData();
   const [ordersByRestaurants, setOrdersByRestaurants] = useState<
     IOrdersByRestaurant[]
   >([]);
@@ -50,6 +55,55 @@ export default function OrdersGroupDetails({
     }
   }, [router.isReady, isLoading]);
 
+  // Send delivery email
+  async function sendDeliveryEmail(orders: IOrder[], restaurantName: string) {
+    // Get order ids
+    const orderIds = orders.map((order) => order._id);
+
+    // Update orders status
+    try {
+      setIsUpdatingOrderStatus(true);
+      // Show the loader
+
+      // Make request to the backend
+      await axiosInstance.put("/orders/update-status", {
+        orderIds,
+      });
+
+      // Remove the restaurant
+      setOrdersByRestaurants((currState) =>
+        currState.filter(
+          (ordersByRestaurant) =>
+            ordersByRestaurant.restaurantName !== restaurantName
+        )
+      );
+
+      // Remove the orders from the upcoming orders
+      setAllUpcomingOrders((currState) => ({
+        ...currState,
+        data: orderIds
+          .map((orderId) =>
+            currState.data.filter((order) => order._id !== orderId)
+          )
+          .flat(2),
+      }));
+
+      // Add the orders to delivered orders
+      setAllDeliveredOrders((currState) => ({
+        ...currState,
+        data: [...currState.data, ...orders],
+      }));
+
+      // Push to the dashboard when there are no restaurant
+      ordersByRestaurants.length === 1 && router.push("/admin");
+    } catch (err) {
+      console.log(err);
+    } finally {
+      // Remove the loader
+      setIsUpdatingOrderStatus(false);
+    }
+  }
+
   return (
     <section className={styles.orders_group_details}>
       {isLoading && <h2>Loading...</h2>}
@@ -81,7 +135,29 @@ export default function OrdersGroupDetails({
                   <td>{ordersByRestaurant.companyName}</td>
                   <td>{ordersByRestaurant.restaurantName}</td>
                   <td>{ordersByRestaurant.orders.length}</td>
-                  <td>Email</td>
+                  <td>
+                    {ordersByRestaurant.orders.every(
+                      (order) => order.status === "PROCESSING"
+                    ) ? (
+                      <span
+                        className={styles.send_email}
+                        onClick={() =>
+                          sendDeliveryEmail(
+                            ordersByRestaurant.orders,
+                            ordersByRestaurant.restaurantName
+                          )
+                        }
+                      >
+                        {isUpdatingOrderStatus ? (
+                          <ButtonLoader color="#f78f1e" size={7} />
+                        ) : (
+                          "Send delivery email"
+                        )}
+                      </span>
+                    ) : (
+                      <span>Delivery email sent</span>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>

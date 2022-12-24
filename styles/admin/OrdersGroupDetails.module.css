@@ -53,6 +53,18 @@
   margin-left: 0.5rem;
 }
 
+.send_email {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10.5rem;
+  height: 2.25rem;
+  border-radius: 2rem;
+  cursor: pointer;
+  color: var(--orange);
+  border: 1px solid var(--orange);
+}
+
 .hide_on_mobile {
   display: none;
 }
