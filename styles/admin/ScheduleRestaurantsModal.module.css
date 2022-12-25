@@ -1,0 +1,79 @@
+.modal {
+  background: white;
+  position: fixed;
+  opacity: 0;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  z-index: 10000;
+  width: 90%;
+  margin: 0 auto;
+  pointer-events: none;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow_medium);
+  transition: all 250ms ease-in-out;
+}
+
+.schedule_restaurants_title {
+  margin-bottom: 1rem;
+}
+
+.modal.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.item label {
+  font-size: 0.9rem;
+  color: var(--gray);
+  margin-bottom: 0.75rem;
+}
+
+.item input,
+.item select {
+  padding: 12px;
+  border-radius: 0.25rem;
+  -webkit-appearance: none;
+  border: 1px solid var(--border_color);
+}
+
+.item input:focus,
+.item select:focus {
+  outline: none;
+  border: 1px solid var(--teal);
+}
+
+.overlay {
+  position: fixed;
+  opacity: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  margin: 0 auto;
+  pointer-events: none;
+  transition: all 250ms ease-in-out;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+@media (min-width: 768px) {
+  .modal {
+    width: 35rem;
+    padding: 1.5rem;
+  }
+}

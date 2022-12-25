@@ -24,8 +24,9 @@ export default function ScheduledRestaurants() {
             <table>
               <thead>
                 <tr>
-                  <th>Name</th>
                   <th>Scheduled on</th>
+                  <th>Restaurant</th>
+                  <th>Company</th>
                 </tr>
               </thead>
 
@@ -36,12 +37,11 @@ export default function ScheduledRestaurants() {
                       <Link
                         href={`/admin/restaurants/${scheduledRestaurant._id}`}
                       >
-                        <a>{scheduledRestaurant.name}</a>
+                        <a>{convertDateToText(scheduledRestaurant.date)}</a>
                       </Link>
                     </td>
-                    <td>
-                      {convertDateToText(scheduledRestaurant.scheduledOn)}
-                    </td>
+                    <td>{scheduledRestaurant.name}</td>
+                    <td>{scheduledRestaurant.company.name}</td>
                   </tr>
                 ))}
               </tbody>
@@ -49,11 +49,6 @@ export default function ScheduledRestaurants() {
           </div>
         </>
       )}
-
-      <LinkButton
-        linkText="Schedule more"
-        href="/admin/restaurants/schedule-restaurants"
-      />
     </section>
   );
 }

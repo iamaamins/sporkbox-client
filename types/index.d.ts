@@ -28,7 +28,11 @@ export interface IRestaurant {
 export interface IScheduledRestaurant {
   _id: string;
   name: string;
-  scheduledOn: string;
+  date: string;
+  company: {
+    _id: string;
+    name: string;
+  };
 }
 
 export interface IUpcomingWeekRestaurant extends IScheduledRestaurant {
@@ -314,4 +318,9 @@ export interface IOrdersByRestaurant {
 export interface IOrdersGroupDetailsProps {
   isLoading: boolean;
   ordersGroups: IOrdersGroup[];
+}
+
+export interface IModalProps {
+  showModal: boolean;
+  setShowModal: Dispatch<SetStateAction<boolean>>;
 }

@@ -76,7 +76,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
     upcomingWeekRestaurants.data.length > 0
       ? upcomingWeekRestaurants.data
           .map((upcomingWeekRestaurant) =>
-            convertDateToMS(upcomingWeekRestaurant.scheduledOn)
+            convertDateToMS(upcomingWeekRestaurant.date)
           )
           .filter((date, index, dates) => dates.indexOf(date) === index)
       : [];
@@ -249,7 +249,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get upcoming week restaurants
       try {
         // Make request to backend
-        const response = await axiosInstance.get(`/restaurants/upcoming-week`);
+        const response = await axiosInstance.get(`/restaurants/upcoming`);
 
         // Update state
         setUpcomingWeekRestaurants({ isLoading: false, data: response.data });

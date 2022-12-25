@@ -53,19 +53,17 @@ export default function Favorite() {
                             <span key={index}>
                               <Link
                                 href={`/place-order/${convertDateToMS(
-                                  upcomingWeekRestaurant.scheduledOn
+                                  upcomingWeekRestaurant.date
                                 )}/${customerFavoriteItem.restaurantId}/${
                                   customerFavoriteItem.itemId
                                 }`}
                               >
                                 <a>
                                   <span>
-                                    {getDay(upcomingWeekRestaurant.scheduledOn)}
+                                    {getDay(upcomingWeekRestaurant.date)}
                                   </span>
                                   <span>
-                                    {getDate(
-                                      upcomingWeekRestaurant.scheduledOn
-                                    )}
+                                    {getDate(upcomingWeekRestaurant.date)}
                                   </span>
                                 </a>
                               </Link>

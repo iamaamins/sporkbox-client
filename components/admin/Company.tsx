@@ -5,12 +5,14 @@ import { axiosInstance } from "@utils/index";
 import Buttons from "@components/layout/Buttons";
 import { FormEvent, useEffect, useState } from "react";
 import styles from "@styles/admin/Company.module.css";
+import Modal from "@components/admin/ScheduleRestaurantsModal";
 
 export default function Company() {
   // Hooks
   const router = useRouter();
   const { companies, setCompanies } = useData();
   const [company, setCompany] = useState<ICompany>();
+  const [showModal, setShowModal] = useState(false);
 
   // Get the company
   useEffect(() => {
@@ -64,14 +66,25 @@ export default function Company() {
           </div>
 
           {/* Buttons */}
-          <Buttons
-            handleClick={handleDelete}
-            linkText="Edit details"
-            buttonText="Delete"
-            href={`/admin/companies/${router.query.company}/edit-details`}
-          />
+          <div className={styles.buttons}>
+            <Buttons
+              handleClick={handleDelete}
+              linkText="Edit details"
+              buttonText="Delete"
+              href={`/admin/companies/${router.query.company}/edit-details`}
+            />
+
+            <button
+              onClick={() => setShowModal(true)}
+              className={styles.schedule_restaurants_button}
+            >
+              Schedule restaurants
+            </button>
+          </div>
         </>
       )}
+
+      <Modal showModal={showModal} setShowModal={setShowModal} />
     </section>
   );
 }

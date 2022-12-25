@@ -44,7 +44,7 @@ export default function Item() {
       // Find the restaurant
       const restaurant = upcomingWeekRestaurants.data.find(
         (upcomingWeekRestaurant) =>
-          convertDateToMS(upcomingWeekRestaurant.scheduledOn) ===
+          convertDateToMS(upcomingWeekRestaurant.date) ===
             +(router.query.date as string) &&
           upcomingWeekRestaurant._id === router.query.restaurant
       );
@@ -60,7 +60,7 @@ export default function Item() {
         setItem(item);
 
         // Get the date
-        const deliveryDate = convertDateToMS(restaurant.scheduledOn);
+        const deliveryDate = convertDateToMS(restaurant.date);
 
         // Update initial item
         setCarItem((currItem) => ({
