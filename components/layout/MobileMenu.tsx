@@ -128,7 +128,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
           </Link>
         </li>
 
-        <li
+        {/* <li
           className={!isAdmin ? styles.hide : ""}
           onClick={() => setIsOpen(false)}
         >
@@ -137,7 +137,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
               <MdOutlineSchedule /> Scheduled
             </a>
           </Link>
-        </li>
+        </li> */}
 
         <li
           className={!isAdmin ? styles.hide : ""}

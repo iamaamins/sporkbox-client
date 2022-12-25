@@ -1,9 +1,10 @@
 import { axiosInstance } from "@utils/index";
 import { useData } from "@context/Data";
-import SubmitButton from "./SubmitButton";
-import styles from "@styles/layout/Modal.module.css";
+import { useRouter } from "next/router";
+import SubmitButton from "../layout/SubmitButton";
 import { IFormData, IModalProps, IRestaurant } from "types";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import styles from "@styles/admin/ScheduleRestaurantsModal.module.css";
 
 export default function Modal({ showModal, setShowModal }: IModalProps) {
   // Initial state
@@ -13,6 +14,7 @@ export default function Modal({ showModal, setShowModal }: IModalProps) {
   };
 
   // Hooks
+  const router = useRouter();
   const { vendors, setScheduledRestaurants } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [approvedRestaurants, setApprovedRestaurants] = useState<IRestaurant[]>(
@@ -53,20 +55,21 @@ export default function Modal({ showModal, setShowModal }: IModalProps) {
       // Show loader
       setIsLoading(true);
 
+      const data = { ...formData, companyId: router.query.company };
+
       // Make request to backend
-      const response = await axiosInstance.put(
-        `/restaurants/schedule/${restaurantId}`,
-        { date }
-      );
+      const response = await axiosInstance.put(`/restaurants/schedule/`, data);
+
+      console.log(response.data);
 
       // Update scheduled restaurants state
-      setScheduledRestaurants((currState) => ({
-        ...currState,
-        data: [...currState.data, response.data],
-      }));
+      // setScheduledRestaurants((currState) => ({
+      //   ...currState,
+      //   data: [...currState.data, response.data],
+      // }));
 
       // Clear form data
-      setFormData(initialState);
+      // setFormData(initialState);
     } catch (err) {
       console.log(err);
     } finally {

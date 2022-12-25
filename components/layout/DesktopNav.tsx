@@ -127,7 +127,7 @@ export default function DesktopNav() {
           </Link>
         </li>
 
-        <li className={!isAdmin ? styles.hide : ""}>
+        {/* <li className={!isAdmin ? styles.hide : ""}>
           <Link href="/admin/restaurants/scheduled">
             <a
               className={
@@ -137,7 +137,7 @@ export default function DesktopNav() {
               Scheduled
             </a>
           </Link>
-        </li>
+        </li> */}
 
         <li className={!isAdmin ? styles.hide : ""}>
           <Link href="/admin/companies">

@@ -76,7 +76,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
     upcomingWeekRestaurants.data.length > 0
       ? upcomingWeekRestaurants.data
           .map((upcomingWeekRestaurant) =>
-            convertDateToMS(upcomingWeekRestaurant.scheduledOn)
+            convertDateToMS(upcomingWeekRestaurant.date)
           )
           .filter((date, index, dates) => dates.indexOf(date) === index)
       : [];

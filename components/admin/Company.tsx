@@ -5,7 +5,7 @@ import { axiosInstance } from "@utils/index";
 import Buttons from "@components/layout/Buttons";
 import { FormEvent, useEffect, useState } from "react";
 import styles from "@styles/admin/Company.module.css";
-import Modal from "@components/layout/Modal";
+import Modal from "@components/admin/ScheduleRestaurantsModal";
 
 export default function Company() {
   // Hooks
