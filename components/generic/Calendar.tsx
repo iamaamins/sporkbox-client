@@ -34,7 +34,7 @@ export default function Calendar() {
       setRestaurants(
         upcomingWeekRestaurants.data.filter(
           (upcomingWeekRestaurant) =>
-            convertDateToMS(upcomingWeekRestaurant.scheduledOn) === nextWeekDate
+            convertDateToMS(upcomingWeekRestaurant.date) === nextWeekDate
         )
       );
     }

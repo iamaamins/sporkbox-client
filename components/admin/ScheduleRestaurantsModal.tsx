@@ -60,16 +60,14 @@ export default function Modal({ showModal, setShowModal }: IModalProps) {
       // Make request to backend
       const response = await axiosInstance.put(`/restaurants/schedule/`, data);
 
-      console.log(response.data);
-
       // Update scheduled restaurants state
-      // setScheduledRestaurants((currState) => ({
-      //   ...currState,
-      //   data: [...currState.data, response.data],
-      // }));
+      setScheduledRestaurants((currState) => ({
+        ...currState,
+        data: [...currState.data, response.data],
+      }));
 
       // Clear form data
-      // setFormData(initialState);
+      setFormData(initialState);
     } catch (err) {
       console.log(err);
     } finally {

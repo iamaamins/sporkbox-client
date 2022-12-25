@@ -249,7 +249,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get upcoming week restaurants
       try {
         // Make request to backend
-        const response = await axiosInstance.get(`/restaurants/upcoming-week`);
+        const response = await axiosInstance.get(`/restaurants/upcoming`);
 
         // Update state
         setUpcomingWeekRestaurants({ isLoading: false, data: response.data });
