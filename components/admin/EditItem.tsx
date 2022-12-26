@@ -61,7 +61,7 @@ export default function EditItem() {
 
       // Post the data to backend
       const response = await axiosInstance.put(
-        `/restaurants/${item?._id}/update`,
+        `/restaurants/${router.query.restaurant}/${item?._id}/update`,
         formData
       );
 
