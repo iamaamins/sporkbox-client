@@ -48,7 +48,9 @@ export default function Company() {
 
   return (
     <section className={styles.company}>
-      {!company && <h2>No company found</h2>}
+      {companies.isLoading && <h2>Loading...</h2>}
+
+      {!companies.isLoading && !company && <h2>No company found</h2>}
 
       {company && (
         <>
@@ -71,7 +73,7 @@ export default function Company() {
               handleClick={handleDelete}
               linkText="Edit details"
               buttonText="Delete"
-              href={`/admin/companies/${router.query.company}/edit-details`}
+              href={`/admin/companies/${router.query.company}/edit-company`}
             />
 
             <button

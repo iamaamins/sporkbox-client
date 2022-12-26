@@ -324,3 +324,11 @@ export interface IModalProps {
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
 }
+
+export interface ICompanyData {
+  isLoading: boolean;
+  formData: IFormData;
+  buttonText: string;
+  handleSubmit: (e: FormEvent) => Promise<void>;
+  setFormData: Dispatch<SetStateAction<IFormData>>;
+}
