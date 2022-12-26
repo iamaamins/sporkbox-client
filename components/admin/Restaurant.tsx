@@ -73,12 +73,22 @@ export default function Restaurant() {
             </div>
 
             {/* Buttons */}
-            <Buttons
-              handleClick={handleApproval}
-              linkText="Add item"
-              buttonText={vendor.status === "PENDING" ? "Approve" : "Restrict"}
-              href={`/admin/restaurants/${vendor.restaurant._id}/add-item`}
-            />
+            <div className={styles.buttons}>
+              <Buttons
+                handleClick={handleApproval}
+                linkText="Add item"
+                buttonText={
+                  vendor.status === "PENDING" ? "Approve" : "Restrict"
+                }
+                href={`/admin/restaurants/${vendor.restaurant._id}/add-item`}
+              />
+
+              <Link
+                href={`/admin/restaurants/${vendor.restaurant._id}/edit-restaurant`}
+              >
+                <a className={styles.edit_restaurant_button}>Edit details</a>
+              </Link>
+            </div>
           </div>
 
           {/* Items */}

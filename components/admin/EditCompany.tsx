@@ -1,11 +1,10 @@
 import { ICompany, IFormData } from "types";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import styles from "@styles/admin/EditCompany.module.css";
-import SubmitButton from "@components/layout/SubmitButton";
 import CompanyForm from "./CompanyForm";
 import { axiosInstance } from "@utils/index";
+import styles from "@styles/admin/EditCompany.module.css";
+import React, { FormEvent, useEffect, useState } from "react";
 
 export default function EditCompany() {
   // Initial state
@@ -36,7 +35,7 @@ export default function EditCompany() {
         (company) => company._id === router.query.company
       );
 
-      // Update company state
+      // Update company
       setCompany(company);
 
       // Update form data
@@ -86,9 +85,6 @@ export default function EditCompany() {
           response.data,
         ],
       }));
-
-      // Clear the form
-      setFormData(initialState);
 
       // Push to dashboard
       router.push(`/admin/companies/${response.data._id}`);
