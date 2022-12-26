@@ -52,22 +52,26 @@ export function updateVendors(
   // Update the restaurants state
   setVendors((currState) => ({
     ...currState,
-    data: currState.data.map((currVendor) => {
-      if (currVendor._id === updatedData._id && "status" in updatedData) {
+    data: currState.data.map((vendor) => {
+      if (vendor._id === updatedData._id && "restaurant" in updatedData) {
         return {
-          ...currVendor,
+          ...vendor,
+          firstName: updatedData.firstName,
+          lastName: updatedData.lastName,
+          email: updatedData.email,
           status: updatedData.status,
+          restaurant: updatedData.restaurant,
         };
       } else if (
-        currVendor.restaurant._id === updatedData._id &&
+        vendor.restaurant._id === updatedData._id &&
         "items" in updatedData
       ) {
         return {
-          ...currVendor,
+          ...vendor,
           restaurant: updatedData,
         };
       } else {
-        return currVendor;
+        return vendor;
       }
     }),
   }));

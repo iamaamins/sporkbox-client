@@ -23,8 +23,8 @@ export default function EditCompany() {
   // Hooks
   const router = useRouter();
   const { companies, setCompanies } = useData();
-  const [isLoading, setIsLoading] = useState(false);
   const [company, setCompany] = useState<ICompany>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Get the company
@@ -45,13 +45,13 @@ export default function EditCompany() {
             ...currState,
             name: company.name,
             code: company.code,
-            city: company.address.split(",")[2],
+            city: company.address.split(",")[2].trim(),
             state: company.address.split(",")[3].trim().split(" ")[0],
             zip: company.address.split(",")[3].trim().split(" ")[1],
             website: company.website,
             dailyBudget: company.dailyBudget,
             addressLine1: company.address.split(",")[0],
-            addressLine2: company.address.split(",")[1],
+            addressLine2: company.address.split(",")[1].trim(),
           };
         } else {
           return currState;

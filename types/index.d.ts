@@ -325,7 +325,7 @@ export interface IModalProps {
   setShowModal: Dispatch<SetStateAction<boolean>>;
 }
 
-export interface ICompanyData {
+export interface IEditFormProps {
   isLoading: boolean;
   formData: IFormData;
   buttonText: string;

@@ -1,0 +1,29 @@
+.item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.item label {
+  font-size: 0.9rem;
+  color: var(--gray);
+  margin-bottom: 0.75rem;
+}
+
+.item input,
+.item textarea {
+  padding: 12px;
+  border-radius: 0.25rem;
+  border: 1px solid var(--border_color);
+}
+
+.item input:focus,
+.item textarea:focus {
+  outline: none;
+  border: 1px solid var(--teal);
+}
+
+.item textarea {
+  resize: none;
+  height: 10rem;
+}

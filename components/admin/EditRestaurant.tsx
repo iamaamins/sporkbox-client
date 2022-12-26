@@ -1,6 +1,6 @@
 import { useData } from "@context/Data";
-import { axiosInstance } from "@utils/index";
-import { IFormData, IVendor, IVendors } from "types";
+import { axiosInstance, updateVendors } from "@utils/index";
+import { IFormData, IVendor } from "types";
 import { useRouter } from "next/router";
 import SubmitButton from "@components/layout/SubmitButton";
 import styles from "@styles/admin/EditRestaurant.module.css";
@@ -35,7 +35,7 @@ export default function EditRestaurant() {
         (vendor) => vendor.restaurant._id === router.query.restaurant
       );
 
-      // Update state
+      // Update vendor
       setVendor(vendor);
 
       // Update form data
@@ -48,8 +48,8 @@ export default function EditRestaurant() {
             email: vendor.email,
             restaurantName: vendor.restaurant.name,
             addressLine1: vendor.restaurant.address.split(",")[0],
-            addressLine2: vendor.restaurant.address.split(",")[1],
-            city: vendor.restaurant.address.split(",")[2],
+            addressLine2: vendor.restaurant.address.split(",")[1].trim(),
+            city: vendor.restaurant.address.split(",")[2].trim(),
             state: vendor.restaurant.address.split(",")[3].trim().split(" ")[0],
             zip: vendor.restaurant.address.split(",")[3].trim().split(" ")[1],
           };
@@ -96,18 +96,8 @@ export default function EditRestaurant() {
         formData
       );
 
-      console.log(response.data);
-
-      // Update state
-      setVendors((currState) => ({
-        ...currState,
-        data: [
-          ...currState.data.filter(
-            (vendor) => vendor._id !== response.data._id
-          ),
-          response.data,
-        ],
-      }));
+      // Update vendors
+      updateVendors(response.data, setVendors);
 
       // Push to dashboard
       router.push(`/admin/restaurants/${response.data.restaurant._id}`);

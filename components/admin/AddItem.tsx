@@ -1,9 +1,9 @@
+import ItemForm from "./ItemForm";
 import { IFormData } from "types";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
+import { FormEvent, useState } from "react";
 import styles from "@styles/admin/AddItem.module.css";
-import { ChangeEvent, FormEvent, useState } from "react";
-import SubmitButton from "@components/layout/SubmitButton";
 import { axiosInstance, updateVendors } from "@utils/index";
 
 export default function AddItem() {
@@ -16,29 +16,10 @@ export default function AddItem() {
   };
 
   // Hooks
-  // Router
   const router = useRouter();
   const { setVendors } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<IFormData>(initialState);
-
-  // Destructure form data and check
-  const { name, description, tags, price } = formData;
-
-  // Handle change
-  function handleChange(
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
-    // Id and value
-    const id = e.target.id;
-    const value = e.target.value;
-
-    // Update state
-    setFormData((currData) => ({
-      ...currData,
-      [id]: id === "price" ? +value : value,
-    }));
-  }
 
   // Handle submit
   async function handleSubmit(e: FormEvent) {
@@ -73,40 +54,15 @@ export default function AddItem() {
 
   return (
     <section className={styles.add_item}>
-      <p className={styles.title}>Add an item</p>
+      <h2>Add an item</h2>
 
-      <form onSubmit={handleSubmit}>
-        <div className={styles.item}>
-          <label htmlFor="name">Item name</label>
-          <input type="text" id="name" value={name} onChange={handleChange} />
-        </div>
-
-        <div className={styles.item}>
-          <label htmlFor="tags">Dietary tags (comma separated)</label>
-          <input type="text" id="tags" value={tags} onChange={handleChange} />
-        </div>
-
-        <div className={styles.item}>
-          <label htmlFor="price">Item price</label>
-          <input
-            type="number"
-            id="price"
-            value={price}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className={styles.item}>
-          <label htmlFor="description">Item description</label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={handleChange}
-          />
-        </div>
-
-        <SubmitButton text="Add Item" isLoading={isLoading} />
-      </form>
+      <ItemForm
+        formData={formData}
+        setFormData={setFormData}
+        buttonText="Save"
+        isLoading={isLoading}
+        handleSubmit={handleSubmit}
+      />
     </section>
   );
 }

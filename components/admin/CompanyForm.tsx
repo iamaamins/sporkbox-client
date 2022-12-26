@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import { ICompanyData } from "types";
+import { IEditFormProps } from "types";
 import styles from "@styles/admin/CompanyForm.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
 
@@ -9,9 +9,7 @@ export default function CompanyForm({
   setFormData,
   buttonText,
   handleSubmit,
-}: ICompanyData) {
-  // Hooks
-
+}: IEditFormProps) {
   // Destructure form data
   const {
     name,
