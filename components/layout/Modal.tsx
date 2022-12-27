@@ -1,11 +1,5 @@
+import { IModalProps } from "types";
 import styles from "@styles/layout/Modal.module.css";
-import { Dispatch, SetStateAction } from "react";
-
-interface IModalProps {
-  showModal: boolean;
-  component: JSX.Element;
-  setShowModal: Dispatch<SetStateAction<boolean>>;
-}
 
 export default function Modal({
   showModal,

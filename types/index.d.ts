@@ -6,7 +6,8 @@ export interface IUser {
   lastName: string;
   email: string;
   role: string;
-  status?: string;
+  status: string;
+  createdAt: string;
   company?: ICompany;
   restaurant?: IRestaurant;
 }
@@ -14,6 +15,11 @@ export interface IUser {
 export interface IVendor extends IUser {
   status: string;
   restaurant: IRestaurant;
+}
+
+export interface ICustomers {
+  data: IUser[];
+  isLoading: boolean;
 }
 
 export interface IRestaurant {
@@ -331,4 +337,15 @@ export interface IEditFormProps {
   buttonText: string;
   handleSubmit: (e: FormEvent) => Promise<void>;
   setFormData: Dispatch<SetStateAction<IFormData>>;
+}
+
+export interface IModalProps {
+  showModal: boolean;
+  component: JSX.Element;
+  setShowModal: Dispatch<SetStateAction<boolean>>;
+}
+
+export interface ICustomersProps {
+  status: string;
+  customers: IUser[];
 }

@@ -1,6 +1,7 @@
-import { ICompany } from "types";
+import { ICompany, ICustomers } from "types";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
+import Customers from "./Customers";
 import { axiosInstance } from "@utils/index";
 import Modal from "@components/layout/Modal";
 import Buttons from "@components/layout/Buttons";
@@ -14,6 +15,10 @@ export default function Company() {
   const { companies, setCompanies } = useData();
   const [company, setCompany] = useState<ICompany>();
   const [showModal, setShowModal] = useState(false);
+  const [customers, setCustomers] = useState<ICustomers>({
+    data: [],
+    isLoading: true,
+  });
 
   // Get the company
   useEffect(() => {
@@ -23,6 +28,36 @@ export default function Company() {
       );
     }
   }, [companies, router.isReady]);
+
+  // Get customers
+  useEffect(() => {
+    async function getCustomers() {
+      try {
+        // Make request to the backend
+        const response = await axiosInstance.get(
+          `/customers/${router.query.company}`
+        );
+
+        // Update customers
+        setCustomers((currState) => ({
+          ...currState,
+          isLoading: false,
+          data: response.data,
+        }));
+      } catch (err) {
+        console.log(err);
+        setCustomers((currState) => ({
+          ...currState,
+          isLoading: false,
+        }));
+      }
+    }
+
+    // Get customers when router is ready
+    if (router.isReady) {
+      getCustomers();
+    }
+  }, [router.isReady]);
 
   // Delete company
   async function handleDelete(e: FormEvent) {
@@ -83,6 +118,35 @@ export default function Company() {
             >
               Schedule restaurants
             </button>
+          </div>
+
+          <div className={styles.customers}>
+            {customers.data.filter((customer) => customer.status === "ACTIVE")
+              .length > 0 && (
+              <div className={styles.section}>
+                <h2>Active customers</h2>
+                <Customers
+                  status="active"
+                  customers={customers.data.filter(
+                    (customer) => customer.status === "ACTIVE"
+                  )}
+                />
+              </div>
+            )}
+
+            {customers.data.filter((customer) => customer.status === "ARCHIVED")
+              .length > 0 && (
+              <div className={styles.section}>
+                <h2>Archived customers</h2>
+
+                <Customers
+                  status="archived"
+                  customers={customers.data.filter(
+                    (customer) => customer.status === "ARCHIVED"
+                  )}
+                />
+              </div>
+            )}
           </div>
         </>
       )}

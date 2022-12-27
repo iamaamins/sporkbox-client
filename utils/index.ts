@@ -60,6 +60,7 @@ export function updateVendors(
           lastName: updatedData.lastName,
           email: updatedData.email,
           status: updatedData.status,
+          createdAt: updatedData.createdAt,
           restaurant: updatedData.restaurant,
         };
       } else if (

@@ -201,6 +201,12 @@ export default function DataProvider({ children }: IContextProviderProps) {
           isLoading: false,
         }));
       }
+
+      // Get all customers
+      try {
+        // Make request to backend
+        const response = await axiosInstance.get("/customers");
+      } catch (err) {}
     }
 
     // Run the function if there is an admin

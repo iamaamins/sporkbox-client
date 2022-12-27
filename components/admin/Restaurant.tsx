@@ -78,7 +78,7 @@ export default function Restaurant() {
                 handleClick={handleApproval}
                 linkText="Add item"
                 buttonText={
-                  vendor.status === "PENDING" ? "Approve" : "Restrict"
+                  vendor.status === "ARCHIVED" ? "Activate" : "Archive"
                 }
                 href={`/admin/restaurants/${vendor.restaurant._id}/add-item`}
               />

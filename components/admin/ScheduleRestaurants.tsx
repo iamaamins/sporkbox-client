@@ -31,7 +31,7 @@ export default function ScheduleRestaurants() {
       // Filter approved restaurants
       setApprovedRestaurants(
         vendors.data
-          .filter((vendor) => vendor.status === "APPROVED")
+          .filter((vendor) => vendor.status === "ACTIVE")
           .map((vendor) => vendor.restaurant)
       );
     }
