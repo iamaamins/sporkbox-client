@@ -1,15 +1,5 @@
-.schedule_restaurants {
-  padding: var(--section_padding);
-}
-
-.schedule_restaurants_title {
+.schedule_restaurants h2 {
   margin-bottom: 1rem;
-}
-
-.schedule_restaurants form {
-  padding: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: var(--shadow_medium);
 }
 
 .item {
@@ -36,23 +26,4 @@
 .item select:focus {
   outline: none;
   border: 1px solid var(--teal);
-}
-
-@media (min-width: 768px) {
-  .schedule_restaurants {
-    max-width: 38rem;
-    margin: 0 auto;
-    padding-bottom: 2.5rem;
-  }
-
-  .schedule_restaurants form {
-    padding: 1.5rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .schedule_restaurants {
-    max-width: 42rem;
-    margin: 0 auto;
-  }
 }

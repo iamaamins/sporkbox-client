@@ -2,10 +2,11 @@ import { ICompany } from "types";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@utils/index";
+import Modal from "@components/layout/Modal";
 import Buttons from "@components/layout/Buttons";
 import { FormEvent, useEffect, useState } from "react";
 import styles from "@styles/admin/Company.module.css";
-import Modal from "@components/admin/ScheduleRestaurantsModal";
+import ScheduleRestaurants from "@components/admin/ScheduleRestaurants";
 
 export default function Company() {
   // Hooks
@@ -86,7 +87,11 @@ export default function Company() {
         </>
       )}
 
-      <Modal showModal={showModal} setShowModal={setShowModal} />
+      <Modal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        component={<ScheduleRestaurants />}
+      />
     </section>
   );
 }
