@@ -12,6 +12,7 @@ import {
   ICustomerDeliveredOrders,
   IUpcomingWeekRestaurants,
   ICustomerFavoriteItems,
+  ICustomers,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
 import {
@@ -46,6 +47,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
   const [vendors, setVendors] = useState<IVendors>(initialState);
   const [allDeliveredOrders, setAllDeliveredOrders] =
     useState<IAllDeliveredOrders>(initialState);
+  const [customers, setCustomers] = useState<ICustomers>(initialState);
   const [customerUpcomingOrders, setCustomerUpcomingOrders] =
     useState<ICustomerUpcomingOrders>(initialState);
   const [customerDeliveredOrders, setCustomerDeliveredOrders] =
@@ -206,7 +208,18 @@ export default function DataProvider({ children }: IContextProviderProps) {
       try {
         // Make request to backend
         const response = await axiosInstance.get("/customers");
-      } catch (err) {}
+
+        // Update state
+        setCustomers({ isLoading: false, data: response.data });
+      } catch (err) {
+        console.log(err);
+
+        // Remove loader
+        setCustomers((currState) => ({
+          ...currState,
+          isLoading: false,
+        }));
+      }
     }
 
     // Run the function if there is an admin
@@ -300,22 +313,24 @@ export default function DataProvider({ children }: IContextProviderProps) {
         allOrders,
         setCompanies,
         nextWeekDates,
-        upcomingOrdersGroups,
-        deliveredOrdersGroups,
-        allDeliveredOrders,
+        customers,
+        setCustomers,
         allUpcomingOrders,
         customerAllOrders,
+        allDeliveredOrders,
         setAllUpcomingOrders,
-        setAllDeliveredOrders,
-        customerUpcomingOrders,
         scheduledRestaurants,
         customerFavoriteItems,
+        upcomingOrdersGroups,
+        deliveredOrdersGroups,
+        setAllDeliveredOrders,
+        customerUpcomingOrders,
         nextWeekBudgetAndDates,
         customerDeliveredOrders,
         upcomingWeekRestaurants,
-        setCustomerUpcomingOrders,
         setScheduledRestaurants,
         setCustomerFavoriteItems,
+        setCustomerUpcomingOrders,
         setCustomerDeliveredOrders,
       }}
     >

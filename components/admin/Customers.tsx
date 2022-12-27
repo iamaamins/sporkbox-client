@@ -3,8 +3,6 @@ import { useRouter } from "next/router";
 import { ICustomersProps } from "types";
 import { convertDateToText } from "@utils/index";
 import styles from "@styles/admin/Customers.module.css";
-import { useState } from "react";
-import Modal from "@components/layout/Modal";
 
 export default function Customers({ status, customers }: ICustomersProps) {
   // Hooks

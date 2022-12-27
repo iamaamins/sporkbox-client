@@ -1,4 +1,4 @@
-import { ICompany, ICustomers } from "types";
+import { ICompany, ICustomers, IUser } from "types";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
 import Customers from "./Customers";
@@ -12,13 +12,11 @@ import ScheduleRestaurants from "@components/admin/ScheduleRestaurants";
 export default function Company() {
   // Hooks
   const router = useRouter();
-  const { companies, setCompanies } = useData();
   const [company, setCompany] = useState<ICompany>();
   const [showModal, setShowModal] = useState(false);
-  const [customers, setCustomers] = useState<ICustomers>({
-    data: [],
-    isLoading: true,
-  });
+  const { companies, setCompanies, customers } = useData();
+  const [activeCustomers, setActiveCustomers] = useState<IUser[]>([]);
+  const [archivedCustomers, setArchivedCustomers] = useState<IUser[]>([]);
 
   // Get the company
   useEffect(() => {
@@ -31,33 +29,26 @@ export default function Company() {
 
   // Get customers
   useEffect(() => {
-    async function getCustomers() {
-      try {
-        // Make request to the backend
-        const response = await axiosInstance.get(
-          `/customers/${router.query.company}`
-        );
+    if (customers.data.length > 0 && router.isReady) {
+      // Update active customers
+      setActiveCustomers(
+        customers.data.filter(
+          (customer) =>
+            customer.company?._id === router.query.company &&
+            customer.status === "ACTIVE"
+        )
+      );
 
-        // Update customers
-        setCustomers((currState) => ({
-          ...currState,
-          isLoading: false,
-          data: response.data,
-        }));
-      } catch (err) {
-        console.log(err);
-        setCustomers((currState) => ({
-          ...currState,
-          isLoading: false,
-        }));
-      }
+      // Update archived customers
+      setArchivedCustomers(
+        customers.data.filter(
+          (customer) =>
+            customer.company?._id === router.query.company &&
+            customer.status === "ARCHIVED"
+        )
+      );
     }
-
-    // Get customers when router is ready
-    if (router.isReady) {
-      getCustomers();
-    }
-  }, [router.isReady]);
+  }, [customers, router.isReady]);
 
   // Delete company
   async function handleDelete(e: FormEvent) {
@@ -120,31 +111,20 @@ export default function Company() {
             </button>
           </div>
 
+          {/* Customers */}
           <div className={styles.customers}>
-            {customers.data.filter((customer) => customer.status === "ACTIVE")
-              .length > 0 && (
+            {activeCustomers.length > 0 && (
               <div className={styles.section}>
                 <h2>Active customers</h2>
-                <Customers
-                  status="active"
-                  customers={customers.data.filter(
-                    (customer) => customer.status === "ACTIVE"
-                  )}
-                />
+                <Customers status="active" customers={activeCustomers} />
               </div>
             )}
 
-            {customers.data.filter((customer) => customer.status === "ARCHIVED")
-              .length > 0 && (
+            {archivedCustomers.length > 0 && (
               <div className={styles.section}>
                 <h2>Archived customers</h2>
 
-                <Customers
-                  status="archived"
-                  customers={customers.data.filter(
-                    (customer) => customer.status === "ARCHIVED"
-                  )}
-                />
+                <Customers status="archived" customers={archivedCustomers} />
               </div>
             )}
           </div>
