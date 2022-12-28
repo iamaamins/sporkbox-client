@@ -27,3 +27,9 @@
   outline: none;
   border: 1px solid var(--teal);
 }
+
+@media (min-width: 768px) {
+  .schedule_restaurants {
+    width: 32rem;
+  }
+}

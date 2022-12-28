@@ -275,7 +275,8 @@ export interface IButtons {
   href: string;
   linkText: string;
   buttonText: string;
-  handleClick: (e: FormEvent) => Promise<void>;
+  handleArchive?: (e: FormEvent) => void;
+  handleClick?: (e: FormEvent) => Promise<void>;
 }
 
 export interface IActionButton {
