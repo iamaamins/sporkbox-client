@@ -50,6 +50,7 @@ interface IItem {
   tags: string;
   name: string;
   price: number;
+  status: string;
   description: string;
 }
 

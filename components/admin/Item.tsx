@@ -28,22 +28,20 @@ export default function Item() {
   }, [vendors, router.isReady]);
 
   // Handle delete
-  async function handleDelete() {
-    // Delete an item
-    try {
-      // Send the request to backend
-      const response = await axiosInstance.delete(
-        `/restaurants/${router.query.restaurant}/${router.query.item}/delete-item`
-      );
-
-      // Updated vendors array with updated items
-      updateVendors(response.data, setVendors);
-
-      // Bck to the restaurant page
-      router.back();
-    } catch (err) {
-      console.log(err);
-    }
+  async function initiateStatusUpdate() {
+    // // Delete an item
+    // try {
+    //   // Send the request to backend
+    //   const response = await axiosInstance.delete(
+    //     `/restaurants/${router.query.restaurant}/${router.query.item}/delete-item`
+    //   );
+    //   // Updated vendors array with updated items
+    //   updateVendors(response.data, setVendors);
+    //   // Bck to the restaurant page
+    //   router.back();
+    // } catch (err) {
+    //   console.log(err);
+    // }
   }
 
   return (
@@ -74,9 +72,9 @@ export default function Item() {
 
             {/* Buttons */}
             <Buttons
-              handleClick={handleDelete}
+              initiateStatusUpdate={initiateStatusUpdate}
               linkText="Edit details"
-              buttonText="Delete item"
+              buttonText={item.status === "ARCHIVED" ? "Activate" : "Archive"}
               href={`/admin/restaurants/${router.query.restaurant}/${router.query.item}/edit-item`}
             />
           </div>
