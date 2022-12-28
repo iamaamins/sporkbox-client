@@ -1,25 +1,25 @@
 import Link from "next/link";
 import Image from "next/image";
+import Archive from "./Archive";
 import { IVendor } from "types";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
+import Modal from "@components/layout/Modal";
 import Buttons from "@components/layout/Buttons";
-import { FormEvent, FormEventHandler, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import styles from "@styles/admin/Restaurant.module.css";
 import {
   axiosInstance,
   formatCurrencyToUSD,
   updateVendors,
 } from "@utils/index";
-import Modal from "@components/layout/Modal";
-import Archive from "./Archive";
 
 export default function Restaurant() {
   const router = useRouter();
   const [action, setAction] = useState("");
   const { vendors, setVendors } = useData();
   const [vendor, setVendor] = useState<IVendor>();
-  const [showModal, setShowModal] = useState(false);
+  const [showArchiveModal, setShowArchiveModal] = useState(false);
 
   // Get the restaurant
   useEffect(() => {
@@ -33,15 +33,14 @@ export default function Restaurant() {
   }, [vendors, router.isReady]);
 
   // Handle update status
-  function handleStatusUpdate(e: FormEvent) {
+  function initiateStatusUpdate(e: FormEvent) {
     // Update states
-    setShowModal(true);
+    setShowArchiveModal(true);
     setAction(e.currentTarget.textContent!);
   }
 
   // Update restaurant status
   async function updateStatus() {
-    // Update restaurant status
     try {
       const response = await axiosInstance.put(
         `/vendors/${vendor?._id}/status`,
@@ -57,7 +56,7 @@ export default function Restaurant() {
       console.log(err);
     } finally {
       // Close the modal
-      setShowModal(false);
+      setShowArchiveModal(false);
     }
   }
 
@@ -89,7 +88,7 @@ export default function Restaurant() {
               <div className={styles.buttons}>
                 <Buttons
                   linkText="Add item"
-                  handleArchive={handleStatusUpdate}
+                  initiateStatusUpdate={initiateStatusUpdate}
                   buttonText={
                     vendor.status === "ARCHIVED" ? "Activate" : "Archive"
                   }
@@ -144,14 +143,14 @@ export default function Restaurant() {
           </div>
 
           <Modal
-            showModal={showModal}
-            setShowModal={setShowModal}
+            showModal={showArchiveModal}
+            setShowModal={setShowArchiveModal}
             component={
               <Archive
                 action={action}
                 name={vendor?.restaurant.name}
-                setShowModal={setShowModal}
                 updateStatus={updateStatus}
+                setShowArchiveModal={setShowArchiveModal}
               />
             }
           />

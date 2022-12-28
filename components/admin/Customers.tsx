@@ -19,12 +19,12 @@ export default function Customers({ status, customers }: ICustomersProps) {
       customerName: "",
     },
   });
-  const [showModal, setShowModal] = useState(false);
+  const [showArchiveModal, setShowArchiveModal] = useState(false);
 
   // Handle update status
-  function handleUpdateStatus(e: FormEvent, customerId: string) {
+  function initiateStatusUpdate(e: FormEvent, customerId: string) {
     // Update states
-    setShowModal(true);
+    setShowArchiveModal(true);
     setPayload({
       action: e.currentTarget.textContent!,
       data: {
@@ -64,7 +64,7 @@ export default function Customers({ status, customers }: ICustomersProps) {
       console.log(err);
     } finally {
       // Close modal
-      setShowModal(false);
+      setShowArchiveModal(false);
     }
   }
 
@@ -106,7 +106,7 @@ export default function Customers({ status, customers }: ICustomersProps) {
                 </Link>
                 <span
                   className={`${styles.button} ${styles.change_status}`}
-                  onClick={(e) => handleUpdateStatus(e, customer._id)}
+                  onClick={(e) => initiateStatusUpdate(e, customer._id)}
                 >
                   {status === "active" ? "Archive" : "Activate"}
                 </span>
@@ -117,14 +117,14 @@ export default function Customers({ status, customers }: ICustomersProps) {
       </table>
 
       <Modal
-        showModal={showModal}
-        setShowModal={setShowModal}
+        showModal={showArchiveModal}
+        setShowModal={setShowArchiveModal}
         component={
           <Archive
             name={payload.data.customerName}
             action={payload.action}
             updateStatus={updateStatus}
-            setShowModal={setShowModal}
+            setShowArchiveModal={setShowArchiveModal}
           />
         }
       />

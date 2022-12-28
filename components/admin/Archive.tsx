@@ -1,18 +1,12 @@
 import React, { Dispatch, FormEvent, SetStateAction } from "react";
 import styles from "@styles/admin/Archive.module.css";
-
-interface IArchiveProps {
-  name: string;
-  action: string;
-  updateStatus: () => Promise<void>;
-  setShowModal: Dispatch<SetStateAction<boolean>>;
-}
+import { IArchiveProps } from "types";
 
 export default function Archive({
   name,
   action,
-  setShowModal,
   updateStatus,
+  setShowArchiveModal,
 }: IArchiveProps) {
   return (
     <div className={styles.archive}>
@@ -21,7 +15,7 @@ export default function Archive({
       </p>
 
       <div className={styles.buttons}>
-        <button onClick={() => setShowModal(false)}>No</button>
+        <button onClick={() => setShowArchiveModal(false)}>No</button>
         <button onClick={updateStatus}>Yes</button>
       </div>
     </div>

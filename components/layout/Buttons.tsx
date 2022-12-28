@@ -6,8 +6,7 @@ export default function Buttons({
   href,
   linkText,
   buttonText,
-  handleClick,
-  handleArchive,
+  initiateStatusUpdate,
 }: IButtons) {
   return (
     <div className={styles.buttons}>
@@ -15,10 +14,7 @@ export default function Buttons({
         <a className={styles.link_button}>{linkText}</a>
       </Link>
 
-      <button
-        className={styles.action_button}
-        onClick={handleClick || handleArchive}
-      >
+      <button className={styles.action_button} onClick={initiateStatusUpdate}>
         {buttonText}
       </button>
     </div>

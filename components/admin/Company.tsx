@@ -8,13 +8,16 @@ import Buttons from "@components/layout/Buttons";
 import { FormEvent, useEffect, useState } from "react";
 import styles from "@styles/admin/Company.module.css";
 import ScheduleRestaurants from "@components/admin/ScheduleRestaurants";
+import Archive from "./Archive";
 
 export default function Company() {
   // Hooks
   const router = useRouter();
+  const [action, setAction] = useState("");
   const [company, setCompany] = useState<ICompany>();
   const [showModal, setShowModal] = useState(false);
   const { companies, setCompanies, customers } = useData();
+  const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [activeCustomers, setActiveCustomers] = useState<IUser[]>([]);
   const [archivedCustomers, setArchivedCustomers] = useState<IUser[]>([]);
 
@@ -54,26 +57,43 @@ export default function Company() {
     }
   }, [customers, router.isReady]);
 
-  // Delete company
-  async function handleDelete(e: FormEvent) {
-    e.preventDefault();
+  // Initiate status update
+  function initiateStatusUpdate(e: FormEvent) {
+    // Update states
+    setShowArchiveModal(true);
+    setAction(e.currentTarget.textContent!);
+  }
 
+  // Update company status
+  async function updateStatus() {
     try {
-      // Make delete request to backend
-      await axiosInstance.delete(`/companies/${company?._id}`);
+      const response = await axiosInstance.put(
+        `/companies/${company?._id}/status`,
+        {
+          action,
+        }
+      );
 
       // Update state
       setCompanies((currState) => ({
         ...currState,
-        data: currState.data.filter(
-          (currCompany) => currCompany._id !== company?._id
-        ),
+        data: currState.data.map((company) => {
+          if (company._id === response.data._id) {
+            return {
+              ...company,
+              status: response.data.status,
+            };
+          } else {
+            return company;
+          }
+        }),
       }));
-
-      // Back to companies page
-      router.back();
     } catch (err) {
+      // Log error
       console.log(err);
+    } finally {
+      // Remove modal
+      setShowArchiveModal(false);
     }
   }
 
@@ -101,9 +121,11 @@ export default function Company() {
           {/* Buttons */}
           <div className={styles.buttons}>
             <Buttons
-              handleClick={handleDelete}
+              initiateStatusUpdate={initiateStatusUpdate}
               linkText="Edit details"
-              buttonText="Delete"
+              buttonText={
+                company.status === "ARCHIVED" ? "Activate" : "Archive"
+              }
               href={`/admin/companies/${router.query.company}/edit-company`}
             />
 
@@ -132,9 +154,24 @@ export default function Company() {
               </div>
             )}
           </div>
+
+          {/* Archive company modal */}
+          <Modal
+            showModal={showArchiveModal}
+            setShowModal={setShowArchiveModal}
+            component={
+              <Archive
+                name={company.name}
+                action={action}
+                setShowArchiveModal={setShowArchiveModal}
+                updateStatus={updateStatus}
+              />
+            }
+          />
         </>
       )}
 
+      {/* Schedule restaurants modal */}
       <Modal
         showModal={showModal}
         setShowModal={setShowModal}
