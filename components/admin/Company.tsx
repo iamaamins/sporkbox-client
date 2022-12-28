@@ -2,7 +2,7 @@ import { ICompany, ICustomers, IUser } from "types";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
 import Customers from "./Customers";
-import { axiosInstance } from "@utils/index";
+import { axiosInstance, sortByLastName } from "@utils/index";
 import Modal from "@components/layout/Modal";
 import Buttons from "@components/layout/Buttons";
 import { FormEvent, useEffect, useState } from "react";
@@ -32,20 +32,24 @@ export default function Company() {
     if (customers.data.length > 0 && router.isReady) {
       // Update active customers
       setActiveCustomers(
-        customers.data.filter(
-          (customer) =>
-            customer.company?._id === router.query.company &&
-            customer.status === "ACTIVE"
-        )
+        customers.data
+          .filter(
+            (customer) =>
+              customer.company?._id === router.query.company &&
+              customer.status === "ACTIVE"
+          )
+          .sort(sortByLastName)
       );
 
       // Update archived customers
       setArchivedCustomers(
-        customers.data.filter(
-          (customer) =>
-            customer.company?._id === router.query.company &&
-            customer.status === "ARCHIVED"
-        )
+        customers.data
+          .filter(
+            (customer) =>
+              customer.company?._id === router.query.company &&
+              customer.status === "ARCHIVED"
+          )
+          .sort(sortByLastName)
       );
     }
   }, [customers, router.isReady]);

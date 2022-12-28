@@ -10,6 +10,7 @@ import {
   ICustomerFavoriteItems,
   IOrder,
   IOrdersGroup,
+  IUser,
 } from "types";
 
 // Current year
@@ -235,6 +236,10 @@ export const createOrdersGroups = (orders: IOrder[]) =>
       }) as IOrdersGroup[];
     }
   }, []);
+
+// Sort users by last name
+export const sortByLastName = (a: IUser, b: IUser) =>
+  a.lastName.toLowerCase().localeCompare(b.lastName.toLowerCase());
 
 // Create axios instance
 export const axiosInstance = axios.create({

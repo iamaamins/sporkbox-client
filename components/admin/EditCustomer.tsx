@@ -65,16 +65,20 @@ export default function EditCustomer() {
     e.preventDefault();
 
     try {
+      // Show the loader
       setIsLoading(true);
+
+      // Make request to the backend
       const response = await axiosInstance.put(
         `/customers/${router.query.customer}`,
         formData
       );
 
+      // Update customers
       setCustomers((currState) => ({
         ...currState,
         data: currState.data.map((customer) => {
-          if (customer._id === response.data.id) {
+          if (customer._id === response.data._id) {
             return {
               ...customer,
               firstName: response.data.firstName,
@@ -86,9 +90,13 @@ export default function EditCustomer() {
           }
         }),
       }));
+
+      // Redirect to the company page
+      router.push(`/admin/companies/${router.query.company}`);
     } catch (err) {
       console.log(err);
     } finally {
+      // Remove loader
       setIsLoading(false);
     }
   }
