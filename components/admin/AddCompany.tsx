@@ -5,6 +5,7 @@ import { axiosInstance } from "@utils/index";
 import { ChangeEvent, FormEvent, useState } from "react";
 import styles from "@styles/admin/AddCompany.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
+import CompanyForm from "./CompanyForm";
 
 export default function AddCompany() {
   // Initial state
@@ -25,32 +26,6 @@ export default function AddCompany() {
   const { setCompanies } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<IFormData>(initialState);
-
-  // Destructure data
-  const {
-    name,
-    code,
-    city,
-    state,
-    zip,
-    website,
-    dailyBudget,
-    addressLine1,
-    addressLine2,
-  } = formData;
-
-  // Handle change
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    // Id and value
-    const id = e.target.id;
-    const value = e.target.value;
-
-    // Update state
-    setFormData((currData) => ({
-      ...currData,
-      [id]: id === "dailyBudget" ? +value : value,
-    }));
-  }
 
   // Handle submit
   async function handleSubmit(e: FormEvent) {
@@ -87,81 +62,13 @@ export default function AddCompany() {
     <section className={styles.add_company}>
       <h2>Add a company</h2>
 
-      <form onSubmit={handleSubmit}>
-        <div className={styles.item}>
-          <label htmlFor="name">Name</label>
-          <input type="text" id="name" value={name} onChange={handleChange} />
-        </div>
-
-        <div className={styles.item}>
-          <label htmlFor="website">Website</label>
-          <input
-            type="text"
-            id="website"
-            value={website}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className={styles.item}>
-          <label htmlFor="addressLine1">Address line 1</label>
-          <input
-            type="text"
-            id="addressLine1"
-            value={addressLine1}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className={styles.item}>
-          <label htmlFor="addressLine2">Address line 2</label>
-          <input
-            type="text"
-            id="addressLine2"
-            value={addressLine2}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className={styles.city_state_zip}>
-          <div className={styles.item}>
-            <label htmlFor="city">City</label>
-            <input type="text" id="city" value={city} onChange={handleChange} />
-          </div>
-
-          <div className={styles.item}>
-            <label htmlFor="state">State</label>
-            <input
-              type="text"
-              id="state"
-              value={state}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className={styles.item}>
-            <label htmlFor="zip">Zip</label>
-            <input type="text" id="zip" value={zip} onChange={handleChange} />
-          </div>
-        </div>
-
-        <div className={styles.item}>
-          <label htmlFor="code">Code</label>
-          <input type="text" id="code" value={code} onChange={handleChange} />
-        </div>
-
-        <div className={styles.item}>
-          <label htmlFor="dailyBudget">Daily budget</label>
-          <input
-            type="number"
-            id="dailyBudget"
-            value={dailyBudget}
-            onChange={handleChange}
-          />
-        </div>
-
-        <SubmitButton text="Add company" isLoading={isLoading} />
-      </form>
+      <CompanyForm
+        isLoading={isLoading}
+        formData={formData}
+        setFormData={setFormData}
+        buttonText="Add company"
+        handleSubmit={handleSubmit}
+      />
     </section>
   );
 }

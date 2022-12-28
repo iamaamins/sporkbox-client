@@ -1,31 +1,31 @@
-.add_item {
+.edit_company {
   padding: var(--section_padding);
 }
 
-.add_item h2 {
+.edit_company h2 {
   margin-bottom: 1rem;
 }
 
-.add_item form {
+.edit_company form {
   padding: 1rem;
   border-radius: 0.5rem;
   box-shadow: var(--shadow_medium);
 }
 
 @media (min-width: 768px) {
-  .add_item {
+  .edit_company {
     max-width: 38rem;
     margin: 0 auto;
     padding-bottom: 2.5rem;
   }
 
-  .add_item form {
+  .edit_company form {
     padding: 1.5rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .add_item {
+  .edit_company {
     max-width: 42rem;
     margin: 0 auto;
   }

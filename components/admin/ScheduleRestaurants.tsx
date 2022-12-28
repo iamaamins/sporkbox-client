@@ -1,9 +1,10 @@
-import { useData } from "@context/Data";
 import { axiosInstance } from "@utils/index";
-import SubmitButton from "@components/layout/SubmitButton";
-import styles from "@styles/admin/ScheduleRestaurants.module.css";
+import { useData } from "@context/Data";
+import { useRouter } from "next/router";
+import SubmitButton from "../layout/SubmitButton";
+import { IFormData, IRestaurant } from "types";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { IFormData, IRestaurant, IScheduledRestaurant } from "types";
+import styles from "@styles/admin/ScheduleRestaurants.module.css";
 
 export default function ScheduleRestaurants() {
   // Initial state
@@ -13,6 +14,7 @@ export default function ScheduleRestaurants() {
   };
 
   // Hooks
+  const router = useRouter();
   const { vendors, setScheduledRestaurants } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [approvedRestaurants, setApprovedRestaurants] = useState<IRestaurant[]>(
@@ -29,7 +31,7 @@ export default function ScheduleRestaurants() {
       // Filter approved restaurants
       setApprovedRestaurants(
         vendors.data
-          .filter((vendor) => vendor.status === "APPROVED")
+          .filter((vendor) => vendor.status === "ACTIVE")
           .map((vendor) => vendor.restaurant)
       );
     }
@@ -53,11 +55,10 @@ export default function ScheduleRestaurants() {
       // Show loader
       setIsLoading(true);
 
+      const data = { ...formData, companyId: router.query.company };
+
       // Make request to backend
-      const response = await axiosInstance.put(
-        `/restaurants/schedule/${restaurantId}`,
-        { date }
-      );
+      const response = await axiosInstance.put(`/restaurants/schedule/`, data);
 
       // Update scheduled restaurants state
       setScheduledRestaurants((currState) => ({
@@ -82,52 +83,43 @@ export default function ScheduleRestaurants() {
   const minDate = today.toISOString().split("T")[0];
 
   return (
-    <section className={styles.schedule_restaurants}>
-      {approvedRestaurants?.length === 0 && <h2>No approved restaurants</h2>}
+    <div className={styles.schedule_restaurants}>
+      <h2>Schedule restaurants</h2>
+      <form onSubmit={handleSchedule}>
+        <div className={styles.item}>
+          <label htmlFor="date">Select a date</label>
+          <input
+            type="date"
+            id="date"
+            value={date}
+            min={minDate}
+            onChange={handleChange}
+          />
+        </div>
 
-      {approvedRestaurants?.length > 0 && (
-        <>
-          <h2 className={styles.schedule_restaurants_title}>
-            Schedule restaurants
-          </h2>
+        <div className={styles.item}>
+          <select
+            id="restaurantId"
+            value={restaurantId}
+            onChange={handleChange}
+          >
+            <option hidden aria-hidden value="Please select a restaurant">
+              Please select a restaurant
+            </option>
 
-          <form onSubmit={handleSchedule}>
-            <div className={styles.item}>
-              <label htmlFor="date">Select a date</label>
-              <input
-                type="date"
-                id="date"
-                value={date}
-                min={minDate}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className={styles.item}>
-              <select
-                id="restaurantId"
-                value={restaurantId}
-                onChange={handleChange}
+            {approvedRestaurants.map((approvedRestaurant) => (
+              <option
+                key={approvedRestaurant._id}
+                value={approvedRestaurant._id}
               >
-                <option hidden aria-hidden value="Please select a restaurant">
-                  Please select a restaurant
-                </option>
+                {approvedRestaurant.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-                {approvedRestaurants.map((approvedRestaurant) => (
-                  <option
-                    key={approvedRestaurant._id}
-                    value={approvedRestaurant._id}
-                  >
-                    {approvedRestaurant.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <SubmitButton text="Schedule" isLoading={isLoading} />
-          </form>
-        </>
-      )}
-    </section>
+        <SubmitButton text="Schedule" isLoading={isLoading} />
+      </form>
+    </div>
   );
 }

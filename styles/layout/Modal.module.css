@@ -15,41 +15,6 @@
   transition: all 250ms ease-in-out;
 }
 
-.schedule_restaurants_title {
-  margin-bottom: 1rem;
-}
-
-.modal.show {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.item {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1.5rem;
-}
-
-.item label {
-  font-size: 0.9rem;
-  color: var(--gray);
-  margin-bottom: 0.75rem;
-}
-
-.item input,
-.item select {
-  padding: 12px;
-  border-radius: 0.25rem;
-  -webkit-appearance: none;
-  border: 1px solid var(--border_color);
-}
-
-.item input:focus,
-.item select:focus {
-  outline: none;
-  border: 1px solid var(--teal);
-}
-
 .overlay {
   position: fixed;
   opacity: 0;
@@ -66,14 +31,14 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.overlay.show {
+.show {
   opacity: 1;
   pointer-events: all;
 }
 
 @media (min-width: 768px) {
   .modal {
-    width: 35rem;
     padding: 1.5rem;
+    max-width: 35rem;
   }
 }

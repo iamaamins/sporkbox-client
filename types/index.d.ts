@@ -6,7 +6,8 @@ export interface IUser {
   lastName: string;
   email: string;
   role: string;
-  status?: string;
+  status: string;
+  createdAt: string;
   company?: ICompany;
   restaurant?: IRestaurant;
 }
@@ -14,6 +15,11 @@ export interface IUser {
 export interface IVendor extends IUser {
   status: string;
   restaurant: IRestaurant;
+}
+
+export interface ICustomers {
+  data: IUser[];
+  isLoading: boolean;
 }
 
 export interface IRestaurant {
@@ -119,6 +125,10 @@ export interface ICustomerFavoriteItems extends IIsLoading {
   data: ICustomerFavoriteItem[];
 }
 
+export interface ICustomers extends IIsLoading {
+  data: IUser[];
+}
+
 export interface INextWeekBudgetAndDates {
   nextWeekDate: number;
   budgetOnHand: number;
@@ -129,19 +139,21 @@ export interface IDataContext {
   allOrders: IOrder[];
   companies: ICompanies;
   nextWeekDates: number[];
+  customers: ICustomers;
+  customerAllOrders: ICustomerOrder[];
+  upcomingOrdersGroups: IOrdersGroup[];
+  deliveredOrdersGroups: IOrdersGroup[];
   allUpcomingOrders: IAllUpcomingOrders;
   allDeliveredOrders: IAllDeliveredOrders;
-  customerAllOrders: ICustomerOrder[];
-  customerUpcomingOrders: ICustomerUpcomingOrders;
-  customerDeliveredOrders: ICustomerDeliveredOrders;
   scheduledRestaurants: IScheduledRestaurants;
   customerFavoriteItems: ICustomerFavoriteItems;
   setVendors: Dispatch<SetStateAction<IVendors>>;
+  customerUpcomingOrders: ICustomerUpcomingOrders;
+  customerDeliveredOrders: ICustomerDeliveredOrders;
   nextWeekBudgetAndDates: INextWeekBudgetAndDates[];
   upcomingWeekRestaurants: IUpcomingWeekRestaurants;
-  upcomingOrdersGroups: IOrdersGroup[];
-  deliveredOrdersGroups: IOrdersGroup[];
   setCompanies: Dispatch<SetStateAction<ICompanies>>;
+  setCustomers: Dispatch<SetStateAction<ICustomers>>;
   setAllUpcomingOrders: Dispatch<SetStateAction<IAllUpcomingOrders>>;
   setAllDeliveredOrders: Dispatch<SetStateAction<IAllDeliveredOrders>>;
   setCustomerUpcomingOrders: Dispatch<SetStateAction<ICustomerUpcomingOrders>>;
@@ -323,4 +335,23 @@ export interface IOrdersGroupDetailsProps {
 export interface IModalProps {
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
+}
+
+export interface IEditFormProps {
+  isLoading: boolean;
+  formData: IFormData;
+  buttonText: string;
+  handleSubmit: (e: FormEvent) => Promise<void>;
+  setFormData: Dispatch<SetStateAction<IFormData>>;
+}
+
+export interface IModalProps {
+  showModal: boolean;
+  component: JSX.Element;
+  setShowModal: Dispatch<SetStateAction<boolean>>;
+}
+
+export interface ICustomersProps {
+  status: string;
+  customers: IUser[];
 }

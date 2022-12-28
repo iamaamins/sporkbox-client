@@ -20,6 +20,10 @@
   color: var(--black);
 }
 
+.buttons {
+  margin-bottom: 1.5rem;
+}
+
 .schedule_restaurants_button {
   width: 12rem;
   height: 2.75rem;
@@ -31,6 +35,10 @@
   background: var(--teal);
   border-radius: 0.25rem;
   color: var(--almost_white);
+}
+
+.section h2 {
+  margin-bottom: 1rem;
 }
 
 @media (min-width: 768px) {

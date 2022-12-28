@@ -1,11 +1,11 @@
-import { useEffect } from "react";
+import EditCompany from "@components/admin/EditCompany";
+import PageLoader from "@components/layout/PageLoader";
 import { useUser } from "@context/User";
 import { checkUser } from "@utils/index";
 import { useRouter } from "next/router";
-import EditItem from "@components/admin/EditItem";
-import PageLoader from "@components/layout/PageLoader";
+import { useEffect } from "react";
 
-export default function EditItemPage() {
+export default function EditCompanyPage() {
   const router = useRouter();
   const { isUserLoading, isAdmin } = useUser();
 
@@ -16,7 +16,7 @@ export default function EditItemPage() {
   return (
     <main>
       {isUserLoading && <PageLoader />}
-      {isAdmin && <EditItem />}
+      {isAdmin && <EditCompany />}
     </main>
   );
 }

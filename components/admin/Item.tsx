@@ -75,7 +75,7 @@ export default function Item() {
             {/* Buttons */}
             <Buttons
               handleClick={handleDelete}
-              linkText="Edit item"
+              linkText="Edit details"
               buttonText="Delete item"
               href={`/admin/restaurants/${router.query.restaurant}/${router.query.item}/edit-item`}
             />

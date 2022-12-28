@@ -12,39 +12,6 @@
   box-shadow: var(--shadow_medium);
 }
 
-.item {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1.5rem;
-}
-
-.city_state_zip {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.city_state_zip .item {
-  width: 48%;
-}
-
-.item label {
-  font-size: 0.9rem;
-  color: var(--gray);
-  margin-bottom: 0.75rem;
-}
-
-.item input {
-  padding: 12px;
-  border-radius: 0.25rem;
-  border: 1px solid var(--border_color);
-}
-
-.item input:focus {
-  outline: none;
-  border: 1px solid var(--teal);
-}
-
 @media (min-width: 768px) {
   .add_company {
     max-width: 38rem;
