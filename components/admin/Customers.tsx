@@ -1,12 +1,47 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ICustomersProps } from "types";
-import { convertDateToText } from "@utils/index";
+import { FormEvent } from "react";
+import { useData } from "@context/Data";
 import styles from "@styles/admin/Customers.module.css";
+import { axiosInstance, convertDateToText } from "@utils/index";
 
 export default function Customers({ status, customers }: ICustomersProps) {
   // Hooks
   const router = useRouter();
+  const { setCustomers } = useData();
+
+  // Handle update customer status
+  async function handleUpdateStatus(e: FormEvent, customerId: string) {
+    // Action
+    const action = e.currentTarget.textContent;
+
+    // Update customer status
+    try {
+      // Make request to the backend
+      const response = await axiosInstance.put(
+        `/customers/${customerId}/status`,
+        { action }
+      );
+
+      // Update customers
+      setCustomers((currState) => ({
+        ...currState,
+        data: currState.data.map((customer) => {
+          if (customer._id === response.data._id) {
+            return {
+              ...customer,
+              status: response.data.status,
+            };
+          } else {
+            return customer;
+          }
+        }),
+      }));
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <table className={styles.customers}>
@@ -43,7 +78,10 @@ export default function Customers({ status, customers }: ICustomersProps) {
                   Edit
                 </a>
               </Link>
-              <span className={`${styles.button} ${styles.change_status}`}>
+              <span
+                className={`${styles.button} ${styles.change_status}`}
+                onClick={(e) => handleUpdateStatus(e, customer._id)}
+              >
                 {status === "active" ? "Archive" : "Activate"}
               </span>
             </td>
