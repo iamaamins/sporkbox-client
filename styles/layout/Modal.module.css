@@ -39,6 +39,6 @@
 @media (min-width: 768px) {
   .modal {
     padding: 1.5rem;
-    max-width: 35rem;
+    width: fit-content;
   }
 }

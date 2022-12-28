@@ -50,6 +50,7 @@ interface IItem {
   tags: string;
   name: string;
   price: number;
+  status: string;
   description: string;
 }
 
@@ -66,6 +67,7 @@ export interface ICompany {
   _id: string;
   name: string;
   code: string;
+  status: string;
   website: string;
   address: string;
   createdAt: string;
@@ -275,7 +277,7 @@ export interface IButtons {
   href: string;
   linkText: string;
   buttonText: string;
-  handleClick: (e: FormEvent) => Promise<void>;
+  initiateStatusUpdate: (e: FormEvent) => void;
 }
 
 export interface IActionButton {
@@ -354,4 +356,18 @@ export interface IModalProps {
 export interface ICustomersProps {
   status: string;
   customers: IUser[];
+}
+
+export interface IArchivePayload {
+  action: string;
+  data: {
+    [key: string]: string;
+  };
+}
+
+export interface IArchiveProps {
+  name: string;
+  action: string;
+  updateStatus: () => Promise<void>;
+  setShowArchiveModal: Dispatch<SetStateAction<boolean>>;
 }

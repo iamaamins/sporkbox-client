@@ -1,0 +1,31 @@
+.archive {
+  text-align: center;
+}
+
+.archive p {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.archive button {
+  border: none;
+  width: 8rem;
+  height: 2.5rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  color: var(--almost_white);
+  background-color: var(--orange);
+}
+
+.buttons button:first-child {
+  margin-bottom: 0.5rem;
+  margin-right: 1rem;
+  background: var(--black);
+}
+
+@media (min-width: 768px) {
+  .archive {
+    width: 20rem;
+  }
+}

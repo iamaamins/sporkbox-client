@@ -3,10 +3,10 @@ import { IButtons } from "types";
 import styles from "@styles/layout/Buttons.module.css";
 
 export default function Buttons({
-  handleClick,
+  href,
   linkText,
   buttonText,
-  href,
+  initiateStatusUpdate,
 }: IButtons) {
   return (
     <div className={styles.buttons}>
@@ -14,7 +14,7 @@ export default function Buttons({
         <a className={styles.link_button}>{linkText}</a>
       </Link>
 
-      <button onClick={handleClick} className={styles.action_button}>
+      <button className={styles.action_button} onClick={initiateStatusUpdate}>
         {buttonText}
       </button>
     </div>
