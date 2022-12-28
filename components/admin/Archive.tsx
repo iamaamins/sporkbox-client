@@ -4,7 +4,7 @@ import styles from "@styles/admin/Archive.module.css";
 interface IArchiveProps {
   name: string;
   action: string;
-  updateStatus: (e: FormEvent) => Promise<void>;
+  updateStatus: () => Promise<void>;
   setShowModal: Dispatch<SetStateAction<boolean>>;
 }
 

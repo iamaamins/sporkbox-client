@@ -16,10 +16,10 @@ import Archive from "./Archive";
 
 export default function Restaurant() {
   const router = useRouter();
+  const [action, setAction] = useState("");
   const { vendors, setVendors } = useData();
   const [vendor, setVendor] = useState<IVendor>();
   const [showModal, setShowModal] = useState(false);
-  const [action, setAction] = useState<string>("");
 
   // Get the restaurant
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function Restaurant() {
   }
 
   // Update restaurant status
-  async function updateStatus(e: FormEvent) {
+  async function updateStatus() {
     // Update restaurant status
     try {
       const response = await axiosInstance.put(

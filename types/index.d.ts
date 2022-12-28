@@ -356,3 +356,10 @@ export interface ICustomersProps {
   status: string;
   customers: IUser[];
 }
+
+export interface IArchivePayload {
+  action: string;
+  data: {
+    [key: string]: string;
+  };
+}
