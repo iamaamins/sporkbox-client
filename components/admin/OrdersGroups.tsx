@@ -1,11 +1,10 @@
-import OrdersGroupRow from "./OrdersGroupRow";
 import { useState } from "react";
 import { useData } from "@context/Data";
-import { BiSort } from "react-icons/bi";
 import { useRouter } from "next/router";
-import SortOrdersGroups from "./SortOrdersGroups";
 import { axiosInstance } from "@utils/index";
-import { IOrder, IOrdersGroup, IOrdersGroupsProps, ISorted } from "types";
+import OrdersGroupRow from "./OrdersGroupRow";
+import SortOrdersGroups from "./SortOrdersGroups";
+import { IOrdersGroupsProps, ISorted } from "types";
 import styles from "@styles/admin/OrdersGroups.module.css";
 import ActionButton from "@components/layout/ActionButton";
 
@@ -23,8 +22,6 @@ export default function OrdersGroups({
     byCompany: false,
     byDeliveryDate: false,
   });
-
-  // console.log(ordersGroups);
 
   async function handleLoadAllDeliveredOrders() {
     // Get all delivered orders

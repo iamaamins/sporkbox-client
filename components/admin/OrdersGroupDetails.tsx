@@ -18,7 +18,7 @@ export default function OrdersGroupDetails({
 }: IOrdersGroupDetailsProps) {
   // Hooks
   const router = useRouter();
-  const [isUpdatingOrderStatus, setIsUpdatingOrderStatus] = useState(false);
+  const [isUpdatingOrdersStatus, setIsUpdatingOrdersStatus] = useState(false);
   const { setAllUpcomingOrders, setAllDeliveredOrders } = useData();
   const [ordersByRestaurants, setOrdersByRestaurants] = useState<
     IOrdersByRestaurant[]
@@ -26,7 +26,7 @@ export default function OrdersGroupDetails({
 
   // Separate order for each restaurant
   useEffect(() => {
-    if (router.isReady && !isLoading) {
+    if (!isLoading && router.isReady) {
       // Find the orders group
       const ordersGroup = ordersGroups.find(
         (ordersGroup) =>
@@ -53,7 +53,7 @@ export default function OrdersGroupDetails({
         );
       }
     }
-  }, [router.isReady, isLoading]);
+  }, [router.isReady, isLoading, ordersGroups]);
 
   // Send delivery email
   async function sendDeliveryEmail(orders: IOrder[], restaurantName: string) {
@@ -62,11 +62,11 @@ export default function OrdersGroupDetails({
 
     // Update orders status
     try {
-      setIsUpdatingOrderStatus(true);
+      setIsUpdatingOrdersStatus(true);
       // Show the loader
 
       // Make request to the backend
-      await axiosInstance.put("/orders/update-status", {
+      await axiosInstance.put("/orders/status", {
         orderIds,
       });
 
@@ -100,7 +100,27 @@ export default function OrdersGroupDetails({
       console.log(err);
     } finally {
       // Remove the loader
-      setIsUpdatingOrderStatus(false);
+      setIsUpdatingOrdersStatus(false);
+    }
+  }
+
+  // Archive order
+  async function archiveOrder(orderId: string, ordersLength: number) {
+    try {
+      // Make request to the backend
+      await axiosInstance.put(`/orders/${orderId}/status`);
+
+      // Remove the order
+      setAllUpcomingOrders((currState) => ({
+        ...currState,
+        data: currState.data.filter((order) => order._id !== orderId),
+      }));
+
+      // Push to the dashboard when there are no restaurant
+      ordersLength === 1 && router.push("/admin");
+    } catch (err) {
+      // Log error
+      console.log(err);
     }
   }
 
@@ -148,7 +168,7 @@ export default function OrdersGroupDetails({
                           )
                         }
                       >
-                        {isUpdatingOrderStatus ? (
+                        {isUpdatingOrdersStatus ? (
                           <ButtonLoader color="#f78f1e" size={7} />
                         ) : (
                           "Send delivery email"
@@ -218,6 +238,7 @@ export default function OrdersGroupDetails({
                     <th>Name</th>
                     <th>Email</th>
                     <th>Dish</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
 
@@ -229,6 +250,23 @@ export default function OrdersGroupDetails({
                       </td>
                       <td>{order.customer.email}</td>
                       <td>{order.item.name}</td>
+                      <td>
+                        {order.status === "PROCESSING" ? (
+                          <span
+                            className={styles.archive}
+                            onClick={() =>
+                              archiveOrder(
+                                order._id,
+                                ordersByRestaurant.orders.length
+                              )
+                            }
+                          >
+                            Archive
+                          </span>
+                        ) : (
+                          <span>Order delivered</span>
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
