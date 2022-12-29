@@ -99,6 +99,9 @@ export default function Order() {
     e.preventDefault();
 
     try {
+      // Show loader
+      setIsLoading(true);
+
       // Make request to the backend
       const response = await axiosInstance.post(
         `/restaurants/${order?.restaurant._id}/${order?.item._id}`,

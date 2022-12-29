@@ -1,17 +1,18 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { IArchivePayload, ICustomersProps } from "types";
-import { FormEvent, useState } from "react";
-import { useData } from "@context/Data";
-import styles from "@styles/admin/Customers.module.css";
-import { axiosInstance, convertDateToText } from "@utils/index";
-import Modal from "@components/layout/Modal";
 import Archive from "./Archive";
+import { useRouter } from "next/router";
+import { useData } from "@context/Data";
+import Modal from "@components/layout/Modal";
+import { FormEvent, useState } from "react";
+import styles from "@styles/admin/Customers.module.css";
+import { IArchivePayload, ICustomersProps } from "types";
+import { axiosInstance, convertDateToText } from "@utils/index";
 
 export default function Customers({ status, customers }: ICustomersProps) {
   // Hooks
   const router = useRouter();
   const { setCustomers } = useData();
+  const [isLoading, setIsLoading] = useState(false);
   const [payload, setPayload] = useState<IArchivePayload>({
     action: "",
     data: {
@@ -37,8 +38,10 @@ export default function Customers({ status, customers }: ICustomersProps) {
 
   // Update customer status
   async function updateStatus() {
-    // Update customer status
     try {
+      // Show loader
+      setIsLoading(true);
+
       // Make request to the backend
       const response = await axiosInstance.put(
         `/customers/${payload.data.customerId}/status`,
@@ -63,7 +66,8 @@ export default function Customers({ status, customers }: ICustomersProps) {
       // Log error
       console.log(err);
     } finally {
-      // Close modal
+      // Remove loader and close modal
+      setIsLoading(false);
       setShowArchiveModal(false);
     }
   }
@@ -123,6 +127,7 @@ export default function Customers({ status, customers }: ICustomersProps) {
           <Archive
             name={payload.data.customerName}
             action={payload.action}
+            isLoading={isLoading}
             updateStatus={updateStatus}
             setShowArchiveModal={setShowArchiveModal}
           />

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { IOrdersGroupRowProps } from "types";
 import { FiDownload } from "react-icons/fi";
 import { CSVLink } from "react-csv";
-import { convertDateToMS, createSlug } from "@utils/index";
+import { convertDateToMS, convertDateToText, createSlug } from "@utils/index";
 import styles from "@styles/admin/OrdersGroupRow.module.css";
 
 export default function OrdersGroupRow({
@@ -78,7 +78,7 @@ export default function OrdersGroupRow({
             ordersGroup.companyName
           )}/${convertDateToMS(ordersGroup.deliveryDate)}`}
         >
-          <a>{ordersGroup.deliveryDate}</a>
+          <a>{convertDateToText(ordersGroup.deliveryDate)} </a>
         </Link>
       </td>
       <td className={styles.hide_on_mobile}>{ordersGroup.companyName}</td>

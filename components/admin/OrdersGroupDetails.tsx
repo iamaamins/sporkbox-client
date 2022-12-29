@@ -130,7 +130,7 @@ export default function OrdersGroupDetails({
               {ordersByRestaurants.map((ordersByRestaurant, index) => (
                 <tr key={index}>
                   <td className={styles.hide_on_mobile}>
-                    {ordersByRestaurant.deliveryDate}
+                    {convertDateToText(ordersByRestaurant.deliveryDate)}
                   </td>
                   <td>{ordersByRestaurant.companyName}</td>
                   <td>{ordersByRestaurant.restaurantName}</td>
@@ -167,7 +167,7 @@ export default function OrdersGroupDetails({
             <div key={index}>
               <h2>
                 Order summary - {ordersByRestaurant.restaurantName} -{" "}
-                {ordersByRestaurant.deliveryDate}
+                {convertDateToText(ordersByRestaurant.deliveryDate)}
               </h2>
 
               <table>
@@ -209,7 +209,7 @@ export default function OrdersGroupDetails({
 
               <h2>
                 Customer information - {ordersByRestaurant.restaurantName} -{" "}
-                {ordersByRestaurant.deliveryDate}
+                {convertDateToText(ordersByRestaurant.deliveryDate)}
               </h2>
 
               <table>

@@ -1,10 +1,11 @@
-import React, { Dispatch, FormEvent, SetStateAction } from "react";
 import styles from "@styles/admin/Archive.module.css";
 import { IArchiveProps } from "types";
+import ButtonLoader from "@components/layout/ButtonLoader";
 
 export default function Archive({
   name,
   action,
+  isLoading,
   updateStatus,
   setShowArchiveModal,
 }: IArchiveProps) {
@@ -16,7 +17,9 @@ export default function Archive({
 
       <div className={styles.buttons}>
         <button onClick={() => setShowArchiveModal(false)}>No</button>
-        <button onClick={updateStatus}>Yes</button>
+        <button onClick={updateStatus}>
+          {isLoading ? <ButtonLoader size={8} margin={2} /> : "Yes"}
+        </button>
       </div>
     </div>
   );
