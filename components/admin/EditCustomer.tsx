@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import styles from "@styles/admin/EditCustomer.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { axiosInstance } from "@utils/index";
+import { axiosInstance, updateCustomers } from "@utils/index";
 
 export default function EditCustomer() {
   // Initial state
@@ -75,21 +75,7 @@ export default function EditCustomer() {
       );
 
       // Update customers
-      setCustomers((currState) => ({
-        ...currState,
-        data: currState.data.map((customer) => {
-          if (customer._id === response.data._id) {
-            return {
-              ...customer,
-              firstName: response.data.firstName,
-              lastName: response.data.lastName,
-              email: response.data.email,
-            };
-          } else {
-            return customer;
-          }
-        }),
-      }));
+      updateCustomers(response.data, setCustomers);
 
       // Redirect to the company page
       router.push(`/admin/companies/${router.query.company}`);

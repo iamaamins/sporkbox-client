@@ -6,7 +6,11 @@ import Modal from "@components/layout/Modal";
 import { FormEvent, useState } from "react";
 import styles from "@styles/admin/Customers.module.css";
 import { IArchivePayload, ICustomersProps } from "types";
-import { axiosInstance, convertDateToText } from "@utils/index";
+import {
+  axiosInstance,
+  convertDateToText,
+  updateCustomers,
+} from "@utils/index";
 
 export default function Customers({ status, customers }: ICustomersProps) {
   // Hooks
@@ -49,19 +53,7 @@ export default function Customers({ status, customers }: ICustomersProps) {
       );
 
       // Update customers
-      setCustomers((currState) => ({
-        ...currState,
-        data: currState.data.map((customer) => {
-          if (customer._id === response.data._id) {
-            return {
-              ...customer,
-              status: response.data.status,
-            };
-          } else {
-            return customer;
-          }
-        }),
-      }));
+      updateCustomers(response.data, setCustomers);
     } catch (err) {
       // Log error
       console.log(err);
