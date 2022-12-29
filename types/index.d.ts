@@ -368,6 +368,7 @@ export interface IArchivePayload {
 export interface IArchiveProps {
   name: string;
   action: string;
+  isLoading: boolean;
   updateStatus: () => Promise<void>;
   setShowArchiveModal: Dispatch<SetStateAction<boolean>>;
 }

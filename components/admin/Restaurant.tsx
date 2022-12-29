@@ -19,6 +19,7 @@ export default function Restaurant() {
   const [action, setAction] = useState("");
   const { vendors, setVendors } = useData();
   const [vendor, setVendor] = useState<IVendor>();
+  const [isLoading, setIsLoading] = useState(false);
   const [showArchiveModal, setShowArchiveModal] = useState(false);
 
   // Get the restaurant
@@ -42,6 +43,10 @@ export default function Restaurant() {
   // Update restaurant status
   async function updateStatus() {
     try {
+      // Show loader
+      setIsLoading(true);
+
+      // Make request to the backend
       const response = await axiosInstance.put(
         `/vendors/${vendor?._id}/status`,
         {
@@ -55,7 +60,8 @@ export default function Restaurant() {
       // Log error
       console.log(err);
     } finally {
-      // Close the modal
+      // Remove loader and close the modal
+      setIsLoading(false);
       setShowArchiveModal(false);
     }
   }
@@ -148,6 +154,7 @@ export default function Restaurant() {
             component={
               <Archive
                 action={action}
+                isLoading={isLoading}
                 name={vendor?.restaurant.name}
                 updateStatus={updateStatus}
                 setShowArchiveModal={setShowArchiveModal}

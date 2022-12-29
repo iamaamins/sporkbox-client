@@ -14,6 +14,7 @@ export default function Company() {
   // Hooks
   const router = useRouter();
   const [action, setAction] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [company, setCompany] = useState<ICompany>();
   const [showModal, setShowModal] = useState(false);
   const { companies, setCompanies, customers } = useData();
@@ -67,6 +68,10 @@ export default function Company() {
   // Update company status
   async function updateStatus() {
     try {
+      // Show loader
+      setIsLoading(true);
+
+      // Make request to the backend
       const response = await axiosInstance.put(
         `/companies/${company?._id}/status`,
         {
@@ -92,7 +97,8 @@ export default function Company() {
       // Log error
       console.log(err);
     } finally {
-      // Remove modal
+      // Remove loader and close the modal
+      setIsLoading(false);
       setShowArchiveModal(false);
     }
   }
@@ -163,6 +169,7 @@ export default function Company() {
               <Archive
                 name={company.name}
                 action={action}
+                isLoading={isLoading}
                 setShowArchiveModal={setShowArchiveModal}
                 updateStatus={updateStatus}
               />
