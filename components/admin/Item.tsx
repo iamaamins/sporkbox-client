@@ -2,7 +2,7 @@ import { IItem } from "types";
 import Image from "next/image";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import {
   axiosInstance,
   formatCurrencyToUSD,
@@ -10,11 +10,21 @@ import {
 } from "@utils/index";
 import Buttons from "@components/layout/Buttons";
 import styles from "@styles/admin/Item.module.css";
+import Modal from "@components/layout/Modal";
+import Archive from "./Archive";
 
 export default function Item() {
   const router = useRouter();
   const { vendors, setVendors } = useData();
   const [item, setItem] = useState<IItem>();
+  const [payload, setPayload] = useState({
+    action: "",
+    item: {
+      name: "",
+    },
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [showArchiveModal, setShowArchiveModal] = useState(false);
 
   // Get the item
   useEffect(() => {
@@ -27,21 +37,40 @@ export default function Item() {
     }
   }, [vendors, router.isReady]);
 
-  // Handle delete
-  async function initiateStatusUpdate() {
-    // // Delete an item
-    // try {
-    //   // Send the request to backend
-    //   const response = await axiosInstance.delete(
-    //     `/restaurants/${router.query.restaurant}/${router.query.item}/delete-item`
-    //   );
-    //   // Updated vendors array with updated items
-    //   updateVendors(response.data, setVendors);
-    //   // Bck to the restaurant page
-    //   router.back();
-    // } catch (err) {
-    //   console.log(err);
-    // }
+  // Initiate status update
+  function initiateStatusUpdate(e: FormEvent, itemName: string) {
+    // Update states
+    setShowArchiveModal(true);
+    setPayload({
+      action: e.currentTarget.textContent!,
+      item: {
+        name: itemName,
+      },
+    });
+  }
+
+  // Update item status
+  async function updateStatus() {
+    try {
+      // Show loader
+      setIsLoading(true);
+
+      // Make request to the backend
+      const response = await axiosInstance.put(
+        `/restaurants/${router.query.restaurant}/${router.query.item}/status`,
+        { action: payload.action }
+      );
+
+      // Updated vendors
+      updateVendors(response.data, setVendors);
+    } catch (err) {
+      // Log error
+      console.log(err);
+    } finally {
+      // Remove loader and close modal
+      setIsLoading(false);
+      setShowArchiveModal(false);
+    }
   }
 
   return (
@@ -72,7 +101,7 @@ export default function Item() {
 
             {/* Buttons */}
             <Buttons
-              initiateStatusUpdate={initiateStatusUpdate}
+              initiateStatusUpdate={(e) => initiateStatusUpdate(e, item.name)}
               linkText="Edit details"
               buttonText={item.status === "ARCHIVED" ? "Activate" : "Archive"}
               href={`/admin/restaurants/${router.query.restaurant}/${router.query.item}/edit-item`}
@@ -80,6 +109,19 @@ export default function Item() {
           </div>
         </>
       )}
+      <Modal
+        showModal={showArchiveModal}
+        setShowModal={setShowArchiveModal}
+        component={
+          <Archive
+            setShowArchiveModal={setShowArchiveModal}
+            action={payload.action}
+            name={payload.item.name}
+            updateStatus={updateStatus}
+            isLoading={isLoading}
+          />
+        }
+      />
     </section>
   );
 }
