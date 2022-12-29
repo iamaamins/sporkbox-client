@@ -2,7 +2,7 @@ import { ICompany, ICustomers, IUser } from "types";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
 import Customers from "./Customers";
-import { axiosInstance, sortByLastName } from "@utils/index";
+import { axiosInstance, sortByLastName, updateCompanies } from "@utils/index";
 import Modal from "@components/layout/Modal";
 import Buttons from "@components/layout/Buttons";
 import { FormEvent, useEffect, useState } from "react";
@@ -79,20 +79,8 @@ export default function Company() {
         }
       );
 
-      // Update state
-      setCompanies((currState) => ({
-        ...currState,
-        data: currState.data.map((company) => {
-          if (company._id === response.data._id) {
-            return {
-              ...company,
-              status: response.data.status,
-            };
-          } else {
-            return company;
-          }
-        }),
-      }));
+      // Update companies
+      updateCompanies(response.data, setCompanies);
     } catch (err) {
       // Log error
       console.log(err);

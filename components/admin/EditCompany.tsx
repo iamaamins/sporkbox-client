@@ -2,7 +2,7 @@ import { ICompany, IFormData } from "types";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
 import CompanyForm from "./CompanyForm";
-import { axiosInstance } from "@utils/index";
+import { axiosInstance, updateCompanies } from "@utils/index";
 import styles from "@styles/admin/EditCompany.module.css";
 import React, { FormEvent, useEffect, useState } from "react";
 
@@ -64,7 +64,6 @@ export default function EditCompany() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    // Create a company
     try {
       // Show loader
       setIsLoading(true);
@@ -76,15 +75,7 @@ export default function EditCompany() {
       );
 
       // Update companies
-      setCompanies((currState) => ({
-        ...currState,
-        data: [
-          ...currState.data.filter(
-            (company) => company._id !== response.data._id
-          ),
-          response.data,
-        ],
-      }));
+      updateCompanies(response.data, setCompanies);
 
       // Push to dashboard
       router.push(`/admin/companies/${response.data._id}`);

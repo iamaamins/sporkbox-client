@@ -1,3 +1,4 @@
+import { ICompanies, ICompany } from "./../types/index.d";
 import axios from "axios";
 import { Dispatch } from "react";
 import moment from "moment-timezone";
@@ -263,6 +264,33 @@ export function updateCustomers(
         return customer;
       }
     }),
+  }));
+}
+
+// Update companies
+export function updateCompanies(
+  updatedCompany: ICompany,
+  setCompanies: Dispatch<SetStateAction<ICompanies>>
+) {
+  setCompanies((currState) => ({
+    ...currState,
+    data: !currState.data.some((company) => company._id === updatedCompany._id)
+      ? [...currState.data, updatedCompany]
+      : currState.data.map((company) => {
+          if (company._id === updatedCompany._id) {
+            return {
+              ...company,
+              name: updatedCompany.name,
+              website: updatedCompany.website,
+              address: updatedCompany.address,
+              code: updatedCompany.code,
+              status: updatedCompany.status,
+              dailyBudget: updatedCompany.dailyBudget,
+            };
+          } else {
+            return company;
+          }
+        }),
   }));
 }
 
