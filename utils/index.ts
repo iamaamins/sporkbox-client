@@ -1,4 +1,6 @@
+import { ICompanies, ICompany } from "./../types/index.d";
 import axios from "axios";
+import { Dispatch } from "react";
 import moment from "moment-timezone";
 import { SetStateAction } from "react";
 import { NextRouter } from "next/router";
@@ -11,6 +13,7 @@ import {
   IOrder,
   IOrdersGroup,
   IUser,
+  ICustomers,
 } from "types";
 
 // Current year
@@ -47,30 +50,30 @@ export function checkUser(
 
 // Update restaurants items
 export function updateVendors(
-  updatedData: IVendor | IRestaurant,
-  setVendors: React.Dispatch<SetStateAction<IVendors>>
+  updatedVendor: IVendor | IRestaurant,
+  setVendors: Dispatch<SetStateAction<IVendors>>
 ) {
-  // Update the restaurants state
+  // Update vendors
   setVendors((currState) => ({
     ...currState,
     data: currState.data.map((vendor) => {
-      if (vendor._id === updatedData._id && "restaurant" in updatedData) {
+      if (vendor._id === updatedVendor._id && "restaurant" in updatedVendor) {
         return {
           ...vendor,
-          firstName: updatedData.firstName,
-          lastName: updatedData.lastName,
-          email: updatedData.email,
-          status: updatedData.status,
-          createdAt: updatedData.createdAt,
-          restaurant: updatedData.restaurant,
+          firstName: updatedVendor.firstName,
+          lastName: updatedVendor.lastName,
+          email: updatedVendor.email,
+          status: updatedVendor.status,
+          createdAt: updatedVendor.createdAt,
+          restaurant: updatedVendor.restaurant,
         };
       } else if (
-        vendor.restaurant._id === updatedData._id &&
-        "items" in updatedData
+        vendor.restaurant._id === updatedVendor._id &&
+        "items" in updatedVendor
       ) {
         return {
           ...vendor,
-          restaurant: updatedData,
+          restaurant: updatedVendor,
         };
       } else {
         return vendor;
@@ -240,6 +243,56 @@ export const createOrdersGroups = (orders: IOrder[]) =>
 // Sort users by last name
 export const sortByLastName = (a: IUser, b: IUser) =>
   a.lastName.toLowerCase().localeCompare(b.lastName.toLowerCase());
+
+// Update customers
+export function updateCustomers(
+  updatedCustomer: IUser,
+  setCustomers: Dispatch<SetStateAction<ICustomers>>
+) {
+  setCustomers((currState) => ({
+    ...currState,
+    data: currState.data.map((customer) => {
+      if (customer._id === updatedCustomer._id) {
+        return {
+          ...customer,
+          firstName: updatedCustomer.firstName,
+          lastName: updatedCustomer.lastName,
+          email: updatedCustomer.email,
+          status: updatedCustomer.status,
+        };
+      } else {
+        return customer;
+      }
+    }),
+  }));
+}
+
+// Update companies
+export function updateCompanies(
+  updatedCompany: ICompany,
+  setCompanies: Dispatch<SetStateAction<ICompanies>>
+) {
+  setCompanies((currState) => ({
+    ...currState,
+    data: !currState.data.some((company) => company._id === updatedCompany._id)
+      ? [...currState.data, updatedCompany]
+      : currState.data.map((company) => {
+          if (company._id === updatedCompany._id) {
+            return {
+              ...company,
+              name: updatedCompany.name,
+              website: updatedCompany.website,
+              address: updatedCompany.address,
+              code: updatedCompany.code,
+              status: updatedCompany.status,
+              dailyBudget: updatedCompany.dailyBudget,
+            };
+          } else {
+            return company;
+          }
+        }),
+  }));
+}
 
 // Create axios instance
 export const axiosInstance = axios.create({

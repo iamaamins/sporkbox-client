@@ -7,12 +7,12 @@ import {
   IAllUpcomingOrders,
   ICompanies,
   IVendors,
+  ICustomers,
   IAllDeliveredOrders,
   ICustomerUpcomingOrders,
   ICustomerDeliveredOrders,
   IUpcomingWeekRestaurants,
   ICustomerFavoriteItems,
-  ICustomers,
 } from "types";
 import { useState, createContext, useContext, useEffect } from "react";
 import {

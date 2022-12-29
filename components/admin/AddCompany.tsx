@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import { ICompany, IFormData } from "types";
-import { axiosInstance } from "@utils/index";
+import { axiosInstance, updateCompanies } from "@utils/index";
 import { ChangeEvent, FormEvent, useState } from "react";
 import styles from "@styles/admin/AddCompany.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
@@ -31,7 +31,6 @@ export default function AddCompany() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    // Create a company
     try {
       // Show loader
       setIsLoading(true);
@@ -39,11 +38,8 @@ export default function AddCompany() {
       // Make request to backend
       const response = await axiosInstance.post(`/companies/add`, formData);
 
-      // Update state
-      setCompanies((currState) => ({
-        ...currState,
-        data: [...currState.data, response.data],
-      }));
+      // Update companies
+      updateCompanies(response.data, setCompanies);
 
       // Clear the form
       setFormData(initialState);
