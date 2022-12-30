@@ -299,7 +299,3 @@ export const axiosInstance = axios.create({
   withCredentials: true,
   baseURL: "http://localhost:5100",
 });
-
-// http://localhost:5100
-// https://api.sporkbox.app
-// https://api.sporkbox.octib.com
