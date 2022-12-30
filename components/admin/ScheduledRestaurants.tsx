@@ -48,8 +48,8 @@ export default function ScheduledRestaurants() {
       setIsUpdatingScheduleStatus(true);
 
       // Make request to the backend
-      const response = await axiosInstance.put(
-        `/restaurants/${payload.restaurant._id}/${payload.scheduleId}/status`,
+      const response = await axiosInstance.patch(
+        `/restaurants/${payload.restaurant._id}/${payload.scheduleId}/update/schedule/status`,
         { action: payload.action }
       );
 

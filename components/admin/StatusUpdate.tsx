@@ -16,8 +16,16 @@ export default function StatusUpdate({
       </p>
 
       <div className={styles.buttons}>
-        <button onClick={() => setShowStatusUpdateModal(false)}>No</button>
-        <button onClick={updateStatus}>
+        <button
+          onClick={() => setShowStatusUpdateModal(false)}
+          className={isLoading ? styles.disabled : ""}
+        >
+          No
+        </button>
+        <button
+          onClick={updateStatus}
+          className={isLoading ? styles.disabled : ""}
+        >
           {isLoading ? <ButtonLoader size={8} margin={2} /> : "Yes"}
         </button>
       </div>

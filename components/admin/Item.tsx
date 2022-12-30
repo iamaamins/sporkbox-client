@@ -23,7 +23,7 @@ export default function Item() {
       name: "",
     },
   });
-  const [isLoading, setIsLoading] = useState(false);
+  const [isUpdatingItemStatus, setIsUpdatingItemStatus] = useState(false);
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
 
   // Get the item
@@ -53,11 +53,11 @@ export default function Item() {
   async function updateStatus() {
     try {
       // Show loader
-      setIsLoading(true);
+      setIsUpdatingItemStatus(true);
 
       // Make request to the backend
-      const response = await axiosInstance.put(
-        `/restaurants/${router.query.restaurant}/${router.query.item}/status`,
+      const response = await axiosInstance.patch(
+        `/restaurants/${router.query.restaurant}/${router.query.item}/update/item/status`,
         { action: payload.action }
       );
 
@@ -68,7 +68,7 @@ export default function Item() {
       console.log(err);
     } finally {
       // Remove loader and close modal
-      setIsLoading(false);
+      setIsUpdatingItemStatus(false);
       setShowStatusUpdateModal(false);
     }
   }
@@ -117,7 +117,7 @@ export default function Item() {
             action={payload.action}
             name={payload.item.name}
             updateStatus={updateStatus}
-            isLoading={isLoading}
+            isLoading={isUpdatingItemStatus}
             setShowStatusUpdateModal={setShowStatusUpdateModal}
           />
         }

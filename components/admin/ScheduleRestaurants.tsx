@@ -46,8 +46,8 @@ export default function ScheduleRestaurants() {
     }));
   }
 
-  // Handle schedule
-  async function handleSchedule(e: FormEvent) {
+  // Schedule a restaurant
+  async function scheduleRestaurant(e: FormEvent) {
     e.preventDefault();
 
     // Schedule a restaurant
@@ -58,7 +58,7 @@ export default function ScheduleRestaurants() {
       const data = { ...formData, companyId: router.query.company };
 
       // Make request to backend
-      const response = await axiosInstance.put(`/restaurants/schedule/`, data);
+      const response = await axiosInstance.post(`/restaurants/schedule`, data);
 
       // Update scheduled restaurants state
       setScheduledRestaurants((currState) => ({
@@ -85,7 +85,7 @@ export default function ScheduleRestaurants() {
   return (
     <div className={styles.schedule_restaurants}>
       <h2>Schedule restaurants</h2>
-      <form onSubmit={handleSchedule}>
+      <form onSubmit={scheduleRestaurant}>
         <div className={styles.item}>
           <label htmlFor="date">Select a date</label>
           <input

@@ -104,7 +104,7 @@ export default function Order() {
 
       // Make request to the backend
       const response = await axiosInstance.post(
-        `/restaurants/${order?.restaurant._id}/${order?.item._id}`,
+        `/restaurants/${order?.restaurant._id}/${order?.item._id}/add/review`,
         {
           rating,
           comment,
