@@ -127,7 +127,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get all upcoming orders
       try {
         // Make request to backend
-        const response = await axiosInstance.get(`/orders/upcoming`);
+        const response = await axiosInstance.get(`/orders/all-upcoming-orders`);
 
         // Update state
         setAllUpcomingOrders({ isLoading: false, data: response.data });
@@ -143,7 +143,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get scheduled restaurants
       try {
         // Make request to backend
-        const response = await axiosInstance.get(`/restaurants/scheduled`);
+        const response = await axiosInstance.get(
+          `/restaurants/scheduled-restaurants`
+        );
 
         // Update state
         setScheduledRestaurants({ isLoading: false, data: response.data });
@@ -191,7 +193,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get 25 delivered orders
       try {
         // Make request to backend
-        const response = await axiosInstance.get(`/orders/delivered/25`);
+        const response = await axiosInstance.get(
+          `/orders/all-delivered-orders/25`
+        );
 
         // Update state
         setAllDeliveredOrders({ isLoading: false, data: response.data });
@@ -235,7 +239,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get all upcoming orders
       try {
         // Make request to backend
-        const response = await axiosInstance.get(`/orders/me/upcoming`);
+        const response = await axiosInstance.get(`/orders/me/upcoming-orders`);
 
         // Update state
         setCustomerUpcomingOrders({ isLoading: false, data: response.data });
@@ -252,7 +256,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get 10 latest delivered orders
       try {
         // Make request to backend
-        const response = await axiosInstance.get(`/orders/me/delivered/10`);
+        const response = await axiosInstance.get(
+          `/orders/me/delivered-orders/10`
+        );
 
         // Update state
         setCustomerDeliveredOrders({ isLoading: false, data: response.data });
@@ -268,7 +274,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get upcoming week restaurants
       try {
         // Make request to backend
-        const response = await axiosInstance.get(`/restaurants/upcoming`);
+        const response = await axiosInstance.get(
+          `/restaurants/upcoming-restaurants`
+        );
 
         // Update state
         setUpcomingWeekRestaurants({ isLoading: false, data: response.data });

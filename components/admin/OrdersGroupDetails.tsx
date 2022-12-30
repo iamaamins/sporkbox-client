@@ -90,7 +90,7 @@ export default function OrdersGroupDetails({
       // Show the loader
 
       // Make request to the backend
-      await axiosInstance.patch("/orders/update/status", {
+      await axiosInstance.patch("/orders/change-orders-status", {
         orderIds,
       });
 
@@ -144,7 +144,7 @@ export default function OrdersGroupDetails({
       setIsUpdatingOrderStatus(true);
 
       // Make request to the backend
-      await axiosInstance.patch(`/orders/${orderId}/update/status`);
+      await axiosInstance.patch(`/orders/${orderId}/change-order-status`);
 
       // Remove the order
       setAllUpcomingOrders((currState) => ({

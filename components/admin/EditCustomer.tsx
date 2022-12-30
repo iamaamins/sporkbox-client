@@ -70,7 +70,7 @@ export default function EditCustomer() {
 
       // Make request to the backend
       const response = await axiosInstance.patch(
-        `/customers/${router.query.customer}/update/details`,
+        `/customers/${router.query.customer}/update-customer-details`,
         formData
       );
 

@@ -49,7 +49,7 @@ export default function RegistrationForm() {
 
       // Make the request to backend
       const response = await axiosInstance.post(
-        `/customers/register`,
+        `/customers/register-customer`,
         formData
       );
 

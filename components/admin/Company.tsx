@@ -73,7 +73,7 @@ export default function Company() {
 
       // Make request to the backend
       const response = await axiosInstance.patch(
-        `/companies/${company?._id}/update/status`,
+        `/companies/${company?._id}/change-company-status`,
         {
           action,
         }

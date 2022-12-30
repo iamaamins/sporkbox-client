@@ -32,7 +32,7 @@ export default function AddItem() {
 
       // Post the data to backend
       const response = await axiosInstance.post(
-        `/restaurants/${router.query.restaurant}/add/item`,
+        `/restaurants/${router.query.restaurant}/add-item`,
         formData
       );
 

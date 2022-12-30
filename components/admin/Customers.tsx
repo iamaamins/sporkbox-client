@@ -48,7 +48,7 @@ export default function Customers({ status, customers }: ICustomersProps) {
 
       // Make request to the backend
       const response = await axiosInstance.patch(
-        `/customers/${payload.data.customerId}/update/status`,
+        `/customers/${payload.data.customerId}/change-customer-status`,
         { action: payload.action }
       );
 

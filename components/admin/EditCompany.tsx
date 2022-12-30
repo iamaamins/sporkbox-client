@@ -70,7 +70,7 @@ export default function EditCompany() {
 
       // Make request to backend
       const response = await axiosInstance.patch(
-        `/companies/${company?._id}/update/details`,
+        `/companies/${company?._id}/update-company-details`,
         formData
       );
 

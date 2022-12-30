@@ -58,7 +58,10 @@ export default function ScheduleRestaurants() {
       const data = { ...formData, companyId: router.query.company };
 
       // Make request to backend
-      const response = await axiosInstance.post(`/restaurants/schedule`, data);
+      const response = await axiosInstance.post(
+        `/restaurants/schedule-restaurant`,
+        data
+      );
 
       // Update scheduled restaurants state
       setScheduledRestaurants((currState) => ({

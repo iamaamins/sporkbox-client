@@ -57,7 +57,7 @@ export default function Item() {
 
       // Make request to the backend
       const response = await axiosInstance.patch(
-        `/restaurants/${router.query.restaurant}/${router.query.item}/update/item/status`,
+        `/restaurants/${router.query.restaurant}/${router.query.item}/update-item-status`,
         { action: payload.action }
       );
 

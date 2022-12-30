@@ -92,7 +92,7 @@ export default function EditRestaurant() {
 
       // Post data to backend
       const response = await axiosInstance.patch(
-        `/vendors/${vendor?._id}/update/details`,
+        `/vendors/${vendor?._id}/update-vendor-details`,
         formData
       );
 
