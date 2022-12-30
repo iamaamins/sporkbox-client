@@ -47,8 +47,8 @@ export default function Restaurant() {
       setIsLoading(true);
 
       // Make request to the backend
-      const response = await axiosInstance.put(
-        `/vendors/${vendor?._id}/status`,
+      const response = await axiosInstance.patch(
+        `/vendors/${vendor?._id}/update/status`,
         {
           action,
         }

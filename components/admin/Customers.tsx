@@ -47,8 +47,8 @@ export default function Customers({ status, customers }: ICustomersProps) {
       setIsLoading(true);
 
       // Make request to the backend
-      const response = await axiosInstance.put(
-        `/customers/${payload.data.customerId}/status`,
+      const response = await axiosInstance.patch(
+        `/customers/${payload.data.customerId}/update/status`,
         { action: payload.action }
       );
 

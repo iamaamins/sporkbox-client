@@ -69,8 +69,8 @@ export default function EditCustomer() {
       setIsLoading(true);
 
       // Make request to the backend
-      const response = await axiosInstance.put(
-        `/customers/${router.query.customer}`,
+      const response = await axiosInstance.patch(
+        `/customers/${router.query.customer}/update/details`,
         formData
       );
 

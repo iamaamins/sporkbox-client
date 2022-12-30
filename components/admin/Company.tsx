@@ -72,8 +72,8 @@ export default function Company() {
       setIsLoading(true);
 
       // Make request to the backend
-      const response = await axiosInstance.put(
-        `/companies/${company?._id}/status`,
+      const response = await axiosInstance.patch(
+        `/companies/${company?._id}/update/status`,
         {
           action,
         }
