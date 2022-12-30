@@ -14,6 +14,11 @@ import ButtonLoader from "@components/layout/ButtonLoader";
 import Modal from "@components/layout/Modal";
 import Archive from "./Archive";
 
+interface IDeliverOrdersPayload {
+  orders: IOrder[];
+  restaurantName: string;
+}
+
 export default function OrdersGroupDetails({
   isLoading,
   ordersGroups,
@@ -25,6 +30,11 @@ export default function OrdersGroupDetails({
   const [ordersByRestaurants, setOrdersByRestaurants] = useState<
     IOrdersByRestaurant[]
   >([]);
+  const [payload, setPayload] = useState<IDeliverOrdersPayload>({
+    orders: [],
+    restaurantName: "",
+  });
+  const [showDeliveryModal, setShowDeliveryModal] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [isUpdatingOrderStatus, setIsUpdatingOrderStatus] = useState(false);
@@ -60,10 +70,20 @@ export default function OrdersGroupDetails({
     }
   }, [router.isReady, isLoading, ordersGroups]);
 
-  // Send delivery email
-  async function sendDeliveryEmail(orders: IOrder[], restaurantName: string) {
+  // Initiate orders delivery
+  function initiateOrdersDelivery(orders: IOrder[], restaurantName: string) {
+    // Update states
+    setShowDeliveryModal(true);
+    setPayload({
+      orders,
+      restaurantName,
+    });
+  }
+
+  // Delivery orders and send emails
+  async function deliverOrders() {
     // Get order ids
-    const orderIds = orders.map((order) => order._id);
+    const orderIds = payload.orders.map((order) => order._id);
 
     // Update orders status
     try {
@@ -79,7 +99,7 @@ export default function OrdersGroupDetails({
       setOrdersByRestaurants((currState) =>
         currState.filter(
           (ordersByRestaurant) =>
-            ordersByRestaurant.restaurantName !== restaurantName
+            ordersByRestaurant.restaurantName !== payload.restaurantName
         )
       );
 
@@ -96,16 +116,18 @@ export default function OrdersGroupDetails({
       // Add the orders to delivered orders
       setAllDeliveredOrders((currState) => ({
         ...currState,
-        data: [...currState.data, ...orders],
+        data: [...currState.data, ...payload.orders],
       }));
 
       // Push to the dashboard when there are no restaurant
       ordersByRestaurants.length === 1 && router.push("/admin");
     } catch (err) {
+      // Log error
       console.log(err);
     } finally {
-      // Remove the loader
+      // Remove loader and close modal
       setIsUpdatingOrdersStatus(false);
+      setShowDeliveryModal(false);
     }
   }
 
@@ -139,9 +161,9 @@ export default function OrdersGroupDetails({
       // Log error
       console.log(err);
     } finally {
-      // Close modal and remove loader
-      setShowArchiveModal(false);
+      // Remove loader and close modal
       setIsUpdatingOrderStatus(false);
+      setShowArchiveModal(false);
     }
   }
 
@@ -183,20 +205,16 @@ export default function OrdersGroupDetails({
                       <span
                         className={styles.send_email}
                         onClick={() =>
-                          sendDeliveryEmail(
+                          initiateOrdersDelivery(
                             ordersByRestaurant.orders,
                             ordersByRestaurant.restaurantName
                           )
                         }
                       >
-                        {isUpdatingOrdersStatus ? (
-                          <ButtonLoader color="#f78f1e" size={7} />
-                        ) : (
-                          "Send delivery email"
-                        )}
+                        Send delivery email
                       </span>
                     ) : (
-                      <span>Delivery email sent</span>
+                      <span>Orders delivered</span>
                     )}
                   </td>
                 </tr>
@@ -291,6 +309,7 @@ export default function OrdersGroupDetails({
           ))}
         </>
       )}
+      {/* Archive modal */}
       <Modal
         showModal={showArchiveModal}
         setShowModal={setShowArchiveModal}
@@ -301,6 +320,21 @@ export default function OrdersGroupDetails({
             updateStatus={updateStatus}
             isLoading={isUpdatingOrderStatus}
             setShowArchiveModal={setShowArchiveModal}
+          />
+        }
+      />
+
+      {/* Delivery modal */}
+      <Modal
+        showModal={showDeliveryModal}
+        setShowModal={setShowDeliveryModal}
+        component={
+          <Archive
+            name="delivery emails"
+            action="send"
+            updateStatus={deliverOrders}
+            isLoading={isUpdatingOrdersStatus}
+            setShowArchiveModal={setShowDeliveryModal}
           />
         }
       />
