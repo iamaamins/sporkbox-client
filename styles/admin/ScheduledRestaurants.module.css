@@ -42,6 +42,23 @@
   color: var(--black);
 }
 
+.actions span {
+  cursor: pointer;
+  padding: 0.25rem 1rem;
+  border-radius: 2rem;
+}
+
+.deactivate {
+  color: var(--black);
+  margin-right: 0.5rem;
+  border: 1px solid var(--black);
+}
+
+.remove {
+  color: var(--orange);
+  border: 1px solid var(--orange);
+}
+
 @media (min-width: 768px) {
   .scheduled_restaurants {
     max-width: 85%;

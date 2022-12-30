@@ -39,6 +39,8 @@ export interface IScheduledRestaurant {
     _id: string;
     name: string;
   };
+  status: string;
+  scheduleId: string;
 }
 
 export interface IUpcomingWeekRestaurant extends IScheduledRestaurant {
@@ -358,17 +360,10 @@ export interface ICustomersProps {
   customers: IUser[];
 }
 
-export interface IArchivePayload {
-  action: string;
-  data: {
-    [key: string]: string;
-  };
-}
-
-export interface IArchiveProps {
+export interface IStatusUpdateProps {
   name: string;
   action: string;
   isLoading: boolean;
   updateStatus: () => Promise<void>;
-  setShowArchiveModal: Dispatch<SetStateAction<boolean>>;
+  setShowStatusUpdateModal: Dispatch<SetStateAction<boolean>>;
 }

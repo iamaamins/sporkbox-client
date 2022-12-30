@@ -11,7 +11,7 @@ import {
 import Buttons from "@components/layout/Buttons";
 import styles from "@styles/admin/Item.module.css";
 import Modal from "@components/layout/Modal";
-import Archive from "./Archive";
+import StatusUpdate from "./StatusUpdate";
 
 export default function Item() {
   const router = useRouter();
@@ -24,7 +24,7 @@ export default function Item() {
     },
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [showArchiveModal, setShowArchiveModal] = useState(false);
+  const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
 
   // Get the item
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function Item() {
   // Initiate status update
   function initiateStatusUpdate(e: FormEvent, itemName: string) {
     // Update states
-    setShowArchiveModal(true);
+    setShowStatusUpdateModal(true);
     setPayload({
       action: e.currentTarget.textContent!,
       item: {
@@ -69,7 +69,7 @@ export default function Item() {
     } finally {
       // Remove loader and close modal
       setIsLoading(false);
-      setShowArchiveModal(false);
+      setShowStatusUpdateModal(false);
     }
   }
 
@@ -110,15 +110,15 @@ export default function Item() {
         </>
       )}
       <Modal
-        showModal={showArchiveModal}
-        setShowModal={setShowArchiveModal}
+        showModal={showStatusUpdateModal}
+        setShowModal={setShowStatusUpdateModal}
         component={
-          <Archive
-            setShowArchiveModal={setShowArchiveModal}
+          <StatusUpdate
             action={payload.action}
             name={payload.item.name}
             updateStatus={updateStatus}
             isLoading={isLoading}
+            setShowStatusUpdateModal={setShowStatusUpdateModal}
           />
         }
       />

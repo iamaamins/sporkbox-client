@@ -1,14 +1,14 @@
-.archive {
+.status_update {
   text-align: center;
 }
 
-.archive p {
+.status_update p {
   font-size: 18px;
   font-weight: 500;
   margin-bottom: 1.5rem;
 }
 
-.archive button {
+.status_update button {
   border: none;
   width: 8rem;
   height: 2.5rem;
@@ -27,7 +27,7 @@
 }
 
 @media (min-width: 768px) {
-  .archive {
+  .status_update {
     width: 20rem;
   }
 }

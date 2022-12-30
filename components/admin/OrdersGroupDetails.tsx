@@ -10,9 +10,8 @@ import {
   formatCurrencyToUSD,
 } from "@utils/index";
 import styles from "@styles/admin/OrdersGroupDetails.module.css";
-import ButtonLoader from "@components/layout/ButtonLoader";
 import Modal from "@components/layout/Modal";
-import Archive from "./Archive";
+import StatusUpdate from "./StatusUpdate";
 
 interface IDeliverOrdersPayload {
   orders: IOrder[];
@@ -36,7 +35,7 @@ export default function OrdersGroupDetails({
   });
   const [showDeliveryModal, setShowDeliveryModal] = useState(false);
   const [orderId, setOrderId] = useState("");
-  const [showArchiveModal, setShowArchiveModal] = useState(false);
+  const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
   const [isUpdatingOrderStatus, setIsUpdatingOrderStatus] = useState(false);
 
   // Separate order for each restaurant
@@ -134,7 +133,7 @@ export default function OrdersGroupDetails({
   // Initiate order status update
   function initiateStatusUpdate(orderId: string) {
     // Update states
-    setShowArchiveModal(true);
+    setShowStatusUpdateModal(true);
     setOrderId(orderId);
   }
 
@@ -163,7 +162,7 @@ export default function OrdersGroupDetails({
     } finally {
       // Remove loader and close modal
       setIsUpdatingOrderStatus(false);
-      setShowArchiveModal(false);
+      setShowStatusUpdateModal(false);
     }
   }
 
@@ -311,15 +310,15 @@ export default function OrdersGroupDetails({
       )}
       {/* Archive modal */}
       <Modal
-        showModal={showArchiveModal}
-        setShowModal={setShowArchiveModal}
+        showModal={showStatusUpdateModal}
+        setShowModal={setShowStatusUpdateModal}
         component={
-          <Archive
+          <StatusUpdate
             name="this order"
             action="Archive"
             updateStatus={updateStatus}
             isLoading={isUpdatingOrderStatus}
-            setShowArchiveModal={setShowArchiveModal}
+            setShowStatusUpdateModal={setShowStatusUpdateModal}
           />
         }
       />
@@ -329,12 +328,12 @@ export default function OrdersGroupDetails({
         showModal={showDeliveryModal}
         setShowModal={setShowDeliveryModal}
         component={
-          <Archive
+          <StatusUpdate
             name="delivery emails"
             action="send"
             updateStatus={deliverOrders}
             isLoading={isUpdatingOrdersStatus}
-            setShowArchiveModal={setShowDeliveryModal}
+            setShowStatusUpdateModal={setShowDeliveryModal}
           />
         }
       />
