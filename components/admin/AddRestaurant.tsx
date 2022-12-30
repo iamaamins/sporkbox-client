@@ -64,7 +64,10 @@ export default function AddRestaurant() {
       setIsLoading(true);
 
       // Post data to backend
-      const response = await axiosInstance.post(`/vendors/add`, formData);
+      const response = await axiosInstance.post(
+        `/vendors/add-vendor`,
+        formData
+      );
 
       // Update state
       setVendors((currState) => ({

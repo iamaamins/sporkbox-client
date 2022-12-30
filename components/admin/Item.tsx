@@ -11,7 +11,7 @@ import {
 import Buttons from "@components/layout/Buttons";
 import styles from "@styles/admin/Item.module.css";
 import Modal from "@components/layout/Modal";
-import Archive from "./Archive";
+import StatusUpdate from "./StatusUpdate";
 
 export default function Item() {
   const router = useRouter();
@@ -23,8 +23,8 @@ export default function Item() {
       name: "",
     },
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [showArchiveModal, setShowArchiveModal] = useState(false);
+  const [isUpdatingItemStatus, setIsUpdatingItemStatus] = useState(false);
+  const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
 
   // Get the item
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function Item() {
   // Initiate status update
   function initiateStatusUpdate(e: FormEvent, itemName: string) {
     // Update states
-    setShowArchiveModal(true);
+    setShowStatusUpdateModal(true);
     setPayload({
       action: e.currentTarget.textContent!,
       item: {
@@ -53,11 +53,11 @@ export default function Item() {
   async function updateStatus() {
     try {
       // Show loader
-      setIsLoading(true);
+      setIsUpdatingItemStatus(true);
 
       // Make request to the backend
-      const response = await axiosInstance.put(
-        `/restaurants/${router.query.restaurant}/${router.query.item}/status`,
+      const response = await axiosInstance.patch(
+        `/restaurants/${router.query.restaurant}/${router.query.item}/update-item-status`,
         { action: payload.action }
       );
 
@@ -68,8 +68,8 @@ export default function Item() {
       console.log(err);
     } finally {
       // Remove loader and close modal
-      setIsLoading(false);
-      setShowArchiveModal(false);
+      setIsUpdatingItemStatus(false);
+      setShowStatusUpdateModal(false);
     }
   }
 
@@ -110,15 +110,15 @@ export default function Item() {
         </>
       )}
       <Modal
-        showModal={showArchiveModal}
-        setShowModal={setShowArchiveModal}
+        showModal={showStatusUpdateModal}
+        setShowModal={setShowStatusUpdateModal}
         component={
-          <Archive
-            setShowArchiveModal={setShowArchiveModal}
+          <StatusUpdate
             action={payload.action}
             name={payload.item.name}
             updateStatus={updateStatus}
-            isLoading={isLoading}
+            isLoading={isUpdatingItemStatus}
+            setShowStatusUpdateModal={setShowStatusUpdateModal}
           />
         }
       />

@@ -8,7 +8,7 @@ import Buttons from "@components/layout/Buttons";
 import { FormEvent, useEffect, useState } from "react";
 import styles from "@styles/admin/Company.module.css";
 import ScheduleRestaurants from "@components/admin/ScheduleRestaurants";
-import Archive from "./Archive";
+import StatusUpdate from "./StatusUpdate";
 
 export default function Company() {
   // Hooks
@@ -18,7 +18,7 @@ export default function Company() {
   const [company, setCompany] = useState<ICompany>();
   const [showModal, setShowModal] = useState(false);
   const { companies, setCompanies, customers } = useData();
-  const [showArchiveModal, setShowArchiveModal] = useState(false);
+  const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
   const [activeCustomers, setActiveCustomers] = useState<IUser[]>([]);
   const [archivedCustomers, setArchivedCustomers] = useState<IUser[]>([]);
 
@@ -61,7 +61,7 @@ export default function Company() {
   // Initiate status update
   function initiateStatusUpdate(e: FormEvent) {
     // Update states
-    setShowArchiveModal(true);
+    setShowStatusUpdateModal(true);
     setAction(e.currentTarget.textContent!);
   }
 
@@ -72,8 +72,8 @@ export default function Company() {
       setIsLoading(true);
 
       // Make request to the backend
-      const response = await axiosInstance.put(
-        `/companies/${company?._id}/status`,
+      const response = await axiosInstance.patch(
+        `/companies/${company?._id}/change-company-status`,
         {
           action,
         }
@@ -87,7 +87,7 @@ export default function Company() {
     } finally {
       // Remove loader and close the modal
       setIsLoading(false);
-      setShowArchiveModal(false);
+      setShowStatusUpdateModal(false);
     }
   }
 
@@ -151,14 +151,14 @@ export default function Company() {
 
           {/* Archive company modal */}
           <Modal
-            showModal={showArchiveModal}
-            setShowModal={setShowArchiveModal}
+            showModal={showStatusUpdateModal}
+            setShowModal={setShowStatusUpdateModal}
             component={
-              <Archive
+              <StatusUpdate
                 name={company.name}
                 action={action}
                 isLoading={isLoading}
-                setShowArchiveModal={setShowArchiveModal}
+                setShowStatusUpdateModal={setShowStatusUpdateModal}
                 updateStatus={updateStatus}
               />
             }

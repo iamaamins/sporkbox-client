@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import Archive from "./Archive";
+import StatusUpdate from "./StatusUpdate";
 import { IVendor } from "types";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
@@ -20,7 +20,7 @@ export default function Restaurant() {
   const { vendors, setVendors } = useData();
   const [vendor, setVendor] = useState<IVendor>();
   const [isLoading, setIsLoading] = useState(false);
-  const [showArchiveModal, setShowArchiveModal] = useState(false);
+  const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
 
   // Get the restaurant
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function Restaurant() {
   // Handle update status
   function initiateStatusUpdate(e: FormEvent) {
     // Update states
-    setShowArchiveModal(true);
+    setShowStatusUpdateModal(true);
     setAction(e.currentTarget.textContent!);
   }
 
@@ -47,8 +47,8 @@ export default function Restaurant() {
       setIsLoading(true);
 
       // Make request to the backend
-      const response = await axiosInstance.put(
-        `/vendors/${vendor?._id}/status`,
+      const response = await axiosInstance.patch(
+        `/vendors/${vendor?._id}/change-vendor-status`,
         {
           action,
         }
@@ -62,7 +62,7 @@ export default function Restaurant() {
     } finally {
       // Remove loader and close the modal
       setIsLoading(false);
-      setShowArchiveModal(false);
+      setShowStatusUpdateModal(false);
     }
   }
 
@@ -149,15 +149,15 @@ export default function Restaurant() {
           </div>
 
           <Modal
-            showModal={showArchiveModal}
-            setShowModal={setShowArchiveModal}
+            showModal={showStatusUpdateModal}
+            setShowModal={setShowStatusUpdateModal}
             component={
-              <Archive
+              <StatusUpdate
                 action={action}
                 isLoading={isLoading}
                 name={vendor?.restaurant.name}
                 updateStatus={updateStatus}
-                setShowArchiveModal={setShowArchiveModal}
+                setShowStatusUpdateModal={setShowStatusUpdateModal}
               />
             }
           />

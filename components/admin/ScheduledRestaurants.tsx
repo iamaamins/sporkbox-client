@@ -1,11 +1,87 @@
 import Link from "next/link";
 import { useData } from "@context/Data";
-import { convertDateToText } from "@utils/index";
-import LinkButton from "@components/layout/LinkButton";
+import { axiosInstance, convertDateToText } from "@utils/index";
+import Modal from "@components/layout/Modal";
 import styles from "@styles/admin/ScheduledRestaurants.module.css";
+import { FormEvent, useState } from "react";
+import StatusUpdate from "./StatusUpdate";
+import { IScheduledRestaurant } from "types";
 
 export default function ScheduledRestaurants() {
-  const { scheduledRestaurants } = useData();
+  // Hooks
+  const { scheduledRestaurants, setScheduledRestaurants } = useData();
+  const [isUpdatingScheduleStatus, setIsUpdatingScheduleStatus] =
+    useState(false);
+  const [payload, setPayload] = useState({
+    action: "",
+    restaurant: {
+      _id: "",
+      name: "",
+    },
+    scheduleId: "",
+  });
+  const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
+
+  // Initiate schedule update
+  function initiateScheduleUpdate(
+    e: FormEvent,
+    restaurantId: string,
+    restaurantName: string,
+    scheduleId: string
+  ) {
+    // update states
+    setShowStatusUpdateModal(true);
+    setPayload({
+      action: e.currentTarget.textContent!,
+      scheduleId,
+      restaurant: {
+        _id: restaurantId,
+        name: restaurantName,
+      },
+    });
+  }
+
+  // Update schedule status
+  async function updateStatus() {
+    try {
+      // Show loader
+      setIsUpdatingScheduleStatus(true);
+
+      // Make request to the backend
+      const response = await axiosInstance.patch(
+        `/restaurants/${payload.restaurant._id}/${payload.scheduleId}/update-schedule-status`,
+        { action: payload.action }
+      );
+
+      // Find the updated schedule
+      const schedule = response.data.find(
+        (schedule: IScheduledRestaurant) =>
+          schedule.scheduleId === payload.scheduleId
+      );
+
+      // Update state
+      setScheduledRestaurants((currState) => ({
+        ...currState,
+        data: currState.data.map((scheduledRestaurant) => {
+          if (scheduledRestaurant.scheduleId === payload.scheduleId) {
+            return {
+              ...scheduledRestaurant,
+              status: schedule.status,
+            };
+          } else {
+            return scheduledRestaurant;
+          }
+        }),
+      }));
+    } catch (err) {
+      // Log error
+      console.log(err);
+    } finally {
+      // Remove loader and close modal
+      setIsUpdatingScheduleStatus(false);
+      setShowStatusUpdateModal(false);
+    }
+  }
 
   return (
     <section className={styles.scheduled_restaurants}>
@@ -27,6 +103,7 @@ export default function ScheduledRestaurants() {
                   <th>Scheduled on</th>
                   <th>Restaurant</th>
                   <th>Company</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
 
@@ -42,6 +119,24 @@ export default function ScheduledRestaurants() {
                     </td>
                     <td>{scheduledRestaurant.name}</td>
                     <td>{scheduledRestaurant.company.name}</td>
+                    <td className={styles.actions}>
+                      <span
+                        className={styles.deactivate}
+                        onClick={(e) =>
+                          initiateScheduleUpdate(
+                            e,
+                            scheduledRestaurant._id,
+                            scheduledRestaurant.name,
+                            scheduledRestaurant.scheduleId
+                          )
+                        }
+                      >
+                        {scheduledRestaurant.status === "ACTIVE"
+                          ? "Deactivate"
+                          : "Activate"}
+                      </span>
+                      <span className={styles.remove}>Remove</span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -49,6 +144,20 @@ export default function ScheduledRestaurants() {
           </div>
         </>
       )}
+
+      <Modal
+        showModal={showStatusUpdateModal}
+        setShowModal={setShowStatusUpdateModal}
+        component={
+          <StatusUpdate
+            name={payload.restaurant.name}
+            action={payload.action}
+            isLoading={isUpdatingScheduleStatus}
+            updateStatus={updateStatus}
+            setShowStatusUpdateModal={setShowStatusUpdateModal}
+          />
+        }
+      />
     </section>
   );
 }

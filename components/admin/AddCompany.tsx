@@ -36,7 +36,10 @@ export default function AddCompany() {
       setIsLoading(true);
 
       // Make request to backend
-      const response = await axiosInstance.post(`/companies/add`, formData);
+      const response = await axiosInstance.post(
+        `/companies/add-company`,
+        formData
+      );
 
       // Update companies
       updateCompanies(response.data, setCompanies);

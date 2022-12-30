@@ -1,35 +1,35 @@
 import Link from "next/link";
-import Archive from "./Archive";
+import { ICustomersProps } from "types";
+import StatusUpdate from "./StatusUpdate";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import Modal from "@components/layout/Modal";
 import { FormEvent, useState } from "react";
-import styles from "@styles/admin/Customers.module.css";
-import { IArchivePayload, ICustomersProps } from "types";
 import {
   axiosInstance,
   convertDateToText,
   updateCustomers,
 } from "@utils/index";
+import styles from "@styles/admin/Customers.module.css";
 
 export default function Customers({ status, customers }: ICustomersProps) {
   // Hooks
   const router = useRouter();
   const { setCustomers } = useData();
   const [isLoading, setIsLoading] = useState(false);
-  const [payload, setPayload] = useState<IArchivePayload>({
+  const [payload, setPayload] = useState({
     action: "",
     data: {
       customerId: "",
       customerName: "",
     },
   });
-  const [showArchiveModal, setShowArchiveModal] = useState(false);
+  const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
 
   // Handle update status
   function initiateStatusUpdate(e: FormEvent, customerId: string) {
     // Update states
-    setShowArchiveModal(true);
+    setShowStatusUpdateModal(true);
     setPayload({
       action: e.currentTarget.textContent!,
       data: {
@@ -47,8 +47,8 @@ export default function Customers({ status, customers }: ICustomersProps) {
       setIsLoading(true);
 
       // Make request to the backend
-      const response = await axiosInstance.put(
-        `/customers/${payload.data.customerId}/status`,
+      const response = await axiosInstance.patch(
+        `/customers/${payload.data.customerId}/change-customer-status`,
         { action: payload.action }
       );
 
@@ -60,7 +60,7 @@ export default function Customers({ status, customers }: ICustomersProps) {
     } finally {
       // Remove loader and close modal
       setIsLoading(false);
-      setShowArchiveModal(false);
+      setShowStatusUpdateModal(false);
     }
   }
 
@@ -113,15 +113,15 @@ export default function Customers({ status, customers }: ICustomersProps) {
       </table>
 
       <Modal
-        showModal={showArchiveModal}
-        setShowModal={setShowArchiveModal}
+        showModal={showStatusUpdateModal}
+        setShowModal={setShowStatusUpdateModal}
         component={
-          <Archive
+          <StatusUpdate
             name={payload.data.customerName}
             action={payload.action}
             isLoading={isLoading}
             updateStatus={updateStatus}
-            setShowArchiveModal={setShowArchiveModal}
+            setShowStatusUpdateModal={setShowStatusUpdateModal}
           />
         }
       />

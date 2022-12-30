@@ -136,7 +136,7 @@ export async function handleRemoveFromFavorite(
 ) {
   try {
     // Make request to backend
-    await axiosInstance.delete(`/favorites/${itemId}/remove`);
+    await axiosInstance.delete(`/favorites/${itemId}/remove-from-favorite`);
 
     // Update state
     setCustomerFavoriteItems((currState) => ({
