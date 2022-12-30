@@ -49,7 +49,7 @@ export default function ScheduledRestaurants() {
 
       // Make request to the backend
       const response = await axiosInstance.patch(
-        `/restaurants/${payload.restaurant._id}/${payload.scheduleId}/update-schedule-status`,
+        `/restaurants/${payload.restaurant._id}/${payload.scheduleId}/change-schedule-status`,
         { action: payload.action }
       );
 
