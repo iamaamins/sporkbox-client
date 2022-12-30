@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { IOrdersByRestaurant, IOrdersGroupDetailsProps, IOrder } from "types";
 import {
   axiosInstance,
@@ -11,6 +11,8 @@ import {
 } from "@utils/index";
 import styles from "@styles/admin/OrdersGroupDetails.module.css";
 import ButtonLoader from "@components/layout/ButtonLoader";
+import Modal from "@components/layout/Modal";
+import Archive from "./Archive";
 
 export default function OrdersGroupDetails({
   isLoading,
@@ -23,6 +25,9 @@ export default function OrdersGroupDetails({
   const [ordersByRestaurants, setOrdersByRestaurants] = useState<
     IOrdersByRestaurant[]
   >([]);
+  const [orderId, setOrderId] = useState("");
+  const [showArchiveModal, setShowArchiveModal] = useState(false);
+  const [isUpdatingOrderStatus, setIsUpdatingOrderStatus] = useState(false);
 
   // Separate order for each restaurant
   useEffect(() => {
@@ -104,9 +109,19 @@ export default function OrdersGroupDetails({
     }
   }
 
+  // Initiate order status update
+  function initiateStatusUpdate(orderId: string) {
+    // Update states
+    setShowArchiveModal(true);
+    setOrderId(orderId);
+  }
+
   // Archive order
-  async function archiveOrder(orderId: string, ordersLength: number) {
+  async function updateStatus() {
     try {
+      // Show loader
+      setIsUpdatingOrderStatus(true);
+
       // Make request to the backend
       await axiosInstance.put(`/orders/${orderId}/status`);
 
@@ -116,11 +131,17 @@ export default function OrdersGroupDetails({
         data: currState.data.filter((order) => order._id !== orderId),
       }));
 
-      // Push to the dashboard when there are no restaurant
-      ordersLength === 1 && router.push("/admin");
+      // Push to the admin page
+      ordersByRestaurants
+        .map((ordersByRestaurant) => ordersByRestaurant.orders)
+        .flat().length === 1 && router.push("/admin");
     } catch (err) {
       // Log error
       console.log(err);
+    } finally {
+      // Close modal and remove loader
+      setShowArchiveModal(false);
+      setIsUpdatingOrderStatus(false);
     }
   }
 
@@ -254,12 +275,7 @@ export default function OrdersGroupDetails({
                         {order.status === "PROCESSING" ? (
                           <span
                             className={styles.archive}
-                            onClick={() =>
-                              archiveOrder(
-                                order._id,
-                                ordersByRestaurant.orders.length
-                              )
-                            }
+                            onClick={(e) => initiateStatusUpdate(order._id)}
                           >
                             Archive
                           </span>
@@ -275,6 +291,19 @@ export default function OrdersGroupDetails({
           ))}
         </>
       )}
+      <Modal
+        showModal={showArchiveModal}
+        setShowModal={setShowArchiveModal}
+        component={
+          <Archive
+            name="this order"
+            action="Archive"
+            updateStatus={updateStatus}
+            isLoading={isUpdatingOrderStatus}
+            setShowArchiveModal={setShowArchiveModal}
+          />
+        }
+      />
     </section>
   );
 }
