@@ -103,7 +103,7 @@ export default function ScheduledRestaurants() {
                   <th>Scheduled on</th>
                   <th>Restaurant</th>
                   <th>Company</th>
-                  {/* <th>Actions</th> Remove this */}
+                  <th>Actions</th>
                 </tr>
               </thead>
 
@@ -119,7 +119,7 @@ export default function ScheduledRestaurants() {
                     </td>
                     <td>{scheduledRestaurant.name}</td>
                     <td>{scheduledRestaurant.company.name}</td>
-                    {/* <td className={styles.actions}>
+                    <td className={styles.actions}>
                       <span
                         className={styles.deactivate}
                         onClick={(e) =>
@@ -136,7 +136,7 @@ export default function ScheduledRestaurants() {
                           : "Activate"}
                       </span>
                       <span className={styles.remove}>Remove</span>
-                    </td> Remove this */}
+                    </td>
                   </tr>
                 ))}
               </tbody>

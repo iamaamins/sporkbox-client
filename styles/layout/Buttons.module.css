@@ -25,6 +25,5 @@
 }
 
 .action_button {
-  pointer-events: none; /* remove this */
   background: var(--orange);
 }
