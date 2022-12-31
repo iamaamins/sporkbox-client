@@ -14,13 +14,13 @@ export default function Company() {
   // Hooks
   const router = useRouter();
   const [action, setAction] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [company, setCompany] = useState<ICompany>();
   const [showModal, setShowModal] = useState(false);
   const { companies, setCompanies, customers } = useData();
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
   const [activeCustomers, setActiveCustomers] = useState<IUser[]>([]);
   const [archivedCustomers, setArchivedCustomers] = useState<IUser[]>([]);
+  const [isUpdatingCompanyStatus, setIsUpdatingCompanyStatus] = useState(false);
 
   // Get the company
   useEffect(() => {
@@ -69,7 +69,7 @@ export default function Company() {
   async function updateStatus() {
     try {
       // Show loader
-      setIsLoading(true);
+      setIsUpdatingCompanyStatus(true);
 
       // Make request to the backend
       const response = await axiosInstance.patch(
@@ -86,7 +86,7 @@ export default function Company() {
       console.log(err);
     } finally {
       // Remove loader and close the modal
-      setIsLoading(false);
+      setIsUpdatingCompanyStatus(false);
       setShowStatusUpdateModal(false);
     }
   }
@@ -157,9 +157,9 @@ export default function Company() {
               <StatusUpdate
                 name={company.name}
                 action={action}
-                isLoading={isLoading}
-                setShowStatusUpdateModal={setShowStatusUpdateModal}
                 updateStatus={updateStatus}
+                isUpdatingStatus={isUpdatingCompanyStatus}
+                setShowStatusUpdateModal={setShowStatusUpdateModal}
               />
             }
           />

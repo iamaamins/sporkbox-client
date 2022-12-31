@@ -363,7 +363,7 @@ export interface ICustomersProps {
 export interface IStatusUpdateProps {
   name: string;
   action: string;
-  isLoading: boolean;
+  isUpdatingStatus: boolean;
   updateStatus: () => Promise<void>;
   setShowStatusUpdateModal: Dispatch<SetStateAction<boolean>>;
 }

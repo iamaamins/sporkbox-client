@@ -117,7 +117,7 @@ export default function Item() {
             action={payload.action}
             name={payload.item.name}
             updateStatus={updateStatus}
-            isLoading={isUpdatingItemStatus}
+            isUpdatingStatus={isUpdatingItemStatus}
             setShowStatusUpdateModal={setShowStatusUpdateModal}
           />
         }

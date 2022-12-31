@@ -5,8 +5,8 @@ import ButtonLoader from "@components/layout/ButtonLoader";
 export default function StatusUpdate({
   name,
   action,
-  isLoading,
   updateStatus,
+  isUpdatingStatus,
   setShowStatusUpdateModal,
 }: IStatusUpdateProps) {
   return (
@@ -18,15 +18,15 @@ export default function StatusUpdate({
       <div className={styles.buttons}>
         <button
           onClick={() => setShowStatusUpdateModal(false)}
-          className={isLoading ? styles.disabled : ""}
+          className={isUpdatingStatus ? styles.disabled : ""}
         >
           No
         </button>
         <button
           onClick={updateStatus}
-          className={isLoading ? styles.disabled : ""}
+          className={isUpdatingStatus ? styles.disabled : ""}
         >
-          {isLoading ? <ButtonLoader size={8} margin={2} /> : "Yes"}
+          {isUpdatingStatus ? <ButtonLoader size={8} margin={2} /> : "Yes"}
         </button>
       </div>
     </div>
