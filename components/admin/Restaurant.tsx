@@ -19,7 +19,7 @@ export default function Restaurant() {
   const [action, setAction] = useState("");
   const { vendors, setVendors } = useData();
   const [vendor, setVendor] = useState<IVendor>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isUpdatingVendorStatus, setIsUpdatingVendorStatus] = useState(false);
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
 
   // Get the restaurant
@@ -44,7 +44,7 @@ export default function Restaurant() {
   async function updateStatus() {
     try {
       // Show loader
-      setIsLoading(true);
+      setIsUpdatingVendorStatus(true);
 
       // Make request to the backend
       const response = await axiosInstance.patch(
@@ -61,7 +61,7 @@ export default function Restaurant() {
       console.log(err);
     } finally {
       // Remove loader and close the modal
-      setIsLoading(false);
+      setIsUpdatingVendorStatus(false);
       setShowStatusUpdateModal(false);
     }
   }
@@ -154,9 +154,9 @@ export default function Restaurant() {
             component={
               <StatusUpdate
                 action={action}
-                isLoading={isLoading}
-                name={vendor?.restaurant.name}
+                name={vendor.restaurant.name}
                 updateStatus={updateStatus}
+                isUpdatingStatus={isUpdatingVendorStatus}
                 setShowStatusUpdateModal={setShowStatusUpdateModal}
               />
             }

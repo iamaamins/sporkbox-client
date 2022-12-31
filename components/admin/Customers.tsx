@@ -16,7 +16,6 @@ export default function Customers({ status, customers }: ICustomersProps) {
   // Hooks
   const router = useRouter();
   const { setCustomers } = useData();
-  const [isLoading, setIsLoading] = useState(false);
   const [payload, setPayload] = useState({
     action: "",
     data: {
@@ -25,6 +24,8 @@ export default function Customers({ status, customers }: ICustomersProps) {
     },
   });
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
+  const [isUpdatingCustomerStatus, setIsUpdatingCustomerStatus] =
+    useState(false);
 
   // Handle update status
   function initiateStatusUpdate(e: FormEvent, customerId: string) {
@@ -44,7 +45,7 @@ export default function Customers({ status, customers }: ICustomersProps) {
   async function updateStatus() {
     try {
       // Show loader
-      setIsLoading(true);
+      setIsUpdatingCustomerStatus(true);
 
       // Make request to the backend
       const response = await axiosInstance.patch(
@@ -59,7 +60,7 @@ export default function Customers({ status, customers }: ICustomersProps) {
       console.log(err);
     } finally {
       // Remove loader and close modal
-      setIsLoading(false);
+      setIsUpdatingCustomerStatus(false);
       setShowStatusUpdateModal(false);
     }
   }
@@ -100,12 +101,12 @@ export default function Customers({ status, customers }: ICustomersProps) {
                     Edit
                   </a>
                 </Link>
-                <span
+                {/* <span
                   className={`${styles.button} ${styles.change_status}`}
                   onClick={(e) => initiateStatusUpdate(e, customer._id)}
                 >
                   {status === "active" ? "Archive" : "Activate"}
-                </span>
+                </span> Remove this */}
               </td>
             </tr>
           ))}
@@ -119,8 +120,8 @@ export default function Customers({ status, customers }: ICustomersProps) {
           <StatusUpdate
             name={payload.data.customerName}
             action={payload.action}
-            isLoading={isLoading}
             updateStatus={updateStatus}
+            isUpdatingStatus={isUpdatingCustomerStatus}
             setShowStatusUpdateModal={setShowStatusUpdateModal}
           />
         }

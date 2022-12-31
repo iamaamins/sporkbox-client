@@ -317,7 +317,7 @@ export default function OrdersGroupDetails({
             name="this order"
             action="Archive"
             updateStatus={updateStatus}
-            isLoading={isUpdatingOrderStatus}
+            isUpdatingStatus={isUpdatingOrderStatus}
             setShowStatusUpdateModal={setShowStatusUpdateModal}
           />
         }
@@ -332,7 +332,7 @@ export default function OrdersGroupDetails({
             name="delivery emails"
             action="send"
             updateStatus={deliverOrders}
-            isLoading={isUpdatingOrdersStatus}
+            isUpdatingStatus={isUpdatingOrdersStatus}
             setShowStatusUpdateModal={setShowDeliveryModal}
           />
         }
