@@ -202,6 +202,7 @@ export interface IOrder {
     name: string;
   };
   company: {
+    _id: string;
     name: string;
   };
   delivery: {
@@ -349,10 +350,10 @@ export interface IEditFormProps {
   setFormData: Dispatch<SetStateAction<IFormData>>;
 }
 
-export interface IModalProps {
-  showModal: boolean;
+export interface IModalContainerProps {
   component: JSX.Element;
-  setShowModal: Dispatch<SetStateAction<boolean>>;
+  showModalContainer: boolean;
+  setShowModalContainer: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface ICustomersProps {
@@ -360,10 +361,15 @@ export interface ICustomersProps {
   customers: IUser[];
 }
 
-export interface IStatusUpdateProps {
+export interface IActionModalProps {
   name: string;
   action: string;
-  isUpdatingStatus: boolean;
-  updateStatus: () => Promise<void>;
-  setShowStatusUpdateModal: Dispatch<SetStateAction<boolean>>;
+  isPerformingAction: boolean;
+  performAction: () => Promise<void>;
+  setShowActionModal: Dispatch<SetStateAction<boolean>>;
+}
+
+export interface IDeliverOrdersPayload {
+  orders: IOrder[];
+  restaurantName: string;
 }

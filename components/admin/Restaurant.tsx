@@ -1,10 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import StatusUpdate from "./StatusUpdate";
+import ActionModal from "./ActionModal";
 import { IVendor } from "types";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
-import Modal from "@components/layout/Modal";
 import Buttons from "@components/layout/Buttons";
 import { FormEvent, useEffect, useState } from "react";
 import styles from "@styles/admin/Restaurant.module.css";
@@ -13,6 +12,7 @@ import {
   formatCurrencyToUSD,
   updateVendors,
 } from "@utils/index";
+import ModalContainer from "@components/layout/ModalContainer";
 
 export default function Restaurant() {
   const router = useRouter();
@@ -148,16 +148,16 @@ export default function Restaurant() {
             )}
           </div>
 
-          <Modal
-            showModal={showStatusUpdateModal}
-            setShowModal={setShowStatusUpdateModal}
+          <ModalContainer
+            showModalContainer={showStatusUpdateModal}
+            setShowModalContainer={setShowStatusUpdateModal}
             component={
-              <StatusUpdate
+              <ActionModal
                 action={action}
                 name={vendor.restaurant.name}
-                updateStatus={updateStatus}
-                isUpdatingStatus={isUpdatingVendorStatus}
-                setShowStatusUpdateModal={setShowStatusUpdateModal}
+                performAction={updateStatus}
+                isPerformingAction={isUpdatingVendorStatus}
+                setShowActionModal={setShowStatusUpdateModal}
               />
             }
           />

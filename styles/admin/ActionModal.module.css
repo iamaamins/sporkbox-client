@@ -1,14 +1,14 @@
-.status_update {
+.action_modal {
   text-align: center;
 }
 
-.status_update p {
+.action_modal p {
   font-size: 18px;
   font-weight: 500;
   margin-bottom: 1.5rem;
 }
 
-.status_update button {
+.action_modal button {
   border: none;
   width: 8rem;
   height: 2.5rem;
@@ -31,7 +31,7 @@
 }
 
 @media (min-width: 768px) {
-  .status_update {
+  .action_modal {
     width: 20rem;
   }
 }

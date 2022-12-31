@@ -1,7 +1,13 @@
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
-import { FormEvent, useEffect, useState } from "react";
-import { IOrdersByRestaurant, IOrdersGroupDetailsProps, IOrder } from "types";
+import ActionModal from "./ActionModal";
+import { useEffect, useState } from "react";
+import {
+  IOrdersByRestaurant,
+  IOrdersGroupDetailsProps,
+  IOrder,
+  IDeliverOrdersPayload,
+} from "types";
 import {
   axiosInstance,
   convertDateToMS,
@@ -10,13 +16,7 @@ import {
   formatCurrencyToUSD,
 } from "@utils/index";
 import styles from "@styles/admin/OrdersGroupDetails.module.css";
-import Modal from "@components/layout/Modal";
-import StatusUpdate from "./StatusUpdate";
-
-interface IDeliverOrdersPayload {
-  orders: IOrder[];
-  restaurantName: string;
-}
+import ModalContainer from "@components/layout/ModalContainer";
 
 export default function OrdersGroupDetails({
   isLoading,
@@ -29,10 +29,11 @@ export default function OrdersGroupDetails({
   const [ordersByRestaurants, setOrdersByRestaurants] = useState<
     IOrdersByRestaurant[]
   >([]);
-  const [payload, setPayload] = useState<IDeliverOrdersPayload>({
-    orders: [],
-    restaurantName: "",
-  });
+  const [statusUpdatePayload, setStatusUpdatePayload] =
+    useState<IDeliverOrdersPayload>({
+      orders: [],
+      restaurantName: "",
+    });
   const [showDeliveryModal, setShowDeliveryModal] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
@@ -73,7 +74,7 @@ export default function OrdersGroupDetails({
   function initiateOrdersDelivery(orders: IOrder[], restaurantName: string) {
     // Update states
     setShowDeliveryModal(true);
-    setPayload({
+    setStatusUpdatePayload({
       orders,
       restaurantName,
     });
@@ -82,7 +83,7 @@ export default function OrdersGroupDetails({
   // Delivery orders and send emails
   async function deliverOrders() {
     // Get order ids
-    const orderIds = payload.orders.map((order) => order._id);
+    const orderIds = statusUpdatePayload.orders.map((order) => order._id);
 
     // Update orders status
     try {
@@ -98,7 +99,8 @@ export default function OrdersGroupDetails({
       setOrdersByRestaurants((currState) =>
         currState.filter(
           (ordersByRestaurant) =>
-            ordersByRestaurant.restaurantName !== payload.restaurantName
+            ordersByRestaurant.restaurantName !==
+            statusUpdatePayload.restaurantName
         )
       );
 
@@ -115,7 +117,7 @@ export default function OrdersGroupDetails({
       // Add the orders to delivered orders
       setAllDeliveredOrders((currState) => ({
         ...currState,
-        data: [...currState.data, ...payload.orders],
+        data: [...currState.data, ...statusUpdatePayload.orders],
       }));
 
       // Push to the dashboard when there are no restaurant
@@ -309,31 +311,31 @@ export default function OrdersGroupDetails({
         </>
       )}
       {/* Archive modal */}
-      <Modal
-        showModal={showStatusUpdateModal}
-        setShowModal={setShowStatusUpdateModal}
+      <ModalContainer
+        showModalContainer={showStatusUpdateModal}
+        setShowModalContainer={setShowStatusUpdateModal}
         component={
-          <StatusUpdate
+          <ActionModal
             name="this order"
             action="Archive"
-            updateStatus={updateStatus}
-            isUpdatingStatus={isUpdatingOrderStatus}
-            setShowStatusUpdateModal={setShowStatusUpdateModal}
+            performAction={updateStatus}
+            isPerformingAction={isUpdatingOrderStatus}
+            setShowActionModal={setShowStatusUpdateModal}
           />
         }
       />
 
       {/* Delivery modal */}
-      <Modal
-        showModal={showDeliveryModal}
-        setShowModal={setShowDeliveryModal}
+      <ModalContainer
+        showModalContainer={showDeliveryModal}
+        setShowModalContainer={setShowDeliveryModal}
         component={
-          <StatusUpdate
+          <ActionModal
             name="delivery emails"
             action="send"
-            updateStatus={deliverOrders}
-            isUpdatingStatus={isUpdatingOrdersStatus}
-            setShowStatusUpdateModal={setShowDeliveryModal}
+            performAction={deliverOrders}
+            isPerformingAction={isUpdatingOrdersStatus}
+            setShowActionModal={setShowDeliveryModal}
           />
         }
       />

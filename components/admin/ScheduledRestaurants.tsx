@@ -1,18 +1,22 @@
 import Link from "next/link";
 import { useData } from "@context/Data";
-import { axiosInstance, convertDateToText } from "@utils/index";
-import Modal from "@components/layout/Modal";
-import styles from "@styles/admin/ScheduledRestaurants.module.css";
 import { FormEvent, useState } from "react";
-import StatusUpdate from "./StatusUpdate";
+import ActionModal from "./ActionModal";
 import { IScheduledRestaurant } from "types";
+import { axiosInstance, convertDateToText } from "@utils/index";
+import styles from "@styles/admin/ScheduledRestaurants.module.css";
+import ModalContainer from "@components/layout/ModalContainer";
 
 export default function ScheduledRestaurants() {
   // Hooks
-  const { scheduledRestaurants, setScheduledRestaurants } = useData();
+  const {
+    scheduledRestaurants,
+    setScheduledRestaurants,
+    setAllUpcomingOrders,
+  } = useData();
   const [isUpdatingScheduleStatus, setIsUpdatingScheduleStatus] =
     useState(false);
-  const [payload, setPayload] = useState({
+  const [statusUpdatePayload, setStatusUpdatePayload] = useState({
     action: "",
     restaurant: {
       _id: "",
@@ -20,6 +24,20 @@ export default function ScheduledRestaurants() {
     },
     scheduleId: "",
   });
+  const [scheduleRemovalPayload, setScheduleRemovalPayload] = useState({
+    restaurant: {
+      _id: "",
+      name: "",
+    },
+    schedule: {
+      _id: "",
+      date: "",
+    },
+    companyId: "",
+  });
+  const [isRemovingSchedule, setIsRemovingSchedule] = useState(false);
+  const [showScheduleRemovalModal, setShowScheduleRemovalModal] =
+    useState(false);
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
 
   // Initiate schedule update
@@ -31,7 +49,7 @@ export default function ScheduledRestaurants() {
   ) {
     // update states
     setShowStatusUpdateModal(true);
-    setPayload({
+    setStatusUpdatePayload({
       action: e.currentTarget.textContent!,
       scheduleId,
       restaurant: {
@@ -49,21 +67,23 @@ export default function ScheduledRestaurants() {
 
       // Make request to the backend
       const response = await axiosInstance.patch(
-        `/restaurants/${payload.restaurant._id}/${payload.scheduleId}/change-schedule-status`,
-        { action: payload.action }
+        `/restaurants/${statusUpdatePayload.restaurant._id}/${statusUpdatePayload.scheduleId}/change-schedule-status`,
+        { action: statusUpdatePayload.action }
       );
 
       // Find the updated schedule
       const schedule = response.data.find(
         (schedule: IScheduledRestaurant) =>
-          schedule.scheduleId === payload.scheduleId
+          schedule.scheduleId === statusUpdatePayload.scheduleId
       );
 
       // Update state
       setScheduledRestaurants((currState) => ({
         ...currState,
         data: currState.data.map((scheduledRestaurant) => {
-          if (scheduledRestaurant.scheduleId === payload.scheduleId) {
+          if (
+            scheduledRestaurant.scheduleId === statusUpdatePayload.scheduleId
+          ) {
             return {
               ...scheduledRestaurant,
               status: schedule.status,
@@ -80,6 +100,74 @@ export default function ScheduledRestaurants() {
       // Remove loader and close modal
       setIsUpdatingScheduleStatus(false);
       setShowStatusUpdateModal(false);
+    }
+  }
+
+  // Initiate schedule removal
+  function initiateScheduleRemoval(
+    restaurantId: string,
+    restaurantName: string,
+    scheduledDate: string,
+    scheduleId: string,
+    companyId: string
+  ) {
+    // Update states
+    setShowScheduleRemovalModal(true);
+    setScheduleRemovalPayload({
+      restaurant: {
+        _id: restaurantId,
+        name: restaurantName,
+      },
+      schedule: {
+        _id: scheduleId,
+        date: scheduledDate,
+      },
+      companyId,
+    });
+  }
+
+  // Remove a schedule
+  async function removeSchedule() {
+    try {
+      // Show loader
+      setIsRemovingSchedule(true);
+
+      // Make request to the backend
+      await axiosInstance.delete(
+        `/restaurants/${scheduleRemovalPayload.restaurant._id}/${scheduleRemovalPayload.schedule._id}/remove-schedule`
+      );
+
+      // Remove the schedule
+      setScheduledRestaurants((currState) => ({
+        ...currState,
+        data: currState.data.filter(
+          (scheduledRestaurant) =>
+            scheduledRestaurant.scheduleId !==
+            scheduleRemovalPayload.schedule._id
+        ),
+      }));
+
+      // Remove upcoming orders
+      setAllUpcomingOrders((currState) => ({
+        ...currState,
+        data: currState.data.filter(
+          (upcomingOrder) =>
+            !(
+              upcomingOrder.company._id === scheduleRemovalPayload.companyId &&
+              upcomingOrder.delivery.date ===
+                scheduleRemovalPayload.schedule.date &&
+              upcomingOrder.restaurant._id ===
+                scheduleRemovalPayload.restaurant._id
+            )
+        ),
+      }));
+    } catch (err) {
+      // Log error
+      console.log(err);
+    } finally {
+      // Close modal and remove loader
+      setIsRemovingSchedule(false);
+      setShowScheduleRemovalModal(false);
     }
   }
 
@@ -135,7 +223,20 @@ export default function ScheduledRestaurants() {
                           ? "Deactivate"
                           : "Activate"}
                       </span>
-                      <span className={styles.remove}>Remove</span>
+                      <span
+                        className={styles.remove}
+                        onClick={() =>
+                          initiateScheduleRemoval(
+                            scheduledRestaurant._id,
+                            scheduledRestaurant.name,
+                            scheduledRestaurant.date,
+                            scheduledRestaurant.scheduleId,
+                            scheduledRestaurant.company._id
+                          )
+                        }
+                      >
+                        Remove
+                      </span>
                     </td>
                   </tr>
                 ))}
@@ -145,16 +246,32 @@ export default function ScheduledRestaurants() {
         </>
       )}
 
-      <Modal
-        showModal={showStatusUpdateModal}
-        setShowModal={setShowStatusUpdateModal}
+      {/* Status update modal */}
+      <ModalContainer
+        showModalContainer={showStatusUpdateModal}
+        setShowModalContainer={setShowStatusUpdateModal}
         component={
-          <StatusUpdate
-            name={payload.restaurant.name}
-            action={payload.action}
-            updateStatus={updateStatus}
-            isUpdatingStatus={isUpdatingScheduleStatus}
-            setShowStatusUpdateModal={setShowStatusUpdateModal}
+          <ActionModal
+            name={statusUpdatePayload.restaurant.name}
+            action={statusUpdatePayload.action}
+            performAction={updateStatus}
+            isPerformingAction={isUpdatingScheduleStatus}
+            setShowActionModal={setShowStatusUpdateModal}
+          />
+        }
+      />
+
+      {/* Schedule removal modal */}
+      <ModalContainer
+        showModalContainer={showScheduleRemovalModal}
+        setShowModalContainer={setShowScheduleRemovalModal}
+        component={
+          <ActionModal
+            action="Remove"
+            performAction={removeSchedule}
+            isPerformingAction={isRemovingSchedule}
+            name={scheduleRemovalPayload.restaurant.name}
+            setShowActionModal={setShowScheduleRemovalModal}
           />
         }
       />

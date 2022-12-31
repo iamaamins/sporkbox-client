@@ -1,14 +1,14 @@
-import { ICompany, ICustomers, IUser } from "types";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
 import Customers from "./Customers";
-import { axiosInstance, sortByLastName, updateCompanies } from "@utils/index";
-import Modal from "@components/layout/Modal";
+import { ICompany, IUser } from "types";
+import ActionModal from "./ActionModal";
 import Buttons from "@components/layout/Buttons";
 import { FormEvent, useEffect, useState } from "react";
 import styles from "@styles/admin/Company.module.css";
-import ScheduleRestaurants from "@components/admin/ScheduleRestaurants";
-import StatusUpdate from "./StatusUpdate";
+import ScheduleRestaurantsModal from "@components/admin/ScheduleRestaurantsModal";
+import ModalContainer from "@components/layout/ModalContainer";
+import { axiosInstance, sortByLastName, updateCompanies } from "@utils/index";
 
 export default function Company() {
   // Hooks
@@ -150,16 +150,16 @@ export default function Company() {
           </div>
 
           {/* Archive company modal */}
-          <Modal
-            showModal={showStatusUpdateModal}
-            setShowModal={setShowStatusUpdateModal}
+          <ModalContainer
+            showModalContainer={showStatusUpdateModal}
+            setShowModalContainer={setShowStatusUpdateModal}
             component={
-              <StatusUpdate
+              <ActionModal
                 name={company.name}
                 action={action}
-                updateStatus={updateStatus}
-                isUpdatingStatus={isUpdatingCompanyStatus}
-                setShowStatusUpdateModal={setShowStatusUpdateModal}
+                performAction={updateStatus}
+                isPerformingAction={isUpdatingCompanyStatus}
+                setShowActionModal={setShowStatusUpdateModal}
               />
             }
           />
@@ -167,10 +167,10 @@ export default function Company() {
       )}
 
       {/* Schedule restaurants modal */}
-      <Modal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        component={<ScheduleRestaurants />}
+      <ModalContainer
+        showModalContainer={showModal}
+        setShowModalContainer={setShowModal}
+        component={<ScheduleRestaurantsModal />}
       />
     </section>
   );

@@ -1,4 +1,4 @@
-.schedule_restaurants h2 {
+.schedule_restaurants_modal h2 {
   margin-bottom: 1rem;
 }
 
@@ -29,7 +29,7 @@
 }
 
 @media (min-width: 768px) {
-  .schedule_restaurants {
+  .schedule_restaurants_modal {
     width: 32rem;
   }
 }

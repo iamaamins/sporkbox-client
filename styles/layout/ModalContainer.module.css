@@ -1,4 +1,4 @@
-.modal {
+.modal_container {
   background: white;
   position: fixed;
   opacity: 0;
@@ -37,7 +37,7 @@
 }
 
 @media (min-width: 768px) {
-  .modal {
+  .modal_container {
     padding: 1.5rem;
     width: fit-content;
   }

@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { ICustomersProps } from "types";
-import StatusUpdate from "./StatusUpdate";
+import ActionModal from "./ActionModal";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
-import Modal from "@components/layout/Modal";
 import { FormEvent, useState } from "react";
 import {
   axiosInstance,
@@ -11,12 +10,13 @@ import {
   updateCustomers,
 } from "@utils/index";
 import styles from "@styles/admin/Customers.module.css";
+import ModalContainer from "@components/layout/ModalContainer";
 
 export default function Customers({ status, customers }: ICustomersProps) {
   // Hooks
   const router = useRouter();
   const { setCustomers } = useData();
-  const [payload, setPayload] = useState({
+  const [statusUpdatePayload, setStatusUpdatePayload] = useState({
     action: "",
     data: {
       customerId: "",
@@ -31,7 +31,7 @@ export default function Customers({ status, customers }: ICustomersProps) {
   function initiateStatusUpdate(e: FormEvent, customerId: string) {
     // Update states
     setShowStatusUpdateModal(true);
-    setPayload({
+    setStatusUpdatePayload({
       action: e.currentTarget.textContent!,
       data: {
         customerId,
@@ -49,8 +49,8 @@ export default function Customers({ status, customers }: ICustomersProps) {
 
       // Make request to the backend
       const response = await axiosInstance.patch(
-        `/customers/${payload.data.customerId}/change-customer-status`,
-        { action: payload.action }
+        `/customers/${statusUpdatePayload.data.customerId}/change-customer-status`,
+        { action: statusUpdatePayload.action }
       );
 
       // Update customers
@@ -113,16 +113,16 @@ export default function Customers({ status, customers }: ICustomersProps) {
         </tbody>
       </table>
 
-      <Modal
-        showModal={showStatusUpdateModal}
-        setShowModal={setShowStatusUpdateModal}
+      <ModalContainer
+        showModalContainer={showStatusUpdateModal}
+        setShowModalContainer={setShowStatusUpdateModal}
         component={
-          <StatusUpdate
-            name={payload.data.customerName}
-            action={payload.action}
-            updateStatus={updateStatus}
-            isUpdatingStatus={isUpdatingCustomerStatus}
-            setShowStatusUpdateModal={setShowStatusUpdateModal}
+          <ActionModal
+            name={statusUpdatePayload.data.customerName}
+            action={statusUpdatePayload.action}
+            performAction={updateStatus}
+            isPerformingAction={isUpdatingCustomerStatus}
+            setShowActionModal={setShowStatusUpdateModal}
           />
         }
       />

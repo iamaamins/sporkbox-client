@@ -297,8 +297,5 @@ export function updateCompanies(
 // Create axios instance
 export const axiosInstance = axios.create({
   withCredentials: true,
-  baseURL: "https://api.sporkbox.octib.com",
+  baseURL: "http://localhost:5100",
 });
-
-// https://api.sporkbox.app
-// https://api.sporkbox.octib.com

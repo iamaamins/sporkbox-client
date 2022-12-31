@@ -8,16 +8,16 @@ import {
   formatCurrencyToUSD,
   updateVendors,
 } from "@utils/index";
+import ActionModal from "./ActionModal";
 import Buttons from "@components/layout/Buttons";
 import styles from "@styles/admin/Item.module.css";
-import Modal from "@components/layout/Modal";
-import StatusUpdate from "./StatusUpdate";
+import ModalContainer from "@components/layout/ModalContainer";
 
 export default function Item() {
   const router = useRouter();
   const { vendors, setVendors } = useData();
   const [item, setItem] = useState<IItem>();
-  const [payload, setPayload] = useState({
+  const [statusUpdatePayload, setStatusUpdatePayload] = useState({
     action: "",
     item: {
       name: "",
@@ -41,7 +41,7 @@ export default function Item() {
   function initiateStatusUpdate(e: FormEvent, itemName: string) {
     // Update states
     setShowStatusUpdateModal(true);
-    setPayload({
+    setStatusUpdatePayload({
       action: e.currentTarget.textContent!,
       item: {
         name: itemName,
@@ -58,7 +58,7 @@ export default function Item() {
       // Make request to the backend
       const response = await axiosInstance.patch(
         `/restaurants/${router.query.restaurant}/${router.query.item}/change-item-status`,
-        { action: payload.action }
+        { action: statusUpdatePayload.action }
       );
 
       // Updated vendors
@@ -109,16 +109,16 @@ export default function Item() {
           </div>
         </>
       )}
-      <Modal
-        showModal={showStatusUpdateModal}
-        setShowModal={setShowStatusUpdateModal}
+      <ModalContainer
+        showModalContainer={showStatusUpdateModal}
+        setShowModalContainer={setShowStatusUpdateModal}
         component={
-          <StatusUpdate
-            action={payload.action}
-            name={payload.item.name}
-            updateStatus={updateStatus}
-            isUpdatingStatus={isUpdatingItemStatus}
-            setShowStatusUpdateModal={setShowStatusUpdateModal}
+          <ActionModal
+            action={statusUpdatePayload.action}
+            name={statusUpdatePayload.item.name}
+            performAction={updateStatus}
+            isPerformingAction={isUpdatingItemStatus}
+            setShowActionModal={setShowStatusUpdateModal}
           />
         }
       />

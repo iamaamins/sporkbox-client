@@ -4,9 +4,9 @@ import { useRouter } from "next/router";
 import SubmitButton from "../layout/SubmitButton";
 import { IFormData, IRestaurant } from "types";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import styles from "@styles/admin/ScheduleRestaurants.module.css";
+import styles from "@styles/admin/ScheduleRestaurantsModal.module.css";
 
-export default function ScheduleRestaurants() {
+export default function ScheduleRestaurantsModal() {
   // Initial state
   const initialState = {
     date: "",
@@ -86,7 +86,7 @@ export default function ScheduleRestaurants() {
   const minDate = today.toISOString().split("T")[0];
 
   return (
-    <div className={styles.schedule_restaurants}>
+    <div className={styles.schedule_restaurants_modal}>
       <h2>Schedule restaurants</h2>
       <form onSubmit={scheduleRestaurant}>
         <div className={styles.item}>
