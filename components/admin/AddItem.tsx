@@ -73,6 +73,7 @@ export default function AddItem() {
 
       <ItemForm
         formData={formData}
+        image={image}
         setFormData={setFormData}
         buttonText="Save"
         isLoading={isLoading}

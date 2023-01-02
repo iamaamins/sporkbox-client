@@ -107,6 +107,7 @@ export default function EditItem() {
 
           <ItemForm
             formData={formData}
+            image={image}
             setImage={setImage}
             setFormData={setFormData}
             buttonText="Save"

@@ -347,6 +347,7 @@ export interface IEditFormProps {
   isLoading: boolean;
   formData: IFormData;
   buttonText: string;
+  image: File | undefined;
   setImage: Dispatch<SetStateAction<File | undefined>>;
   handleSubmit: (e: FormEvent) => Promise<void>;
   setFormData: Dispatch<SetStateAction<IFormData>>;

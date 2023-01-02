@@ -1,8 +1,9 @@
-import React, { ChangeEvent } from "react";
+import Image from "next/image";
 import { IEditFormProps } from "types";
+import { FiUpload } from "react-icons/fi";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import styles from "@styles/admin/ItemForm.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
-import Image from "next/image";
 
 export default function ItemForm({
   handleSubmit,
@@ -10,8 +11,18 @@ export default function ItemForm({
   isLoading,
   formData,
   setImage,
+  image: file,
   setFormData,
 }: IEditFormProps) {
+  // Hooks
+  const imageRef = useRef<HTMLDivElement>(null);
+  const [imageHeight, setImageHeight] = useState(0);
+
+  // Get image height
+  useEffect(() => {
+    setImageHeight(imageRef.current?.offsetHeight || 150);
+  }, []);
+
   // Destructure form data and check
   const { name, description, tags, price, image } = formData;
 
@@ -30,8 +41,21 @@ export default function ItemForm({
     }));
   }
 
+  // Format image name
+  const formatImageName = (name: string) =>
+    name.length > 15
+      ? `${name.slice(0, 10)}.${name.split(".")[name.split(".").length - 1]}`
+      : name;
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={handleSubmit}
+      style={
+        {
+          "--image_height": `${imageHeight}px`,
+        } as React.CSSProperties
+      }
+    >
       <div className={styles.item}>
         <label htmlFor="name">Item name</label>
         <input type="text" id="name" value={name} onChange={handleChange} />
@@ -57,18 +81,20 @@ export default function ItemForm({
       </div>
 
       <div className={styles.image_upload}>
-        <div className={styles.item}>
-          <label htmlFor="image">Item image</label>
-          <input
-            type="file"
-            id="image"
-            accept="image/*"
-            onChange={(e) => setImage(e.target.files?.[0])}
-          />
+        <div className={styles.upload}>
+          <FiUpload />
+          <span>{file ? formatImageName(file.name) : "Upload image"}</span>
         </div>
 
+        <input
+          type="file"
+          id="image"
+          accept="image/*"
+          onChange={(e) => setImage(e.target.files?.[0])}
+        />
+
         {image && (
-          <div className={styles.image}>
+          <div className={styles.image} ref={imageRef}>
             <Image
               src={image as string}
               width={16}
