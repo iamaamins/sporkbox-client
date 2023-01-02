@@ -52,6 +52,7 @@ interface IItem {
   tags: string;
   name: string;
   price: number;
+  image: string;
   status: string;
   description: string;
 }
@@ -346,6 +347,7 @@ export interface IEditFormProps {
   isLoading: boolean;
   formData: IFormData;
   buttonText: string;
+  setImage: Dispatch<SetStateAction<File | undefined>>;
   handleSubmit: (e: FormEvent) => Promise<void>;
   setFormData: Dispatch<SetStateAction<IFormData>>;
 }

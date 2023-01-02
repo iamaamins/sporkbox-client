@@ -27,3 +27,38 @@
   resize: none;
   height: 10rem;
 }
+
+.image_upload {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.image_upload input {
+  border: none;
+  cursor: pointer;
+}
+
+.image_upload input:focus {
+  outline: none;
+  border: none;
+}
+
+.image {
+  margin-bottom: 1.5rem;
+}
+
+.image img {
+  border-radius: 0.25rem;
+}
+
+@media (min-width: 768px) {
+  .image_upload {
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .image {
+    width: 40%;
+  }
+}

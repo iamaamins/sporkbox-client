@@ -133,7 +133,7 @@ export default function ScheduledRestaurants() {
       setIsRemovingSchedule(true);
 
       // Make request to the backend
-      await axiosInstance.delete(
+      await axiosInstance.patch(
         `/restaurants/${scheduleRemovalPayload.restaurant._id}/${scheduleRemovalPayload.schedule._id}/remove-schedule`
       );
 
