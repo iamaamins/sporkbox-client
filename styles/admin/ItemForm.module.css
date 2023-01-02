@@ -50,18 +50,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
-  color: var(--gray);
+  font-size: 16px;
+  color: var(--orange);
   font-weight: 600;
   height: 4rem;
   width: 100%;
-  margin-bottom: 1.5rem;
   border-radius: 0.25rem;
   border: 1px solid var(--border_color);
 }
 
 .upload svg {
+  font-size: 1.5rem;
   margin-right: 1rem;
+}
+
+.image {
+  margin-top: 1.5rem;
 }
 
 .image img {
@@ -87,6 +91,6 @@
 
   .image {
     width: 45%;
-    margin-bottom: 0rem;
+    margin-top: 0rem;
   }
 }
