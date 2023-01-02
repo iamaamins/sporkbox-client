@@ -7,7 +7,7 @@ import styles from "@styles/admin/AddItem.module.css";
 import { axiosInstance, updateVendors } from "@utils/index";
 
 export default function AddItem() {
-  // Initial state
+  // Initial states
   const initialState = {
     name: "",
     tags: "",
@@ -19,11 +19,25 @@ export default function AddItem() {
   const router = useRouter();
   const { setVendors } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [image, setImage] = useState<File | undefined>(undefined);
   const [formData, setFormData] = useState<IFormData>(initialState);
+
+  // Destructure form data
+  const { name, tags, price, description } = formData;
 
   // Handle submit
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+
+    // Create FormData instance
+    const data = new FormData();
+
+    // Append the data
+    data.append("image", image as File);
+    data.append("name", name as string);
+    data.append("tags", tags as string);
+    data.append("price", price as string);
+    data.append("description", description as string);
 
     // Add a new item
     try {
@@ -33,7 +47,8 @@ export default function AddItem() {
       // Post the data to backend
       const response = await axiosInstance.post(
         `/restaurants/${router.query.restaurant}/add-item`,
-        formData
+        data,
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
 
       // Update vendors with updated items
@@ -58,9 +73,11 @@ export default function AddItem() {
 
       <ItemForm
         formData={formData}
+        image={image}
         setFormData={setFormData}
         buttonText="Save"
         isLoading={isLoading}
+        setImage={setImage}
         handleSubmit={handleSubmit}
       />
     </section>

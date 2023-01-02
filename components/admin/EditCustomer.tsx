@@ -80,6 +80,7 @@ export default function EditCustomer() {
       // Redirect to the company page
       router.push(`/admin/companies/${router.query.company}`);
     } catch (err) {
+      // Log error
       console.log(err);
     } finally {
       // Remove loader

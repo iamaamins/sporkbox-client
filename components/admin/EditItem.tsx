@@ -20,7 +20,11 @@ export default function EditItem() {
   const { vendors, setVendors } = useData();
   const [item, setItem] = useState<IItem>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [image, setImage] = useState<File | undefined>(undefined);
   const [formData, setFormData] = useState<IFormData>(initialState);
+
+  // Destructure form data
+  const { name, tags, price, description } = formData;
 
   // Get the item
   useEffect(() => {
@@ -41,6 +45,7 @@ export default function EditItem() {
             name: item.name,
             tags: item.tags,
             price: item.price,
+            image: item.image,
             description: item.description,
           };
         } else {
@@ -54,6 +59,16 @@ export default function EditItem() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
+    // Create FormData instance
+    const data = new FormData();
+
+    // Append the data
+    data.append("image", image as File);
+    data.append("name", name as string);
+    data.append("tags", tags as string);
+    data.append("price", price as string);
+    data.append("description", description as string);
+
     // Add a new item
     try {
       // Show loader
@@ -62,7 +77,8 @@ export default function EditItem() {
       // Post the data to backend
       const response = await axiosInstance.patch(
         `/restaurants/${router.query.restaurant}/${router.query.item}/update-item-details`,
-        formData
+        data,
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
 
       // Update vendors with updated items
@@ -71,6 +87,7 @@ export default function EditItem() {
       // Back to the restaurant page
       router.push(`/admin/restaurants/${router.query.restaurant}`);
     } catch (err) {
+      // Log error
       console.log(err);
     } finally {
       // Remove loader
@@ -90,6 +107,8 @@ export default function EditItem() {
 
           <ItemForm
             formData={formData}
+            image={image}
+            setImage={setImage}
             setFormData={setFormData}
             buttonText="Save"
             isLoading={isLoading}

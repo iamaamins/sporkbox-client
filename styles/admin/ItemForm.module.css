@@ -27,3 +27,70 @@
   resize: none;
   height: 10rem;
 }
+
+.image_upload {
+  position: relative;
+  display: flex;
+  margin-bottom: 1rem;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.image_upload input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  height: 4rem;
+  width: 100%;
+  cursor: pointer;
+}
+
+.upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--orange);
+  font-weight: 600;
+  height: 4rem;
+  width: 100%;
+  border-radius: 0.25rem;
+  border: 1px solid var(--border_color);
+}
+
+.upload svg {
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+
+.image {
+  margin-top: 1.5rem;
+}
+
+.image img {
+  border-radius: 0.25rem;
+}
+
+@media (min-width: 768px) {
+  .image_upload {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .image_upload input {
+    width: 50%;
+    height: var(--image_height);
+  }
+
+  .upload {
+    width: 50%;
+    margin-bottom: 0rem;
+    height: var(--image_height);
+  }
+
+  .image {
+    width: 45%;
+    margin-top: 0rem;
+  }
+}
