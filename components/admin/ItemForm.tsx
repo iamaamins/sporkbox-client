@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { IEditItemProps } from "types";
 import { FiUpload } from "react-icons/fi";
-import { AiOutlineCloseCircle } from "react-icons/ai";
+import { RiDeleteBinLine } from "react-icons/ri";
 import styles from "@styles/admin/ItemForm.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
@@ -21,7 +21,19 @@ export default function ItemForm({
 
   // Get image height
   useEffect(() => {
-    setImageHeight(imageRef.current?.offsetHeight || 150);
+    setImageHeight(imageRef.current?.offsetHeight || 144);
+
+    function handleResize() {
+      setImageHeight(imageRef.current?.offsetHeight || 144);
+    }
+
+    // Add resize event to window
+    window.addEventListener("resize", handleResize);
+
+    // Remove resize event from window
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   // Destructure form data and check
@@ -83,16 +95,19 @@ export default function ItemForm({
 
       <div className={styles.image_upload}>
         <div className={styles.upload}>
-          <FiUpload />
-          <span className={styles.upload_icon_and_text}>
-            {file ? formatImageName(file.name) : "Upload image"}
-            {file && (
-              <AiOutlineCloseCircle
-                className={styles.remove_image}
-                onClick={() => setFile(undefined)}
-              />
-            )}
-          </span>
+          <div className={styles.upload_icon_and_text}>
+            <FiUpload />
+            <span>{file ? formatImageName(file.name) : "Upload image"}</span>
+          </div>
+
+          {file && (
+            <span
+              className={styles.remove_image}
+              onClick={() => setFile(undefined)}
+            >
+              Remove <RiDeleteBinLine />
+            </span>
+          )}
         </div>
 
         <input
