@@ -104,7 +104,7 @@ export default function Order() {
 
       // Make request to the backend
       const response = await axiosInstance.post(
-        `/restaurants/${order?.restaurant._id}/${order?.item._id}/add-review`,
+        `/restaurants/${order?.restaurant._id}/${order?.item._id}/add-a-review`,
         {
           rating,
           comment,
@@ -132,6 +132,7 @@ export default function Order() {
         }),
       }));
     } catch (err) {
+      // Log error
       console.log(err);
     } finally {
       // Update state
@@ -206,8 +207,6 @@ export default function Order() {
                     <span>{order.status.toLowerCase()}</span> on{" "}
                     <span>{convertDateToText(order.delivery.date)}</span>.
                   </p>
-
-                  <p>{order.hasReviewed}</p>
 
                   {!order.hasReviewed && (
                     <>
