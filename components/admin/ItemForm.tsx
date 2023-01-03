@@ -1,9 +1,9 @@
 import Image from "next/image";
-import { IEditFormProps } from "types";
+import { IEditItemProps } from "types";
 import { FiUpload } from "react-icons/fi";
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import styles from "@styles/admin/ItemForm.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 
 export default function ItemForm({
   handleSubmit,
@@ -13,7 +13,7 @@ export default function ItemForm({
   setImage,
   image: file,
   setFormData,
-}: IEditFormProps) {
+}: IEditItemProps) {
   // Hooks
   const imageRef = useRef<HTMLDivElement>(null);
   const [imageHeight, setImageHeight] = useState(0);

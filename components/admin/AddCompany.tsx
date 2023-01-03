@@ -1,11 +1,10 @@
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
-import { ICompany, IFormData } from "types";
-import { axiosInstance, updateCompanies } from "@utils/index";
-import { ChangeEvent, FormEvent, useState } from "react";
-import styles from "@styles/admin/AddCompany.module.css";
-import SubmitButton from "@components/layout/SubmitButton";
+import { IFormData } from "types";
 import CompanyForm from "./CompanyForm";
+import { FormEvent, useState } from "react";
+import styles from "@styles/admin/AddCompany.module.css";
+import { axiosInstance, updateCompanies } from "@utils/index";
 
 export default function AddCompany() {
   // Initial state
