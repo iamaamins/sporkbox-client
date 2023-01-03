@@ -20,11 +20,11 @@ export default function EditItem() {
   const { vendors, setVendors } = useData();
   const [item, setItem] = useState<IItem>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [image, setImage] = useState<File | undefined>(undefined);
+  const [file, setFile] = useState<File | undefined>(undefined);
   const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Destructure form data
-  const { name, tags, price, description } = formData;
+  const { name, tags, price, image, description } = formData;
 
   // Get the item
   useEffect(() => {
@@ -63,10 +63,11 @@ export default function EditItem() {
     const data = new FormData();
 
     // Append the data
-    data.append("image", image as File);
+    data.append("file", file as File);
     data.append("name", name as string);
     data.append("tags", tags as string);
     data.append("price", price as string);
+    data.append("image", image as string);
     data.append("description", description as string);
 
     // Add a new item
@@ -107,8 +108,8 @@ export default function EditItem() {
 
           <ItemForm
             formData={formData}
-            image={image}
-            setImage={setImage}
+            file={file}
+            setFile={setFile}
             setFormData={setFormData}
             buttonText="Save"
             isLoading={isLoading}
