@@ -59,9 +59,25 @@
   border: 1px solid var(--border_color);
 }
 
+.upload_icon_and_text {
+  position: relative;
+}
+
 .upload svg {
   font-size: 1.5rem;
   margin-right: 1rem;
+}
+
+.remove_image {
+  position: absolute;
+  top: -1.25rem;
+  right: -2.5rem;
+  color: var(--gray);
+  cursor: pointer;
+  width: 1.5rem;
+  height: 1.5rem;
+  z-index: 1;
+  border-radius: 100%;
 }
 
 .image {

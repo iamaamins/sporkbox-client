@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { IEditItemProps } from "types";
 import { FiUpload } from "react-icons/fi";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 import styles from "@styles/admin/ItemForm.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
@@ -10,8 +11,8 @@ export default function ItemForm({
   buttonText,
   isLoading,
   formData,
-  setImage,
-  image: file,
+  file,
+  setFile,
   setFormData,
 }: IEditItemProps) {
   // Hooks
@@ -83,14 +84,22 @@ export default function ItemForm({
       <div className={styles.image_upload}>
         <div className={styles.upload}>
           <FiUpload />
-          <span>{file ? formatImageName(file.name) : "Upload image"}</span>
+          <span className={styles.upload_icon_and_text}>
+            {file ? formatImageName(file.name) : "Upload image"}
+            {file && (
+              <AiOutlineCloseCircle
+                className={styles.remove_image}
+                onClick={() => setFile(undefined)}
+              />
+            )}
+          </span>
         </div>
 
         <input
           type="file"
           id="image"
           accept="image/*"
-          onChange={(e) => setImage(e.target.files?.[0])}
+          onChange={(e) => setFile(e.target.files?.[0])}
         />
 
         {image && (

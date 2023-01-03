@@ -19,7 +19,7 @@ export default function AddItem() {
   const router = useRouter();
   const { setVendors } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [image, setImage] = useState<File | undefined>(undefined);
+  const [file, setFile] = useState<File | undefined>(undefined);
   const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Destructure form data
@@ -33,7 +33,7 @@ export default function AddItem() {
     const data = new FormData();
 
     // Append the data
-    data.append("image", image as File);
+    data.append("file", file as File);
     data.append("name", name as string);
     data.append("tags", tags as string);
     data.append("price", price as string);
@@ -73,11 +73,11 @@ export default function AddItem() {
 
       <ItemForm
         formData={formData}
-        image={image}
+        file={file}
         setFormData={setFormData}
         buttonText="Save"
         isLoading={isLoading}
-        setImage={setImage}
+        setFile={setFile}
         handleSubmit={handleSubmit}
       />
     </section>

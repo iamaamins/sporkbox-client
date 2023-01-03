@@ -352,8 +352,8 @@ export interface IEditFormProps {
 }
 
 export interface IEditItemProps extends IEditFormProps {
-  image: File | undefined;
-  setImage: Dispatch<SetStateAction<File | undefined>>;
+  file: File | undefined;
+  setFile: Dispatch<SetStateAction<File | undefined>>;
 }
 
 export interface IModalContainerProps {
