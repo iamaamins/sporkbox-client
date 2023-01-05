@@ -45,6 +45,7 @@ export interface IScheduledRestaurant {
 }
 
 export interface IUpcomingWeekRestaurant extends IScheduledRestaurant {
+  logo: string;
   items: IItem[];
 }
 

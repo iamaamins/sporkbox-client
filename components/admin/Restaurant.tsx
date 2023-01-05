@@ -68,7 +68,9 @@ export default function Restaurant() {
 
   return (
     <section className={styles.restaurant}>
-      {!vendor && <h2>No restaurant found</h2>}
+      {vendors.isLoading && <h2>Loading...</h2>}
+
+      {!vendors.isLoading && !vendor && <h2>No restaurant found</h2>}
 
       {vendor && (
         <>
@@ -132,10 +134,7 @@ export default function Restaurant() {
 
                           <div className={styles.item_image}>
                             <Image
-                              src={
-                                item.image ||
-                                "https://images.unsplash.com/photo-1613987245117-50933bcb3240?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"
-                              }
+                              src={item.image || vendor.restaurant.logo}
                               width={16}
                               height={10}
                               layout="responsive"

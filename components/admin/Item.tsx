@@ -1,4 +1,4 @@
-import { IItem } from "types";
+import { IItem, IVendor } from "types";
 import Image from "next/image";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
@@ -17,6 +17,7 @@ export default function Item() {
   const router = useRouter();
   const { vendors, setVendors } = useData();
   const [item, setItem] = useState<IItem>();
+  const [vendor, setVendor] = useState<IVendor>();
   const [statusUpdatePayload, setStatusUpdatePayload] = useState({
     action: "",
     item: {
@@ -29,11 +30,19 @@ export default function Item() {
   // Get the item
   useEffect(() => {
     if (vendors.data.length > 0 && router.isReady) {
-      setItem(
-        vendors.data
-          .find((vendor) => vendor.restaurant._id === router.query.restaurant)
-          ?.restaurant.items.find((item) => item._id === router.query.item)
+      // Find the vendor
+      const vendor = vendors.data.find(
+        (vendor) => vendor.restaurant._id === router.query.restaurant
       );
+
+      if (vendor) {
+        // Update states
+        setVendor(vendor);
+
+        setItem(
+          vendor.restaurant.items.find((item) => item._id === router.query.item)
+        );
+      }
     }
   }, [vendors, router.isReady]);
 
@@ -75,16 +84,15 @@ export default function Item() {
 
   return (
     <section className={styles.item}>
-      {!item && <h2>No item found</h2>}
+      {vendors.isLoading && <h2>Loading...</h2>}
 
-      {item && (
+      {!vendors.isLoading && !item && <h2>No item found</h2>}
+
+      {vendor && item && (
         <>
           <div className={styles.cover_image}>
             <Image
-              src={
-                item.image ||
-                "https://images.unsplash.com/photo-1613987245117-50933bcb3240?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"
-              }
+              src={item.image || vendor.restaurant.logo}
               width={16}
               height={10}
               layout="responsive"
