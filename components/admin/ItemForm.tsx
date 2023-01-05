@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { IEditItemProps } from "types";
 import { FiUpload } from "react-icons/fi";
+import { formatImageName } from "@utils/index";
 import { RiDeleteBinLine } from "react-icons/ri";
 import styles from "@styles/admin/ItemForm.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
@@ -53,12 +54,6 @@ export default function ItemForm({
       [id]: id === "price" ? +value : value,
     }));
   }
-
-  // Format image name
-  const formatImageName = (name: string) =>
-    name.length > 15
-      ? `${name.slice(0, 10)}.${name.split(".")[name.split(".").length - 1]}`
-      : name;
 
   return (
     <form
@@ -123,6 +118,7 @@ export default function ItemForm({
               src={image as string}
               width={16}
               height={10}
+              objectFit="cover"
               layout="responsive"
             />
           </div>

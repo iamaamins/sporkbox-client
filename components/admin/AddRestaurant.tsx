@@ -1,9 +1,9 @@
+import { IFormData } from "types";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
-import { IFormData, IVendor } from "types";
 import { axiosInstance } from "@utils/index";
-import { ChangeEvent, FormEvent, useState } from "react";
-import SubmitButton from "@components/layout/SubmitButton";
+import { FormEvent, useState } from "react";
+import RestaurantForm from "./RestaurantForm";
 import styles from "@styles/admin/AddRestaurant.module.css";
 
 export default function AddRestaurant() {
@@ -26,6 +26,7 @@ export default function AddRestaurant() {
   const router = useRouter();
   const { setVendors } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [file, setFile] = useState<File | undefined>(undefined);
   const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Destructure form data
@@ -33,41 +34,43 @@ export default function AddRestaurant() {
     firstName,
     lastName,
     email,
-    password,
     city,
     state,
     zip,
-    confirmPassword,
-    restaurantName,
+    password,
     addressLine1,
     addressLine2,
+    restaurantName,
   } = formData;
-
-  // Check if passwords match
-  const passwordsMatch = password === confirmPassword;
-
-  // Handle change
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    // Update state
-    setFormData((currData) => ({
-      ...currData,
-      [e.target.id]: e.target.value,
-    }));
-  }
 
   // Handle submit
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+
+    // Create FormData instance
+    const data = new FormData();
+
+    // Append the data
+    data.append("file", file as File);
+    data.append("firstName", firstName as string);
+    data.append("lastName", lastName as string);
+    data.append("email", email as string);
+    data.append("city", city as string);
+    data.append("state", state as string);
+    data.append("zip", zip as string);
+    data.append("password", password as string);
+    data.append("restaurantName", restaurantName as string);
+    data.append("addressLine1", addressLine1 as string);
+    data.append("addressLine2", addressLine2 as string);
 
     try {
       // Show loader
       setIsLoading(true);
 
       // Post data to backend
-      const response = await axiosInstance.post(
-        `/vendors/add-vendor`,
-        formData
-      );
+      const response = await axiosInstance.post(`/vendors/add-vendor`, data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       // Update state
       setVendors((currState) => ({
@@ -92,117 +95,16 @@ export default function AddRestaurant() {
     <section className={styles.add_restaurant}>
       <h2>Add a restaurant</h2>
 
-      <form onSubmit={handleSubmit}>
-        <p className={styles.form_title}>Owner info</p>
-
-        <div className={styles.item}>
-          <label htmlFor="firstName">First name</label>
-          <input
-            type="text"
-            id="firstName"
-            value={firstName}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className={styles.item}>
-          <label htmlFor="lastName">Last name</label>
-          <input
-            type="text"
-            id="lastName"
-            value={lastName}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className={styles.item}>
-          <label htmlFor="email">Email address</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className={styles.item}>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className={styles.item}>
-          <label htmlFor="confirmPassword">
-            Confirm password {!passwordsMatch && " - Passwords don't match"}
-          </label>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={handleChange}
-          />
-        </div>
-
-        <p className={styles.form_title}>Restaurant info</p>
-
-        <div className={styles.item}>
-          <label htmlFor="restaurantName">Name</label>
-          <input
-            type="text"
-            id="restaurantName"
-            value={restaurantName}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className={styles.item}>
-          <label htmlFor="addressLine1">Address line 1</label>
-          <input
-            type="text"
-            id="addressLine1"
-            value={addressLine1}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className={styles.item}>
-          <label htmlFor="addressLine2">Address line 2</label>
-          <input
-            type="text"
-            id="addressLine2"
-            value={addressLine2}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className={styles.city_state_zip}>
-          <div className={styles.item}>
-            <label htmlFor="city">City</label>
-            <input type="text" id="city" value={city} onChange={handleChange} />
-          </div>
-
-          <div className={styles.item}>
-            <label htmlFor="state">State</label>
-            <input
-              type="text"
-              id="state"
-              value={state}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className={styles.item}>
-            <label htmlFor="zip">Zip</label>
-            <input type="text" id="zip" value={zip} onChange={handleChange} />
-          </div>
-        </div>
-
-        <SubmitButton text="Add restaurant" isLoading={isLoading} />
-      </form>
+      <RestaurantForm
+        file={file}
+        setFile={setFile}
+        isLoading={isLoading}
+        formData={formData}
+        showPasswordFields={true}
+        setFormData={setFormData}
+        buttonText="Add restaurant"
+        handleSubmit={handleSubmit}
+      />
     </section>
   );
 }

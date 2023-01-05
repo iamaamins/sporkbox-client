@@ -1,10 +1,10 @@
-import { useData } from "@context/Data";
-import { axiosInstance, updateVendors } from "@utils/index";
-import { IFormData, IVendor } from "types";
 import { useRouter } from "next/router";
-import SubmitButton from "@components/layout/SubmitButton";
+import { useData } from "@context/Data";
+import { IFormData, IVendor } from "types";
+import RestaurantForm from "./RestaurantForm";
+import { axiosInstance, updateVendors } from "@utils/index";
 import styles from "@styles/admin/EditRestaurant.module.css";
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 
 export default function EditRestaurant() {
   // Initial state
@@ -25,7 +25,22 @@ export default function EditRestaurant() {
   const { vendors, setVendors } = useData();
   const [vendor, setVendor] = useState<IVendor>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [file, setFile] = useState<File | undefined>(undefined);
   const [formData, setFormData] = useState<IFormData>(initialState);
+
+  // Destructure form data
+  const {
+    firstName,
+    lastName,
+    email,
+    city,
+    state,
+    zip,
+    logo,
+    restaurantName,
+    addressLine1,
+    addressLine2,
+  } = formData;
 
   // Get the restaurant
   useEffect(() => {
@@ -46,6 +61,7 @@ export default function EditRestaurant() {
             firstName: vendor.firstName,
             lastName: vendor.lastName,
             email: vendor.email,
+            logo: vendor.restaurant.logo,
             restaurantName: vendor.restaurant.name,
             addressLine1: vendor.restaurant.address.split(",")[0],
             addressLine2: vendor.restaurant.address.split(",")[1].trim(),
@@ -60,31 +76,25 @@ export default function EditRestaurant() {
     }
   }, [vendors, router.isReady]);
 
-  // Destructure form data
-  const {
-    firstName,
-    lastName,
-    email,
-    city,
-    state,
-    zip,
-    restaurantName,
-    addressLine1,
-    addressLine2,
-  } = formData;
-
-  // Handle change
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    // Update state
-    setFormData((currState) => ({
-      ...currState,
-      [e.target.id]: e.target.value,
-    }));
-  }
-
   // Handle submit
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+
+    // Create FormData instance
+    const data = new FormData();
+
+    // Append the data
+    data.append("file", file as File);
+    data.append("firstName", firstName as string);
+    data.append("lastName", lastName as string);
+    data.append("email", email as string);
+    data.append("city", city as string);
+    data.append("state", state as string);
+    data.append("zip", zip as string);
+    data.append("logo", logo as string);
+    data.append("restaurantName", restaurantName as string);
+    data.append("addressLine1", addressLine1 as string);
+    data.append("addressLine2", addressLine2 as string);
 
     try {
       // Show loader
@@ -93,7 +103,8 @@ export default function EditRestaurant() {
       // Post data to backend
       const response = await axiosInstance.patch(
         `/vendors/${vendor?._id}/update-vendor-details`,
-        formData
+        data,
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
 
       // Update vendors
@@ -119,106 +130,16 @@ export default function EditRestaurant() {
       {vendor && (
         <>
           <h2>Edit the details</h2>
-
-          <form onSubmit={handleSubmit}>
-            <p className={styles.form_title}>Owner info</p>
-
-            <div className={styles.item}>
-              <label htmlFor="firstName">First name</label>
-              <input
-                type="text"
-                id="firstName"
-                value={firstName}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className={styles.item}>
-              <label htmlFor="lastName">Last name</label>
-              <input
-                type="text"
-                id="lastName"
-                value={lastName}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className={styles.item}>
-              <label htmlFor="email">Email address</label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={handleChange}
-              />
-            </div>
-
-            <p className={styles.form_title}>Restaurant info</p>
-
-            <div className={styles.item}>
-              <label htmlFor="restaurantName">Name</label>
-              <input
-                type="text"
-                id="restaurantName"
-                value={restaurantName}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className={styles.item}>
-              <label htmlFor="addressLine1">Address line 1</label>
-              <input
-                type="text"
-                id="addressLine1"
-                value={addressLine1}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className={styles.item}>
-              <label htmlFor="addressLine2">Address line 2</label>
-              <input
-                type="text"
-                id="addressLine2"
-                value={addressLine2}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className={styles.city_state_zip}>
-              <div className={styles.item}>
-                <label htmlFor="city">City</label>
-                <input
-                  type="text"
-                  id="city"
-                  value={city}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className={styles.item}>
-                <label htmlFor="state">State</label>
-                <input
-                  type="text"
-                  id="state"
-                  value={state}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className={styles.item}>
-                <label htmlFor="zip">Zip</label>
-                <input
-                  type="text"
-                  id="zip"
-                  value={zip}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-
-            <SubmitButton text="Save" isLoading={isLoading} />
-          </form>
+          <RestaurantForm
+            file={file}
+            setFile={setFile}
+            isLoading={isLoading}
+            buttonText="Save"
+            formData={formData}
+            showPasswordFields={false}
+            setFormData={setFormData}
+            handleSubmit={handleSubmit}
+          />
         </>
       )}
     </section>

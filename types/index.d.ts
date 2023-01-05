@@ -25,6 +25,7 @@ export interface ICustomers {
 export interface IRestaurant {
   _id: string;
   name: string;
+  logo: string;
   items: IItem[];
   address: string;
   createdAt: string;
@@ -354,6 +355,10 @@ export interface IEditFormProps {
 export interface IEditItemProps extends IEditFormProps {
   file: File | undefined;
   setFile: Dispatch<SetStateAction<File | undefined>>;
+}
+
+export interface IEditRestaurantProps extends IEditItemProps {
+  showPasswordFields: boolean;
 }
 
 export interface IModalContainerProps {
