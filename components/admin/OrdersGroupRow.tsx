@@ -68,7 +68,9 @@ export default function OrdersGroupRow({
   ];
 
   // Filename
-  const fileName = `${ordersGroup.companyName} - ${ordersGroup.deliveryDate}`;
+  const fileName = `${ordersGroup.companyName} - ${
+    ordersGroup.deliveryDate.split("T")[0]
+  }.csv`;
 
   return (
     <tr className={styles.orders_group_row}>
