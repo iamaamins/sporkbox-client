@@ -49,7 +49,7 @@ export default function Order() {
       setFavoriteItem(
         customerFavoriteItems.data.find(
           (customerFavoriteItem) =>
-            customerFavoriteItem.itemId === order.item._id
+            customerFavoriteItem.item._id === order.item._id
         )
       );
     }
@@ -169,7 +169,7 @@ export default function Order() {
           <div className={styles.cover_image_and_details}>
             <div className={styles.cover_image}>
               <Image
-                src="https://images.unsplash.com/photo-1613987245117-50933bcb3240?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"
+                src={order.item.image}
                 width={16}
                 height={9}
                 layout="responsive"

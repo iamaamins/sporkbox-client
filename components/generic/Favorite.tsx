@@ -34,14 +34,14 @@ export default function Favorite() {
               <div key={customerFavoriteItem._id} className={styles.item}>
                 <div className={styles.details}>
                   <p className={styles.item_description}>
-                    {customerFavoriteItem.itemName} from{" "}
-                    {customerFavoriteItem.restaurantName}
+                    {customerFavoriteItem.item.name} from{" "}
+                    {customerFavoriteItem.restaurant.name}
                   </p>
 
                   {upcomingWeekRestaurants.data.some(
                     (upcomingWeekRestaurant) =>
                       upcomingWeekRestaurant._id ===
-                      customerFavoriteItem.restaurantId
+                      customerFavoriteItem.restaurant._id
                   ) ? (
                     <div className={styles.dates}>
                       <p className={styles.available}>Available to order on</p>
@@ -49,13 +49,13 @@ export default function Favorite() {
                       {upcomingWeekRestaurants.data.map(
                         (upcomingWeekRestaurant, index) =>
                           upcomingWeekRestaurant._id ===
-                            customerFavoriteItem.restaurantId && (
+                            customerFavoriteItem.restaurant._id && (
                             <span key={index}>
                               <Link
                                 href={`/place-order/${convertDateToMS(
                                   upcomingWeekRestaurant.date
-                                )}/${customerFavoriteItem.restaurantId}/${
-                                  customerFavoriteItem.itemId
+                                )}/${customerFavoriteItem.restaurant._id}/${
+                                  customerFavoriteItem.item._id
                                 }`}
                               >
                                 <a>
@@ -80,7 +80,10 @@ export default function Favorite() {
 
                 <div className={styles.cover_image}>
                   <Image
-                    src="https://images.unsplash.com/photo-1613987245117-50933bcb3240?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"
+                    src={
+                      customerFavoriteItem.item.image ||
+                      customerFavoriteItem.restaurant.logo
+                    }
                     height={2}
                     width={3}
                     layout="responsive"

@@ -21,6 +21,7 @@ export default function Item() {
     _id: "",
     name: "",
     price: 0,
+    image: "",
     quantity: 1,
     expiresIn: 0,
     restaurantId: "",
@@ -76,6 +77,7 @@ export default function Item() {
             name: item.name,
             expiresIn: expiresIn,
             restaurantId: upcomingWeekRestaurant._id,
+            image: item.image || upcomingWeekRestaurant.logo,
             price:
               item.price > user?.company?.dailyBudget!
                 ? user?.company?.dailyBudget!

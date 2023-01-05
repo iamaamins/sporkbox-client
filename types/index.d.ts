@@ -61,11 +61,17 @@ interface IItem {
 
 export interface ICustomerFavoriteItem {
   _id: string;
-  itemId: string;
-  itemName: string;
-  customerId: string;
-  restaurantId: string;
-  restaurantName: string;
+  item: {
+    _id: string;
+    name: string;
+    image: string;
+  };
+  customer: string;
+  restaurant: {
+    _id: string;
+    name: string;
+    logo: string;
+  };
 }
 
 export interface ICompany {
@@ -186,6 +192,7 @@ export interface ICartItem {
   _id: string;
   name: string;
   price: number;
+  image: string;
   quantity: number;
   expiresIn: number;
   restaurantId: string;
@@ -219,6 +226,7 @@ export interface IOrder {
     _id: string;
     name: string;
     tags: string;
+    image: string;
     description: string;
     quantity: number;
     total: number;
@@ -231,6 +239,7 @@ export interface ICustomerOrder {
     _id: string;
     name: string;
     total: number;
+    image: string;
     quantity: number;
   };
   delivery: {
