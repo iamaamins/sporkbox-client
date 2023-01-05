@@ -80,10 +80,7 @@ export default function Favorite() {
 
                 <div className={styles.cover_image}>
                   <Image
-                    src={
-                      customerFavoriteItem.item.image ||
-                      customerFavoriteItem.restaurant.logo
-                    }
+                    src={customerFavoriteItem.item.image}
                     height={2}
                     width={3}
                     layout="responsive"

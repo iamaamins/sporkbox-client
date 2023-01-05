@@ -70,7 +70,6 @@ export interface ICustomerFavoriteItem {
   restaurant: {
     _id: string;
     name: string;
-    logo: string;
   };
 }
 

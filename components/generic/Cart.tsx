@@ -16,8 +16,6 @@ export default function Cart() {
     removeItemFromCart,
   } = useCart();
 
-  console.log(cartItems);
-
   return (
     <section className={styles.cart}>
       {cartItems.length === 0 && <h2>No items in basket</h2>}
