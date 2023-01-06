@@ -1,0 +1,55 @@
+.add_admin {
+  padding: var(--section_padding);
+}
+
+.add_admin h2 {
+  margin-bottom: 1rem;
+}
+
+.add_admin form {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow_medium);
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.item label {
+  font-size: 0.9rem;
+  color: var(--gray);
+  margin-bottom: 0.75rem;
+}
+
+.item input {
+  padding: 12px;
+  border-radius: 0.25rem;
+  border: 1px solid var(--border_color);
+}
+
+.item input:focus {
+  outline: none;
+  border: 1px solid var(--teal);
+}
+
+@media (min-width: 768px) {
+  .add_admin {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding-bottom: 2.5rem;
+  }
+
+  .add_admin form {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .add_admin {
+    max-width: 42rem;
+    margin: 0 auto;
+  }
+}

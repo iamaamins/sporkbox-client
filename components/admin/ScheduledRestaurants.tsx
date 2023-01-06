@@ -191,7 +191,7 @@ export default function ScheduledRestaurants() {
                   <th>Scheduled on</th>
                   <th>Restaurant</th>
                   <th>Company</th>
-                  <th>Actions</th>
+                  <th className={styles.hide_on_mobile}>Actions</th>
                 </tr>
               </thead>
 
@@ -207,7 +207,9 @@ export default function ScheduledRestaurants() {
                     </td>
                     <td>{scheduledRestaurant.name}</td>
                     <td>{scheduledRestaurant.company.name}</td>
-                    <td className={styles.actions}>
+                    <td
+                      className={`${styles.actions} ${styles.hide_on_mobile}`}
+                    >
                       <span
                         className={styles.deactivate}
                         onClick={(e) =>

@@ -6,6 +6,7 @@ import {
   MdLogout,
   MdOutlineSchedule,
   MdOutlineRestaurantMenu,
+  MdAdminPanelSettings,
 } from "react-icons/md";
 import { useData } from "@context/Data";
 import { useUser } from "@context/User";
@@ -146,6 +147,17 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
           <Link href="/admin/companies">
             <a>
               <TbBuildingSkyscraper /> Companies
+            </a>
+          </Link>
+        </li>
+
+        <li
+          className={!isAdmin ? styles.hide : ""}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href="/admin/add-admin">
+            <a>
+              <MdAdminPanelSettings /> Add admin
             </a>
           </Link>
         </li>
