@@ -393,3 +393,14 @@ export interface IDeliverOrdersPayload {
   orders: IOrder[];
   restaurantName: string;
 }
+
+export interface ICustomerOrdersProps {
+  orders: ICustomerOrder[];
+  orderStatus: string;
+}
+
+export interface ICustomerWithOrders {
+  data: IUser | undefined;
+  upcomingOrders: ICustomerOrder[];
+  deliveredOrders: ICustomerOrder[];
+}
