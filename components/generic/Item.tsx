@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { ICartItem, IItem } from "types";
 import { useData } from "@context/Data";
 import { useCart } from "@context/Cart";
 import { useRouter } from "next/router";
@@ -14,6 +13,7 @@ import {
   formatCurrencyToUSD,
   convertDateToText,
 } from "@utils/index";
+import { ICartItem, IItem, IUpcomingWeekRestaurant } from "types";
 
 export default function Item() {
   // Initial state
@@ -21,6 +21,7 @@ export default function Item() {
     _id: "",
     name: "",
     price: 0,
+    image: "",
     quantity: 1,
     expiresIn: 0,
     restaurantId: "",
@@ -34,6 +35,8 @@ export default function Item() {
   const { cartItems, addItemToCart } = useCart();
   const [cartItem, setCarItem] = useState<ICartItem>(initialState);
   const { upcomingWeekRestaurants, nextWeekBudgetAndDates } = useData();
+  const [upcomingWeekRestaurant, setUpcomingWeekRestaurant] =
+    useState<IUpcomingWeekRestaurant>();
 
   // Price and quantity
   const { quantity, price } = cartItem;
@@ -42,40 +45,45 @@ export default function Item() {
   useEffect(() => {
     if (upcomingWeekRestaurants.data.length > 0 && router.isReady) {
       // Find the restaurant
-      const restaurant = upcomingWeekRestaurants.data.find(
+      const upcomingWeekRestaurant = upcomingWeekRestaurants.data.find(
         (upcomingWeekRestaurant) =>
           convertDateToMS(upcomingWeekRestaurant.date) ===
             +(router.query.date as string) &&
           upcomingWeekRestaurant._id === router.query.restaurant
       );
 
-      // Find the item
-      const item = restaurant?.items.find(
-        (item) => item._id === router.query.item
-      );
+      if (upcomingWeekRestaurant) {
+        // Update state
+        setUpcomingWeekRestaurant(upcomingWeekRestaurant);
 
-      // If there is a restaurant and an item
-      if (restaurant && item) {
-        // Update item
-        setItem(item);
+        // Find the item
+        const item = upcomingWeekRestaurant.items.find(
+          (item) => item._id === router.query.item
+        );
 
-        // Get the date
-        const deliveryDate = convertDateToMS(restaurant.date);
+        if (item) {
+          // Update item
+          setItem(item);
 
-        // Update initial item
-        setCarItem((currItem) => ({
-          ...currItem,
-          quantity: 1,
-          deliveryDate,
-          _id: item._id,
-          name: item.name,
-          expiresIn: expiresIn,
-          restaurantId: restaurant._id,
-          price:
-            item.price > user?.company?.dailyBudget!
-              ? user?.company?.dailyBudget!
-              : item.price,
-        }));
+          // Get the date
+          const deliveryDate = convertDateToMS(upcomingWeekRestaurant.date);
+
+          // Update initial item
+          setCarItem((currItem) => ({
+            ...currItem,
+            quantity: 1,
+            deliveryDate,
+            _id: item._id,
+            name: item.name,
+            expiresIn: expiresIn,
+            restaurantId: upcomingWeekRestaurant._id,
+            image: item.image || upcomingWeekRestaurant.logo,
+            price:
+              item.price > user?.company?.dailyBudget!
+                ? user?.company?.dailyBudget!
+                : item.price,
+          }));
+        }
       }
     }
   }, [upcomingWeekRestaurants, router.isReady]);
@@ -119,16 +127,15 @@ export default function Item() {
 
   return (
     <section className={styles.item}>
-      {!item && <h2>No item</h2>}
+      {upcomingWeekRestaurants.isLoading && <h2>Loading...</h2>}
 
-      {item && (
+      {!upcomingWeekRestaurants.isLoading && !item && <h2>No item found</h2>}
+
+      {upcomingWeekRestaurant && item && (
         <>
           <div className={styles.cover_image}>
             <Image
-              src={
-                item.image ||
-                "https://images.unsplash.com/photo-1613987245117-50933bcb3240?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"
-              }
+              src={item.image || upcomingWeekRestaurant.logo}
               width={16}
               height={10}
               layout="responsive"

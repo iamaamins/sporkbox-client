@@ -146,6 +146,14 @@ export default function DesktopNav() {
             </a>
           </Link>
         </li>
+
+        <li className={!isAdmin ? styles.hide : ""}>
+          <Link href="/admin/add-admin">
+            <a className={pathName === "/admin/add-admin" ? styles.active : ""}>
+              Add admin
+            </a>
+          </Link>
+        </li>
       </ul>
 
       {/* Call to actions */}

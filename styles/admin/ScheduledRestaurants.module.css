@@ -18,8 +18,8 @@
   padding: 1rem;
 }
 
-.scheduled_restaurants table th:last-child,
-.scheduled_restaurants table td:last-child {
+.scheduled_restaurants table th:nth-child(3),
+.scheduled_restaurants table td:nth-child(3) {
   text-align: right;
 }
 
@@ -40,6 +40,10 @@
 .important a {
   font-size: 1rem;
   color: var(--black);
+}
+
+.hide_on_mobile {
+  display: none;
 }
 
 .actions span {
@@ -63,6 +67,20 @@
   .scheduled_restaurants {
     max-width: 85%;
     margin: 0 auto;
+  }
+
+  .scheduled_restaurants table th:nth-child(3),
+  .scheduled_restaurants table td:nth-child(3) {
+    text-align: left;
+  }
+
+  .scheduled_restaurants table th:last-child,
+  .scheduled_restaurants table td:last-child {
+    text-align: right;
+  }
+
+  .hide_on_mobile {
+    display: table-cell;
   }
 }
 

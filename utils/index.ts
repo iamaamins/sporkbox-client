@@ -294,6 +294,12 @@ export function updateCompanies(
   }));
 }
 
+// Format image name
+export const formatImageName = (name: string) =>
+  name.length > 15
+    ? `${name.slice(0, 10)}.${name.split(".")[name.split(".").length - 1]}`
+    : name;
+
 // Create axios instance
 export const axiosInstance = axios.create({
   withCredentials: true,

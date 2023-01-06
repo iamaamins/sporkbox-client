@@ -25,6 +25,7 @@ export interface ICustomers {
 export interface IRestaurant {
   _id: string;
   name: string;
+  logo: string;
   items: IItem[];
   address: string;
   createdAt: string;
@@ -44,6 +45,7 @@ export interface IScheduledRestaurant {
 }
 
 export interface IUpcomingWeekRestaurant extends IScheduledRestaurant {
+  logo: string;
   items: IItem[];
 }
 
@@ -59,11 +61,16 @@ interface IItem {
 
 export interface ICustomerFavoriteItem {
   _id: string;
-  itemId: string;
-  itemName: string;
-  customerId: string;
-  restaurantId: string;
-  restaurantName: string;
+  item: {
+    _id: string;
+    name: string;
+    image: string;
+  };
+  customer: string;
+  restaurant: {
+    _id: string;
+    name: string;
+  };
 }
 
 export interface ICompany {
@@ -184,6 +191,7 @@ export interface ICartItem {
   _id: string;
   name: string;
   price: number;
+  image: string;
   quantity: number;
   expiresIn: number;
   restaurantId: string;
@@ -217,6 +225,7 @@ export interface IOrder {
     _id: string;
     name: string;
     tags: string;
+    image: string;
     description: string;
     quantity: number;
     total: number;
@@ -229,6 +238,7 @@ export interface ICustomerOrder {
     _id: string;
     name: string;
     total: number;
+    image: string;
     quantity: number;
   };
   delivery: {
@@ -356,6 +366,10 @@ export interface IEditItemProps extends IEditFormProps {
   setFile: Dispatch<SetStateAction<File | undefined>>;
 }
 
+export interface IEditRestaurantProps extends IEditItemProps {
+  showPasswordFields: boolean;
+}
+
 export interface IModalContainerProps {
   component: JSX.Element;
   showModalContainer: boolean;
@@ -378,4 +392,15 @@ export interface IActionModalProps {
 export interface IDeliverOrdersPayload {
   orders: IOrder[];
   restaurantName: string;
+}
+
+export interface ICustomerOrdersProps {
+  orders: ICustomerOrder[];
+  orderStatus: string;
+}
+
+export interface ICustomerWithOrders {
+  data: IUser | undefined;
+  upcomingOrders: ICustomerOrder[];
+  deliveredOrders: ICustomerOrder[];
 }

@@ -1,7 +1,22 @@
+.form_title {
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
 .item {
   display: flex;
   flex-direction: column;
   margin-bottom: 1.5rem;
+}
+
+.city_state_zip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.city_state_zip .item {
+  width: 48%;
 }
 
 .item label {
@@ -10,25 +25,18 @@
   margin-bottom: 0.75rem;
 }
 
-.item input,
-.item textarea {
+.item input {
   padding: 12px;
   border-radius: 0.25rem;
   border: 1px solid var(--border_color);
 }
 
-.item input:focus,
-.item textarea:focus {
+.item input:focus {
   outline: none;
   border: 1px solid var(--teal);
 }
 
-.item textarea {
-  resize: none;
-  height: 10rem;
-}
-
-.image_upload {
+.logo_upload {
   position: relative;
   display: flex;
   margin-bottom: 1rem;
@@ -36,7 +44,7 @@
   justify-content: space-between;
 }
 
-.image_upload input {
+.logo_upload input {
   position: absolute;
   top: 0;
   left: 0;
@@ -70,7 +78,7 @@
   margin-right: 1rem;
 }
 
-.remove_image {
+.remove_logo {
   display: flex;
   align-items: center;
   font-weight: 400;
@@ -84,7 +92,7 @@
   border: 1px solid var(--gray);
 }
 
-.remove_image svg {
+.remove_logo svg {
   margin-left: 0.5rem;
 }
 
@@ -97,20 +105,20 @@
 }
 
 @media (min-width: 768px) {
-  .image_upload {
+  .logo_upload {
     flex-direction: row;
     align-items: center;
   }
 
-  .image_upload input {
+  .logo_upload input {
     width: 50%;
-    height: var(--image_height);
+    height: var(--logo_height);
   }
 
   .upload {
     width: 50%;
     margin-bottom: 0rem;
-    height: var(--image_height);
+    height: var(--logo_height);
   }
 
   .image {
