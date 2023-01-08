@@ -49,8 +49,8 @@ export default function ItemForm({
     const value = e.target.value;
 
     // Update state
-    setFormData((currData) => ({
-      ...currData,
+    setFormData((currState) => ({
+      ...currState,
       [id]: id === "price" ? +value : value,
     }));
   }

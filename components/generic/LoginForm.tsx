@@ -23,8 +23,8 @@ export default function LoginForm() {
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     // Update state
-    setFormData((currData) => ({
-      ...currData,
+    setFormData((currState) => ({
+      ...currState,
       [e.target.id]: e.target.value,
     }));
   }
