@@ -88,7 +88,23 @@ export default function Restaurant() {
                 </p>
 
                 <p>
-                  <span>Address:</span> {vendor.restaurant.address}
+                  <span>Address:</span>{" "}
+                  {vendor.restaurant.address.addressLine2 ? (
+                    <>
+                      {vendor.restaurant.address.addressLine1},{" "}
+                      {vendor.restaurant.address.addressLine2},{" "}
+                      {vendor.restaurant.address.city},{" "}
+                      {vendor.restaurant.address.state}{" "}
+                      {vendor.restaurant.address.zip}
+                    </>
+                  ) : (
+                    <>
+                      {vendor.restaurant.address.addressLine1},{" "}
+                      {vendor.restaurant.address.city},{" "}
+                      {vendor.restaurant.address.state}{" "}
+                      {vendor.restaurant.address.zip}
+                    </>
+                  )}
                 </p>
               </div>
 

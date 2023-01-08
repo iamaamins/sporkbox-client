@@ -53,26 +53,38 @@ export default function EditRestaurant() {
       // Update vendor
       setVendor(vendor);
 
-      // Update form data
-      setFormData((currState) => {
-        if (vendor) {
-          return {
-            ...currState,
-            firstName: vendor.firstName,
-            lastName: vendor.lastName,
-            email: vendor.email,
-            logo: vendor.restaurant.logo,
-            restaurantName: vendor.restaurant.name,
-            addressLine1: vendor.restaurant.address.split(",")[0],
-            addressLine2: vendor.restaurant.address.split(",")[1].trim(),
-            city: vendor.restaurant.address.split(",")[2].trim(),
-            state: vendor.restaurant.address.split(",")[3].trim().split(" ")[0],
-            zip: vendor.restaurant.address.split(",")[3].trim().split(" ")[1],
-          };
-        } else {
-          return currState;
-        }
-      });
+      if (vendor) {
+        // Vendor details
+        const vendorDetails = {
+          firstName: vendor.firstName,
+          lastName: vendor.lastName,
+          email: vendor.email,
+          logo: vendor.restaurant.logo,
+          restaurantName: vendor.restaurant.name,
+          city: vendor.restaurant.address.city,
+          state: vendor.restaurant.address.state,
+          zip: vendor.restaurant.address.zip,
+          addressLine1: vendor.restaurant.address.addressLine1,
+        };
+
+        // Update form data
+        setFormData((currState) => {
+          if (vendor.restaurant.address.addressLine2) {
+            return {
+              ...currState,
+              ...vendorDetails,
+              addressLine2: vendor.restaurant.address.addressLine2,
+            };
+          } else if (!vendor.restaurant.address.addressLine2) {
+            return {
+              ...currState,
+              ...vendorDetails,
+            };
+          } else {
+            return currState;
+          }
+        });
+      }
     }
   }, [vendors, router.isReady]);
 
