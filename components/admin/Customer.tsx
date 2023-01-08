@@ -82,7 +82,24 @@ export default function Customer() {
                   {customer.data.firstName} {customer.data.lastName}
                 </td>
                 <td>{customer.data.company?.name}</td>
-                <td>{customer.data.company?.address}</td>
+                <td>
+                  {customer.data.company?.address.addressLine2 ? (
+                    <>
+                      {customer.data.company?.address.addressLine1},{" "}
+                      {customer.data.company?.address.addressLine2},{" "}
+                      {customer.data.company?.address.city},{" "}
+                      {customer.data.company?.address.state}{" "}
+                      {customer.data.company?.address.zip}
+                    </>
+                  ) : (
+                    <>
+                      {customer.data.company?.address.addressLine1},{" "}
+                      {customer.data.company?.address.city},{" "}
+                      {customer.data.company?.address.state}{" "}
+                      {customer.data.company?.address.zip}
+                    </>
+                  )}
+                </td>
               </tr>
             </tbody>
           </table>
