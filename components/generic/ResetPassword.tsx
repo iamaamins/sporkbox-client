@@ -42,7 +42,7 @@ export default function ResetPassword() {
 
       // Make request to the backend
       const response = await axiosInstance.patch(
-        `/users/reset-password/${router.query.token}`,
+        `/users/reset-password/${router.query.user}/${router.query.token}`,
         { password }
       );
 
