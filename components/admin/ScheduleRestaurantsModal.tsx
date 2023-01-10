@@ -40,8 +40,8 @@ export default function ScheduleRestaurantsModal() {
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     // Update state
-    setFormData((currData) => ({
-      ...currData,
+    setFormData((currState) => ({
+      ...currState,
       [e.target.id]: e.target.value,
     }));
   }

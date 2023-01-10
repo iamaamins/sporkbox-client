@@ -1,11 +1,11 @@
-import Cart from "@components/generic/Cart";
-import PageLoader from "@components/layout/PageLoader";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 import { useUser } from "@context/User";
 import { checkUser } from "@utils/index";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import PageLoader from "@components/layout/PageLoader";
+import CheckoutSuccess from "@components/generic/CheckoutSuccess";
 
-export default function CartPage() {
+export default function CheckoutSuccessPage() {
   const router = useRouter();
   const { isUserLoading, isCustomer } = useUser();
 
@@ -16,7 +16,7 @@ export default function CartPage() {
   return (
     <main>
       {isUserLoading && <PageLoader />}
-      {isCustomer && <Cart />}
+      {isCustomer && <CheckoutSuccess />}
     </main>
   );
 }

@@ -16,7 +16,7 @@ export default function Company() {
   const [action, setAction] = useState("");
   const [company, setCompany] = useState<ICompany>();
   const [showModal, setShowModal] = useState(false);
-  const { companies, setCompanies, customers } = useData();
+  const { companies, customers, setCompanies } = useData();
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
   const [activeCustomers, setActiveCustomers] = useState<IUser[]>([]);
   const [archivedCustomers, setArchivedCustomers] = useState<IUser[]>([]);
@@ -108,7 +108,19 @@ export default function Company() {
               <span>Daily budget:</span> USD ${company.dailyBudget}
             </p>
             <p>
-              <span>Address:</span> {company.address}
+              <span>Address:</span>{" "}
+              {company.address.addressLine2 ? (
+                <>
+                  {company.address.addressLine1}, {company.address.addressLine2}
+                  , {company.address.city}, {company.address.state}{" "}
+                  {company.address.zip}
+                </>
+              ) : (
+                <>
+                  {company.address.addressLine1}, {company.address.city},{" "}
+                  {company.address.state} {company.address.zip}
+                </>
+              )}
             </p>
           </div>
 

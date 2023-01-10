@@ -49,7 +49,23 @@ export default function Dashboard() {
               Company: <span>{user.company?.name}</span>
             </p>
             <p>
-              Address: <span>{user.company?.address}</span>
+              Address:{" "}
+              <span>
+                {user.company?.address.addressLine2 ? (
+                  <>
+                    {user.company?.address.addressLine1},{" "}
+                    {user.company?.address.addressLine2},{" "}
+                    {user.company?.address.city}, {user.company?.address.state}{" "}
+                    {user.company?.address.zip}
+                  </>
+                ) : (
+                  <>
+                    {user.company?.address.addressLine1},{" "}
+                    {user.company?.address.city}, {user.company?.address.state}{" "}
+                    {user.company?.address.zip}
+                  </>
+                )}
+              </span>
             </p>
           </div>
 

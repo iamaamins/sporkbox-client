@@ -9,7 +9,6 @@ import styles from "@styles/generic/Item.module.css";
 import {
   expiresIn,
   convertDateToMS,
-  formatNumberToUS,
   formatCurrencyToUSD,
   convertDateToText,
 } from "@utils/index";
@@ -32,7 +31,7 @@ export default function Item() {
   const router = useRouter();
   const { user } = useUser();
   const [item, setItem] = useState<IItem>();
-  const { cartItems, addItemToCart } = useCart();
+  const { addItemToCart } = useCart();
   const [cartItem, setCarItem] = useState<ICartItem>(initialState);
   const { upcomingWeekRestaurants, nextWeekBudgetAndDates } = useData();
   const [upcomingWeekRestaurant, setUpcomingWeekRestaurant] =
@@ -75,13 +74,10 @@ export default function Item() {
             deliveryDate,
             _id: item._id,
             name: item.name,
+            price: item.price,
             expiresIn: expiresIn,
             restaurantId: upcomingWeekRestaurant._id,
             image: item.image || upcomingWeekRestaurant.logo,
-            price:
-              item.price > user?.company?.dailyBudget!
-                ? user?.company?.dailyBudget!
-                : item.price,
           }));
         }
       }
@@ -103,27 +99,6 @@ export default function Item() {
       quantity: currItem.quantity - 1,
     }));
   }
-
-  // Get total of any cart items but the current one
-  const cartDayTotal = cartItems
-    .filter(
-      (item) =>
-        item.deliveryDate === cartItem.deliveryDate && item._id !== cartItem._id
-    )
-    .reduce(
-      (acc, item) => formatNumberToUS(acc + item.price * item.quantity),
-      0
-    );
-
-  // Find budget on hand
-  const budgetOnHand = nextWeekBudgetAndDates.find(
-    (nextWeekBudgetAndDate) =>
-      nextWeekBudgetAndDate.nextWeekDate === cartItem.deliveryDate
-  )?.budgetOnHand!;
-
-  // Find if daily budget is exceeded
-  const hasExceededDailyBudget =
-    formatNumberToUS(budgetOnHand - cartDayTotal - price * quantity) < 0;
 
   return (
     <section className={styles.item}>
@@ -170,20 +145,13 @@ export default function Item() {
                 <HiMinus />
               </div>
               <p className={styles.item_quantity}>{quantity}</p>
-              <div
-                onClick={increaseQuantity}
-                className={`${styles.icon} ${
-                  hasExceededDailyBudget && styles.disabled
-                }`}
-              >
+              <div onClick={increaseQuantity} className={`${styles.icon} `}>
                 <HiPlus />
               </div>
             </div>
 
             <button
-              className={`${styles.button} ${
-                hasExceededDailyBudget && styles.disabled
-              }`}
+              className={`${styles.button}`}
               onClick={() => addItemToCart(cartItem)}
             >
               Add {quantity} to basket • {formatCurrencyToUSD(quantity * price)}{" "}

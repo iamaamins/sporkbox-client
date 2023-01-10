@@ -38,25 +38,37 @@ export default function EditCompany() {
       // Update company
       setCompany(company);
 
-      // Update form data
-      setFormData((currState) => {
-        if (company) {
-          return {
-            ...currState,
-            name: company.name,
-            code: company.code,
-            city: company.address.split(",")[2].trim(),
-            state: company.address.split(",")[3].trim().split(" ")[0],
-            zip: company.address.split(",")[3].trim().split(" ")[1],
-            website: company.website,
-            dailyBudget: company.dailyBudget,
-            addressLine1: company.address.split(",")[0],
-            addressLine2: company.address.split(",")[1].trim(),
-          };
-        } else {
-          return currState;
-        }
-      });
+      if (company) {
+        // Company details
+        const companyDetails = {
+          name: company.name,
+          code: company.code,
+          city: company.address.city,
+          state: company.address.state,
+          zip: company.address.zip,
+          website: company.website,
+          dailyBudget: company.dailyBudget,
+          addressLine1: company.address.addressLine1,
+        };
+
+        // Update form data
+        setFormData((currState) => {
+          if (company.address.addressLine2) {
+            return {
+              ...currState,
+              ...companyDetails,
+              addressLine2: company.address.addressLine2,
+            };
+          } else if (!company.address.addressLine2) {
+            return {
+              ...currState,
+              ...companyDetails,
+            };
+          } else {
+            return currState;
+          }
+        });
+      }
     }
   }, [companies, router.isReady]);
 

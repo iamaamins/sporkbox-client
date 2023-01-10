@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useUser } from "@context/User";
 import { checkUser } from "@utils/index";
 import Calendar from "@components/generic/Calendar";
+import PageLoader from "@components/layout/PageLoader";
 
 export default function DatePage() {
   const router = useRouter();
@@ -14,7 +15,8 @@ export default function DatePage() {
 
   return (
     <main>
-      <Calendar />
+      {isUserLoading && <PageLoader />}
+      {isCustomer && <Calendar />}
     </main>
   );
 }

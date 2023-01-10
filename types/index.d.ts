@@ -27,7 +27,13 @@ export interface IRestaurant {
   name: string;
   logo: string;
   items: IItem[];
-  address: string;
+  address: {
+    city: string;
+    state: string;
+    zip: string;
+    addressLine1: string;
+    addressLine2?: string;
+  };
   createdAt: string;
   schedules: string[];
 }
@@ -79,7 +85,13 @@ export interface ICompany {
   code: string;
   status: string;
   website: string;
-  address: string;
+  address: {
+    city: string;
+    state: string;
+    zip: string;
+    addressLine1: string;
+    addressLine2?: string;
+  };
   createdAt: string;
   dailyBudget: number;
 }

@@ -135,18 +135,23 @@ export default function CartProvider({ children }: IContextProviderProps) {
           ordersPayload,
         });
 
-        // Update customer's active orders state
-        setCustomerUpcomingOrders((currState) => ({
-          ...currState,
-          data: [...currState.data, ...response.data],
-        }));
-
         // Remove cart items
         setCartItems([]);
         localStorage.removeItem(`cart-${user?._id}`);
 
-        // Push to the dashboard page
-        router.push("/dashboard");
+        if (typeof response.data === "string") {
+          // Push to the dashboard page
+          location.assign(response.data);
+        } else {
+          // Update customer's active orders state
+          setCustomerUpcomingOrders((currState) => ({
+            ...currState,
+            data: [...currState.data, ...response.data],
+          }));
+
+          // Push to the dashboard page
+          router.push("/dashboard");
+        }
       } catch (err) {
         console.log(err);
       } finally {
