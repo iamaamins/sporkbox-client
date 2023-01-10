@@ -3,6 +3,7 @@ import { checkUser } from "@utils/index";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import Item from "@components/generic/Item";
+import PageLoader from "@components/layout/PageLoader";
 
 export default function ItemPage() {
   const router = useRouter();
@@ -14,7 +15,8 @@ export default function ItemPage() {
 
   return (
     <main>
-      <Item />
+      {isUserLoading && <PageLoader />}
+      {isCustomer && <Item />}
     </main>
   );
 }

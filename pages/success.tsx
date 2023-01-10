@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useUser } from "@context/User";
 import { checkUser } from "@utils/index";
-import Calendar from "@components/generic/Calendar";
 import PageLoader from "@components/layout/PageLoader";
+import CheckoutSuccess from "@components/generic/CheckoutSuccess";
 
-export default function DatePage() {
+export default function CheckoutSuccessPage() {
   const router = useRouter();
   const { isUserLoading, isCustomer } = useUser();
 
@@ -16,7 +16,7 @@ export default function DatePage() {
   return (
     <main>
       {isUserLoading && <PageLoader />}
-      {isCustomer && <Calendar />}
+      {isCustomer && <CheckoutSuccess />}
     </main>
   );
 }

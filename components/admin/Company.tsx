@@ -16,7 +16,7 @@ export default function Company() {
   const [action, setAction] = useState("");
   const [company, setCompany] = useState<ICompany>();
   const [showModal, setShowModal] = useState(false);
-  const { companies, setCompanies, customers } = useData();
+  const { companies, customers, setCompanies } = useData();
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
   const [activeCustomers, setActiveCustomers] = useState<IUser[]>([]);
   const [archivedCustomers, setArchivedCustomers] = useState<IUser[]>([]);
