@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import styles from "@styles/generic/CheckoutSuccess.module.css";
 import { axiosInstance, formatCurrencyToUSD } from "@utils/index";
+import { AiFillCheckCircle, AiOutlineCheckCircle } from "react-icons/ai";
 
 export default function CheckoutSuccess() {
   // Hooks
   const router = useRouter();
   const [paidAmount, setPaidAmount] = useState();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (router.isReady) {
@@ -17,9 +19,6 @@ export default function CheckoutSuccess() {
   // Get session data
   async function getCheckoutSessionData() {
     try {
-      // Show loader
-      setIsLoading(true);
-
       // Make request to the backend
       const response = await axiosInstance.get(
         `/stripe/session/${router.query.session}`
@@ -37,16 +36,25 @@ export default function CheckoutSuccess() {
   }
 
   return (
-    <section>
+    <section className={styles.checkout_success}>
       {isLoading && <h2> Loading...</h2>}
 
-      {!isLoading && !paidAmount && <h2>Please provide a valid session id</h2>}
+      {!isLoading && !paidAmount && <h2>Invalid or expired session id</h2>}
 
       {paidAmount && (
-        <h2>
-          Thanks for paying {formatCurrencyToUSD(paidAmount / 100)}. Your orders
-          are being processed.
-        </h2>
+        <>
+          <div className={styles.confirmation}>
+            <h2>
+              Payment confirmed <AiFillCheckCircle />
+            </h2>
+            <p>Your orders are being processed.</p>
+          </div>
+
+          <div className={styles.details}>
+            <p>Total amount paid</p>
+            <p>{formatCurrencyToUSD(paidAmount / 100)}</p>
+          </div>
+        </>
       )}
     </section>
   );
