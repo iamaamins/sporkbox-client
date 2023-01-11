@@ -1,0 +1,49 @@
+.checkout_success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--section_padding);
+}
+
+.confirmation {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.confirmation h2 {
+  display: flex;
+  font-size: 2rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.25rem;
+}
+
+.confirmation p {
+  font-weight: 500;
+  color: var(--gray);
+}
+
+.confirmation svg {
+  margin-left: 0.5rem;
+  color: rgb(0, 210, 0);
+}
+
+.details {
+  text-align: center;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  width: fit-content;
+  background: var(--orange);
+}
+
+.details p:first-child {
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--almost_white);
+}
+
+.details p:last-child {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--almost_white);
+}
