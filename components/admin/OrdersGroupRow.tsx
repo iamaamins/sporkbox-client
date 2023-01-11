@@ -2,7 +2,12 @@ import Link from "next/link";
 import { IOrdersGroupRowProps } from "types";
 import { FiDownload } from "react-icons/fi";
 import { CSVLink } from "react-csv";
-import { convertDateToMS, convertDateToText, createSlug } from "@utils/index";
+import {
+  convertDateToMS,
+  convertDateToText,
+  createSlug,
+  formatCurrencyToUSD,
+} from "@utils/index";
 import styles from "@styles/admin/OrdersGroupRow.module.css";
 
 export default function OrdersGroupRow({
@@ -11,16 +16,16 @@ export default function OrdersGroupRow({
 }: IOrdersGroupRowProps) {
   // CSV data
   const data = ordersGroup.orders.map((order) => ({
-    deliveryDate: order.delivery.date,
+    tags: order.item.tags,
+    itemName: order.item.name,
     companyName: order.company.name,
-    firstName: order.customer.firstName,
     lastName: order.customer.lastName,
     customerEmail: order.customer.email,
-    restaurantName: order.restaurant.name,
-    itemName: order.item.name,
-    price: order.item.total,
-    tags: order.item.tags,
     description: order.item.description,
+    firstName: order.customer.firstName,
+    restaurantName: order.restaurant.name,
+    price: formatCurrencyToUSD(order.item.total),
+    deliveryDate: convertDateToText(order.delivery.date),
   }));
 
   // CSV headers
