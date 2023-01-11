@@ -25,7 +25,8 @@ export default function OrdersGroupDetails({
   // Hooks
   const router = useRouter();
   const [isUpdatingOrdersStatus, setIsUpdatingOrdersStatus] = useState(false);
-  const { setAllUpcomingOrders, setAllDeliveredOrders } = useData();
+  const { allUpcomingOrders, setAllUpcomingOrders, setAllDeliveredOrders } =
+    useData();
   const [ordersByRestaurants, setOrdersByRestaurants] = useState<
     IOrdersByRestaurant[]
   >([]);
@@ -85,10 +86,9 @@ export default function OrdersGroupDetails({
     // Get order ids
     const orderIds = statusUpdatePayload.orders.map((order) => order._id);
 
-    // Update orders status
     try {
-      setIsUpdatingOrdersStatus(true);
       // Show the loader
+      setIsUpdatingOrdersStatus(true);
 
       // Make request to the backend
       await axiosInstance.patch("/orders/change-orders-status", {
@@ -107,17 +107,19 @@ export default function OrdersGroupDetails({
       // Remove the orders from the upcoming orders
       setAllUpcomingOrders((currState) => ({
         ...currState,
-        data: orderIds
-          .map((orderId) =>
-            currState.data.filter((order) => order._id !== orderId)
-          )
-          .flat(2),
+        data: currState.data.filter((order) => !orderIds.includes(order._id)),
       }));
 
       // Add the orders to delivered orders
       setAllDeliveredOrders((currState) => ({
         ...currState,
-        data: [...currState.data, ...statusUpdatePayload.orders],
+        data: [
+          ...currState.data,
+          ...statusUpdatePayload.orders.map((order) => ({
+            ...order,
+            status: "DELIVERED",
+          })),
+        ],
       }));
 
       // Push to the dashboard when there are no restaurant
