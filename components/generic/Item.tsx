@@ -20,6 +20,8 @@ import {
 import {
   ICartItem,
   IItem,
+  IngredientsType,
+  SetIngredientsType,
   IUpcomingWeekRestaurant,
   IAddOrRemovableIngredients,
 } from "types";
@@ -35,11 +37,13 @@ export default function Item() {
     expiresIn: 0,
     restaurantId: "",
     deliveryDate: 0,
+    addableIngredients: [],
+    removableIngredients: [],
   };
 
   // Hooks
   const router = useRouter();
-  const { addItemToCart } = useCart();
+  const { cartItems, addItemToCart } = useCart();
   const [item, setItem] = useState<IItem>();
   const { upcomingWeekRestaurants } = useData();
   const [cartItem, setCarItem] = useState<ICartItem>(initialState);
@@ -73,29 +77,41 @@ export default function Item() {
           (item) => item._id === router.query.item
         );
 
+        // Find if the item exists in the cart
+        const itemInCart = cartItems.find(
+          (cartItem) => cartItem._id === item?._id
+        );
+
         if (item) {
           // Get the date
           const deliveryDate = convertDateToMS(upcomingWeekRestaurant.date);
 
           // Update states
           setItem(item);
-          setCarItem((currItem) => ({
-            ...currItem,
-            quantity: 1,
+          setCarItem({
             deliveryDate,
             _id: item._id,
             name: item.name,
             price: item.price,
             expiresIn: expiresIn,
+            quantity: itemInCart?.quantity || 1,
             restaurantId: upcomingWeekRestaurant._id,
             image: item.image || upcomingWeekRestaurant.logo,
-          }));
+            addableIngredients: itemInCart?.addableIngredients || [],
+            removableIngredients: itemInCart?.removableIngredients || [],
+          });
 
           if (item.addableIngredients) {
             setAddableIngredients(
               item.addableIngredients
                 .split(",")
-                .reduce((acc, curr) => ({ ...acc, [curr.trim()]: false }), {})
+                .reduce(
+                  (acc, curr) =>
+                    itemInCart?.addableIngredients.includes(curr.trim())
+                      ? { ...acc, [curr.trim()]: true }
+                      : { ...acc, [curr.trim()]: false },
+                  {}
+                )
             );
           }
 
@@ -103,7 +119,13 @@ export default function Item() {
             setRemovableIngredients(
               item.removableIngredients
                 .split(",")
-                .reduce((acc, curr) => ({ ...acc, [curr.trim()]: false }), {})
+                .reduce(
+                  (acc, curr) =>
+                    itemInCart?.removableIngredients.includes(curr.trim())
+                      ? { ...acc, [curr.trim()]: true }
+                      : { ...acc, [curr.trim()]: false },
+                  {}
+                )
             );
           }
         }
@@ -121,31 +143,39 @@ export default function Item() {
 
   // Decrease quantity
   function decreaseQuantity() {
-    setCarItem((currItem) => ({
-      ...currItem,
-      quantity: currItem.quantity - 1,
+    setCarItem((currState) => ({
+      ...currState,
+      quantity: currState.quantity - 1,
     }));
   }
 
   // Handle change addable and removable ingredients
   function changeIngredients(
     e: ChangeEvent<HTMLInputElement>,
-    setIngredients: Dispatch<
-      SetStateAction<IAddOrRemovableIngredients | undefined>
-    >
+    setIngredients: SetIngredientsType,
+    ingredientsType: IngredientsType
   ) {
+    // Update states
     setIngredients((currState) => ({
       ...currState,
-      [e.target.id]: e.target.checked,
+      [e.target.name]: e.target.checked,
+    }));
+
+    setCarItem((currState) => ({
+      ...currState,
+      [ingredientsType]: e.target.checked
+        ? [...currState[ingredientsType], e.target.name]
+        : currState[ingredientsType].filter(
+            (ingredient) => ingredient !== e.target.name
+          ),
     }));
   }
 
   // Render ingredients
   const renderIngredients = (
     ingredients: IAddOrRemovableIngredients,
-    setIngredients: Dispatch<
-      SetStateAction<IAddOrRemovableIngredients | undefined>
-    >
+    setIngredients: SetIngredientsType,
+    ingredientsType: IngredientsType
   ) => (
     <div className={styles.add_or_removable_items}>
       {Object.keys(ingredients).map((ingredient, index) => (
@@ -153,9 +183,12 @@ export default function Item() {
           <label htmlFor={ingredient}>{ingredient}</label>
           <input
             type="checkbox"
+            name={ingredient}
             id={ingredient}
             checked={ingredients[ingredient]}
-            onChange={(e) => changeIngredients(e, setIngredients)}
+            onChange={(e) =>
+              changeIngredients(e, setIngredients, ingredientsType)
+            }
           />
         </div>
       ))}
@@ -165,12 +198,20 @@ export default function Item() {
   // Addable ingredients
   const renderAddableIngredients =
     addableIngredients &&
-    renderIngredients(addableIngredients, setAddableIngredients);
+    renderIngredients(
+      addableIngredients,
+      setAddableIngredients,
+      "addableIngredients"
+    );
 
   // Removable ingredients
   const renderRemovableIngredients =
     removableIngredients &&
-    renderIngredients(removableIngredients, setRemovableIngredients);
+    renderIngredients(
+      removableIngredients,
+      setRemovableIngredients,
+      "removableIngredients"
+    );
 
   return (
     <section className={styles.item}>

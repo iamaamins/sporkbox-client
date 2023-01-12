@@ -210,6 +210,8 @@ export interface ICartItem {
   expiresIn: number;
   restaurantId: string;
   deliveryDate: number;
+  addableIngredients: string[];
+  removableIngredients: string[];
 }
 
 export interface IOrder {
@@ -422,3 +424,9 @@ export interface ICustomerWithOrders {
 export interface IAddOrRemovableIngredients {
   [key: string]: boolean;
 }
+
+export type IngredientsType = "addableIngredients" | "removableIngredients";
+
+export type SetIngredientsType = Dispatch<
+  SetStateAction<IAddOrRemovableIngredients | undefined>
+>;

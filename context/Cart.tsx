@@ -78,6 +78,8 @@ export default function CartProvider({ children }: IContextProviderProps) {
           return {
             ...cartItem,
             quantity: item.quantity,
+            addableIngredients: item.addableIngredients,
+            removableIngredients: item.removableIngredients,
           };
         } else {
           // Return other cart items
