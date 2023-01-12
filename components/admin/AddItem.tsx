@@ -13,6 +13,8 @@ export default function AddItem() {
     tags: "",
     price: 0,
     description: "",
+    addableItems: "",
+    removableItems: "",
   };
 
   // Hooks
@@ -23,7 +25,8 @@ export default function AddItem() {
   const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Destructure form data
-  const { name, tags, price, description } = formData;
+  const { name, tags, price, description, addableItems, removableItems } =
+    formData;
 
   // Handle submit
   async function handleSubmit(e: FormEvent) {
@@ -38,6 +41,8 @@ export default function AddItem() {
     data.append("tags", tags as string);
     data.append("price", price as string);
     data.append("description", description as string);
+    data.append("addableItems", addableItems as string);
+    data.append("removableItems", removableItems as string);
 
     // Add a new item
     try {

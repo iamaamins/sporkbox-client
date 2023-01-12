@@ -9,9 +9,9 @@ import { axiosInstance, updateCustomers } from "@utils/index";
 export default function EditCustomer() {
   // Initial state
   const initialState = {
-    firstName: "",
-    lastName: "",
     email: "",
+    lastName: "",
+    firstName: "",
   };
 
   // Hooks

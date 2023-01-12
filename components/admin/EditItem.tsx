@@ -13,6 +13,8 @@ export default function EditItem() {
     tags: "",
     price: 0,
     description: "",
+    addableItems: "",
+    removableItems: "",
   };
 
   // Hooks
@@ -24,7 +26,15 @@ export default function EditItem() {
   const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Destructure form data
-  const { name, tags, price, image, description } = formData;
+  const {
+    name,
+    tags,
+    price,
+    image,
+    description,
+    addableItems,
+    removableItems,
+  } = formData;
 
   // Get the item
   useEffect(() => {
@@ -35,15 +45,37 @@ export default function EditItem() {
         ?.restaurant.items.find((item) => item._id === router.query.item);
 
       if (item) {
-        // Update states
-        setItem(item);
-        setFormData({
+        // Items details
+        const itemDetails = {
           name: item.name,
           tags: item.tags,
           price: item.price,
           image: item.image,
           description: item.description,
-        });
+        };
+
+        // Update states
+        setItem(item);
+        setFormData((currState) =>
+          item.addableItems && item.removableItems
+            ? {
+                ...itemDetails,
+                addableItems: item.addableItems,
+                removableItems: item.removableItems,
+              }
+            : item.addableItems
+            ? {
+                ...currState,
+                ...itemDetails,
+                addableItems: item.addableItems,
+              }
+            : item.removableItems
+            ? {
+                ...itemDetails,
+                removableItems: item.removableItems,
+              }
+            : { ...currState, ...itemDetails }
+        );
       }
     }
   }, [vendors, router.isReady]);
@@ -62,6 +94,8 @@ export default function EditItem() {
     data.append("price", price as string);
     data.append("image", image as string);
     data.append("description", description as string);
+    data.append("addableItems", addableItems as string);
+    data.append("removableItems", removableItems as string);
 
     // Add a new item
     try {
