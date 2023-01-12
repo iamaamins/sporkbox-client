@@ -247,6 +247,8 @@ export interface IOrder {
     description: string;
     quantity: number;
     total: number;
+    addedIngredients?: string;
+    removedIngredients?: string;
   };
 }
 

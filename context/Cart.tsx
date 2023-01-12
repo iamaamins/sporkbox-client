@@ -125,9 +125,10 @@ export default function CartProvider({ children }: IContextProviderProps) {
         quantity: cartItem.quantity,
         restaurantId: cartItem.restaurantId,
         deliveryDate: cartItem.deliveryDate,
+        addedIngredients: cartItem.addableIngredients.join(", "),
+        removedIngredients: cartItem.removableIngredients.join(", "),
       }));
 
-      // Create an order
       try {
         // Show loader
         setIsLoading(true);

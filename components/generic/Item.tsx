@@ -212,8 +212,6 @@ export default function Item() {
     </div>
   );
 
-  console.log(addableIngredients);
-
   // Addable ingredients
   const renderAddableIngredients =
     addableIngredients &&
