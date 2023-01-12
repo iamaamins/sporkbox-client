@@ -13,8 +13,8 @@ export default function EditItem() {
     tags: "",
     price: 0,
     description: "",
-    addableItems: "",
-    removableItems: "",
+    addableIngredients: "",
+    removableIngredients: "",
   };
 
   // Hooks
@@ -32,8 +32,8 @@ export default function EditItem() {
     price,
     image,
     description,
-    addableItems,
-    removableItems,
+    addableIngredients,
+    removableIngredients,
   } = formData;
 
   // Get the item
@@ -57,22 +57,22 @@ export default function EditItem() {
         // Update states
         setItem(item);
         setFormData((currState) =>
-          item.addableItems && item.removableItems
+          item.addableIngredients && item.removableIngredients
             ? {
                 ...itemDetails,
-                addableItems: item.addableItems,
-                removableItems: item.removableItems,
+                addableIngredients: item.addableIngredients,
+                removableIngredients: item.removableIngredients,
               }
-            : item.addableItems
+            : item.addableIngredients
             ? {
                 ...currState,
                 ...itemDetails,
-                addableItems: item.addableItems,
+                addableIngredients: item.addableIngredients,
               }
-            : item.removableItems
+            : item.removableIngredients
             ? {
                 ...itemDetails,
-                removableItems: item.removableItems,
+                removableIngredients: item.removableIngredients,
               }
             : { ...currState, ...itemDetails }
         );
@@ -94,8 +94,8 @@ export default function EditItem() {
     data.append("price", price as string);
     data.append("image", image as string);
     data.append("description", description as string);
-    data.append("addableItems", addableItems as string);
-    data.append("removableItems", removableItems as string);
+    data.append("addableIngredients", addableIngredients as string);
+    data.append("removableIngredients", removableIngredients as string);
 
     // Add a new item
     try {

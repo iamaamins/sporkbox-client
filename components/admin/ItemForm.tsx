@@ -44,8 +44,8 @@ export default function ItemForm({
     price,
     image,
     description,
-    addableItems,
-    removableItems,
+    addableIngredients,
+    removableIngredients,
   } = formData;
 
   // Handle change
@@ -83,23 +83,25 @@ export default function ItemForm({
       </div>
 
       <div className={styles.item}>
-        <label htmlFor="addableItems">Addable items (comma separated)</label>
+        <label htmlFor="addableIngredients">
+          Addable items (comma separated)
+        </label>
         <input
           type="text"
-          id="addableItems"
-          value={addableItems}
+          id="addableIngredients"
+          value={addableIngredients}
           onChange={handleChange}
         />
       </div>
 
       <div className={styles.item}>
-        <label htmlFor="removableItems">
+        <label htmlFor="removableIngredients">
           Removable items (comma separated)
         </label>
         <input
           type="text"
-          id="removableItems"
-          value={removableItems}
+          id="removableIngredients"
+          value={removableIngredients}
           onChange={handleChange}
         />
       </div>

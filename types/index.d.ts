@@ -63,8 +63,8 @@ interface IItem {
   image: string;
   status: string;
   description: string;
-  addableItems?: string;
-  removableItems?: string;
+  addableIngredients?: string;
+  removableIngredients?: string;
 }
 
 export interface ICustomerFavoriteItem {
