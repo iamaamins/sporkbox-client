@@ -34,24 +34,17 @@ export default function EditItem() {
         .find((vendor) => vendor.restaurant._id === router.query.restaurant)
         ?.restaurant.items.find((item) => item._id === router.query.item);
 
-      // Update item
-      setItem(item);
-
-      // Update form data
-      setFormData((currState) => {
-        if (item) {
-          return {
-            ...currState,
-            name: item.name,
-            tags: item.tags,
-            price: item.price,
-            image: item.image,
-            description: item.description,
-          };
-        } else {
-          return currState;
-        }
-      });
+      if (item) {
+        // Update states
+        setItem(item);
+        setFormData({
+          name: item.name,
+          tags: item.tags,
+          price: item.price,
+          image: item.image,
+          description: item.description,
+        });
+      }
     }
   }, [vendors, router.isReady]);
 
