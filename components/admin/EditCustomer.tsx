@@ -32,22 +32,15 @@ export default function EditCustomer() {
         (customer) => customer._id === router.query.customer
       );
 
-      // Update customer
-      setCustomer(customer);
-
-      // Update form data
-      setFormData((currState) => {
-        if (customer) {
-          return {
-            ...currState,
-            firstName: customer.firstName,
-            lastName: customer.lastName,
-            email: customer.email,
-          };
-        } else {
-          return currState;
-        }
-      });
+      if (customer) {
+        // Update states
+        setCustomer(customer);
+        setFormData({
+          firstName: customer.firstName,
+          lastName: customer.lastName,
+          email: customer.email,
+        });
+      }
     }
   }, [customers, router.isReady]);
 

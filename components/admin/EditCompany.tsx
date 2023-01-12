@@ -35,9 +35,6 @@ export default function EditCompany() {
         (company) => company._id === router.query.company
       );
 
-      // Update company
-      setCompany(company);
-
       if (company) {
         // Company details
         const companyDetails = {
@@ -51,23 +48,13 @@ export default function EditCompany() {
           addressLine1: company.address.addressLine1,
         };
 
-        // Update form data
-        setFormData((currState) => {
-          if (company.address.addressLine2) {
-            return {
-              ...currState,
-              ...companyDetails,
-              addressLine2: company.address.addressLine2,
-            };
-          } else if (!company.address.addressLine2) {
-            return {
-              ...currState,
-              ...companyDetails,
-            };
-          } else {
-            return currState;
-          }
-        });
+        // Update states
+        setCompany(company);
+        setFormData((currState) =>
+          company.address.addressLine2
+            ? { ...companyDetails, addressLine2: company.address.addressLine2 }
+            : { ...currState, ...companyDetails }
+        );
       }
     }
   }, [companies, router.isReady]);

@@ -50,9 +50,6 @@ export default function EditRestaurant() {
         (vendor) => vendor.restaurant._id === router.query.restaurant
       );
 
-      // Update vendor
-      setVendor(vendor);
-
       if (vendor) {
         // Vendor details
         const vendorDetails = {
@@ -67,23 +64,16 @@ export default function EditRestaurant() {
           addressLine1: vendor.restaurant.address.addressLine1,
         };
 
-        // Update form data
-        setFormData((currState) => {
-          if (vendor.restaurant.address.addressLine2) {
-            return {
-              ...currState,
-              ...vendorDetails,
-              addressLine2: vendor.restaurant.address.addressLine2,
-            };
-          } else if (!vendor.restaurant.address.addressLine2) {
-            return {
-              ...currState,
-              ...vendorDetails,
-            };
-          } else {
-            return currState;
-          }
-        });
+        // Update states
+        setVendor(vendor);
+        setFormData((currState) =>
+          vendor.restaurant.address.addressLine2
+            ? {
+                ...vendorDetails,
+                addressLine2: vendor.restaurant.address.addressLine2,
+              }
+            : { ...currState, ...vendorDetails }
+        );
       }
     }
   }, [vendors, router.isReady]);
