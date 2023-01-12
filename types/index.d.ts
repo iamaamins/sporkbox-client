@@ -418,3 +418,7 @@ export interface ICustomerWithOrders {
   upcomingOrders: ICustomerOrder[];
   deliveredOrders: ICustomerOrder[];
 }
+
+export interface IAddOrRemovableIngredients {
+  [key: string]: boolean;
+}

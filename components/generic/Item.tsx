@@ -2,8 +2,13 @@ import Image from "next/image";
 import { useData } from "@context/Data";
 import { useCart } from "@context/Cart";
 import { useRouter } from "next/router";
-import { useUser } from "@context/User";
-import { useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { HiMinus, HiPlus } from "react-icons/hi";
 import styles from "@styles/generic/Item.module.css";
 import {
@@ -12,7 +17,12 @@ import {
   formatCurrencyToUSD,
   convertDateToText,
 } from "@utils/index";
-import { ICartItem, IItem, IUpcomingWeekRestaurant } from "types";
+import {
+  ICartItem,
+  IItem,
+  IUpcomingWeekRestaurant,
+  IAddOrRemovableIngredients,
+} from "types";
 
 export default function Item() {
   // Initial state
@@ -29,13 +39,16 @@ export default function Item() {
 
   // Hooks
   const router = useRouter();
-  const { user } = useUser();
-  const [item, setItem] = useState<IItem>();
   const { addItemToCart } = useCart();
+  const [item, setItem] = useState<IItem>();
+  const { upcomingWeekRestaurants } = useData();
   const [cartItem, setCarItem] = useState<ICartItem>(initialState);
-  const { upcomingWeekRestaurants, nextWeekBudgetAndDates } = useData();
   const [upcomingWeekRestaurant, setUpcomingWeekRestaurant] =
     useState<IUpcomingWeekRestaurant>();
+  const [addableIngredients, setAddableIngredients] =
+    useState<IAddOrRemovableIngredients>();
+  const [removableIngredients, setRemovableIngredients] =
+    useState<IAddOrRemovableIngredients>();
 
   // Price and quantity
   const { quantity, price } = cartItem;
@@ -61,13 +74,11 @@ export default function Item() {
         );
 
         if (item) {
-          // Update item
-          setItem(item);
-
           // Get the date
           const deliveryDate = convertDateToMS(upcomingWeekRestaurant.date);
 
-          // Update initial item
+          // Update states
+          setItem(item);
           setCarItem((currItem) => ({
             ...currItem,
             quantity: 1,
@@ -79,6 +90,22 @@ export default function Item() {
             restaurantId: upcomingWeekRestaurant._id,
             image: item.image || upcomingWeekRestaurant.logo,
           }));
+
+          if (item.addableIngredients) {
+            setAddableIngredients(
+              item.addableIngredients
+                .split(",")
+                .reduce((acc, curr) => ({ ...acc, [curr.trim()]: false }), {})
+            );
+          }
+
+          if (item.removableIngredients) {
+            setRemovableIngredients(
+              item.removableIngredients
+                .split(",")
+                .reduce((acc, curr) => ({ ...acc, [curr.trim()]: false }), {})
+            );
+          }
         }
       }
     }
@@ -99,6 +126,51 @@ export default function Item() {
       quantity: currItem.quantity - 1,
     }));
   }
+
+  // Handle change addable and removable ingredients
+  function changeIngredients(
+    e: ChangeEvent<HTMLInputElement>,
+    setIngredients: Dispatch<
+      SetStateAction<IAddOrRemovableIngredients | undefined>
+    >
+  ) {
+    setIngredients((currState) => ({
+      ...currState,
+      [e.target.id]: e.target.checked,
+    }));
+  }
+
+  // Render ingredients
+  const renderIngredients = (
+    ingredients: IAddOrRemovableIngredients,
+    setIngredients: Dispatch<
+      SetStateAction<IAddOrRemovableIngredients | undefined>
+    >
+  ) => (
+    <div className={styles.add_or_removable_items}>
+      {Object.keys(ingredients).map((ingredient, index) => (
+        <div key={index} className={styles.add_or_removable_item}>
+          <label htmlFor={ingredient}>{ingredient}</label>
+          <input
+            type="checkbox"
+            id={ingredient}
+            checked={ingredients[ingredient]}
+            onChange={(e) => changeIngredients(e, setIngredients)}
+          />
+        </div>
+      ))}
+    </div>
+  );
+
+  // Addable ingredients
+  const renderAddableIngredients =
+    addableIngredients &&
+    renderIngredients(addableIngredients, setAddableIngredients);
+
+  // Removable ingredients
+  const renderRemovableIngredients =
+    removableIngredients &&
+    renderIngredients(removableIngredients, setRemovableIngredients);
 
   return (
     <section className={styles.item}>
@@ -133,6 +205,20 @@ export default function Item() {
                 Delivery date -{" "}
                 {convertDateToText(+(router.query.date as string))}
               </p>
+
+              {item.addableIngredients && (
+                <div className={styles.addable}>
+                  <p>Add ingredients</p>
+                  {renderAddableIngredients}
+                </div>
+              )}
+
+              {item.removableIngredients && (
+                <div className={styles.removable}>
+                  <p>Remove ingredients</p>
+                  {renderRemovableIngredients}
+                </div>
+              )}
             </div>
 
             <div className={styles.controller}>

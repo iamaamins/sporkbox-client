@@ -84,7 +84,7 @@ export default function ItemForm({
 
       <div className={styles.item}>
         <label htmlFor="addableIngredients">
-          Addable items (comma separated)
+          Addable ingredients (comma separated)
         </label>
         <input
           type="text"
@@ -96,7 +96,7 @@ export default function ItemForm({
 
       <div className={styles.item}>
         <label htmlFor="removableIngredients">
-          Removable items (comma separated)
+          Removable ingredients (comma separated)
         </label>
         <input
           type="text"
