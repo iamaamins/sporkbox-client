@@ -214,6 +214,8 @@ export interface ICartItem {
   removableIngredients: string[];
 }
 
+export interface IInitialItem extends ICartItem {}
+
 export interface IOrder {
   _id: string;
   customer: {
@@ -427,6 +429,6 @@ export interface IAddOrRemovableIngredients {
 
 export type IngredientsType = "addableIngredients" | "removableIngredients";
 
-export type SetIngredientsType = Dispatch<
+export type SetIngredients = Dispatch<
   SetStateAction<IAddOrRemovableIngredients | undefined>
 >;
