@@ -303,7 +303,7 @@ export const formatImageName = (name: string) =>
 // Create axios instance
 export const axiosInstance = axios.create({
   withCredentials: true,
-  baseURL: "https://api.sporkbox.octib.com",
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
 
 // https://api.sporkbox.app
