@@ -303,5 +303,5 @@ export const formatImageName = (name: string) =>
 // Create axios instance
 export const axiosInstance = axios.create({
   withCredentials: true,
-  baseURL: "http://localhost:5100",
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
