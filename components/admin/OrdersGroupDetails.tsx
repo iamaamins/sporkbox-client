@@ -187,7 +187,7 @@ export default function OrdersGroupDetails({
                 <th className={styles.hide_on_mobile}>Date</th>
                 <th>Company</th>
                 <th>Restaurant</th>
-                <th>Orders</th>
+                <th className={styles.hide_on_mobile}>Orders</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -200,7 +200,9 @@ export default function OrdersGroupDetails({
                   </td>
                   <td>{ordersByRestaurant.companyName}</td>
                   <td>{ordersByRestaurant.restaurantName}</td>
-                  <td>{ordersByRestaurant.orders.length}</td>
+                  <td className={styles.hide_on_mobile}>
+                    {ordersByRestaurant.orders.length}
+                  </td>
                   <td>
                     {ordersByRestaurant.orders.every(
                       (order) => order.status === "PROCESSING"
@@ -278,7 +280,7 @@ export default function OrdersGroupDetails({
                 <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Email</th>
+                    <th className={styles.hide_on_mobile}>Email</th>
                     <th>Dish</th>
                     <th>Action</th>
                   </tr>
@@ -290,7 +292,9 @@ export default function OrdersGroupDetails({
                       <td>
                         {order.customer.firstName} {order.customer.lastName}
                       </td>
-                      <td>{order.customer.email}</td>
+                      <td className={styles.hide_on_mobile}>
+                        {order.customer.email}
+                      </td>
                       <td>{order.item.name}</td>
                       <td>
                         {order.status === "PROCESSING" ? (
