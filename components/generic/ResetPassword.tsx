@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { IFormData } from "types";
+import { AxiosError } from "axios";
 import { useRouter } from "next/router";
-import { axiosInstance } from "@utils/index";
+import { useAlert } from "@context/Alert";
+import { IAxiosError, IFormData } from "types";
 import { ChangeEvent, FormEvent, useState } from "react";
 import SubmitButton from "@components/layout/SubmitButton";
 import styles from "@styles/generic/ResetPassword.module.css";
+import { axiosInstance, showErrorAlert, showSuccessAlert } from "@utils/index";
 
 export default function ResetPassword() {
   // Initial state
@@ -15,6 +17,7 @@ export default function ResetPassword() {
 
   // Hooks
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<IFormData>(initialState);
 
@@ -49,12 +52,14 @@ export default function ResetPassword() {
       // Clear form data
       setFormData(initialState);
 
-      // Show alert and push to login page
-      console.log(response.data);
+      // Show success alert
+      showSuccessAlert(response.data, setAlerts);
+
+      // Push to login page
       router.push("/login");
     } catch (err) {
-      // Log err
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);

@@ -1,10 +1,17 @@
-import { ICompany, IFormData } from "types";
+import { AxiosError } from "axios";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
 import CompanyForm from "./CompanyForm";
-import { axiosInstance, updateCompanies } from "@utils/index";
+import { useAlert } from "@context/Alert";
+import { IAxiosError, ICompany, IFormData } from "types";
 import styles from "@styles/admin/EditCompany.module.css";
 import React, { FormEvent, useEffect, useState } from "react";
+import {
+  axiosInstance,
+  showErrorAlert,
+  showSuccessAlert,
+  updateCompanies,
+} from "@utils/index";
 
 export default function EditCompany() {
   // Initial state
@@ -22,6 +29,7 @@ export default function EditCompany() {
 
   // Hooks
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const { companies, setCompanies } = useData();
   const [company, setCompany] = useState<ICompany>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -76,11 +84,14 @@ export default function EditCompany() {
       // Update companies
       updateCompanies(response.data, setCompanies);
 
+      // Show success alert
+      showSuccessAlert("Company updated", setAlerts);
+
       // Push to dashboard
       router.push(`/admin/companies/${response.data._id}`);
     } catch (err) {
-      // Log error
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);

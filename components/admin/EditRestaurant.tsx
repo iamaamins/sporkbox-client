@@ -1,8 +1,15 @@
+import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
-import { IFormData, IVendor } from "types";
+import { useAlert } from "@context/Alert";
 import RestaurantForm from "./RestaurantForm";
-import { axiosInstance, updateVendors } from "@utils/index";
+import { IAxiosError, IFormData, IVendor } from "types";
+import {
+  axiosInstance,
+  showErrorAlert,
+  showSuccessAlert,
+  updateVendors,
+} from "@utils/index";
 import styles from "@styles/admin/EditRestaurant.module.css";
 import React, { FormEvent, useEffect, useState } from "react";
 
@@ -22,6 +29,7 @@ export default function EditRestaurant() {
 
   // Hooks
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const { vendors, setVendors } = useData();
   const [vendor, setVendor] = useState<IVendor>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -112,11 +120,14 @@ export default function EditRestaurant() {
       // Update vendors
       updateVendors(response.data, setVendors);
 
+      // Show success alert
+      showSuccessAlert("Restaurant updated", setAlerts);
+
       // Push to dashboard
       router.push(`/admin/restaurants/${response.data.restaurant._id}`);
     } catch (err) {
-      // Log error
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);

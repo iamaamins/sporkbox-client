@@ -1,26 +1,30 @@
 import { useUser } from "./User";
+import { AxiosError } from "axios";
+import { useAlert } from "./Alert";
 import {
+  IVendors,
+  ICompanies,
+  ICustomers,
   IDataContext,
   ICustomerOrder,
+  IAllUpcomingOrders,
+  IAllDeliveredOrders,
   IContextProviderProps,
   IScheduledRestaurants,
-  IAllUpcomingOrders,
-  ICompanies,
-  IVendors,
-  ICustomers,
-  IAllDeliveredOrders,
+  ICustomerFavoriteItems,
   ICustomerUpcomingOrders,
   ICustomerDeliveredOrders,
   IUpcomingWeekRestaurants,
-  ICustomerFavoriteItems,
+  IAxiosError,
 } from "types";
-import { useState, createContext, useContext, useEffect } from "react";
 import {
   axiosInstance,
   convertDateToMS,
   formatNumberToUS,
   createOrdersGroups,
+  showErrorAlert,
 } from "@utils/index";
+import { useState, createContext, useContext, useEffect } from "react";
 
 // Create context
 const DataContext = createContext({} as IDataContext);
@@ -30,14 +34,15 @@ export const useData = () => useContext(DataContext);
 
 // Provider function
 export default function DataProvider({ children }: IContextProviderProps) {
-  // Hooks and states
-  const { isAdmin, isCustomer, user } = useUser();
-
   // Initial state
   const initialState = {
     data: [],
     isLoading: true,
   };
+
+  // Hooks
+  const { setAlerts } = useAlert();
+  const { isAdmin, isCustomer, user } = useUser();
 
   const [allUpcomingOrders, setAllUpcomingOrders] =
     useState<IAllUpcomingOrders>(initialState);
@@ -132,12 +137,14 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update state
         setAllUpcomingOrders({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         // Remove loader
         setAllUpcomingOrders((currState) => ({
           ...currState,
           isLoading: false,
         }));
+
+        // Show error alert
+        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
       }
 
       // Get scheduled restaurants
@@ -150,12 +157,14 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update state
         setScheduledRestaurants({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         // Remove loader
         setScheduledRestaurants((currState) => ({
           ...currState,
           isLoading: false,
         }));
+
+        // Show error alert
+        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
       }
 
       // Get all companies
@@ -166,12 +175,14 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update state
         setCompanies({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         // Remove loader
         setCompanies((currState) => ({
           ...currState,
           isLoading: false,
         }));
+
+        // Show error alert
+        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
       }
 
       // Get 25 latest vendors
@@ -182,12 +193,14 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update state
         setVendors({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         // Remove loader
         setVendors((currState) => ({
           ...currState,
           isLoading: false,
         }));
+
+        // Show error alert
+        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
       }
 
       // Get 25 delivered orders
@@ -200,12 +213,14 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update state
         setAllDeliveredOrders({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         // Remove loader
         setAllDeliveredOrders((currState) => ({
           ...currState,
           isLoading: false,
         }));
+
+        // Show error alert
+        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
       }
 
       // Get all customers
@@ -216,13 +231,14 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update state
         setCustomers({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
-
         // Remove loader
         setCustomers((currState) => ({
           ...currState,
           isLoading: false,
         }));
+
+        // Show error alert
+        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
       }
     }
 
@@ -244,13 +260,14 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update state
         setCustomerUpcomingOrders({ isLoading: false, data: response.data });
       } catch (err) {
-        // Log error
-        console.log(err);
         // Remove loader
         setCustomerUpcomingOrders((currState) => ({
           ...currState,
           isLoading: false,
         }));
+
+        // Show error alert
+        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
       }
 
       // Get 10 latest delivered orders
@@ -263,12 +280,14 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update state
         setCustomerDeliveredOrders({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         // Remove loader
         setCustomerDeliveredOrders((currState) => ({
           ...currState,
           isLoading: false,
         }));
+
+        // Show error alert
+        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
       }
 
       // Get upcoming week restaurants
@@ -281,12 +300,14 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update state
         setUpcomingWeekRestaurants({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         // Remove loader
         setUpcomingWeekRestaurants((currState) => ({
           ...currState,
           isLoading: false,
         }));
+
+        // Show error alert
+        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
       }
 
       // Get favorite items
@@ -297,12 +318,14 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update data
         setCustomerFavoriteItems({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         // Remove loader
         setCustomerFavoriteItems((currState) => ({
           ...currState,
           isLoading: false,
         }));
+
+        // Show error alert
+        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
       }
     }
 

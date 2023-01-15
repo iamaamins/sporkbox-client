@@ -1,20 +1,25 @@
 import Link from "next/link";
-import { ICustomersProps } from "types";
+import { AxiosError } from "axios";
 import ActionModal from "./ActionModal";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
+import { useAlert } from "@context/Alert";
 import { FormEvent, useState } from "react";
 import {
   axiosInstance,
   convertDateToText,
+  showErrorAlert,
+  showSuccessAlert,
   updateCustomers,
 } from "@utils/index";
+import { IAxiosError, ICustomersProps } from "types";
 import styles from "@styles/admin/Customers.module.css";
 import ModalContainer from "@components/layout/ModalContainer";
 
 export default function Customers({ status, customers }: ICustomersProps) {
   // Hooks
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const { setCustomers } = useData();
   const [statusUpdatePayload, setStatusUpdatePayload] = useState({
     action: "",
@@ -55,9 +60,12 @@ export default function Customers({ status, customers }: ICustomersProps) {
 
       // Update customers
       updateCustomers(response.data, setCustomers);
+
+      // Show success alert
+      showSuccessAlert("Status updated", setAlerts);
     } catch (err) {
-      // Log error
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader and close modal
       setIsUpdatingCustomerStatus(false);

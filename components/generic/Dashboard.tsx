@@ -1,14 +1,22 @@
 import Orders from "./Orders";
 import { useState } from "react";
+import { AxiosError } from "axios";
+import { IAxiosError } from "types";
 import { useUser } from "@context/User";
 import { useData } from "@context/Data";
+import { useAlert } from "@context/Alert";
 import styles from "@styles/generic/Dashboard.module.css";
 import ActionButton from "@components/layout/ActionButton";
-import { axiosInstance, formatCurrencyToUSD } from "@utils/index";
+import {
+  axiosInstance,
+  formatCurrencyToUSD,
+  showErrorAlert,
+} from "@utils/index";
 
 export default function Dashboard() {
   // Hooks
   const { user } = useUser();
+  const { setAlerts } = useAlert();
   const [isLoading, setIsLoading] = useState(false);
   const {
     customerUpcomingOrders,
@@ -28,7 +36,8 @@ export default function Dashboard() {
       // Update state
       setCustomerDeliveredOrders(response.data);
     } catch (err) {
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);

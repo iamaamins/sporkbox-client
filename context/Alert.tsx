@@ -13,9 +13,6 @@ export default function AlertProvider({ children }: IContextProviderProps) {
   // Hooks
   const [alerts, setAlerts] = useState<IAlert[]>([]);
 
-  //   { message: "hello", type: "success" },
-  //   { message: "test", type: "failed" },
-
   useEffect(() => {
     if (alerts.length > 0) {
       // Remove alert after 3 seconds

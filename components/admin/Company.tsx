@@ -1,18 +1,27 @@
+import { AxiosError } from "axios";
+import Customers from "./Customers";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
-import Customers from "./Customers";
-import { ICompany, IUser } from "types";
 import ActionModal from "./ActionModal";
+import { useAlert } from "@context/Alert";
 import Buttons from "@components/layout/Buttons";
-import { FormEvent, useEffect, useState } from "react";
+import { IAxiosError, ICompany, IUser } from "types";
 import styles from "@styles/admin/Company.module.css";
-import ScheduleRestaurantsModal from "@components/admin/ScheduleRestaurantsModal";
+import { FormEvent, useEffect, useState } from "react";
 import ModalContainer from "@components/layout/ModalContainer";
-import { axiosInstance, sortByLastName, updateCompanies } from "@utils/index";
+import ScheduleRestaurantsModal from "@components/admin/ScheduleRestaurantsModal";
+import {
+  axiosInstance,
+  showErrorAlert,
+  showSuccessAlert,
+  sortByLastName,
+  updateCompanies,
+} from "@utils/index";
 
 export default function Company() {
   // Hooks
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const [action, setAction] = useState("");
   const [company, setCompany] = useState<ICompany>();
   const [showModal, setShowModal] = useState(false);
@@ -81,9 +90,12 @@ export default function Company() {
 
       // Update companies
       updateCompanies(response.data, setCompanies);
+
+      // Show success alert
+      showSuccessAlert("Status updated", setAlerts);
     } catch (err) {
-      // Log error
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader and close the modal
       setIsUpdatingCompanyStatus(false);

@@ -1,14 +1,17 @@
-import { ICustomerWithOrders } from "types";
+import { AxiosError } from "axios";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
+import { useAlert } from "@context/Alert";
 import { useEffect, useState } from "react";
-import { axiosInstance } from "@utils/index";
 import CustomerOrders from "./CustomerOrders";
 import styles from "@styles/admin/Customer.module.css";
+import { IAxiosError, ICustomerWithOrders } from "types";
+import { axiosInstance, showErrorAlert } from "@utils/index";
 
 export default function Customer() {
   // Hooks
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const { customers, allUpcomingOrders } = useData();
   const [customer, setCustomer] = useState<ICustomerWithOrders>({
     data: undefined,
@@ -54,8 +57,8 @@ export default function Customer() {
         deliveredOrders: response.data,
       }));
     } catch (err) {
-      // Log error
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     }
   }
 

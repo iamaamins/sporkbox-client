@@ -1,10 +1,17 @@
 import ItemForm from "./ItemForm";
-import { IFormData } from "types";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
+import { useAlert } from "@context/Alert";
 import { FormEvent, useState } from "react";
+import { IAxiosError, IFormData } from "types";
+import {
+  axiosInstance,
+  showErrorAlert,
+  showSuccessAlert,
+  updateVendors,
+} from "@utils/index";
+import { AxiosError } from "axios";
 import styles from "@styles/admin/AddItem.module.css";
-import { axiosInstance, updateVendors } from "@utils/index";
 
 export default function AddItem() {
   // Initial states
@@ -19,6 +26,7 @@ export default function AddItem() {
 
   // Hooks
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const { setVendors } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [file, setFile] = useState<File | undefined>(undefined);
@@ -68,10 +76,14 @@ export default function AddItem() {
       // Reset form data
       setFormData(initialState);
 
+      // Show success alert
+      showSuccessAlert("Item added", setAlerts);
+
       // Back to the restaurant page
       router.push(`/admin/restaurants/${router.query.restaurant}`);
     } catch (err) {
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);

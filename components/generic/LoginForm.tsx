@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { IFormData } from "types";
+import { AxiosError } from "axios";
 import { useUser } from "@context/User";
-import { axiosInstance } from "@utils/index";
+import { useAlert } from "@context/Alert";
+import { IAxiosError, IFormData } from "types";
 import { ChangeEvent, FormEvent, useState } from "react";
 import styles from "@styles/generic/LoginForm.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
+import { axiosInstance, showErrorAlert } from "@utils/index";
 
 export default function LoginForm() {
   const initialSate = {
@@ -13,6 +15,7 @@ export default function LoginForm() {
   };
   // Hooks
   const { setUser } = useUser();
+  const { setAlerts } = useAlert();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<IFormData>(initialSate);
 
@@ -49,7 +52,8 @@ export default function LoginForm() {
         password: "",
       });
     } catch (err) {
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);

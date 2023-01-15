@@ -1,14 +1,22 @@
 import Link from "next/link";
+import { AxiosError } from "axios";
 import { useData } from "@context/Data";
-import { FormEvent, useState } from "react";
+import { useAlert } from "@context/Alert";
 import ActionModal from "./ActionModal";
-import { IScheduledRestaurant } from "types";
-import { axiosInstance, convertDateToText } from "@utils/index";
-import styles from "@styles/admin/ScheduledRestaurants.module.css";
+import { FormEvent, useState } from "react";
+import { IAxiosError, IScheduledRestaurant } from "types";
+import {
+  axiosInstance,
+  convertDateToText,
+  showErrorAlert,
+  showSuccessAlert,
+} from "@utils/index";
 import ModalContainer from "@components/layout/ModalContainer";
+import styles from "@styles/admin/ScheduledRestaurants.module.css";
 
 export default function ScheduledRestaurants() {
   // Hooks
+  const { setAlerts } = useAlert();
   const {
     scheduledRestaurants,
     setScheduledRestaurants,
@@ -93,9 +101,12 @@ export default function ScheduledRestaurants() {
           }
         }),
       }));
+
+      // Show success alert
+      showSuccessAlert("Status updated", setAlerts);
     } catch (err) {
-      // Log error
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader and close modal
       setIsUpdatingScheduleStatus(false);
@@ -161,9 +172,12 @@ export default function ScheduledRestaurants() {
             )
         ),
       }));
+
+      // Show success alert
+      showSuccessAlert("Schedule removed", setAlerts);
     } catch (err) {
-      // Log error
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Close modal and remove loader
       setIsRemovingSchedule(false);

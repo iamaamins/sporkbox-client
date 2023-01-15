@@ -1,5 +1,4 @@
-import { ICompanies, ICompany } from "./../types/index.d";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Dispatch } from "react";
 import moment from "moment-timezone";
 import { SetStateAction } from "react";
@@ -14,6 +13,10 @@ import {
   IOrdersGroup,
   IUser,
   ICustomers,
+  IAlert,
+  ICompanies,
+  ICompany,
+  IAxiosError,
 } from "types";
 
 // Current year
@@ -129,10 +132,9 @@ export const getDay = (date: number | string) =>
 
 // Handle remove from favorite
 export async function handleRemoveFromFavorite(
+  setAlerts: Dispatch<SetStateAction<IAlert[]>>,
   itemId: string,
-  setCustomerFavoriteItems: React.Dispatch<
-    SetStateAction<ICustomerFavoriteItems>
-  >
+  setCustomerFavoriteItems: Dispatch<SetStateAction<ICustomerFavoriteItems>>
 ) {
   try {
     // Make request to backend
@@ -145,8 +147,12 @@ export async function handleRemoveFromFavorite(
         (customerFavoriteItem) => customerFavoriteItem._id !== itemId
       ),
     }));
+
+    // Show success alert
+    showSuccessAlert("Favorite removed", setAlerts);
   } catch (err) {
-    console.log(err);
+    // Show error alert
+    showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
   }
 }
 
@@ -168,9 +174,7 @@ export function getFutureDate(dayToAdd: number) {
 
 // Get future dates in MS
 const nextSaturdayUTCTimestamp = getFutureDate(6);
-const nextWeekMondayUTCTimestamp = getFutureDate(8);
 const followingWeekSaturdayUTCTimestamp = getFutureDate(12);
-const followingWeekMondayUTCTimestamp = getFutureDate(15);
 
 // Current timestamp
 const now = Date.now();
@@ -296,6 +300,29 @@ export const formatImageName = (name: string) =>
   name.length > 15
     ? `${name.slice(0, 10)}.${name.split(".")[name.split(".").length - 1]}`
     : name;
+
+// Success alert
+export function showSuccessAlert(
+  message: string,
+  setAlerts: Dispatch<SetStateAction<IAlert[]>>
+) {
+  setAlerts((currState) => [...currState, { message, type: "success" }]);
+}
+
+// Error alert
+export function showErrorAlert(
+  err: AxiosError<IAxiosError>,
+  setAlerts: Dispatch<SetStateAction<IAlert[]>>
+) {
+  setAlerts((currState) =>
+    err.response
+      ? [
+          ...currState,
+          { message: err.response?.data.message as string, type: "failed" },
+        ]
+      : [...currState, { message: "Something wen't wrong", type: "failed" }]
+  );
+}
 
 // Create axios instance
 export const axiosInstance = axios.create({

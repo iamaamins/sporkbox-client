@@ -1,9 +1,16 @@
 import ItemForm from "./ItemForm";
-import { IFormData, IItem } from "types";
+import { AxiosError } from "axios";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
+import { useAlert } from "@context/Alert";
+import { IAxiosError, IFormData, IItem } from "types";
 import styles from "@styles/admin/EditItem.module.css";
-import { axiosInstance, updateVendors } from "@utils/index";
+import {
+  axiosInstance,
+  showErrorAlert,
+  showSuccessAlert,
+  updateVendors,
+} from "@utils/index";
 import React, { FormEvent, useEffect, useState } from "react";
 
 export default function EditItem() {
@@ -19,6 +26,7 @@ export default function EditItem() {
 
   // Hooks
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const { vendors, setVendors } = useData();
   const [item, setItem] = useState<IItem>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -112,11 +120,14 @@ export default function EditItem() {
       // Update vendors with updated items
       updateVendors(response.data, setVendors);
 
+      // Show success alert
+      showSuccessAlert("Item updated", setAlerts);
+
       // Back to the restaurant page
       router.push(`/admin/restaurants/${router.query.restaurant}`);
     } catch (err) {
-      // Log error
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import ActionModal from "./ActionModal";
-import { IVendor } from "types";
+import { IAxiosError, IVendor } from "types";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import Buttons from "@components/layout/Buttons";
@@ -10,12 +10,17 @@ import styles from "@styles/admin/Restaurant.module.css";
 import {
   axiosInstance,
   formatCurrencyToUSD,
+  showErrorAlert,
+  showSuccessAlert,
   updateVendors,
 } from "@utils/index";
+import { AxiosError } from "axios";
+import { useAlert } from "@context/Alert";
 import ModalContainer from "@components/layout/ModalContainer";
 
 export default function Restaurant() {
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const [action, setAction] = useState("");
   const { vendors, setVendors } = useData();
   const [vendor, setVendor] = useState<IVendor>();
@@ -56,9 +61,12 @@ export default function Restaurant() {
 
       // Update vendors with updates status
       updateVendors(response.data, setVendors);
+
+      // Show success alert
+      showSuccessAlert("Status updated", setAlerts);
     } catch (err) {
-      // Log error
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader and close the modal
       setIsUpdatingVendorStatus(false);

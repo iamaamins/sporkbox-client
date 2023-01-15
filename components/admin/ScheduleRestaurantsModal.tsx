@@ -1,8 +1,10 @@
-import { axiosInstance } from "@utils/index";
+import { axiosInstance, showErrorAlert, showSuccessAlert } from "@utils/index";
 import { useData } from "@context/Data";
+import { AxiosError } from "axios";
 import { useRouter } from "next/router";
+import { useAlert } from "@context/Alert";
 import SubmitButton from "../layout/SubmitButton";
-import { IFormData, IRestaurant } from "types";
+import { IAxiosError, IFormData, IRestaurant } from "types";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import styles from "@styles/admin/ScheduleRestaurantsModal.module.css";
 
@@ -15,6 +17,7 @@ export default function ScheduleRestaurantsModal() {
 
   // Hooks
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const { vendors, setScheduledRestaurants } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [approvedRestaurants, setApprovedRestaurants] = useState<IRestaurant[]>(
@@ -71,8 +74,12 @@ export default function ScheduleRestaurantsModal() {
 
       // Clear form data
       setFormData(initialState);
+
+      // Show success alert
+      showSuccessAlert("Restaurant scheduled", setAlerts);
     } catch (err) {
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);

@@ -1,7 +1,9 @@
+import { AxiosError } from "axios";
+import { useAlert } from "./Alert";
 import { useRouter } from "next/router";
-import { axiosInstance } from "@utils/index";
-import { IContextProviderProps, IUser, IUserContext } from "types";
+import { axiosInstance, showErrorAlert } from "@utils/index";
 import { createContext, useContext, useEffect, useState } from "react";
+import { IAxiosError, IContextProviderProps, IUser, IUserContext } from "types";
 
 // Create context
 const UserContext = createContext({} as IUserContext);
@@ -12,6 +14,7 @@ export const useUser = () => useContext(UserContext);
 // Provider function
 export default function UserProvider({ children }: IContextProviderProps) {
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const [user, setUser] = useState<IUser | null>(null);
   const [isUserLoading, setIsUserLoading] = useState<boolean>(true);
 
@@ -29,7 +32,8 @@ export default function UserProvider({ children }: IContextProviderProps) {
         // Update state
         setUser(response.data);
       } catch (err) {
-        console.log(err);
+        // Show error alert
+        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
       } finally {
         // Remove loader
         setIsUserLoading(false);

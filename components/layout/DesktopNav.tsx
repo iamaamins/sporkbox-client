@@ -1,16 +1,20 @@
 import Link from "next/link";
 import Image from "next/image";
 import CartIcon from "./CartIcon";
+import { AxiosError } from "axios";
+import { IAxiosError } from "types";
 import { useUser } from "@context/User";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
+import { useAlert } from "@context/Alert";
 import logo from "@public/layout/logo.png";
 import { useEffect, useState } from "react";
-import { axiosInstance } from "@utils/index";
+import { axiosInstance, showErrorAlert } from "@utils/index";
 import styles from "@styles/layout/DesktopNav.module.css";
 
 export default function DesktopNav() {
   // Hooks
+  const { setAlerts } = useAlert();
   const { nextWeekDates } = useData();
   const pathName = useRouter().pathname;
   const [date, setDate] = useState<number>();
@@ -25,7 +29,6 @@ export default function DesktopNav() {
 
   // Handle sign out
   async function handleSignOut() {
-    // Log a user out
     try {
       // Make request to backend
       await axiosInstance.post(`/users/logout`, {});
@@ -33,7 +36,8 @@ export default function DesktopNav() {
       // Update user
       setUser(null);
     } catch (err) {
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     }
   }
 

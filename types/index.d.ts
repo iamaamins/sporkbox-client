@@ -447,3 +447,7 @@ export interface IAlertProps {
 export interface IAlertContext {
   setAlerts: Dispatch<SetStateAction<IAlert[]>>;
 }
+
+export interface IAxiosError {
+  message: string;
+}

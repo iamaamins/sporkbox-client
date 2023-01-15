@@ -1,26 +1,28 @@
 import Link from "next/link";
+import { AxiosError } from "axios";
+import { useAlert } from "@context/Alert";
 import { useEffect, useState } from "react";
 import {
-  MdSpaceDashboard,
   MdGroups,
   MdLogout,
-  MdOutlineSchedule,
-  MdOutlineRestaurantMenu,
+  MdSpaceDashboard,
   MdAdminPanelSettings,
+  MdOutlineRestaurantMenu,
 } from "react-icons/md";
 import { useData } from "@context/Data";
 import { useUser } from "@context/User";
 import { IoLogIn } from "react-icons/io5";
-import { IMobileMenuProps } from "types";
 import { FaUserAlt } from "react-icons/fa";
+import { IAxiosError, IMobileMenuProps } from "types";
 import { BsFillCalendar2DateFill } from "react-icons/bs";
 import styles from "@styles/layout/MobileMenu.module.css";
-import { currentYear, axiosInstance } from "@utils/index";
 import { AiTwotonePhone, AiTwotoneStar } from "react-icons/ai";
 import { TbBuildingStore, TbBuildingSkyscraper } from "react-icons/tb";
+import { currentYear, axiosInstance, showErrorAlert } from "@utils/index";
 
 export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
   // Hooks
+  const { setAlerts } = useAlert();
   const { nextWeekDates } = useData();
   const [date, setDate] = useState<number>();
   const { isAdmin, isVendor, isCustomer, setUser } = useUser();
@@ -54,7 +56,8 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
       // Close the menu
       setIsOpen(false);
     } catch (err) {
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     }
   }
 

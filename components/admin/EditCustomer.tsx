@@ -1,10 +1,17 @@
-import { IFormData, IUser } from "types";
+import { AxiosError } from "axios";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
+import { useAlert } from "@context/Alert";
+import { IAxiosError, IFormData, IUser } from "types";
 import styles from "@styles/admin/EditCustomer.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { axiosInstance, updateCustomers } from "@utils/index";
+import {
+  axiosInstance,
+  showErrorAlert,
+  showSuccessAlert,
+  updateCustomers,
+} from "@utils/index";
 
 export default function EditCustomer() {
   // Initial state
@@ -16,6 +23,7 @@ export default function EditCustomer() {
 
   // Hooks
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const { customers, setCustomers } = useData();
   const [customer, setCustomer] = useState<IUser>();
   const [isLoading, setIsLoading] = useState(false);
@@ -70,11 +78,14 @@ export default function EditCustomer() {
       // Update customers
       updateCustomers(response.data, setCustomers);
 
+      // Show success alert
+      showSuccessAlert("Customer updated", setAlerts);
+
       // Redirect to the company page
       router.push(`/admin/companies/${router.query.company}`);
     } catch (err) {
-      // Log error
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);

@@ -1,17 +1,19 @@
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 import { useData } from "@context/Data";
+import { useAlert } from "@context/Alert";
 import { IoMdRemove } from "react-icons/io";
-import styles from "@styles/generic/Favorite.module.css";
 import {
   getDate,
   getDay,
   convertDateToMS,
   handleRemoveFromFavorite,
 } from "@utils/index";
+import styles from "@styles/generic/Favorite.module.css";
 
 export default function Favorite() {
   // Hooks
+  const { setAlerts } = useAlert();
   const {
     customerFavoriteItems,
     upcomingWeekRestaurants,
@@ -91,6 +93,7 @@ export default function Favorite() {
                     className={styles.remove}
                     onClick={() =>
                       handleRemoveFromFavorite(
+                        setAlerts,
                         customerFavoriteItem._id,
                         setCustomerFavoriteItems
                       )

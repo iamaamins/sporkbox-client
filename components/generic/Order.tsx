@@ -1,22 +1,27 @@
 import Image from "next/image";
+import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
+import { useAlert } from "@context/Alert";
 import { AiFillStar } from "react-icons/ai";
 import { AiOutlineStar } from "react-icons/ai";
 import styles from "@styles/generic/Order.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
-import { ICustomerFavoriteItem, ICustomerOrder } from "types";
+import { IAxiosError, ICustomerFavoriteItem, ICustomerOrder } from "types";
 import {
   axiosInstance,
   convertDateToText,
   formatCurrencyToUSD,
   handleRemoveFromFavorite,
+  showErrorAlert,
+  showSuccessAlert,
 } from "@utils/index";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 export default function Order() {
   // Hooks
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const [comment, setComment] = useState<string>("");
   const [order, setOrder] = useState<ICustomerOrder>();
   const [rating, setRating] = useState<number>(0);
@@ -69,8 +74,11 @@ export default function Order() {
         ...currState,
         data: [...currState.data, response.data],
       }));
+      // Show success alert
+      showSuccessAlert("Added to favorite", setAlerts);
     } catch (err) {
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     }
   }
 
@@ -131,9 +139,12 @@ export default function Order() {
           }
         }),
       }));
+
+      // Show success alert
+      showSuccessAlert("Review added", setAlerts);
     } catch (err) {
-      // Log error
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Update state
       setIsLoading(false);
@@ -153,6 +164,7 @@ export default function Order() {
                 favoriteItem
                   ? () =>
                       handleRemoveFromFavorite(
+                        setAlerts,
                         favoriteItem._id,
                         setCustomerFavoriteItems
                       )

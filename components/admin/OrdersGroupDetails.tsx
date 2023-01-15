@@ -1,12 +1,15 @@
+import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import ActionModal from "./ActionModal";
+import { useAlert } from "@context/Alert";
 import { useEffect, useState } from "react";
 import {
-  IOrdersByRestaurant,
-  IOrdersGroupDetailsProps,
   IOrder,
+  IAxiosError,
+  IOrdersByRestaurant,
   IDeliverOrdersPayload,
+  IOrdersGroupDetailsProps,
 } from "types";
 import {
   axiosInstance,
@@ -14,6 +17,8 @@ import {
   convertDateToText,
   createSlug,
   formatCurrencyToUSD,
+  showErrorAlert,
+  showSuccessAlert,
 } from "@utils/index";
 import styles from "@styles/admin/OrdersGroupDetails.module.css";
 import ModalContainer from "@components/layout/ModalContainer";
@@ -24,9 +29,9 @@ export default function OrdersGroupDetails({
 }: IOrdersGroupDetailsProps) {
   // Hooks
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const [isUpdatingOrdersStatus, setIsUpdatingOrdersStatus] = useState(false);
-  const { allUpcomingOrders, setAllUpcomingOrders, setAllDeliveredOrders } =
-    useData();
+  const { setAllUpcomingOrders, setAllDeliveredOrders } = useData();
   const [ordersByRestaurants, setOrdersByRestaurants] = useState<
     IOrdersByRestaurant[]
   >([]);
@@ -122,11 +127,14 @@ export default function OrdersGroupDetails({
         ],
       }));
 
+      // Show success alert
+      showSuccessAlert("Orders delivered", setAlerts);
+
       // Push to the dashboard when there are no restaurant
       ordersByRestaurants.length === 1 && router.push("/admin");
     } catch (err) {
-      // Log error
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader and close modal
       setIsUpdatingOrdersStatus(false);
@@ -156,13 +164,16 @@ export default function OrdersGroupDetails({
         data: currState.data.filter((order) => order._id !== orderId),
       }));
 
+      // Show success alert
+      showSuccessAlert("Order archived", setAlerts);
+
       // Push to the admin page
       ordersByRestaurants
         .map((ordersByRestaurant) => ordersByRestaurant.orders)
         .flat().length === 1 && router.push("/admin");
     } catch (err) {
-      // Log error
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader and close modal
       setIsUpdatingOrderStatus(false);

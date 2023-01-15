@@ -1,12 +1,14 @@
 import { useState } from "react";
+import { AxiosError } from "axios";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
-import { axiosInstance } from "@utils/index";
+import { useAlert } from "@context/Alert";
 import OrdersGroupRow from "./OrdersGroupRow";
 import SortOrdersGroups from "./SortOrdersGroups";
-import { IOrdersGroupsProps, ISorted } from "types";
 import styles from "@styles/admin/OrdersGroups.module.css";
 import ActionButton from "@components/layout/ActionButton";
+import { axiosInstance, showErrorAlert } from "@utils/index";
+import { IAxiosError, IOrdersGroupsProps, ISorted } from "types";
 
 export default function OrdersGroups({
   slug,
@@ -15,6 +17,7 @@ export default function OrdersGroups({
 }: IOrdersGroupsProps) {
   // Hooks
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const [isLoading, setIsLoading] = useState(false);
   const { allUpcomingOrders, allDeliveredOrders, setAllDeliveredOrders } =
     useData();
@@ -35,7 +38,8 @@ export default function OrdersGroups({
       // Update state
       setAllDeliveredOrders(response.data);
     } catch (err) {
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);

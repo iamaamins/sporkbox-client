@@ -1,8 +1,10 @@
-import { IFormData } from "types";
-import { axiosInstance } from "@utils/index";
+import { AxiosError } from "axios";
+import { useAlert } from "@context/Alert";
+import { IAxiosError, IFormData } from "types";
 import styles from "@styles/admin/AddAdmin.module.css";
 import { ChangeEvent, FormEvent, useState } from "react";
 import SubmitButton from "@components/layout/SubmitButton";
+import { axiosInstance, showErrorAlert, showSuccessAlert } from "@utils/index";
 
 export default function AddAdmin() {
   // Initial state
@@ -15,6 +17,7 @@ export default function AddAdmin() {
   };
 
   // Hooks
+  const { setAlerts } = useAlert();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<IFormData>(initialState);
 
@@ -46,9 +49,12 @@ export default function AddAdmin() {
 
       // Reset the form
       setFormData(initialState);
+
+      // Show success alert
+      showSuccessAlert("Admin added", setAlerts);
     } catch (err) {
-      // Log error
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove the loader
       setIsLoading(false);

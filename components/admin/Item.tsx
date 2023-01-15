@@ -1,11 +1,15 @@
-import { IItem, IVendor } from "types";
 import Image from "next/image";
+import { AxiosError } from "axios";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
+import { useAlert } from "@context/Alert";
+import { IAxiosError, IItem, IVendor } from "types";
 import { FormEvent, useEffect, useState } from "react";
 import {
   axiosInstance,
   formatCurrencyToUSD,
+  showErrorAlert,
+  showSuccessAlert,
   updateVendors,
 } from "@utils/index";
 import ActionModal from "./ActionModal";
@@ -15,6 +19,7 @@ import ModalContainer from "@components/layout/ModalContainer";
 
 export default function Item() {
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const { vendors, setVendors } = useData();
   const [item, setItem] = useState<IItem>();
   const [vendor, setVendor] = useState<IVendor>();
@@ -72,9 +77,12 @@ export default function Item() {
 
       // Updated vendors
       updateVendors(response.data, setVendors);
+
+      // Show success alert
+      showSuccessAlert("Status updated", setAlerts);
     } catch (err) {
-      // Log error
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader and close modal
       setIsUpdatingItemStatus(false);

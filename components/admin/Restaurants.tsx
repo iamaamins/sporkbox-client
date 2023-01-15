@@ -1,15 +1,19 @@
 import Link from "next/link";
 import { useState } from "react";
+import { AxiosError } from "axios";
+import { IAxiosError } from "types";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
-import { axiosInstance, convertDateToText } from "@utils/index";
+import { useAlert } from "@context/Alert";
 import LinkButton from "@components/layout/LinkButton";
 import styles from "@styles/admin/Restaurants.module.css";
 import ActionButton from "@components/layout/ActionButton";
+import { axiosInstance, convertDateToText, showErrorAlert } from "@utils/index";
 
 export default function Restaurants() {
   // Hooks
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const { vendors, setVendors } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -25,7 +29,8 @@ export default function Restaurants() {
       // Update state
       setVendors(response.data);
     } catch (err) {
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);

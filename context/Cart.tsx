@@ -1,9 +1,21 @@
+import { AxiosError } from "axios";
+import { useAlert } from "./Alert";
 import { useData } from "@context/Data";
 import { useUser } from "@context/User";
 import { useRouter } from "next/router";
-import { axiosInstance, formatNumberToUS } from "@utils/index";
-import { ICartContext, ICartItem, IContextProviderProps } from "types";
+import {
+  IAxiosError,
+  ICartContext,
+  ICartItem,
+  IContextProviderProps,
+} from "types";
 import { useState, useEffect, useContext, createContext } from "react";
+import {
+  axiosInstance,
+  formatNumberToUS,
+  showErrorAlert,
+  showSuccessAlert,
+} from "@utils/index";
 
 // Create context
 const CartContext = createContext({} as ICartContext);
@@ -13,7 +25,9 @@ export const useCart = () => useContext(CartContext);
 
 // Provider function
 export default function CartProvider({ children }: IContextProviderProps) {
+  // Hooks
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const { user, isCustomer } = useUser();
   const { setCustomerUpcomingOrders } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -152,11 +166,15 @@ export default function CartProvider({ children }: IContextProviderProps) {
             data: [...currState.data, ...response.data],
           }));
 
+          // Show success alert
+          showSuccessAlert("Orders placed", setAlerts);
+
           // Push to the dashboard page
           router.push("/dashboard");
         }
       } catch (err) {
-        console.log(err);
+        // Show error alert
+        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
       } finally {
         // Remove loader
         setIsLoading(false);

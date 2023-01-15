@@ -1,10 +1,17 @@
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
-import { IFormData } from "types";
+import { useAlert } from "@context/Alert";
+import { AxiosError } from "axios";
 import CompanyForm from "./CompanyForm";
 import { FormEvent, useState } from "react";
+import { IAxiosError, IFormData } from "types";
+import {
+  axiosInstance,
+  showErrorAlert,
+  showSuccessAlert,
+  updateCompanies,
+} from "@utils/index";
 import styles from "@styles/admin/AddCompany.module.css";
-import { axiosInstance, updateCompanies } from "@utils/index";
 
 export default function AddCompany() {
   // Initial state
@@ -22,6 +29,7 @@ export default function AddCompany() {
 
   // Hooks
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const { setCompanies } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<IFormData>(initialState);
@@ -46,10 +54,14 @@ export default function AddCompany() {
       // Clear the form
       setFormData(initialState);
 
+      // Show success alert
+      showSuccessAlert("Company added", setAlerts);
+
       // Push to dashboard
       router.push("/admin/companies");
     } catch (err) {
-      console.log(err);
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);
