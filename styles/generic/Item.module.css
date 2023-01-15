@@ -81,9 +81,35 @@
 }
 
 .delivery_date {
-  margin-top: 1rem;
+  font-weight: 600;
+  margin: 1rem 0rem;
+}
+
+.addable {
+  margin-bottom: 1rem;
+}
+
+.addable p,
+.removable p {
   font-weight: 500;
-  font-size: 16px;
+  margin-bottom: 0.5rem;
+}
+
+.add_or_removable_items {
+  display: flex;
+  align-items: center;
+}
+
+.add_or_removable_item {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.add_or_removable_item label {
+  color: var(--gray);
+  margin-right: 0.5rem;
+  text-transform: capitalize;
 }
 
 @media (min-width: 768px) {

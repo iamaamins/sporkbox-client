@@ -1,7 +1,7 @@
 import Link from "next/link";
+import { CSVLink } from "react-csv";
 import { IOrdersGroupRowProps } from "types";
 import { FiDownload } from "react-icons/fi";
-import { CSVLink } from "react-csv";
 import {
   convertDateToMS,
   convertDateToText,
@@ -25,6 +25,8 @@ export default function OrdersGroupRow({
     firstName: order.customer.firstName,
     restaurantName: order.restaurant.name,
     price: formatCurrencyToUSD(order.item.total),
+    addedIngredients: order.item.addedIngredients,
+    removedIngredients: order.item.removedIngredients,
     deliveryDate: convertDateToText(order.delivery.date),
   }));
 
@@ -61,6 +63,14 @@ export default function OrdersGroupRow({
     {
       label: "Dietary Tags",
       key: "tags",
+    },
+    {
+      label: "Added ingredients",
+      key: "addedIngredients",
+    },
+    {
+      label: "Removed ingredients",
+      key: "removedIngredients",
     },
     {
       label: "Description",

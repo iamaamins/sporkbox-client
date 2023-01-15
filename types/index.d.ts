@@ -63,6 +63,8 @@ interface IItem {
   image: string;
   status: string;
   description: string;
+  addableIngredients?: string;
+  removableIngredients?: string;
 }
 
 export interface ICustomerFavoriteItem {
@@ -208,7 +210,11 @@ export interface ICartItem {
   expiresIn: number;
   restaurantId: string;
   deliveryDate: number;
+  addableIngredients: string[];
+  removableIngredients: string[];
 }
+
+export interface IInitialItem extends ICartItem {}
 
 export interface IOrder {
   _id: string;
@@ -241,6 +247,8 @@ export interface IOrder {
     description: string;
     quantity: number;
     total: number;
+    addedIngredients?: string;
+    removedIngredients?: string;
   };
 }
 
@@ -416,3 +424,13 @@ export interface ICustomerWithOrders {
   upcomingOrders: ICustomerOrder[];
   deliveredOrders: ICustomerOrder[];
 }
+
+export interface IAddOrRemovableIngredients {
+  [key: string]: boolean;
+}
+
+export type IngredientsType = "addableIngredients" | "removableIngredients";
+
+export type SetIngredients = Dispatch<
+  SetStateAction<IAddOrRemovableIngredients | undefined>
+>;

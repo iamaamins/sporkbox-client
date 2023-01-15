@@ -38,7 +38,15 @@ export default function ItemForm({
   }, []);
 
   // Destructure form data and check
-  const { name, description, tags, price, image } = formData;
+  const {
+    name,
+    tags,
+    price,
+    image,
+    description,
+    addableIngredients,
+    removableIngredients,
+  } = formData;
 
   // Handle change
   function handleChange(
@@ -72,6 +80,30 @@ export default function ItemForm({
       <div className={styles.item}>
         <label htmlFor="tags">Dietary tags (comma separated)</label>
         <input type="text" id="tags" value={tags} onChange={handleChange} />
+      </div>
+
+      <div className={styles.item}>
+        <label htmlFor="addableIngredients">
+          Addable ingredients (comma separated)
+        </label>
+        <input
+          type="text"
+          id="addableIngredients"
+          value={addableIngredients}
+          onChange={handleChange}
+        />
+      </div>
+
+      <div className={styles.item}>
+        <label htmlFor="removableIngredients">
+          Removable ingredients (comma separated)
+        </label>
+        <input
+          type="text"
+          id="removableIngredients"
+          value={removableIngredients}
+          onChange={handleChange}
+        />
       </div>
 
       <div className={styles.item}>
