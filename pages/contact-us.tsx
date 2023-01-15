@@ -1,7 +1,9 @@
+import Contact from "@components/admin/Contact";
+
 export default function ContactPage() {
   return (
-    <main style={{ padding: "1.25rem" }}>
-      <h2>This feature is reserved for future phase</h2>
+    <main>
+      <Contact />
     </main>
   );
 }
