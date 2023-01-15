@@ -178,24 +178,21 @@ const now = Date.now();
 // Check if isDST
 const isDST = moment.tz(new Date(), "America/Los_Angeles").isDST();
 
-// Los Angeles time zone offset
-const timeZoneOffsetInMS = isDST ? 420 : 480 * 60000;
+// Difference to make Friday 3pm Los Angeles time
+const MSToMakeFriday3PMLosAngelesTime = isDST ? 120 : 60 * 60000;
 
-// Convert UTC timestamp to Los Angeles timestamp
-const nextSaturdayLosAngelesTimestamp =
-  nextSaturdayUTCTimestamp + timeZoneOffsetInMS;
-const followingWeekSaturdayLosAngelesTimestamp =
-  followingWeekSaturdayUTCTimestamp + timeZoneOffsetInMS;
+// Get Friday 3pm Los Angeles timestamp
+const nextFriday3PMLosAngelesTimestamp =
+  nextSaturdayUTCTimestamp - MSToMakeFriday3PMLosAngelesTime;
 
-// Filters
-export const gte =
-  now < nextSaturdayLosAngelesTimestamp
-    ? nextWeekMondayUTCTimestamp
-    : followingWeekMondayUTCTimestamp;
+const followingWeekFriday3PMLosAngelesTimestamp =
+  followingWeekSaturdayUTCTimestamp - MSToMakeFriday3PMLosAngelesTime;
+
+// Cart item expiry timestamp
 export const expiresIn =
-  now < nextSaturdayLosAngelesTimestamp
-    ? nextSaturdayLosAngelesTimestamp
-    : followingWeekSaturdayLosAngelesTimestamp;
+  now < nextFriday3PMLosAngelesTimestamp
+    ? nextFriday3PMLosAngelesTimestamp
+    : followingWeekFriday3PMLosAngelesTimestamp;
 
 // Create text to slug
 export const createSlug = (text: string) =>
