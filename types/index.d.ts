@@ -434,3 +434,16 @@ export type IngredientsType = "addableIngredients" | "removableIngredients";
 export type SetIngredients = Dispatch<
   SetStateAction<IAddOrRemovableIngredients | undefined>
 >;
+
+export interface IAlert {
+  type: string;
+  message: string;
+}
+
+export interface IAlertProps {
+  alerts: IAlert[];
+}
+
+export interface IAlertContext {
+  setAlerts: Dispatch<SetStateAction<IAlert[]>>;
+}
