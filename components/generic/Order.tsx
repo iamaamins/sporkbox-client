@@ -151,6 +151,8 @@ export default function Order() {
     }
   }
 
+  console.log(order);
+
   return (
     <section className={styles.order}>
       {!order && <h2>No order found</h2>}
@@ -204,6 +206,24 @@ export default function Order() {
                     <span>{convertDateToText(order.delivery.date)}</span>
                   </p>
 
+                  {order.item.addedIngredients && (
+                    <>
+                      <p className={styles.title}>Added ingredients</p>
+                      <p className={styles.ingredients}>
+                        {order.item.addedIngredients}
+                      </p>
+                    </>
+                  )}
+
+                  {order.item.removedIngredients && (
+                    <>
+                      <p className={styles.title}>Removed ingredients</p>
+                      <p className={styles.ingredients}>
+                        {order.item.removedIngredients}
+                      </p>
+                    </>
+                  )}
+
                   <a href="mailto:portland@sporkbytes.com">Contact support</a>
                 </>
               )}
@@ -219,6 +239,24 @@ export default function Order() {
                     <span>{order.status.toLowerCase()}</span> on{" "}
                     <span>{convertDateToText(order.delivery.date)}</span>.
                   </p>
+
+                  {order.item.addedIngredients && (
+                    <>
+                      <p className={styles.title}>Added ingredients</p>
+                      <p className={styles.ingredients}>
+                        {order.item.addedIngredients}
+                      </p>
+                    </>
+                  )}
+
+                  {order.item.removedIngredients && (
+                    <>
+                      <p className={styles.title}>Removed ingredients</p>
+                      <p className={styles.ingredients}>
+                        {order.item.removedIngredients}
+                      </p>
+                    </>
+                  )}
 
                   {!order.hasReviewed && (
                     <>

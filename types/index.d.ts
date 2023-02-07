@@ -260,6 +260,8 @@ export interface ICustomerOrder {
     total: number;
     image: string;
     quantity: number;
+    addedIngredients?: string;
+    removedIngredients?: string;
   };
   delivery: {
     date: string;

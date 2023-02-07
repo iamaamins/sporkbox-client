@@ -36,6 +36,16 @@
   margin-bottom: 1rem;
 }
 
+.details p.title {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.details p.ingredients {
+  color: var(--gray);
+  text-transform: capitalize;
+}
+
 .cover_image img {
   border-radius: 0.25rem;
 }
