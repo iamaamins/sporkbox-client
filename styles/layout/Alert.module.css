@@ -2,6 +2,7 @@
   position: fixed;
   right: 50%;
   top: 4.5rem;
+  z-index: 51;
   transform: translateX(50%);
   transition: ease-in-out 400ms;
 }
