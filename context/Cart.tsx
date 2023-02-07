@@ -39,22 +39,6 @@ export default function CartProvider({ children }: IContextProviderProps) {
     setCartItems(JSON.parse(localStorage.getItem(`cart-${user?._id}`) || "[]"));
   }, [user, router.isReady]);
 
-  // Remove cart item automatically
-  useEffect(() => {
-    if (cartItems.length > 0 && router.isReady) {
-      // Filter the items by item id
-      const updatedItems = cartItems.filter(
-        (cartItem) => cartItem.expiresIn > Date.now()
-      );
-
-      // Set updated items to cart
-      setCartItems(updatedItems);
-
-      // Set updated items to local storage
-      localStorage.setItem(`cart-${user?._id}`, JSON.stringify(updatedItems));
-    }
-  }, [user, router.isReady]);
-
   // Calculate total quantity
   const totalCartQuantity = cartItems.reduce(
     (acc, item) => acc + item.quantity,
