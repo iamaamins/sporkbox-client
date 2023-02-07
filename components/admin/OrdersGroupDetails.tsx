@@ -258,15 +258,11 @@ export default function OrdersGroupDetails({
                   <tr>
                     <th>Dish</th>
                     {hasAddedIngredients(ordersByRestaurant) && (
-                      <th className={styles.hide_on_mobile}>
-                        Added ingredients
-                      </th>
+                      <th className={styles.hide_on_mobile}>Added</th>
                     )}
 
                     {hasRemovedIngredients(ordersByRestaurant) && (
-                      <th className={styles.hide_on_mobile}>
-                        Removed ingredients
-                      </th>
+                      <th className={styles.hide_on_mobile}>Removed</th>
                     )}
 
                     <th>Item price</th>
