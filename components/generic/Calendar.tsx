@@ -94,24 +94,7 @@ export default function Calendar() {
                               <p className={styles.name}>{item.name}</p>
                               <p className={styles.price}>
                                 {formatCurrencyToUSD(item.price)}
-
-                                {item.price > user?.company?.dailyBudget! && (
-                                  <span
-                                    style={{
-                                      marginLeft: ".5rem",
-                                      color: "var(--white)",
-                                      borderRadius: "2rem",
-                                      padding: "4px 10px",
-                                      background: "var(--orange)",
-                                    }}
-                                  >
-                                    {`${formatCurrencyToUSD(
-                                      item.price - user?.company?.dailyBudget!
-                                    )} Off`}
-                                  </span>
-                                )}
                               </p>
-
                               <p className={styles.description}>
                                 {item.description}
                               </p>

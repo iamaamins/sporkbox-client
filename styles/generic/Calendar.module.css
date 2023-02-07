@@ -45,6 +45,7 @@
 .restaurant_name {
   font-size: 18px;
   font-weight: 600;
+  color: var(--global);
   margin-bottom: 1rem;
 }
 
