@@ -43,7 +43,7 @@ export default function Company() {
     }
   }, [companies, router.isReady]);
 
-  // Get customers
+  // Get customers and scheduled restaurants
   useEffect(() => {
     if (customers.data.length > 0 && router.isReady) {
       // Update active customers
@@ -176,6 +176,7 @@ export default function Company() {
             </div>
           </section>
 
+          {/* Scheduled restaurants */}
           {restaurants.length > 0 && (
             <ScheduledRestaurants
               restaurants={restaurants}
@@ -183,7 +184,7 @@ export default function Company() {
             />
           )}
 
-          {/* Customers */}
+          {/* Active customers */}
           {activeCustomers.length > 0 && (
             <section className={styles.section}>
               <h2>Active customers</h2>
@@ -191,6 +192,7 @@ export default function Company() {
             </section>
           )}
 
+          {/* Archived customers */}
           {archivedCustomers.length > 0 && (
             <section className={styles.section}>
               <h2>Archived customers</h2>

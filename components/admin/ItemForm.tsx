@@ -129,7 +129,7 @@ export default function ItemForm({
 
           {file && (
             <span
-              className={styles.remove_image}
+              className={styles.remove_upload}
               onClick={() => setFile(undefined)}
             >
               Remove <RiDeleteBinLine />
@@ -153,6 +153,18 @@ export default function ItemForm({
               objectFit="cover"
               layout="responsive"
             />
+
+            <span
+              className={styles.remove_image}
+              onClick={() =>
+                setFormData((currState) => ({
+                  ...currState,
+                  image: "",
+                }))
+              }
+            >
+              Remove <RiDeleteBinLine />
+            </span>
           </div>
         )}
       </div>

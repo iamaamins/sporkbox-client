@@ -70,30 +70,48 @@
   margin-right: 1rem;
 }
 
+.remove_upload,
 .remove_image {
   display: flex;
   align-items: center;
   font-weight: 400;
+  cursor: pointer;
+  border-radius: 2rem;
+}
+
+.remove_upload {
+  z-index: 1;
   color: var(--gray);
   padding: 4px 12px;
-  border-radius: 2rem;
-  cursor: pointer;
-  z-index: 1;
-  margin-top: 1.25rem;
   font-size: 0.9rem;
+  margin-top: 1.25rem;
   border: 1px solid var(--gray);
 }
 
+.remove_upload svg,
 .remove_image svg {
   margin-left: 0.5rem;
 }
 
 .image {
+  position: relative;
   margin-top: 1.5rem;
 }
 
 .image img {
   border-radius: 0.25rem;
+}
+
+.remove_image {
+  left: 50%;
+  border: none;
+  bottom: 0.75rem;
+  translate: -50% 0%;
+  position: absolute;
+  padding: 5px 14px;
+  color: var(--almost_white);
+  background: var(--orange);
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
 }
 
 @media (min-width: 768px) {
