@@ -324,6 +324,40 @@ export function showErrorAlert(
   );
 }
 
+// Group identical orders
+export const groupIdenticalOrders = (orders: IOrder[]) =>
+  orders.reduce((acc: IOrder[], curr) => {
+    if (
+      !acc.some(
+        (order) =>
+          order.item._id === curr.item._id &&
+          order.item.addedIngredients === curr.item.addedIngredients &&
+          order.item.removedIngredients === curr.item.removedIngredients
+      )
+    ) {
+      return [...acc, curr];
+    } else {
+      return acc.map((order) => {
+        if (
+          order.item._id === curr.item._id &&
+          order.item.addedIngredients === curr.item.addedIngredients &&
+          order.item.removedIngredients === curr.item.removedIngredients
+        ) {
+          return {
+            ...order,
+            item: {
+              ...order.item,
+              quantity: order.item.quantity + curr.item.quantity,
+              total: order.item.total + curr.item.total,
+            },
+          };
+        } else {
+          return order;
+        }
+      });
+    }
+  }, []);
+
 // Create axios instance
 export const axiosInstance = axios.create({
   withCredentials: true,

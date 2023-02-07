@@ -12,13 +12,14 @@ import {
   IOrdersGroupDetailsProps,
 } from "types";
 import {
+  createSlug,
   axiosInstance,
   convertDateToMS,
-  convertDateToText,
-  createSlug,
-  formatCurrencyToUSD,
   showErrorAlert,
   showSuccessAlert,
+  convertDateToText,
+  formatCurrencyToUSD,
+  groupIdenticalOrders,
 } from "@utils/index";
 import styles from "@styles/admin/OrdersGroupDetails.module.css";
 import ModalContainer from "@components/layout/ModalContainer";
@@ -30,8 +31,9 @@ export default function OrdersGroupDetails({
   // Hooks
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const [isUpdatingOrdersStatus, setIsUpdatingOrdersStatus] = useState(false);
+  const [orderId, setOrderId] = useState("");
   const { setAllUpcomingOrders, setAllDeliveredOrders } = useData();
+  const [isUpdatingOrdersStatus, setIsUpdatingOrdersStatus] = useState(false);
   const [ordersByRestaurants, setOrdersByRestaurants] = useState<
     IOrdersByRestaurant[]
   >([]);
@@ -41,7 +43,6 @@ export default function OrdersGroupDetails({
       restaurantName: "",
     });
   const [showDeliveryModal, setShowDeliveryModal] = useState(false);
-  const [orderId, setOrderId] = useState("");
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
   const [isUpdatingOrderStatus, setIsUpdatingOrderStatus] = useState(false);
 
@@ -189,6 +190,43 @@ export default function OrdersGroupDetails({
   const hasRemovedIngredients = (ordersByRestaurant: IOrdersByRestaurant) =>
     ordersByRestaurant.orders.some((order) => order.item.removedIngredients);
 
+  // Group identical orders
+  // function groupIdenticalOrders(orders: IOrder[]) {
+  //   return orders.reduce((acc: IOrder[], curr) => {
+  //     if (
+  //       !acc.some(
+  //         (order) =>
+  //           order.item._id === curr.item._id &&
+  //           order.item.addedIngredients === curr.item.addedIngredients &&
+  //           order.item.removedIngredients === curr.item.removedIngredients
+  //       )
+  //     ) {
+  //       return [...acc, curr];
+  //     } else {
+  //       return acc.map((order) => {
+  //         if (
+  //           order.item._id === curr.item._id &&
+  //           order.item.addedIngredients === curr.item.addedIngredients &&
+  //           order.item.removedIngredients === curr.item.removedIngredients
+  //         ) {
+  //           return {
+  //             ...order,
+  //             item: {
+  //               ...order.item,
+  //               quantity: order.item.quantity + curr.item.quantity,
+  //               total: order.item.total + curr.item.total,
+  //             },
+  //           };
+  //         } else {
+  //           return order;
+  //         }
+  //       });
+  //     }
+  //   }, []);
+  // }
+
+  // No mod - 2, Cheese added - 2, Pickle removed - 1, Cheese added and pickle removed - 1
+
   return (
     <section className={styles.orders_group_details}>
       {isLoading && <h2>Loading...</h2>}
@@ -271,28 +309,30 @@ export default function OrdersGroupDetails({
                 </thead>
 
                 <tbody>
-                  {ordersByRestaurant.orders.map((order, index) => (
-                    <tr key={index}>
-                      <td>{order.item.name}</td>
-                      {hasAddedIngredients(ordersByRestaurant) && (
-                        <td
-                          className={`${styles.hide_on_mobile} ${styles.ingredients}`}
-                        >
-                          {order.item.addedIngredients}
-                        </td>
-                      )}
-                      {hasRemovedIngredients(ordersByRestaurant) && (
-                        <td
-                          className={`${styles.hide_on_mobile} ${styles.ingredients}`}
-                        >
-                          {order.item.removedIngredients}
-                        </td>
-                      )}
-                      <td>{formatCurrencyToUSD(order.item.total)}</td>
+                  {groupIdenticalOrders(ordersByRestaurant.orders).map(
+                    (order, index) => (
+                      <tr key={index}>
+                        <td>{order.item.name}</td>
+                        {hasAddedIngredients(ordersByRestaurant) && (
+                          <td
+                            className={`${styles.hide_on_mobile} ${styles.ingredients}`}
+                          >
+                            {order.item.addedIngredients}
+                          </td>
+                        )}
+                        {hasRemovedIngredients(ordersByRestaurant) && (
+                          <td
+                            className={`${styles.hide_on_mobile} ${styles.ingredients}`}
+                          >
+                            {order.item.removedIngredients}
+                          </td>
+                        )}
+                        <td>{formatCurrencyToUSD(order.item.total)}</td>
 
-                      <td>{order.item.quantity}</td>
-                    </tr>
-                  ))}
+                        <td>{order.item.quantity}</td>
+                      </tr>
+                    )
+                  )}
                   <tr className={styles.total}>
                     <td>Total</td>
                     {hasAddedIngredients(ordersByRestaurant) && (

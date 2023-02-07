@@ -417,14 +417,14 @@ export interface IDeliverOrdersPayload {
 }
 
 export interface ICustomerOrdersProps {
-  orders: ICustomerOrder[];
+  orders: IOrder[];
   orderStatus: string;
 }
 
 export interface ICustomerWithOrders {
   data: IUser | undefined;
-  upcomingOrders: ICustomerOrder[];
-  deliveredOrders: ICustomerOrder[];
+  upcomingOrders: IOrder[];
+  deliveredOrders: IOrder[];
 }
 
 export interface IAddOrRemovableIngredients {

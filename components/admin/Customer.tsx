@@ -6,7 +6,11 @@ import { useEffect, useState } from "react";
 import CustomerOrders from "./CustomerOrders";
 import styles from "@styles/admin/Customer.module.css";
 import { IAxiosError, ICustomerWithOrders } from "types";
-import { axiosInstance, showErrorAlert } from "@utils/index";
+import {
+  axiosInstance,
+  groupIdenticalOrders,
+  showErrorAlert,
+} from "@utils/index";
 
 export default function Customer() {
   // Hooks
@@ -113,7 +117,7 @@ export default function Customer() {
       {customer.upcomingOrders.length > 0 && (
         <CustomerOrders
           orderStatus="Upcoming"
-          orders={customer.upcomingOrders}
+          orders={groupIdenticalOrders(customer.upcomingOrders)}
         />
       )}
 
@@ -121,7 +125,7 @@ export default function Customer() {
       {customer.deliveredOrders.length > 0 && (
         <CustomerOrders
           orderStatus="Delivered"
-          orders={customer.deliveredOrders}
+          orders={groupIdenticalOrders(customer.deliveredOrders)}
         />
       )}
     </section>
