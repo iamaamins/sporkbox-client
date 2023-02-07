@@ -190,43 +190,6 @@ export default function OrdersGroupDetails({
   const hasRemovedIngredients = (ordersByRestaurant: IOrdersByRestaurant) =>
     ordersByRestaurant.orders.some((order) => order.item.removedIngredients);
 
-  // Group identical orders
-  // function groupIdenticalOrders(orders: IOrder[]) {
-  //   return orders.reduce((acc: IOrder[], curr) => {
-  //     if (
-  //       !acc.some(
-  //         (order) =>
-  //           order.item._id === curr.item._id &&
-  //           order.item.addedIngredients === curr.item.addedIngredients &&
-  //           order.item.removedIngredients === curr.item.removedIngredients
-  //       )
-  //     ) {
-  //       return [...acc, curr];
-  //     } else {
-  //       return acc.map((order) => {
-  //         if (
-  //           order.item._id === curr.item._id &&
-  //           order.item.addedIngredients === curr.item.addedIngredients &&
-  //           order.item.removedIngredients === curr.item.removedIngredients
-  //         ) {
-  //           return {
-  //             ...order,
-  //             item: {
-  //               ...order.item,
-  //               quantity: order.item.quantity + curr.item.quantity,
-  //               total: order.item.total + curr.item.total,
-  //             },
-  //           };
-  //         } else {
-  //           return order;
-  //         }
-  //       });
-  //     }
-  //   }, []);
-  // }
-
-  // No mod - 2, Cheese added - 2, Pickle removed - 1, Cheese added and pickle removed - 1
-
   return (
     <section className={styles.orders_group_details}>
       {isLoading && <h2>Loading...</h2>}

@@ -3,7 +3,7 @@ import { useData } from "@context/Data";
 import ScheduledRestaurants from "./ScheduledRestaurants";
 
 export default function Dashboard() {
-  const { upcomingOrdersGroups } = useData();
+  const { upcomingOrdersGroups, scheduledRestaurants } = useData();
 
   return (
     <>
@@ -15,7 +15,10 @@ export default function Dashboard() {
       />
 
       {/* Scheduled restaurants */}
-      <ScheduledRestaurants />
+      <ScheduledRestaurants
+        restaurants={scheduledRestaurants.data}
+        isLoading={scheduledRestaurants.isLoading}
+      />
     </>
   );
 }

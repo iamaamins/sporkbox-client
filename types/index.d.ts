@@ -453,3 +453,8 @@ export interface IAlertContext {
 export interface IAxiosError {
   message: string;
 }
+
+export interface IScheduledRestaurantProps {
+  isLoading: boolean;
+  restaurants: IScheduledRestaurant[];
+}

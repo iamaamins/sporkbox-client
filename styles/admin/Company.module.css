@@ -1,5 +1,13 @@
-.company {
+.section {
   padding: var(--section_padding);
+}
+
+.section h2 {
+  margin-bottom: 1rem;
+}
+
+.section table {
+  margin-bottom: 0rem;
 }
 
 .details {
@@ -20,10 +28,6 @@
   color: var(--black);
 }
 
-.buttons {
-  margin-bottom: 1.5rem;
-}
-
 .schedule_restaurants_button {
   width: 12rem;
   height: 2.75rem;
@@ -37,12 +41,8 @@
   color: var(--almost_white);
 }
 
-.section h2 {
-  margin-bottom: 1rem;
-}
-
 @media (min-width: 768px) {
-  .company {
+  .section {
     max-width: 85%;
     margin: 0 auto;
   }
@@ -59,7 +59,7 @@
 }
 
 @media (min-width: 1024px) {
-  .company {
+  .section {
     max-width: 80%;
     margin: 0 auto;
   }

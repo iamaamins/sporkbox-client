@@ -4,7 +4,11 @@ import { useData } from "@context/Data";
 import { useAlert } from "@context/Alert";
 import ActionModal from "./ActionModal";
 import { FormEvent, useState } from "react";
-import { IAxiosError, IScheduledRestaurant } from "types";
+import {
+  IAxiosError,
+  IScheduledRestaurant,
+  IScheduledRestaurantProps,
+} from "types";
 import {
   axiosInstance,
   convertDateToText,
@@ -14,14 +18,13 @@ import {
 import ModalContainer from "@components/layout/ModalContainer";
 import styles from "@styles/admin/ScheduledRestaurants.module.css";
 
-export default function ScheduledRestaurants() {
+export default function ScheduledRestaurants({
+  isLoading,
+  restaurants,
+}: IScheduledRestaurantProps) {
   // Hooks
   const { setAlerts } = useAlert();
-  const {
-    scheduledRestaurants,
-    setScheduledRestaurants,
-    setAllUpcomingOrders,
-  } = useData();
+  const { setAllUpcomingOrders, setScheduledRestaurants } = useData();
   const [isUpdatingScheduleStatus, setIsUpdatingScheduleStatus] =
     useState(false);
   const [statusUpdatePayload, setStatusUpdatePayload] = useState({
@@ -187,78 +190,73 @@ export default function ScheduledRestaurants() {
 
   return (
     <section className={styles.scheduled_restaurants}>
-      {scheduledRestaurants.isLoading && <h2>Loading...</h2>}
+      {isLoading && <h2>Loading...</h2>}
 
-      {!scheduledRestaurants.isLoading &&
-        scheduledRestaurants.data.length === 0 && (
-          <h2>No scheduled restaurants</h2>
-        )}
+      {!isLoading && restaurants.length === 0 && (
+        <h2>No scheduled restaurants</h2>
+      )}
 
-      {scheduledRestaurants.data.length > 0 && (
+      {restaurants.length > 0 && (
         <>
           <h2>Scheduled restaurants</h2>
 
-          <div className={styles.restaurants}>
-            <table>
-              <thead>
-                <tr>
-                  <th>Scheduled on</th>
-                  <th>Restaurant</th>
-                  <th>Company</th>
-                  <th className={styles.hide_on_mobile}>Actions</th>
-                </tr>
-              </thead>
+          <table>
+            <thead>
+              <tr>
+                <th>Scheduled on</th>
+                <th>Restaurant</th>
+                <th>Company</th>
+                <th className={styles.hide_on_mobile}>Actions</th>
+              </tr>
+            </thead>
 
-              <tbody>
-                {scheduledRestaurants.data.map((scheduledRestaurant, index) => (
-                  <tr key={index}>
-                    <td className={styles.important}>
-                      <Link
-                        href={`/admin/restaurants/${scheduledRestaurant._id}`}
-                      >
-                        <a>{convertDateToText(scheduledRestaurant.date)}</a>
-                      </Link>
-                    </td>
-                    <td>{scheduledRestaurant.name}</td>
-                    <td>{scheduledRestaurant.company.name}</td>
-                    <td
-                      className={`${styles.actions} ${styles.hide_on_mobile}`}
+            <tbody>
+              {restaurants.map((scheduledRestaurant, index) => (
+                <tr key={index}>
+                  <td className={styles.important}>
+                    <Link
+                      href={`/admin/restaurants/${scheduledRestaurant._id}`}
                     >
-                      <span
-                        className={styles.deactivate}
-                        onClick={(e) =>
-                          initiateScheduleUpdate(
-                            e,
-                            scheduledRestaurant._id,
-                            scheduledRestaurant.name,
-                            scheduledRestaurant.scheduleId
-                          )
-                        }
-                      >
-                        {scheduledRestaurant.status === "ACTIVE"
-                          ? "Deactivate"
-                          : "Activate"}
-                      </span>
-                      <span
-                        className={styles.remove}
-                        onClick={() =>
-                          initiateScheduleRemoval(
-                            scheduledRestaurant._id,
-                            scheduledRestaurant.name,
-                            scheduledRestaurant.date,
-                            scheduledRestaurant.scheduleId,
-                            scheduledRestaurant.company._id
-                          )
-                        }
-                      >
-                        Remove
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                      <a>{convertDateToText(scheduledRestaurant.date)}</a>
+                    </Link>
+                  </td>
+                  <td>{scheduledRestaurant.name}</td>
+                  <td>{scheduledRestaurant.company.name}</td>
+                  <td className={`${styles.actions} ${styles.hide_on_mobile}`}>
+                    <span
+                      className={styles.deactivate}
+                      onClick={(e) =>
+                        initiateScheduleUpdate(
+                          e,
+                          scheduledRestaurant._id,
+                          scheduledRestaurant.name,
+                          scheduledRestaurant.scheduleId
+                        )
+                      }
+                    >
+                      {scheduledRestaurant.status === "ACTIVE"
+                        ? "Deactivate"
+                        : "Activate"}
+                    </span>
+                    <span
+                      className={styles.remove}
+                      onClick={() =>
+                        initiateScheduleRemoval(
+                          scheduledRestaurant._id,
+                          scheduledRestaurant.name,
+                          scheduledRestaurant.date,
+                          scheduledRestaurant.scheduleId,
+                          scheduledRestaurant.company._id
+                        )
+                      }
+                    >
+                      Remove
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </>
       )}
 
