@@ -118,6 +118,22 @@ export default function Item() {
               ))}
             </p>
 
+            {item.addableIngredients && (
+              <>
+                <p className={styles.title}>Addable ingredients</p>
+                <p className={styles.ingredients}>{item.addableIngredients}</p>
+              </>
+            )}
+
+            {item.removableIngredients && (
+              <div>
+                <p className={styles.title}>Removable ingredients</p>
+                <p className={styles.ingredients}>
+                  {item.removableIngredients}
+                </p>
+              </div>
+            )}
+
             {/* Buttons */}
             <Buttons
               initiateStatusUpdate={(e) => initiateStatusUpdate(e, item.name)}
