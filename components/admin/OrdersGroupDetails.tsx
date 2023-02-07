@@ -181,6 +181,14 @@ export default function OrdersGroupDetails({
     }
   }
 
+  // Check added ingredients
+  const hasAddedIngredients = (ordersByRestaurant: IOrdersByRestaurant) =>
+    ordersByRestaurant.orders.some((order) => order.item.addedIngredients);
+
+  // Check removed ingredients
+  const hasRemovedIngredients = (ordersByRestaurant: IOrdersByRestaurant) =>
+    ordersByRestaurant.orders.some((order) => order.item.removedIngredients);
+
   return (
     <section className={styles.orders_group_details}>
       {isLoading && <h2>Loading...</h2>}
@@ -249,6 +257,18 @@ export default function OrdersGroupDetails({
                 <thead>
                   <tr>
                     <th>Dish</th>
+                    {hasAddedIngredients(ordersByRestaurant) && (
+                      <th className={styles.hide_on_mobile}>
+                        Added ingredients
+                      </th>
+                    )}
+
+                    {hasRemovedIngredients(ordersByRestaurant) && (
+                      <th className={styles.hide_on_mobile}>
+                        Removed ingredients
+                      </th>
+                    )}
+
                     <th>Item price</th>
                     <th>Quantity</th>
                   </tr>
@@ -258,12 +278,33 @@ export default function OrdersGroupDetails({
                   {ordersByRestaurant.orders.map((order, index) => (
                     <tr key={index}>
                       <td>{order.item.name}</td>
+                      {hasAddedIngredients(ordersByRestaurant) && (
+                        <td
+                          className={`${styles.hide_on_mobile} ${styles.ingredients}`}
+                        >
+                          {order.item.addedIngredients}
+                        </td>
+                      )}
+                      {hasRemovedIngredients(ordersByRestaurant) && (
+                        <td
+                          className={`${styles.hide_on_mobile} ${styles.ingredients}`}
+                        >
+                          {order.item.removedIngredients}
+                        </td>
+                      )}
                       <td>{formatCurrencyToUSD(order.item.total)}</td>
+
                       <td>{order.item.quantity}</td>
                     </tr>
                   ))}
                   <tr className={styles.total}>
                     <td>Total</td>
+                    {hasAddedIngredients(ordersByRestaurant) && (
+                      <td className={styles.hide_on_mobile}></td>
+                    )}
+                    {hasRemovedIngredients(ordersByRestaurant) && (
+                      <td className={styles.hide_on_mobile}></td>
+                    )}
                     <td>
                       {formatCurrencyToUSD(
                         ordersByRestaurant.orders.reduce(

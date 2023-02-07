@@ -26,14 +26,15 @@
 }
 
 .orders_group_details td {
-  border-bottom: 1px solid var(--border_color);
-}
-
-.orders_group_details td {
   padding: 1rem;
   font-weight: 500;
   color: var(--gray);
   font-size: 0.9rem;
+  border-bottom: 1px solid var(--border_color);
+}
+
+.ingredients {
+  text-transform: capitalize;
 }
 
 .total td {
