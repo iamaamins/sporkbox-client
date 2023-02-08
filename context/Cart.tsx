@@ -48,7 +48,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
   // Calculate total price
   const totalCartPrice = cartItems.reduce(
     (acc, item) =>
-      formatNumberToUS(acc + item.addOnPrice + item.price * item.quantity),
+      formatNumberToUS(acc + item.addonPrice + item.price * item.quantity),
     0
   );
 
@@ -77,7 +77,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
           return {
             ...cartItem,
             quantity: item.quantity,
-            addOnPrice: item.addOnPrice,
+            addonPrice: item.addonPrice,
             addableIngredients: item.addableIngredients,
             removableIngredients: item.removableIngredients,
           };

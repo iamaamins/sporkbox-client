@@ -358,6 +358,20 @@ export const groupIdenticalOrders = (orders: IOrder[]) =>
     }
   }, []);
 
+// Format addable ingredients
+export const formatAddableIngredients = (ingredients: string) =>
+  ingredients
+    .split(",")
+    .map((ingredient) => ingredient.trim())
+    .map((ingredient) =>
+      ingredient.split("-").map((ingredient) => ingredient.trim())
+    )
+    .map((ingredient) =>
+      +ingredient[1] > 0
+        ? `${ingredient[0]} - $${ingredient[1]}`
+        : ingredient[0]
+    );
+
 // Create axios instance
 export const axiosInstance = axios.create({
   withCredentials: true,

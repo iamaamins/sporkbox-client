@@ -207,7 +207,7 @@ export interface ICartItem {
   price: number;
   image: string;
   quantity: number;
-  addOnPrice: number;
+  addonPrice: number;
   restaurantId: string;
   deliveryDate: number;
   addableIngredients: string[];

@@ -9,6 +9,7 @@ import {
   convertDateToMS,
   formatCurrencyToUSD,
   convertDateToText,
+  formatAddableIngredients,
 } from "@utils/index";
 import {
   IItem,
@@ -27,7 +28,7 @@ export default function Item() {
     price: 0,
     image: "",
     quantity: 1,
-    addOnPrice: 0,
+    addonPrice: 0,
     restaurantId: "",
     deliveryDate: 0,
     addableIngredients: [],
@@ -48,7 +49,7 @@ export default function Item() {
   const [initialItem, setInitialItem] = useState<IInitialItem>(initialState);
 
   // Price and quantity
-  const { price, quantity, addOnPrice } = initialItem;
+  const { price, quantity, addonPrice } = initialItem;
 
   // Get item and date from schedules restaurants
   useEffect(() => {
@@ -79,7 +80,7 @@ export default function Item() {
 
           // Create generic item details
           const itemDetails = {
-            addOnPrice,
+            addonPrice,
             quantity: 1,
             deliveryDate,
             _id: item._id,
@@ -102,7 +103,7 @@ export default function Item() {
             setInitialItem({
               ...itemDetails,
               quantity: itemInCart.quantity,
-              addOnPrice: itemInCart.addOnPrice,
+              addonPrice: itemInCart.addonPrice,
               addableIngredients: itemInCart.addableIngredients,
               removableIngredients: itemInCart.removableIngredients,
             });
@@ -150,18 +151,6 @@ export default function Item() {
     }
   }, [upcomingRestaurants, router.isReady]);
 
-  // Format addable ingredients
-  const formatAddableIngredients = (ingredients: string) =>
-    ingredients
-      .split(",")
-      .map((ingredient) => ingredient.trim())
-      .map((ingredient) => ingredient.split("-").map((el) => el.trim()))
-      .map((ingredient) =>
-        +ingredient[1] > 0
-          ? `${ingredient[0]} - $${ingredient[1]}`
-          : ingredient[0]
-      );
-
   // Increase quantity
   function increaseQuantity() {
     setInitialItem((currItem) => ({
@@ -191,7 +180,7 @@ export default function Item() {
     }));
 
     // Add on price
-    const getAddOnPrice = (name: string) =>
+    const getAddonPrice = (name: string) =>
       +name
         .split("-")
         .map((el) => el.trim())[1]
@@ -200,13 +189,13 @@ export default function Item() {
     // Update initial item state
     setInitialItem((currState) => ({
       ...currState,
-      addOnPrice:
+      addonPrice:
         ingredientsType === "addableIngredients" &&
         e.target.name.split("-").length > 1
           ? e.target.checked
-            ? currState.addOnPrice + getAddOnPrice(e.target.name)
-            : currState.addOnPrice - getAddOnPrice(e.target.name)
-          : currState.addOnPrice,
+            ? currState.addonPrice + getAddonPrice(e.target.name)
+            : currState.addonPrice - getAddonPrice(e.target.name)
+          : currState.addonPrice,
       [ingredientsType]: e.target.checked
         ? [...currState[ingredientsType], e.target.name]
         : currState[ingredientsType].filter(
@@ -326,7 +315,7 @@ export default function Item() {
               onClick={() => addItemToCart(initialItem)}
             >
               Add {quantity} to basket •{" "}
-              {formatCurrencyToUSD(quantity * price + addOnPrice)} USD
+              {formatCurrencyToUSD(quantity * price + addonPrice)} USD
             </button>
           </div>
         </>
