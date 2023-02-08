@@ -8,8 +8,6 @@ import styles from "@styles/admin/RestaurantForm.module.css";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 export default function RestaurantForm({
-  // file,
-  // setFile,
   isLoading,
   formData,
   setFormData,

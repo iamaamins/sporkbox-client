@@ -60,14 +60,14 @@ export default function EditRestaurant() {
       if (vendor) {
         // Vendor details
         const vendorDetails = {
-          firstName: vendor.firstName,
-          lastName: vendor.lastName,
           email: vendor.email,
+          lastName: vendor.lastName,
+          firstName: vendor.firstName,
           logo: vendor.restaurant.logo,
-          restaurantName: vendor.restaurant.name,
-          city: vendor.restaurant.address.city,
-          state: vendor.restaurant.address.state,
           zip: vendor.restaurant.address.zip,
+          city: vendor.restaurant.address.city,
+          restaurantName: vendor.restaurant.name,
+          state: vendor.restaurant.address.state,
           addressLine1: vendor.restaurant.address.addressLine1,
         };
 
@@ -94,16 +94,16 @@ export default function EditRestaurant() {
 
     // Append the data
     data.append("file", file as File);
-    data.append("firstName", firstName as string);
-    data.append("lastName", lastName as string);
-    data.append("email", email as string);
-    data.append("city", city as string);
-    data.append("state", state as string);
     data.append("zip", zip as string);
+    data.append("city", city as string);
     data.append("logo", logo as string);
-    data.append("restaurantName", restaurantName as string);
+    data.append("email", email as string);
+    data.append("state", state as string);
+    data.append("lastName", lastName as string);
+    data.append("firstName", firstName as string);
     data.append("addressLine1", addressLine1 as string);
     data.append("addressLine2", addressLine2 as string);
+    data.append("restaurantName", restaurantName as string);
 
     try {
       // Show loader
@@ -142,6 +142,7 @@ export default function EditRestaurant() {
       {vendor && (
         <>
           <h2>Edit the details</h2>
+
           <RestaurantForm
             buttonText="Save"
             isLoading={isLoading}

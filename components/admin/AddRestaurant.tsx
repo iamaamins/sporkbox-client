@@ -29,7 +29,6 @@ export default function AddRestaurant() {
   const { setAlerts } = useAlert();
   const { setVendors } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  // const [file, setFile] = useState<File | undefined>(undefined);
   const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Destructure form data
@@ -55,16 +54,16 @@ export default function AddRestaurant() {
 
     // Append the data
     data.append("file", file as File);
-    data.append("firstName", firstName as string);
-    data.append("lastName", lastName as string);
-    data.append("email", email as string);
-    data.append("city", city as string);
-    data.append("state", state as string);
     data.append("zip", zip as string);
+    data.append("city", city as string);
+    data.append("email", email as string);
+    data.append("state", state as string);
+    data.append("lastName", lastName as string);
     data.append("password", password as string);
-    data.append("restaurantName", restaurantName as string);
+    data.append("firstName", firstName as string);
     data.append("addressLine1", addressLine1 as string);
     data.append("addressLine2", addressLine2 as string);
+    data.append("restaurantName", restaurantName as string);
 
     try {
       // Show loader

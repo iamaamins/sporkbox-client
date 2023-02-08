@@ -107,6 +107,7 @@ export default function EditCompany() {
       {company && (
         <>
           <h2>Edit the details</h2>
+
           <CompanyForm
             isLoading={isLoading}
             formData={formData}
