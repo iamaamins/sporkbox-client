@@ -378,5 +378,8 @@ export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
 
+// Dietary tags
+export const staticTags = ["pizza", "gluten free", "allergy free"];
+
 // https://api.sporkbox.app
 // https://api.sporkbox.octib.com

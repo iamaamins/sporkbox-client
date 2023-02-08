@@ -1,24 +1,36 @@
 import Image from "next/image";
 import { IEditItemProps } from "types";
 import { FiUpload } from "react-icons/fi";
-import { formatImageName } from "@utils/index";
+import { formatImageName, staticTags } from "@utils/index";
 import { RiDeleteBinLine } from "react-icons/ri";
 import styles from "@styles/admin/ItemForm.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 
 export default function ItemForm({
-  handleSubmit,
-  buttonText,
-  isLoading,
-  formData,
   file,
   setFile,
+  formData,
+  isLoading,
+  buttonText,
   setFormData,
+  dietaryTags,
+  handleSubmit,
+  setDietaryTags,
 }: IEditItemProps) {
   // Hooks
   const imageRef = useRef<HTMLDivElement>(null);
   const [imageHeight, setImageHeight] = useState(0);
+
+  // Destructure form data and check
+  const {
+    name,
+    price,
+    image,
+    description,
+    addableIngredients,
+    removableIngredients,
+  } = formData;
 
   // Get image height
   useEffect(() => {
@@ -37,17 +49,6 @@ export default function ItemForm({
     };
   }, []);
 
-  // Destructure form data and check
-  const {
-    name,
-    tags,
-    price,
-    image,
-    description,
-    addableIngredients,
-    removableIngredients,
-  } = formData;
-
   // Handle change
   function handleChange(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -63,6 +64,15 @@ export default function ItemForm({
     }));
   }
 
+  // Handle change tags
+  function handleChangeTags(e: ChangeEvent<HTMLInputElement>) {
+    // Update state
+    setDietaryTags((currState) => ({
+      ...currState,
+      [e.target.name]: e.target.checked,
+    }));
+  }
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -75,11 +85,6 @@ export default function ItemForm({
       <div className={styles.item}>
         <label htmlFor="name">Item name</label>
         <input type="text" id="name" value={name} onChange={handleChange} />
-      </div>
-
-      <div className={styles.item}>
-        <label htmlFor="tags">Dietary tags</label>
-        <input type="text" id="tags" value={tags} onChange={handleChange} />
       </div>
 
       <div className={styles.item}>
@@ -107,6 +112,25 @@ export default function ItemForm({
       <div className={styles.item}>
         <label htmlFor="price">Item price</label>
         <input type="number" id="price" value={price} onChange={handleChange} />
+      </div>
+
+      <div className={styles.dietary_tags}>
+        <p>Dietary tags</p>
+
+        <div className={styles.tags}>
+          {Object.keys(dietaryTags).map((dietaryTag, index) => (
+            <div className={styles.tag} key={index}>
+              <input
+                type="checkbox"
+                id={dietaryTag}
+                name={dietaryTag}
+                checked={dietaryTags[dietaryTag]}
+                onChange={handleChangeTags}
+              />
+              <label htmlFor={dietaryTag}>{dietaryTag}</label>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className={styles.item}>

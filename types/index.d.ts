@@ -375,12 +375,18 @@ export interface IModalProps {
   setShowModal: Dispatch<SetStateAction<boolean>>;
 }
 
+export interface IDietaryTags {
+  [key: string]: boolean;
+}
+
 export interface IEditFormProps {
   isLoading: boolean;
   formData: IFormData;
   buttonText: string;
+  dietaryTags: IDietaryTags;
   handleSubmit: (e: FormEvent) => Promise<void>;
   setFormData: Dispatch<SetStateAction<IFormData>>;
+  setDietaryTags: Dispatch<SetStateAction<IDietaryTags>>;
 }
 
 export interface IEditItemProps extends IEditFormProps {
@@ -458,3 +464,13 @@ export interface IScheduledRestaurantProps {
   isLoading: boolean;
   restaurants: IScheduledRestaurant[];
 }
+
+// export interface IItemFormData {
+//   name: string;
+//   tags: string[];
+//   price: number;
+//   image: string;
+//   description: string;
+//   addableIngredients?: string;
+//   removableIngredients?: string;
+// }

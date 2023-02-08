@@ -1,10 +1,16 @@
-.item {
+.item,
+.dietary_tags {
   display: flex;
   flex-direction: column;
   margin-bottom: 1.5rem;
 }
 
-.item label {
+.dietary_tags {
+  margin-bottom: 0.5rem;
+}
+
+.item label,
+.dietary_tags p {
   font-size: 0.9rem;
   color: var(--gray);
   margin-bottom: 0.75rem;
@@ -30,6 +36,23 @@
 .item textarea {
   resize: none;
   height: 10rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: flex;
+  font-size: 0.9rem;
+  color: var(--gray);
+  margin: 0rem 1rem 1rem 0rem;
+  text-transform: capitalize;
+}
+
+.tag input {
+  margin-right: 0.5rem;
 }
 
 .image_upload {
