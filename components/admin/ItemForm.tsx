@@ -1,30 +1,36 @@
 import Image from "next/image";
-import { IEditItemProps } from "types";
 import { FiUpload } from "react-icons/fi";
-import { formatImageName, staticTags } from "@utils/index";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { IDietaryTags, IEditItemFormProps } from "types";
 import styles from "@styles/admin/ItemForm.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
+import { formatImageName, staticTags } from "@utils/index";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 
 export default function ItemForm({
-  file,
-  setFile,
   formData,
   isLoading,
   buttonText,
   setFormData,
-  dietaryTags,
   handleSubmit,
-  setDietaryTags,
-}: IEditItemProps) {
+}: IEditItemFormProps) {
+  // Initial dietary tags
+  const initialDietaryTags = staticTags.reduce(
+    (acc, curr) => ({ ...acc, [curr]: false }),
+    {}
+  );
+
   // Hooks
   const imageRef = useRef<HTMLDivElement>(null);
   const [imageHeight, setImageHeight] = useState(0);
+  const [dietaryTags, setDietaryTags] =
+    useState<IDietaryTags>(initialDietaryTags);
+  const [file, setFile] = useState<File | undefined>(undefined);
 
   // Destructure form data and check
   const {
     name,
+    tags,
     price,
     image,
     description,
@@ -49,8 +55,33 @@ export default function ItemForm({
     };
   }, []);
 
+  // Update dietary tags
+  useEffect(() => {
+    if (tags) {
+      // Create array of current tags
+      const currentTags = (tags as string).split(",").map((tag) => tag.trim());
+
+      // Update state
+      setDietaryTags(
+        staticTags.reduce((acc, curr) => {
+          if (currentTags.includes(curr)) {
+            return {
+              ...acc,
+              [curr]: true,
+            };
+          } else {
+            return {
+              ...acc,
+              [curr]: false,
+            };
+          }
+        }, {} as { [key: string]: boolean })
+      );
+    }
+  }, [tags]);
+
   // Handle change
-  function handleChange(
+  function handleChangeFormData(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
     // Id and value
@@ -75,7 +106,7 @@ export default function ItemForm({
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={(e) => handleSubmit(e, dietaryTags, file)}
       style={
         {
           "--image_height": `${imageHeight}px`,
@@ -84,7 +115,12 @@ export default function ItemForm({
     >
       <div className={styles.item}>
         <label htmlFor="name">Item name</label>
-        <input type="text" id="name" value={name} onChange={handleChange} />
+        <input
+          type="text"
+          id="name"
+          value={name}
+          onChange={handleChangeFormData}
+        />
       </div>
 
       <div className={styles.item}>
@@ -93,7 +129,7 @@ export default function ItemForm({
           type="text"
           id="addableIngredients"
           value={addableIngredients}
-          onChange={handleChange}
+          onChange={handleChangeFormData}
           placeholder="E.g. Cheese - 2, Mayo - 0"
         />
       </div>
@@ -104,14 +140,19 @@ export default function ItemForm({
           type="text"
           id="removableIngredients"
           value={removableIngredients}
-          onChange={handleChange}
+          onChange={handleChangeFormData}
           placeholder="E.g. Cheese, Mayo"
         />
       </div>
 
       <div className={styles.item}>
         <label htmlFor="price">Item price</label>
-        <input type="number" id="price" value={price} onChange={handleChange} />
+        <input
+          type="number"
+          id="price"
+          value={price}
+          onChange={handleChangeFormData}
+        />
       </div>
 
       <div className={styles.dietary_tags}>
@@ -124,8 +165,8 @@ export default function ItemForm({
                 type="checkbox"
                 id={dietaryTag}
                 name={dietaryTag}
-                checked={dietaryTags[dietaryTag]}
                 onChange={handleChangeTags}
+                checked={dietaryTags[dietaryTag]}
               />
               <label htmlFor={dietaryTag}>{dietaryTag}</label>
             </div>
@@ -138,7 +179,7 @@ export default function ItemForm({
         <textarea
           id="description"
           value={description}
-          onChange={handleChange}
+          onChange={handleChangeFormData}
         />
       </div>
 

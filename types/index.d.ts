@@ -383,15 +383,20 @@ export interface IEditFormProps {
   isLoading: boolean;
   formData: IFormData;
   buttonText: string;
-  dietaryTags: IDietaryTags;
   handleSubmit: (e: FormEvent) => Promise<void>;
   setFormData: Dispatch<SetStateAction<IFormData>>;
-  setDietaryTags: Dispatch<SetStateAction<IDietaryTags>>;
 }
 
-export interface IEditItemProps extends IEditFormProps {
-  file: File | undefined;
-  setFile: Dispatch<SetStateAction<File | undefined>>;
+export interface IEditItemFormProps {
+  isLoading: boolean;
+  formData: IFormData;
+  buttonText: string;
+  handleSubmit: (
+    e: FormEvent,
+    dietaryTags: IDietaryTags,
+    file: File | undefined
+  ) => Promise<void>;
+  setFormData: Dispatch<SetStateAction<IFormData>>;
 }
 
 export interface IEditRestaurantProps extends IEditItemProps {

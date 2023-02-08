@@ -3,14 +3,13 @@ import { AxiosError } from "axios";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
 import { useAlert } from "@context/Alert";
-import { IAxiosError, IFormData, IItem } from "types";
+import { IAxiosError, IDietaryTags, IFormData, IItem } from "types";
 import styles from "@styles/admin/EditItem.module.css";
 import {
   axiosInstance,
   showErrorAlert,
-  showSuccessAlert,
-  staticTags,
   updateVendors,
+  showSuccessAlert,
 } from "@utils/index";
 import React, { FormEvent, useEffect, useState } from "react";
 
@@ -32,16 +31,11 @@ export default function EditItem() {
   const { vendors, setVendors } = useData();
   const [item, setItem] = useState<IItem>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [file, setFile] = useState<File | undefined>(undefined);
   const [formData, setFormData] = useState<IFormData>(initialState);
-  const [dietaryTags, setDietaryTags] = useState<{ [key: string]: boolean }>(
-    staticTags.reduce((acc, curr) => ({ ...acc, [curr]: false }), {})
-  );
 
   // Destructure form data
   const {
     name,
-    tags,
     price,
     image,
     description,
@@ -93,39 +87,19 @@ export default function EditItem() {
     }
   }, [vendors, router.isReady]);
 
-  useEffect(() => {
-    if (tags) {
-      // Get current tags
-      const currentTags = (tags as string).split(",").map((tag) => tag.trim());
-
-      // Update state
-      setDietaryTags(
-        staticTags.reduce((acc, curr) => {
-          if (currentTags.includes(curr)) {
-            return {
-              ...acc,
-              [curr]: true,
-            };
-          } else {
-            return {
-              ...acc,
-              [curr]: false,
-            };
-          }
-        }, {} as { [key: string]: boolean })
-      );
-    }
-  }, [item]);
-
   // Handle submit
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(
+    e: FormEvent,
+    dietaryTags: IDietaryTags,
+    file: File | undefined
+  ) {
     e.preventDefault();
 
     // Create FormData instance
     const data = new FormData();
 
     // Create tags string
-    const tagsString = Object.entries(dietaryTags)
+    const tags = Object.entries(dietaryTags)
       .filter((dietaryTag) => dietaryTag[1] === true)
       .map((dietaryTag) => dietaryTag[0])
       .join(", ");
@@ -133,9 +107,9 @@ export default function EditItem() {
     // Append the data
     data.append("file", file as File);
     data.append("name", name as string);
+    data.append("tags", tags as string);
     data.append("price", price as string);
     data.append("image", image as string);
-    data.append("tags", tagsString as string);
     data.append("description", description as string);
     data.append("addableIngredients", addableIngredients as string);
     data.append("removableIngredients", removableIngredients as string);
@@ -180,15 +154,11 @@ export default function EditItem() {
           <h2>Edit the details</h2>
 
           <ItemForm
-            file={file}
             buttonText="Save"
-            setFile={setFile}
             formData={formData}
             isLoading={isLoading}
             setFormData={setFormData}
-            dietaryTags={dietaryTags}
             handleSubmit={handleSubmit}
-            setDietaryTags={setDietaryTags}
           />
         </>
       )}

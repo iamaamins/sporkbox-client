@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import { useAlert } from "@context/Alert";
 import { FormEvent, useState } from "react";
-import { IAxiosError, IFormData } from "types";
+import { IAxiosError, IDietaryTags, IFormData } from "types";
 import {
   axiosInstance,
   showErrorAlert,
@@ -29,25 +29,28 @@ export default function AddItem() {
   const { setAlerts } = useAlert();
   const { setVendors } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [file, setFile] = useState<File | undefined>(undefined);
   const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Destructure form data
-  const {
-    name,
-    tags,
-    price,
-    description,
-    addableIngredients,
-    removableIngredients,
-  } = formData;
+  const { name, price, description, addableIngredients, removableIngredients } =
+    formData;
 
   // Handle submit
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(
+    e: FormEvent,
+    dietaryTags: IDietaryTags,
+    file: File | undefined
+  ) {
     e.preventDefault();
 
     // Create FormData instance
     const data = new FormData();
+
+    // Create tags string
+    const tags = Object.entries(dietaryTags)
+      .filter((dietaryTag) => dietaryTag[1] === true)
+      .map((dietaryTag) => dietaryTag[0])
+      .join(", ");
 
     // Append the data
     data.append("file", file as File);
@@ -95,12 +98,10 @@ export default function AddItem() {
       <h2>Add an item</h2>
 
       <ItemForm
-        formData={formData}
-        file={file}
-        setFormData={setFormData}
         buttonText="Save"
+        formData={formData}
         isLoading={isLoading}
-        setFile={setFile}
+        setFormData={setFormData}
         handleSubmit={handleSubmit}
       />
     </section>
