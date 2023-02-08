@@ -22,7 +22,7 @@ export default function MobileNav({ isOpen, setIsOpen }: IMobileNavProps) {
 
       {/* Logo */}
       <div className={styles.logo} onClick={() => setIsOpen(false)}>
-        <Link href="/">
+        <Link href={`${isCustomer ? "/dashboard" : "/admin"}`}>
           <a>
             <Image src={logo} alt="logo" priority />
           </a>
