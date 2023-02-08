@@ -29,7 +29,7 @@ export default function AddRestaurant() {
   const { setAlerts } = useAlert();
   const { setVendors } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [file, setFile] = useState<File | undefined>(undefined);
+  // const [file, setFile] = useState<File | undefined>(undefined);
   const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Destructure form data
@@ -47,7 +47,7 @@ export default function AddRestaurant() {
   } = formData;
 
   // Handle submit
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent, file: File | undefined) {
     e.preventDefault();
 
     // Create FormData instance
@@ -103,10 +103,8 @@ export default function AddRestaurant() {
       <h2>Add a restaurant</h2>
 
       <RestaurantForm
-        file={file}
-        setFile={setFile}
-        isLoading={isLoading}
         formData={formData}
+        isLoading={isLoading}
         showPasswordFields={true}
         setFormData={setFormData}
         buttonText="Add restaurant"

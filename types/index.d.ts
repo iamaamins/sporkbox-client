@@ -379,28 +379,28 @@ export interface IDietaryTags {
   [key: string]: boolean;
 }
 
-export interface IEditFormProps {
+interface IFormProps {
   isLoading: boolean;
   formData: IFormData;
   buttonText: string;
-  handleSubmit: (e: FormEvent) => Promise<void>;
   setFormData: Dispatch<SetStateAction<IFormData>>;
 }
 
-export interface IEditItemFormProps {
-  isLoading: boolean;
-  formData: IFormData;
-  buttonText: string;
+export interface ICompanyFormProps extends IFormProps {
+  handleSubmit: (e: FormEvent) => Promise<void>;
+}
+
+export interface IItemFormProps extends IFormProps {
   handleSubmit: (
     e: FormEvent,
     dietaryTags: IDietaryTags,
     file: File | undefined
   ) => Promise<void>;
-  setFormData: Dispatch<SetStateAction<IFormData>>;
 }
 
-export interface IEditRestaurantProps extends IEditItemProps {
+export interface IRestaurantFormProps extends IFormProps {
   showPasswordFields: boolean;
+  handleSubmit: (e: FormEvent, file: File | undefined) => Promise<void>;
 }
 
 export interface IModalContainerProps {

@@ -33,7 +33,6 @@ export default function EditRestaurant() {
   const { vendors, setVendors } = useData();
   const [vendor, setVendor] = useState<IVendor>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [file, setFile] = useState<File | undefined>(undefined);
   const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Destructure form data
@@ -87,7 +86,7 @@ export default function EditRestaurant() {
   }, [vendors, router.isReady]);
 
   // Handle submit
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent, file: File | undefined) {
     e.preventDefault();
 
     // Create FormData instance
@@ -144,10 +143,8 @@ export default function EditRestaurant() {
         <>
           <h2>Edit the details</h2>
           <RestaurantForm
-            file={file}
-            setFile={setFile}
-            isLoading={isLoading}
             buttonText="Save"
+            isLoading={isLoading}
             formData={formData}
             showPasswordFields={false}
             setFormData={setFormData}

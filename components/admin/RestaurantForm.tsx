@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { IEditRestaurantProps } from "types";
+import { IRestaurantFormProps } from "types";
 import { FiUpload } from "react-icons/fi";
 import { formatImageName } from "@utils/index";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -8,18 +8,19 @@ import styles from "@styles/admin/RestaurantForm.module.css";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 export default function RestaurantForm({
-  file,
-  setFile,
+  // file,
+  // setFile,
   isLoading,
   formData,
   setFormData,
   buttonText,
   handleSubmit,
   showPasswordFields,
-}: IEditRestaurantProps) {
+}: IRestaurantFormProps) {
   // Hooks
   const logoRef = useRef<HTMLDivElement>(null);
   const [logoHeight, setLogoHeight] = useState(0);
+  const [file, setFile] = useState<File | undefined>(undefined);
 
   // Destructure form data
   const {
@@ -68,7 +69,7 @@ export default function RestaurantForm({
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={(e) => handleSubmit(e, file)}
       style={
         {
           "--logo_height": `${logoHeight}px`,

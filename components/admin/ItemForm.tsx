@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { FiUpload } from "react-icons/fi";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { IDietaryTags, IEditItemFormProps } from "types";
+import { IDietaryTags, IItemFormProps } from "types";
 import styles from "@styles/admin/ItemForm.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
 import { formatImageName, staticTags } from "@utils/index";
@@ -13,7 +13,7 @@ export default function ItemForm({
   buttonText,
   setFormData,
   handleSubmit,
-}: IEditItemFormProps) {
+}: IItemFormProps) {
   // Initial dietary tags
   const initialDietaryTags = staticTags.reduce(
     (acc, curr) => ({ ...acc, [curr]: false }),
