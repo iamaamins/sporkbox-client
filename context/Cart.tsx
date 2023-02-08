@@ -140,26 +140,26 @@ export default function CartProvider({ children }: IContextProviderProps) {
 
         console.log(response);
 
-        // // Remove cart items
-        // setCartItems([]);
-        // localStorage.removeItem(`cart-${user?._id}`);
+        // Remove cart items
+        setCartItems([]);
+        localStorage.removeItem(`cart-${user?._id}`);
 
-        // if (typeof response.data === "string") {
-        //   // Push to the dashboard page
-        //   location.assign(response.data);
-        // } else {
-        //   // Update customer's active orders state
-        //   setCustomerUpcomingOrders((currState) => ({
-        //     ...currState,
-        //     data: [...currState.data, ...response.data],
-        //   }));
+        if (typeof response.data === "string") {
+          // Push to the dashboard page
+          location.assign(response.data);
+        } else {
+          // Update customer's active orders state
+          setCustomerUpcomingOrders((currState) => ({
+            ...currState,
+            data: [...currState.data, ...response.data],
+          }));
 
-        //   // Show success alert
-        //   showSuccessAlert("Orders placed", setAlerts);
+          // Show success alert
+          showSuccessAlert("Orders placed", setAlerts);
 
-        //   // Push to the dashboard page
-        //   router.push("/dashboard");
-        // }
+          // Push to the dashboard page
+          router.push("/dashboard");
+        }
       } catch (err) {
         // Show error alert
         showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
