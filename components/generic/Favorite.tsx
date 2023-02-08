@@ -16,7 +16,7 @@ export default function Favorite() {
   const { setAlerts } = useAlert();
   const {
     customerFavoriteItems,
-    upcomingWeekRestaurants,
+    upcomingRestaurants,
     setCustomerFavoriteItems,
   } = useData();
 
@@ -40,32 +40,30 @@ export default function Favorite() {
                     {customerFavoriteItem.restaurant.name}
                   </p>
 
-                  {upcomingWeekRestaurants.data.some(
-                    (upcomingWeekRestaurant) =>
-                      upcomingWeekRestaurant._id ===
+                  {upcomingRestaurants.data.some(
+                    (upcomingRestaurant) =>
+                      upcomingRestaurant._id ===
                       customerFavoriteItem.restaurant._id
                   ) ? (
                     <div className={styles.dates}>
                       <p className={styles.available}>Available to order on</p>
 
-                      {upcomingWeekRestaurants.data.map(
-                        (upcomingWeekRestaurant, index) =>
-                          upcomingWeekRestaurant._id ===
+                      {upcomingRestaurants.data.map(
+                        (upcomingRestaurant, index) =>
+                          upcomingRestaurant._id ===
                             customerFavoriteItem.restaurant._id && (
                             <span key={index}>
                               <Link
                                 href={`/place-order/${convertDateToMS(
-                                  upcomingWeekRestaurant.date
+                                  upcomingRestaurant.date
                                 )}/${customerFavoriteItem.restaurant._id}/${
                                   customerFavoriteItem.item._id
                                 }`}
                               >
                                 <a>
+                                  <span>{getDay(upcomingRestaurant.date)}</span>
                                   <span>
-                                    {getDay(upcomingWeekRestaurant.date)}
-                                  </span>
-                                  <span>
-                                    {getDate(upcomingWeekRestaurant.date)}
+                                    {getDate(upcomingRestaurant.date)}
                                   </span>
                                 </a>
                               </Link>

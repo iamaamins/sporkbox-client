@@ -78,31 +78,29 @@ export default function ItemForm({
       </div>
 
       <div className={styles.item}>
-        <label htmlFor="tags">Dietary tags (comma separated)</label>
+        <label htmlFor="tags">Dietary tags</label>
         <input type="text" id="tags" value={tags} onChange={handleChange} />
       </div>
 
       <div className={styles.item}>
-        <label htmlFor="addableIngredients">
-          Addable ingredients (comma separated)
-        </label>
+        <label htmlFor="addableIngredients">Addable ingredients</label>
         <input
           type="text"
           id="addableIngredients"
           value={addableIngredients}
           onChange={handleChange}
+          placeholder="E.g. Cheese - 2, Mayo - 0"
         />
       </div>
 
       <div className={styles.item}>
-        <label htmlFor="removableIngredients">
-          Removable ingredients (comma separated)
-        </label>
+        <label htmlFor="removableIngredients">Removable ingredients</label>
         <input
           type="text"
           id="removableIngredients"
           value={removableIngredients}
           onChange={handleChange}
+          placeholder="E.g. Cheese, Mayo"
         />
       </div>
 

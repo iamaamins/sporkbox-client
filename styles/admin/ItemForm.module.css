@@ -23,6 +23,10 @@
   border: 1px solid var(--teal);
 }
 
+.item input::placeholder {
+  font-size: 0.9rem;
+}
+
 .item textarea {
   resize: none;
   height: 10rem;

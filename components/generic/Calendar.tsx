@@ -11,7 +11,7 @@ import {
   convertDateToMS,
 } from "@utils/index";
 import Image from "next/image";
-import { IUpcomingWeekRestaurant } from "types";
+import { IUpcomingRestaurant } from "types";
 import styles from "@styles/generic/Calendar.module.css";
 
 export default function Calendar() {
@@ -19,8 +19,8 @@ export default function Calendar() {
   const { user } = useUser();
   const router = useRouter();
   const { cartItems } = useCart();
-  const { nextWeekDates, upcomingWeekRestaurants } = useData();
-  const [restaurants, setRestaurants] = useState<IUpcomingWeekRestaurant[]>([]);
+  const { nextWeekDates, upcomingRestaurants } = useData();
+  const [restaurants, setRestaurants] = useState<IUpcomingRestaurant[]>([]);
 
   // Get restaurants for a date
   useEffect(() => {
@@ -32,9 +32,9 @@ export default function Calendar() {
 
       // Update restaurants state
       setRestaurants(
-        upcomingWeekRestaurants.data.filter(
-          (upcomingWeekRestaurant) =>
-            convertDateToMS(upcomingWeekRestaurant.date) === nextWeekDate
+        upcomingRestaurants.data.filter(
+          (upcomingRestaurant) =>
+            convertDateToMS(upcomingRestaurant.date) === nextWeekDate
         )
       );
     }
@@ -42,11 +42,11 @@ export default function Calendar() {
 
   return (
     <section className={styles.calendar}>
-      {upcomingWeekRestaurants.isLoading && <h2>Loading...</h2>}
+      {upcomingRestaurants.isLoading && <h2>Loading...</h2>}
 
       {/* If there are no restaurant groups */}
-      {!upcomingWeekRestaurants.isLoading &&
-        upcomingWeekRestaurants.data.length === 0 && <h2>No restaurants</h2>}
+      {!upcomingRestaurants.isLoading &&
+        upcomingRestaurants.data.length === 0 && <h2>No restaurants</h2>}
 
       {/* If there are restaurant groups */}
       {nextWeekDates.length > 0 && (

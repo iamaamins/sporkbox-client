@@ -47,7 +47,8 @@ export default function CartProvider({ children }: IContextProviderProps) {
 
   // Calculate total price
   const totalCartPrice = cartItems.reduce(
-    (acc, item) => formatNumberToUS(acc + item.price * item.quantity),
+    (acc, item) =>
+      formatNumberToUS(acc + item.addOnPrice + item.price * item.quantity),
     0
   );
 
@@ -76,6 +77,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
           return {
             ...cartItem,
             quantity: item.quantity,
+            addOnPrice: item.addOnPrice,
             addableIngredients: item.addableIngredients,
             removableIngredients: item.removableIngredients,
           };
@@ -123,7 +125,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
         quantity: cartItem.quantity,
         restaurantId: cartItem.restaurantId,
         deliveryDate: cartItem.deliveryDate,
-        addedIngredients: cartItem.addableIngredients.join(", "),
+        addedIngredients: cartItem.addableIngredients,
         removedIngredients: cartItem.removableIngredients.join(", "),
       }));
 
@@ -136,26 +138,28 @@ export default function CartProvider({ children }: IContextProviderProps) {
           ordersPayload,
         });
 
-        // Remove cart items
-        setCartItems([]);
-        localStorage.removeItem(`cart-${user?._id}`);
+        console.log(response);
 
-        if (typeof response.data === "string") {
-          // Push to the dashboard page
-          location.assign(response.data);
-        } else {
-          // Update customer's active orders state
-          setCustomerUpcomingOrders((currState) => ({
-            ...currState,
-            data: [...currState.data, ...response.data],
-          }));
+        // // Remove cart items
+        // setCartItems([]);
+        // localStorage.removeItem(`cart-${user?._id}`);
 
-          // Show success alert
-          showSuccessAlert("Orders placed", setAlerts);
+        // if (typeof response.data === "string") {
+        //   // Push to the dashboard page
+        //   location.assign(response.data);
+        // } else {
+        //   // Update customer's active orders state
+        //   setCustomerUpcomingOrders((currState) => ({
+        //     ...currState,
+        //     data: [...currState.data, ...response.data],
+        //   }));
 
-          // Push to the dashboard page
-          router.push("/dashboard");
-        }
+        //   // Show success alert
+        //   showSuccessAlert("Orders placed", setAlerts);
+
+        //   // Push to the dashboard page
+        //   router.push("/dashboard");
+        // }
       } catch (err) {
         // Show error alert
         showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);

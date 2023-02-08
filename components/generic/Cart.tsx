@@ -55,7 +55,9 @@ export default function Cart() {
                     </p>
                     <p className={styles.price}>
                       Total:{" "}
-                      {formatCurrencyToUSD(cartItem.price * cartItem.quantity)}
+                      {formatCurrencyToUSD(
+                        cartItem.price * cartItem.quantity + cartItem.addOnPrice
+                      )}
                     </p>
                     <p className={styles.date}>
                       Delivery date:{" "}

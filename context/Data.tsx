@@ -14,7 +14,7 @@ import {
   ICustomerFavoriteItems,
   ICustomerUpcomingOrders,
   ICustomerDeliveredOrders,
-  IUpcomingWeekRestaurants,
+  IUpcomingRestaurants,
   IAxiosError,
 } from "types";
 import {
@@ -57,8 +57,8 @@ export default function DataProvider({ children }: IContextProviderProps) {
     useState<ICustomerUpcomingOrders>(initialState);
   const [customerDeliveredOrders, setCustomerDeliveredOrders] =
     useState<ICustomerDeliveredOrders>(initialState);
-  const [upcomingWeekRestaurants, setUpcomingWeekRestaurants] =
-    useState<IUpcomingWeekRestaurants>(initialState);
+  const [upcomingRestaurants, setUpcomingRestaurants] =
+    useState<IUpcomingRestaurants>(initialState);
   const [customerFavoriteItems, setCustomerFavoriteItems] =
     useState<ICustomerFavoriteItems>(initialState);
 
@@ -79,12 +79,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
 
   // Next week dates
   const nextWeekDates =
-    !upcomingWeekRestaurants.isLoading &&
-    upcomingWeekRestaurants.data.length > 0
-      ? upcomingWeekRestaurants.data
-          .map((upcomingWeekRestaurant) =>
-            convertDateToMS(upcomingWeekRestaurant.date)
-          )
+    !upcomingRestaurants.isLoading && upcomingRestaurants.data.length > 0
+      ? upcomingRestaurants.data
+          .map((upcomingRestaurant) => convertDateToMS(upcomingRestaurant.date))
           .filter((date, index, dates) => dates.indexOf(date) === index)
       : [];
 
@@ -298,10 +295,10 @@ export default function DataProvider({ children }: IContextProviderProps) {
         );
 
         // Update state
-        setUpcomingWeekRestaurants({ isLoading: false, data: response.data });
+        setUpcomingRestaurants({ isLoading: false, data: response.data });
       } catch (err) {
         // Remove loader
-        setUpcomingWeekRestaurants((currState) => ({
+        setUpcomingRestaurants((currState) => ({
           ...currState,
           isLoading: false,
         }));
@@ -358,7 +355,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
         customerUpcomingOrders,
         nextWeekBudgetAndDates,
         customerDeliveredOrders,
-        upcomingWeekRestaurants,
+        upcomingRestaurants,
         setScheduledRestaurants,
         setCustomerFavoriteItems,
         setCustomerUpcomingOrders,

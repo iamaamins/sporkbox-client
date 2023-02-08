@@ -108,7 +108,7 @@
 
 .add_or_removable_item label {
   color: var(--gray);
-  margin-right: 0.5rem;
+  margin-left: 0.5rem;
   text-transform: capitalize;
 }
 

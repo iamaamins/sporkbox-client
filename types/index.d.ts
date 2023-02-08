@@ -50,7 +50,7 @@ export interface IScheduledRestaurant {
   scheduleId: string;
 }
 
-export interface IUpcomingWeekRestaurant extends IScheduledRestaurant {
+export interface IUpcomingRestaurant extends IScheduledRestaurant {
   logo: string;
   items: IItem[];
 }
@@ -143,8 +143,8 @@ export interface ICustomerDeliveredOrders extends IIsLoading {
   data: ICustomerOrder[];
 }
 
-export interface IUpcomingWeekRestaurants extends IIsLoading {
-  data: IUpcomingWeekRestaurant[];
+export interface IUpcomingRestaurants extends IIsLoading {
+  data: IUpcomingRestaurant[];
 }
 
 export interface ICustomerFavoriteItems extends IIsLoading {
@@ -171,13 +171,13 @@ export interface IDataContext {
   deliveredOrdersGroups: IOrdersGroup[];
   allUpcomingOrders: IAllUpcomingOrders;
   allDeliveredOrders: IAllDeliveredOrders;
+  upcomingRestaurants: IUpcomingRestaurants;
   scheduledRestaurants: IScheduledRestaurants;
   customerFavoriteItems: ICustomerFavoriteItems;
   setVendors: Dispatch<SetStateAction<IVendors>>;
   customerUpcomingOrders: ICustomerUpcomingOrders;
   customerDeliveredOrders: ICustomerDeliveredOrders;
   nextWeekBudgetAndDates: INextWeekBudgetAndDates[];
-  upcomingWeekRestaurants: IUpcomingWeekRestaurants;
   setCompanies: Dispatch<SetStateAction<ICompanies>>;
   setCustomers: Dispatch<SetStateAction<ICustomers>>;
   setAllUpcomingOrders: Dispatch<SetStateAction<IAllUpcomingOrders>>;
@@ -207,7 +207,7 @@ export interface ICartItem {
   price: number;
   image: string;
   quantity: number;
-  expiresIn: number;
+  addOnPrice: number;
   restaurantId: string;
   deliveryDate: number;
   addableIngredients: string[];

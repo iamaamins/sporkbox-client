@@ -6,7 +6,6 @@ import { HiMinus, HiPlus } from "react-icons/hi";
 import styles from "@styles/generic/Item.module.css";
 import { ChangeEvent, useEffect, useState } from "react";
 import {
-  expiresIn,
   convertDateToMS,
   formatCurrencyToUSD,
   convertDateToText,
@@ -16,7 +15,7 @@ import {
   IInitialItem,
   SetIngredients,
   IngredientsType,
-  IUpcomingWeekRestaurant,
+  IUpcomingRestaurant,
   IAddOrRemovableIngredients,
 } from "types";
 
@@ -28,7 +27,7 @@ export default function Item() {
     price: 0,
     image: "",
     quantity: 1,
-    expiresIn: 0,
+    addOnPrice: 0,
     restaurantId: "",
     deliveryDate: 0,
     addableIngredients: [],
@@ -39,9 +38,9 @@ export default function Item() {
   const router = useRouter();
   const { cartItems, addItemToCart } = useCart();
   const [item, setItem] = useState<IItem>();
-  const { upcomingWeekRestaurants } = useData();
-  const [upcomingWeekRestaurant, setUpcomingWeekRestaurant] =
-    useState<IUpcomingWeekRestaurant>();
+  const { upcomingRestaurants } = useData();
+  const [upcomingRestaurant, setUpcomingRestaurant] =
+    useState<IUpcomingRestaurant>();
   const [addableIngredients, setAddableIngredients] =
     useState<IAddOrRemovableIngredients>();
   const [removableIngredients, setRemovableIngredients] =
@@ -49,28 +48,28 @@ export default function Item() {
   const [initialItem, setInitialItem] = useState<IInitialItem>(initialState);
 
   // Price and quantity
-  const { quantity, price } = initialItem;
+  const { price, quantity, addOnPrice } = initialItem;
 
   // Get item and date from schedules restaurants
   useEffect(() => {
-    if (upcomingWeekRestaurants.data.length > 0 && router.isReady) {
+    if (upcomingRestaurants.data.length > 0 && router.isReady) {
       // Find the restaurant
-      const upcomingWeekRestaurant = upcomingWeekRestaurants.data.find(
-        (upcomingWeekRestaurant) =>
-          convertDateToMS(upcomingWeekRestaurant.date) ===
+      const upcomingRestaurant = upcomingRestaurants.data.find(
+        (upcomingRestaurant) =>
+          convertDateToMS(upcomingRestaurant.date) ===
             +(router.query.date as string) &&
-          upcomingWeekRestaurant._id === router.query.restaurant
+          upcomingRestaurant._id === router.query.restaurant
       );
 
-      if (upcomingWeekRestaurant) {
+      if (upcomingRestaurant) {
         // Update state
-        setUpcomingWeekRestaurant(upcomingWeekRestaurant);
+        setUpcomingRestaurant(upcomingRestaurant);
 
         // Get the date
-        const deliveryDate = convertDateToMS(upcomingWeekRestaurant.date);
+        const deliveryDate = convertDateToMS(upcomingRestaurant.date);
 
         // Find the item
-        const item = upcomingWeekRestaurant.items.find(
+        const item = upcomingRestaurant.items.find(
           (item) => item._id === router.query.item
         );
 
@@ -80,13 +79,16 @@ export default function Item() {
 
           // Create generic item details
           const itemDetails = {
+            addOnPrice,
+            quantity: 1,
             deliveryDate,
             _id: item._id,
             name: item.name,
             price: item.price,
-            expiresIn: expiresIn,
-            restaurantId: upcomingWeekRestaurant._id,
-            image: item.image || upcomingWeekRestaurant.logo,
+            addableIngredients: [],
+            removableIngredients: [],
+            restaurantId: upcomingRestaurant._id,
+            image: item.image || upcomingRestaurant.logo,
           };
 
           // Find if the item exists in the cart
@@ -100,32 +102,31 @@ export default function Item() {
             setInitialItem({
               ...itemDetails,
               quantity: itemInCart.quantity,
+              addOnPrice: itemInCart.addOnPrice,
               addableIngredients: itemInCart.addableIngredients,
               removableIngredients: itemInCart.removableIngredients,
             });
           } else {
             // If item ins't in cart
-            setInitialItem({
-              ...itemDetails,
-              quantity: 1,
-              addableIngredients: [],
-              removableIngredients: [],
-            });
+            setInitialItem(itemDetails);
           }
 
           if (item.addableIngredients) {
             // Update addable ingredients state
             setAddableIngredients(
-              item.addableIngredients.split(",").reduce((acc, curr) => {
-                // Trim ingredients
-                const ingredient = curr.trim();
+              formatAddableIngredients(item.addableIngredients).reduce(
+                (acc, curr) => {
+                  // Trim ingredients
+                  const ingredient = curr.trim();
 
-                if (itemInCart?.addableIngredients.includes(ingredient)) {
-                  return { ...acc, [ingredient]: true };
-                } else {
-                  return { ...acc, [ingredient]: false };
-                }
-              }, {})
+                  if (itemInCart?.addableIngredients.includes(ingredient)) {
+                    return { ...acc, [ingredient]: true };
+                  } else {
+                    return { ...acc, [ingredient]: false };
+                  }
+                },
+                {}
+              )
             );
           }
 
@@ -147,7 +148,19 @@ export default function Item() {
         }
       }
     }
-  }, [upcomingWeekRestaurants, router.isReady]);
+  }, [upcomingRestaurants, router.isReady]);
+
+  // Format addable ingredients
+  const formatAddableIngredients = (ingredients: string) =>
+    ingredients
+      .split(",")
+      .map((ingredient) => ingredient.trim())
+      .map((ingredient) => ingredient.split("-").map((el) => el.trim()))
+      .map((ingredient) =>
+        +ingredient[1] > 0
+          ? `${ingredient[0]} - $${ingredient[1]}`
+          : ingredient[0]
+      );
 
   // Increase quantity
   function increaseQuantity() {
@@ -177,9 +190,23 @@ export default function Item() {
       [e.target.name]: e.target.checked,
     }));
 
+    // Add on price
+    const getAddOnPrice = (name: string) =>
+      +name
+        .split("-")
+        .map((el) => el.trim())[1]
+        .slice(1);
+
     // Update initial item state
     setInitialItem((currState) => ({
       ...currState,
+      addOnPrice:
+        ingredientsType === "addableIngredients" &&
+        e.target.name.split("-").length > 1
+          ? e.target.checked
+            ? currState.addOnPrice + getAddOnPrice(e.target.name)
+            : currState.addOnPrice - getAddOnPrice(e.target.name)
+          : currState.addOnPrice,
       [ingredientsType]: e.target.checked
         ? [...currState[ingredientsType], e.target.name]
         : currState[ingredientsType].filter(
@@ -197,7 +224,6 @@ export default function Item() {
     <div className={styles.add_or_removable_items}>
       {Object.keys(ingredients).map((ingredient, index) => (
         <div key={index} className={styles.add_or_removable_item}>
-          <label htmlFor={ingredient}>{ingredient}</label>
           <input
             type="checkbox"
             name={ingredient}
@@ -207,6 +233,7 @@ export default function Item() {
               changeIngredients(e, setIngredients, ingredientsType)
             }
           />
+          <label htmlFor={ingredient}>{ingredient}</label>
         </div>
       ))}
     </div>
@@ -232,15 +259,15 @@ export default function Item() {
 
   return (
     <section className={styles.item}>
-      {upcomingWeekRestaurants.isLoading && <h2>Loading...</h2>}
+      {upcomingRestaurants.isLoading && <h2>Loading...</h2>}
 
-      {!upcomingWeekRestaurants.isLoading && !item && <h2>No item found</h2>}
+      {!upcomingRestaurants.isLoading && !item && <h2>No item found</h2>}
 
-      {upcomingWeekRestaurant && item && (
+      {upcomingRestaurant && item && (
         <>
           <div className={styles.cover_image}>
             <Image
-              src={item.image || upcomingWeekRestaurant.logo}
+              src={item.image || upcomingRestaurant.logo}
               width={16}
               height={10}
               layout="responsive"
@@ -298,8 +325,8 @@ export default function Item() {
               className={`${styles.button}`}
               onClick={() => addItemToCart(initialItem)}
             >
-              Add {quantity} to basket • {formatCurrencyToUSD(quantity * price)}{" "}
-              USD
+              Add {quantity} to basket •{" "}
+              {formatCurrencyToUSD(quantity * price + addOnPrice)} USD
             </button>
           </div>
         </>
