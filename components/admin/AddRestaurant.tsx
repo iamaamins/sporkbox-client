@@ -4,24 +4,25 @@ import { useData } from "@context/Data";
 import { useAlert } from "@context/Alert";
 import { FormEvent, useState } from "react";
 import RestaurantForm from "./RestaurantForm";
-import { IAxiosError, IFormData } from "types";
+import { IAxiosError, IRestaurantFormData } from "types";
 import styles from "@styles/admin/AddRestaurant.module.css";
 import { axiosInstance, showErrorAlert, showSuccessAlert } from "@utils/index";
 
 export default function AddRestaurant() {
   // Initial state
   const initialState = {
-    firstName: "",
-    lastName: "",
+    zip: "",
     email: "",
-    password: "",
     city: "",
     state: "",
-    zip: "",
-    confirmPassword: "",
-    restaurantName: "",
+    lastName: "",
+    password: "",
+    firstName: "",
+    file: undefined,
     addressLine1: "",
     addressLine2: "",
+    restaurantName: "",
+    confirmPassword: "",
   };
 
   // Hooks
@@ -29,24 +30,25 @@ export default function AddRestaurant() {
   const { setAlerts } = useAlert();
   const { setVendors } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<IFormData>(initialState);
+  const [formData, setFormData] = useState<IRestaurantFormData>(initialState);
 
   // Destructure form data
   const {
-    firstName,
-    lastName,
-    email,
-    city,
-    state,
     zip,
+    city,
+    file,
+    state,
+    email,
+    lastName,
     password,
+    firstName,
     addressLine1,
     addressLine2,
     restaurantName,
   } = formData;
 
   // Handle submit
-  async function handleSubmit(e: FormEvent, file: File | undefined) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     // Create FormData instance

@@ -18,22 +18,22 @@ export default function RestaurantForm({
   // Hooks
   const logoRef = useRef<HTMLDivElement>(null);
   const [logoHeight, setLogoHeight] = useState(0);
-  const [file, setFile] = useState<File | undefined>(undefined);
 
   // Destructure form data
   const {
-    firstName,
-    lastName,
+    zip,
     logo,
-    email,
+    file,
     city,
     state,
-    zip,
+    email,
+    lastName,
     password,
-    confirmPassword,
-    restaurantName,
+    firstName,
     addressLine1,
     addressLine2,
+    restaurantName,
+    confirmPassword,
   } = formData;
 
   // Get image height
@@ -58,7 +58,6 @@ export default function RestaurantForm({
 
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    // Update state
     setFormData((currState) => ({
       ...currState,
       [e.target.id]: e.target.value,
@@ -67,7 +66,7 @@ export default function RestaurantForm({
 
   return (
     <form
-      onSubmit={(e) => handleSubmit(e, file)}
+      onSubmit={handleSubmit}
       style={
         {
           "--logo_height": `${logoHeight}px`,
@@ -186,7 +185,9 @@ export default function RestaurantForm({
           {file && (
             <span
               className={styles.remove_logo}
-              onClick={() => setFile(undefined)}
+              onClick={() =>
+                setFormData((currState) => ({ ...currState, file: undefined }))
+              }
             >
               Remove <RiDeleteBinLine />
             </span>
@@ -197,7 +198,12 @@ export default function RestaurantForm({
           type="file"
           id="image"
           accept="image/*"
-          onChange={(e) => setFile(e.target.files?.[0])}
+          onChange={(e) =>
+            setFormData((currState) => ({
+              ...currState,
+              file: e.target.files?.[0],
+            }))
+          }
         />
 
         {logo && (

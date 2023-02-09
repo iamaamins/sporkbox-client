@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import { useAlert } from "@context/Alert";
 import RestaurantForm from "./RestaurantForm";
-import { IAxiosError, IFormData, IVendor } from "types";
+import { IAxiosError, IRestaurantFormData, IVendor } from "types";
 import {
   axiosInstance,
   showErrorAlert,
@@ -16,15 +16,17 @@ import React, { FormEvent, useEffect, useState } from "react";
 export default function EditRestaurant() {
   // Initial state
   const initialState = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    city: "",
-    state: "",
     zip: "",
-    restaurantName: "",
+    city: "",
+    logo: "",
+    email: "",
+    state: "",
+    lastName: "",
+    firstName: "",
+    file: undefined,
     addressLine1: "",
     addressLine2: "",
+    restaurantName: "",
   };
 
   // Hooks
@@ -33,20 +35,21 @@ export default function EditRestaurant() {
   const { vendors, setVendors } = useData();
   const [vendor, setVendor] = useState<IVendor>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<IFormData>(initialState);
+  const [formData, setFormData] = useState<IRestaurantFormData>(initialState);
 
   // Destructure form data
   const {
-    firstName,
-    lastName,
-    email,
-    city,
-    state,
     zip,
     logo,
-    restaurantName,
+    city,
+    file,
+    email,
+    state,
+    lastName,
+    firstName,
     addressLine1,
     addressLine2,
+    restaurantName,
   } = formData;
 
   // Get the restaurant
@@ -58,8 +61,9 @@ export default function EditRestaurant() {
       );
 
       if (vendor) {
-        // Vendor details
-        const vendorDetails = {
+        // Update states
+        setVendor(vendor);
+        setFormData({
           email: vendor.email,
           lastName: vendor.lastName,
           firstName: vendor.firstName,
@@ -69,36 +73,26 @@ export default function EditRestaurant() {
           restaurantName: vendor.restaurant.name,
           state: vendor.restaurant.address.state,
           addressLine1: vendor.restaurant.address.addressLine1,
-        };
-
-        // Update states
-        setVendor(vendor);
-        setFormData((currState) =>
-          vendor.restaurant.address.addressLine2
-            ? {
-                ...vendorDetails,
-                addressLine2: vendor.restaurant.address.addressLine2,
-              }
-            : { ...currState, ...vendorDetails }
-        );
+          addressLine2: vendor.restaurant.address.addressLine2,
+        });
       }
     }
   }, [vendors, router.isReady]);
 
   // Handle submit
-  async function handleSubmit(e: FormEvent, file: File | undefined) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     // Create FormData instance
     const data = new FormData();
 
     // Append the data
-    data.append("file", file as File);
     data.append("zip", zip as string);
     data.append("city", city as string);
     data.append("logo", logo as string);
     data.append("email", email as string);
     data.append("state", state as string);
+    file && data.append("file", file as File);
     data.append("lastName", lastName as string);
     data.append("firstName", firstName as string);
     data.append("addressLine1", addressLine1 as string);
@@ -145,8 +139,8 @@ export default function EditRestaurant() {
 
           <RestaurantForm
             buttonText="Save"
-            isLoading={isLoading}
             formData={formData}
+            isLoading={isLoading}
             showPasswordFields={false}
             setFormData={setFormData}
             handleSubmit={handleSubmit}

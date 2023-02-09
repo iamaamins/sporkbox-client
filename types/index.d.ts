@@ -402,17 +402,33 @@ export interface IItemFormData {
   removableIngredients?: string;
 }
 
-export interface IItemFormProps {
-  isLoading: boolean;
-  buttonText: string;
+export interface IItemFormProps extends IFormProps {
   formData: IItemFormData;
   handleSubmit: (e: FormEvent) => Promise<void>;
   setFormData: Dispatch<SetStateAction<IItemFormData>>;
 }
 
+export interface IRestaurantFormData {
+  zip: string;
+  city: string;
+  logo?: string;
+  email: string;
+  state: string;
+  lastName: string;
+  firstName: string;
+  password?: string;
+  addressLine1: string;
+  addressLine2?: string;
+  restaurantName: string;
+  file?: File | undefined;
+  confirmPassword?: string;
+}
+
 export interface IRestaurantFormProps extends IFormProps {
   showPasswordFields: boolean;
-  handleSubmit: (e: FormEvent, file: File | undefined) => Promise<void>;
+  formData: IRestaurantFormData;
+  handleSubmit: (e: FormEvent) => Promise<void>;
+  setFormData: Dispatch<SetStateAction<IRestaurantFormData>>;
 }
 
 export interface IModalContainerProps {
