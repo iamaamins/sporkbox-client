@@ -386,8 +386,22 @@ interface IFormProps {
   setFormData: Dispatch<SetStateAction<IFormData>>;
 }
 
+export interface ICompanyFormData {
+  zip: string;
+  name: string;
+  code: string;
+  city: string;
+  state: string;
+  website: string;
+  dailyBudget: number;
+  addressLine1: string;
+  addressLine2?: string;
+}
+
 export interface ICompanyFormProps extends IFormProps {
+  formData: ICompanyFormData;
   handleSubmit: (e: FormEvent) => Promise<void>;
+  setFormData: Dispatch<SetStateAction<ICompanyFormData>>;
 }
 
 export interface IItemFormData {

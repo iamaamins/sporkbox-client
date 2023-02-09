@@ -4,7 +4,7 @@ import { useAlert } from "@context/Alert";
 import { AxiosError } from "axios";
 import CompanyForm from "./CompanyForm";
 import { FormEvent, useState } from "react";
-import { IAxiosError, IFormData } from "types";
+import { IAxiosError, ICompanyFormData, IFormData } from "types";
 import {
   axiosInstance,
   showErrorAlert,
@@ -16,11 +16,11 @@ import styles from "@styles/admin/AddCompany.module.css";
 export default function AddCompany() {
   // Initial state
   const initialState = {
+    zip: "",
     name: "",
     code: "",
     city: "",
     state: "",
-    zip: "",
     website: "",
     dailyBudget: 0,
     addressLine1: "",
@@ -32,7 +32,7 @@ export default function AddCompany() {
   const { setAlerts } = useAlert();
   const { setCompanies } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<IFormData>(initialState);
+  const [formData, setFormData] = useState<ICompanyFormData>(initialState);
 
   // Handle submit
   async function handleSubmit(e: FormEvent) {
@@ -73,10 +73,10 @@ export default function AddCompany() {
       <h2>Add a company</h2>
 
       <CompanyForm
-        isLoading={isLoading}
         formData={formData}
-        setFormData={setFormData}
+        isLoading={isLoading}
         buttonText="Add company"
+        setFormData={setFormData}
         handleSubmit={handleSubmit}
       />
     </section>

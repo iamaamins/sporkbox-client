@@ -3,7 +3,7 @@ import { useData } from "@context/Data";
 import { useRouter } from "next/router";
 import CompanyForm from "./CompanyForm";
 import { useAlert } from "@context/Alert";
-import { IAxiosError, ICompany, IFormData } from "types";
+import { IAxiosError, ICompany, ICompanyFormData, IFormData } from "types";
 import styles from "@styles/admin/EditCompany.module.css";
 import React, { FormEvent, useEffect, useState } from "react";
 import {
@@ -33,7 +33,7 @@ export default function EditCompany() {
   const { companies, setCompanies } = useData();
   const [company, setCompany] = useState<ICompany>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<IFormData>(initialState);
+  const [formData, setFormData] = useState<ICompanyFormData>(initialState);
 
   // Get the company
   useEffect(() => {
@@ -44,25 +44,19 @@ export default function EditCompany() {
       );
 
       if (company) {
-        // Company details
-        const companyDetails = {
-          name: company.name,
-          code: company.code,
-          city: company.address.city,
-          state: company.address.state,
-          zip: company.address.zip,
-          website: company.website,
-          dailyBudget: company.dailyBudget,
-          addressLine1: company.address.addressLine1,
-        };
-
         // Update states
         setCompany(company);
-        setFormData((currState) =>
-          company.address.addressLine2
-            ? { ...companyDetails, addressLine2: company.address.addressLine2 }
-            : { ...currState, ...companyDetails }
-        );
+        setFormData({
+          name: company.name,
+          code: company.code,
+          zip: company.address.zip,
+          website: company.website,
+          city: company.address.city,
+          state: company.address.state,
+          dailyBudget: company.dailyBudget,
+          addressLine1: company.address.addressLine1,
+          addressLine2: company.address.addressLine2,
+        });
       }
     }
   }, [companies, router.isReady]);
@@ -109,9 +103,9 @@ export default function EditCompany() {
           <h2>Edit the details</h2>
 
           <CompanyForm
-            isLoading={isLoading}
-            formData={formData}
             buttonText="Save"
+            formData={formData}
+            isLoading={isLoading}
             setFormData={setFormData}
             handleSubmit={handleSubmit}
           />
