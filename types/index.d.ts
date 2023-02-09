@@ -381,9 +381,7 @@ export interface IStaticTags {
 
 interface IFormProps {
   isLoading: boolean;
-  formData: IFormData;
   buttonText: string;
-  setFormData: Dispatch<SetStateAction<IFormData>>;
 }
 
 export interface ICompanyFormData {

@@ -4,7 +4,7 @@ import { useAlert } from "@context/Alert";
 import { AxiosError } from "axios";
 import CompanyForm from "./CompanyForm";
 import { FormEvent, useState } from "react";
-import { IAxiosError, ICompanyFormData, IFormData } from "types";
+import { IAxiosError, ICompanyFormData } from "types";
 import {
   axiosInstance,
   showErrorAlert,

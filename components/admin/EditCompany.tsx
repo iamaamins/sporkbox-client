@@ -3,7 +3,7 @@ import { useData } from "@context/Data";
 import { useRouter } from "next/router";
 import CompanyForm from "./CompanyForm";
 import { useAlert } from "@context/Alert";
-import { IAxiosError, ICompany, ICompanyFormData, IFormData } from "types";
+import { IAxiosError, ICompany, ICompanyFormData } from "types";
 import styles from "@styles/admin/EditCompany.module.css";
 import React, { FormEvent, useEffect, useState } from "react";
 import {
