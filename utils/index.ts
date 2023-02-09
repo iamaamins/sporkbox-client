@@ -381,5 +381,9 @@ export const axiosInstance = axios.create({
 // Dietary tags
 export const tags = ["pizza", "gluten free", "allergy free"];
 
+// Split tags
+export const splitTags = (tags: string) =>
+  tags.split(",").map((tag) => tag.trim());
+
 // https://api.sporkbox.app
 // https://api.sporkbox.octib.com

@@ -10,6 +10,7 @@ import {
   showErrorAlert,
   updateVendors,
   showSuccessAlert,
+  splitTags,
 } from "@utils/index";
 import React, { FormEvent, useEffect, useState } from "react";
 
@@ -64,9 +65,9 @@ export default function EditItem() {
           image: item.image,
           currentTags: item.tags,
           description: item.description,
+          updatedTags: splitTags(item.tags),
           addableIngredients: item.addableIngredients,
           removableIngredients: item.removableIngredients,
-          updatedTags: item.tags.split(",").map((tag) => tag.trim()),
         });
       }
     }
@@ -120,8 +121,6 @@ export default function EditItem() {
       setIsLoading(false);
     }
   }
-
-  console.log(formData);
 
   return (
     <section className={styles.edit_item}>

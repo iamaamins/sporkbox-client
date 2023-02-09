@@ -50,6 +50,7 @@ export default function AddItem() {
     // Create FormData instance
     const data = new FormData();
 
+    // Create tags string
     const tags = updatedTags.join(", ");
 
     // Append the data

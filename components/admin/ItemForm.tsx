@@ -2,9 +2,9 @@ import Image from "next/image";
 import { FiUpload } from "react-icons/fi";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { IStaticTags, IItemFormProps } from "types";
-import { formatImageName, tags } from "@utils/index";
 import styles from "@styles/admin/ItemForm.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
+import { formatImageName, splitTags, tags } from "@utils/index";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 
 export default function ItemForm({
@@ -57,13 +57,9 @@ export default function ItemForm({
   // Update dietary tags
   useEffect(() => {
     if (currentTags) {
-      // Create array of current tags
-      const currentTagsArray = currentTags.split(",").map((tag) => tag.trim());
-
-      // Update state
       setStaticTags(
         tags.reduce((acc, curr) => {
-          if (currentTagsArray.includes(curr)) {
+          if (splitTags(currentTags).includes(curr)) {
             return {
               ...acc,
               [curr]: true,

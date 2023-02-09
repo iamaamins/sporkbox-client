@@ -379,6 +379,17 @@ export interface IStaticTags {
   [key: string]: boolean;
 }
 
+interface IFormProps {
+  isLoading: boolean;
+  formData: IFormData;
+  buttonText: string;
+  setFormData: Dispatch<SetStateAction<IFormData>>;
+}
+
+export interface ICompanyFormProps extends IFormProps {
+  handleSubmit: (e: FormEvent) => Promise<void>;
+}
+
 export interface IItemFormData {
   name: string;
   image?: string;
@@ -391,18 +402,9 @@ export interface IItemFormData {
   removableIngredients?: string;
 }
 
-interface IFormProps {
+export interface IItemFormProps {
   isLoading: boolean;
-  formData: IFormData;
   buttonText: string;
-  setFormData: Dispatch<SetStateAction<IFormData>>;
-}
-
-export interface ICompanyFormProps extends IFormProps {
-  handleSubmit: (e: FormEvent) => Promise<void>;
-}
-
-export interface IItemFormProps extends IFormProps {
   formData: IItemFormData;
   handleSubmit: (e: FormEvent) => Promise<void>;
   setFormData: Dispatch<SetStateAction<IItemFormData>>;
