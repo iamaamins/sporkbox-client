@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
 import { useAlert } from "@context/Alert";
-import { IAxiosError, IDietaryTags, IFormData, IItem } from "types";
+import { IItem, IAxiosError, IItemFormData } from "types";
 import styles from "@styles/admin/EditItem.module.css";
 import {
   axiosInstance,
@@ -17,9 +17,11 @@ export default function EditItem() {
   // Initial state
   const initialState = {
     name: "",
-    tags: "",
     price: 0,
     image: "",
+    currentTags: "",
+    file: undefined,
+    updatedTags: [],
     description: "",
     addableIngredients: "",
     removableIngredients: "",
@@ -31,13 +33,15 @@ export default function EditItem() {
   const { vendors, setVendors } = useData();
   const [item, setItem] = useState<IItem>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<IFormData>(initialState);
+  const [formData, setFormData] = useState<IItemFormData>(initialState);
 
   // Destructure form data
   const {
+    file,
     name,
     price,
     image,
+    updatedTags,
     description,
     addableIngredients,
     removableIngredients,
@@ -52,64 +56,38 @@ export default function EditItem() {
         ?.restaurant.items.find((item) => item._id === router.query.item);
 
       if (item) {
-        // Items details
-        const itemDetails = {
-          name: item.name,
-          tags: item.tags,
-          price: item.price,
-          image: item.image,
-          description: item.description,
-        };
-
         // Update states
         setItem(item);
-        setFormData((currState) =>
-          item.addableIngredients && item.removableIngredients
-            ? {
-                ...itemDetails,
-                addableIngredients: item.addableIngredients,
-                removableIngredients: item.removableIngredients,
-              }
-            : item.addableIngredients
-            ? {
-                ...currState,
-                ...itemDetails,
-                addableIngredients: item.addableIngredients,
-              }
-            : item.removableIngredients
-            ? {
-                ...itemDetails,
-                removableIngredients: item.removableIngredients,
-              }
-            : { ...currState, ...itemDetails }
-        );
+        setFormData({
+          name: item.name,
+          price: item.price,
+          image: item.image,
+          currentTags: item.tags,
+          description: item.description,
+          addableIngredients: item.addableIngredients,
+          removableIngredients: item.removableIngredients,
+          updatedTags: item.tags.split(",").map((tag) => tag.trim()),
+        });
       }
     }
   }, [vendors, router.isReady]);
 
   // Handle submit
-  async function handleSubmit(
-    e: FormEvent,
-    dietaryTags: IDietaryTags,
-    file: File | undefined
-  ) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     // Create FormData instance
     const data = new FormData();
 
     // Create tags string
-    const tags = Object.entries(dietaryTags)
-      .filter((dietaryTag) => dietaryTag[1] === true)
-      .map((dietaryTag) => dietaryTag[0])
-      .join(", ");
+    const tags = updatedTags.join(", ");
 
     // Append the data
-    data.append("file", file as File);
     data.append("name", name as string);
     data.append("tags", tags as string);
     data.append("price", price as string);
-    data.append("image", image as string);
+    file && data.append("file", file as File);
+    image && data.append("image", image as string);
     data.append("description", description as string);
     data.append("addableIngredients", addableIngredients as string);
     data.append("removableIngredients", removableIngredients as string);
@@ -142,6 +120,8 @@ export default function EditItem() {
       setIsLoading(false);
     }
   }
+
+  console.log(formData);
 
   return (
     <section className={styles.edit_item}>

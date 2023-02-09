@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { FiUpload } from "react-icons/fi";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { IDietaryTags, IItemFormProps } from "types";
+import { IStaticTags, IItemFormProps } from "types";
+import { formatImageName, tags } from "@utils/index";
 import styles from "@styles/admin/ItemForm.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
-import { formatImageName, staticTags } from "@utils/index";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 
 export default function ItemForm({
@@ -15,7 +15,7 @@ export default function ItemForm({
   handleSubmit,
 }: IItemFormProps) {
   // Initial dietary tags
-  const initialDietaryTags = staticTags.reduce(
+  const initialStaticTags = tags.reduce(
     (acc, curr) => ({ ...acc, [curr]: false }),
     {}
   );
@@ -23,16 +23,15 @@ export default function ItemForm({
   // Hooks
   const imageRef = useRef<HTMLDivElement>(null);
   const [imageHeight, setImageHeight] = useState(0);
-  const [dietaryTags, setDietaryTags] =
-    useState<IDietaryTags>(initialDietaryTags);
-  const [file, setFile] = useState<File | undefined>(undefined);
+  const [staticTags, setStaticTags] = useState<IStaticTags>(initialStaticTags);
 
   // Destructure form data and check
   const {
     name,
-    tags,
+    file,
     price,
     image,
+    currentTags,
     description,
     addableIngredients,
     removableIngredients,
@@ -57,14 +56,14 @@ export default function ItemForm({
 
   // Update dietary tags
   useEffect(() => {
-    if (tags) {
+    if (currentTags) {
       // Create array of current tags
-      const currentTags = (tags as string).split(",").map((tag) => tag.trim());
+      const currentTagsArray = currentTags.split(",").map((tag) => tag.trim());
 
       // Update state
-      setDietaryTags(
-        staticTags.reduce((acc, curr) => {
-          if (currentTags.includes(curr)) {
+      setStaticTags(
+        tags.reduce((acc, curr) => {
+          if (currentTagsArray.includes(curr)) {
             return {
               ...acc,
               [curr]: true,
@@ -75,10 +74,10 @@ export default function ItemForm({
               [curr]: false,
             };
           }
-        }, {} as { [key: string]: boolean })
+        }, {} as IStaticTags)
       );
     }
-  }, [tags]);
+  }, [currentTags]);
 
   // Handle change
   function handleChangeFormData(
@@ -97,16 +96,26 @@ export default function ItemForm({
 
   // Handle change tags
   function handleChangeTags(e: ChangeEvent<HTMLInputElement>) {
-    // Update state
-    setDietaryTags((currState) => ({
+    // Update tags
+    setStaticTags((currState) => ({
       ...currState,
       [e.target.name]: e.target.checked,
+    }));
+
+    // Update form data
+    setFormData((currState) => ({
+      ...currState,
+      updatedTags: e.target.checked
+        ? [...currState.updatedTags, e.target.name]
+        : currState.updatedTags.filter(
+            (updatedTag) => updatedTag !== e.target.name
+          ),
     }));
   }
 
   return (
     <form
-      onSubmit={(e) => handleSubmit(e, dietaryTags, file)}
+      onSubmit={handleSubmit}
       style={
         {
           "--image_height": `${imageHeight}px`,
@@ -159,16 +168,16 @@ export default function ItemForm({
         <p>Dietary tags</p>
 
         <div className={styles.tags}>
-          {Object.keys(dietaryTags).map((dietaryTag, index) => (
+          {Object.keys(staticTags).map((staticTag, index) => (
             <div className={styles.tag} key={index}>
               <input
                 type="checkbox"
-                id={dietaryTag}
-                name={dietaryTag}
+                id={staticTag}
+                name={staticTag}
                 onChange={handleChangeTags}
-                checked={dietaryTags[dietaryTag]}
+                checked={staticTags[staticTag]}
               />
-              <label htmlFor={dietaryTag}>{dietaryTag}</label>
+              <label htmlFor={staticTag}>{staticTag}</label>
             </div>
           ))}
         </div>
@@ -193,7 +202,12 @@ export default function ItemForm({
           {file && (
             <span
               className={styles.remove_upload}
-              onClick={() => setFile(undefined)}
+              onClick={() =>
+                setFormData((currState) => ({
+                  ...currState,
+                  file: undefined,
+                }))
+              }
             >
               Remove <RiDeleteBinLine />
             </span>
@@ -204,13 +218,18 @@ export default function ItemForm({
           type="file"
           id="image"
           accept="image/*"
-          onChange={(e) => setFile(e.target.files?.[0])}
+          onChange={(e) =>
+            setFormData((currState) => ({
+              ...currState,
+              file: e.target.files?.[0],
+            }))
+          }
         />
 
         {image && (
           <div className={styles.image} ref={imageRef}>
             <Image
-              src={image as string}
+              src={image}
               width={16}
               height={10}
               objectFit="cover"

@@ -375,8 +375,20 @@ export interface IModalProps {
   setShowModal: Dispatch<SetStateAction<boolean>>;
 }
 
-export interface IDietaryTags {
+export interface IStaticTags {
   [key: string]: boolean;
+}
+
+export interface IItemFormData {
+  name: string;
+  image?: string;
+  description: string;
+  currentTags?: string;
+  updatedTags: string[];
+  price: string | number;
+  file?: File | undefined;
+  addableIngredients?: string;
+  removableIngredients?: string;
 }
 
 interface IFormProps {
@@ -391,11 +403,9 @@ export interface ICompanyFormProps extends IFormProps {
 }
 
 export interface IItemFormProps extends IFormProps {
-  handleSubmit: (
-    e: FormEvent,
-    dietaryTags: IDietaryTags,
-    file: File | undefined
-  ) => Promise<void>;
+  formData: IItemFormData;
+  handleSubmit: (e: FormEvent) => Promise<void>;
+  setFormData: Dispatch<SetStateAction<IItemFormData>>;
 }
 
 export interface IRestaurantFormProps extends IFormProps {

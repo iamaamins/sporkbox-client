@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import { useAlert } from "@context/Alert";
 import { FormEvent, useState } from "react";
-import { IAxiosError, IDietaryTags, IFormData } from "types";
+import { IAxiosError, IItemFormData } from "types";
 import {
   axiosInstance,
   showErrorAlert,
@@ -17,8 +17,9 @@ export default function AddItem() {
   // Initial states
   const initialState = {
     name: "",
-    tags: "",
     price: 0,
+    file: undefined,
+    updatedTags: [],
     description: "",
     addableIngredients: "",
     removableIngredients: "",
@@ -29,34 +30,33 @@ export default function AddItem() {
   const { setAlerts } = useAlert();
   const { setVendors } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<IFormData>(initialState);
+  const [formData, setFormData] = useState<IItemFormData>(initialState);
 
   // Destructure form data
-  const { name, price, description, addableIngredients, removableIngredients } =
-    formData;
+  const {
+    file,
+    name,
+    price,
+    updatedTags,
+    description,
+    addableIngredients,
+    removableIngredients,
+  } = formData;
 
   // Handle submit
-  async function handleSubmit(
-    e: FormEvent,
-    dietaryTags: IDietaryTags,
-    file: File | undefined
-  ) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     // Create FormData instance
     const data = new FormData();
 
-    // Create tags string
-    const tags = Object.entries(dietaryTags)
-      .filter((dietaryTag) => dietaryTag[1] === true)
-      .map((dietaryTag) => dietaryTag[0])
-      .join(", ");
+    const tags = updatedTags.join(", ");
 
     // Append the data
-    data.append("file", file as File);
     data.append("name", name as string);
     data.append("tags", tags as string);
     data.append("price", price as string);
+    file && data.append("file", file as File);
     data.append("description", description as string);
     data.append("addableIngredients", addableIngredients as string);
     data.append("removableIngredients", removableIngredients as string);
