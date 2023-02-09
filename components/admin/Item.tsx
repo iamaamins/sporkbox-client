@@ -11,6 +11,7 @@ import {
   formatCurrencyToUSD,
   showErrorAlert,
   showSuccessAlert,
+  splitTags,
   updateVendors,
 } from "@utils/index";
 import ActionModal from "./ActionModal";
@@ -104,8 +105,8 @@ export default function Item() {
               src={item.image || vendor.restaurant.logo}
               width={16}
               height={10}
-              layout="responsive"
               objectFit="cover"
+              layout="responsive"
             />
           </div>
 
@@ -114,7 +115,7 @@ export default function Item() {
             <p className={styles.description}>{item.description}</p>
             <p className={styles.price}>{formatCurrencyToUSD(item.price)}</p>
             <p className={styles.tags}>
-              {item.tags.split(",").map((tag, index) => (
+              {splitTags(item.tags).map((tag, index) => (
                 <span key={index}>{tag}</span>
               ))}
             </p>

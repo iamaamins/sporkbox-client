@@ -509,13 +509,3 @@ export interface IScheduledRestaurantProps {
   isLoading: boolean;
   restaurants: IScheduledRestaurant[];
 }
-
-// export interface IItemFormData {
-//   name: string;
-//   tags: string[];
-//   price: number;
-//   image: string;
-//   description: string;
-//   addableIngredients?: string;
-//   removableIngredients?: string;
-// }

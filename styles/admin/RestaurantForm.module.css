@@ -79,16 +79,16 @@
 }
 
 .remove_logo {
+  z-index: 1;
   display: flex;
-  align-items: center;
+  cursor: pointer;
   font-weight: 400;
+  font-size: 0.9rem;
   color: var(--gray);
   padding: 4px 12px;
   border-radius: 2rem;
-  cursor: pointer;
-  z-index: 1;
   margin-top: 1.25rem;
-  font-size: 0.9rem;
+  align-items: center;
   border: 1px solid var(--gray);
 }
 
@@ -98,6 +98,8 @@
 
 .image {
   margin-top: 1.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--border_color);
 }
 
 .image img {

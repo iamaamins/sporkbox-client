@@ -209,10 +209,10 @@ export default function RestaurantForm({
         {logo && (
           <div className={styles.image} ref={logoRef}>
             <Image
-              src={logo as string}
+              src={logo}
               width={16}
               height={10}
-              objectFit="contain"
+              objectFit="cover"
               layout="responsive"
             />
           </div>

@@ -161,8 +161,8 @@ export default function Restaurant() {
                               src={item.image || vendor.restaurant.logo}
                               width={16}
                               height={10}
-                              layout="responsive"
                               objectFit="cover"
+                              layout="responsive"
                             />
                           </div>
                         </a>

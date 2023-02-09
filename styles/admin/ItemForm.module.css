@@ -123,6 +123,8 @@
 .image {
   position: relative;
   margin-top: 1.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--border_color);
 }
 
 .image img {
