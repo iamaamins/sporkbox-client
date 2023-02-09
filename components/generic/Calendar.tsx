@@ -105,8 +105,8 @@ export default function Calendar() {
                                 src={item.image || restaurant.logo}
                                 width={16}
                                 height={10}
-                                layout="responsive"
                                 objectFit="cover"
+                                layout="responsive"
                               />
 
                               {cartItems.map(

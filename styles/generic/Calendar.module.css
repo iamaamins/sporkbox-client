@@ -89,6 +89,8 @@
 .item_image {
   width: 30%;
   position: relative;
+  border-radius: 0.25rem;
+  border: 1px solid var(--border_color);
 }
 
 .item_image img {
