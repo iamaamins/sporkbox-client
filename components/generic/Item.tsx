@@ -10,6 +10,7 @@ import {
   formatCurrencyToUSD,
   convertDateToText,
   formatAddableIngredients,
+  splitTags,
 } from "@utils/index";
 import {
   IItem,
@@ -270,7 +271,7 @@ export default function Item() {
               </p>
               <p className={styles.item_description}>{item.description}</p>
               <p className={styles.tags}>
-                {item.tags.split(",").map((tag, index) => (
+                {splitTags(item.tags).map((tag, index) => (
                   <span key={index}>{tag}</span>
                 ))}
               </p>
