@@ -11,6 +11,7 @@ import {
   updateVendors,
   showSuccessAlert,
   splitTags,
+  tags,
 } from "@utils/index";
 import React, { FormEvent, useEffect, useState } from "react";
 
@@ -65,9 +66,11 @@ export default function EditItem() {
           image: item.image,
           currentTags: item.tags,
           description: item.description,
-          updatedTags: splitTags(item.tags),
           addableIngredients: item.addableIngredients,
           removableIngredients: item.removableIngredients,
+          updatedTags: splitTags(item.tags).filter((currTag) =>
+            tags.includes(currTag)
+          ),
         });
       }
     }
