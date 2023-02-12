@@ -1,6 +1,5 @@
 import axios, { AxiosError } from "axios";
 import { Dispatch } from "react";
-import moment from "moment-timezone";
 import { SetStateAction } from "react";
 import { NextRouter } from "next/router";
 import {
@@ -155,48 +154,6 @@ export async function handleRemoveFromFavorite(
     showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
   }
 }
-
-// Get future date in UTC as the restaurant
-// schedule date and delivery date has no timezone
-export function getFutureDate(dayToAdd: number) {
-  // Today
-  const today = new Date();
-
-  // Day number of current week sunday
-  const sunday = today.getUTCDate() - today.getUTCDay();
-
-  // Get future date in MS
-  const futureDate = today.setUTCDate(sunday + dayToAdd);
-
-  // Get future date without hours in MS
-  return new Date(futureDate).setUTCHours(0, 0, 0, 0);
-}
-
-// Get future dates in MS
-const nextSaturdayUTCTimestamp = getFutureDate(6);
-const followingWeekSaturdayUTCTimestamp = getFutureDate(12);
-
-// Current timestamp
-const now = Date.now();
-
-// Check if isDST
-const isDST = moment.tz(new Date(), "America/Los_Angeles").isDST();
-
-// Difference to make Friday 3pm Los Angeles time
-const MSToMakeFriday3PMLosAngelesTime = isDST ? 120 : 60 * 60000;
-
-// Get Friday 3pm Los Angeles timestamp
-const nextFriday3PMLosAngelesTimestamp =
-  nextSaturdayUTCTimestamp - MSToMakeFriday3PMLosAngelesTime;
-
-const followingWeekFriday3PMLosAngelesTimestamp =
-  followingWeekSaturdayUTCTimestamp - MSToMakeFriday3PMLosAngelesTime;
-
-// Cart item expiry timestamp
-export const expiresIn =
-  now < nextFriday3PMLosAngelesTimestamp
-    ? nextFriday3PMLosAngelesTimestamp
-    : followingWeekFriday3PMLosAngelesTimestamp;
 
 // Create text to slug
 export const createSlug = (text: string) =>
