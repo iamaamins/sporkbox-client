@@ -336,7 +336,16 @@ export const axiosInstance = axios.create({
 });
 
 // Dietary tags
-export const tags = ["pizza", "gluten free", "allergy free"];
+export const tags = [
+  "Vegan",
+  "Vegetarian",
+  "Gluten-Free",
+  "Nut-Free",
+  "Soy-Free",
+  "Dairy-Free",
+  "Contains Nuts",
+  "Contains Soy",
+];
 
 // Split tags
 export const splitTags = (tags: string) =>
