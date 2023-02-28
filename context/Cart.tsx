@@ -138,16 +138,14 @@ export default function CartProvider({ children }: IContextProviderProps) {
           ordersPayload,
         });
 
-        console.log(response);
-
-        // Remove cart items
-        setCartItems([]);
-        localStorage.removeItem(`cart-${user?._id}`);
-
         if (typeof response.data === "string") {
           // Push to the dashboard page
           location.assign(response.data);
         } else {
+          // Remove cart items
+          setCartItems([]);
+          localStorage.removeItem(`cart-${user?._id}`);
+
           // Update customer's active orders state
           setCustomerUpcomingOrders((currState) => ({
             ...currState,

@@ -10,11 +10,15 @@ import { IAxiosError } from "types";
 import { useAlert } from "@context/Alert";
 import { AiFillCheckCircle } from "react-icons/ai";
 import styles from "@styles/generic/CheckoutSuccess.module.css";
+import { useUser } from "@context/User";
+import { useCart } from "@context/Cart";
 
 export default function CheckoutSuccess() {
   // Hooks
   const router = useRouter();
+  const { user } = useUser();
   const { setAlerts } = useAlert();
+  const { setCartItems } = useCart();
   const [paidAmount, setPaidAmount] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -34,6 +38,10 @@ export default function CheckoutSuccess() {
 
       // Update state
       setPaidAmount(response.data);
+
+      // Remove cart items
+      setCartItems([]);
+      localStorage.removeItem(`cart-${user?._id}`);
     } catch (err) {
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
