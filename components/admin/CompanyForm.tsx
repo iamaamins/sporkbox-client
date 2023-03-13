@@ -17,6 +17,7 @@ export default function CompanyForm({
     city,
     state,
     zip,
+    shift,
     website,
     dailyBudget,
     addressLine1,
@@ -43,7 +44,7 @@ export default function CompanyForm({
       </div>
 
       <div className={styles.item}>
-        <select id="shift" onChange={handleChange}>
+        <select id="shift" value={shift} onChange={handleChange}>
           <option hidden value="Please select a shift">
             Please select a shift
           </option>

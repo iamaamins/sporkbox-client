@@ -239,10 +239,11 @@ export function updateCompanies(
             return {
               ...company,
               name: updatedCompany.name,
+              code: updatedCompany.code,
+              shift: updatedCompany.shift,
+              status: updatedCompany.status,
               website: updatedCompany.website,
               address: updatedCompany.address,
-              code: updatedCompany.code,
-              status: updatedCompany.status,
               dailyBudget: updatedCompany.dailyBudget,
             };
           } else {

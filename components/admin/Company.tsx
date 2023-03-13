@@ -134,6 +134,9 @@ export default function Company() {
             <div className={styles.details}>
               <h2 className={styles.company_name}>{company.name}</h2>
               <p>
+                <span>Shift:</span> {company.shift}
+              </p>
+              <p>
                 <span>Code:</span> {company.code}
               </p>
               <p>
