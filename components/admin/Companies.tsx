@@ -22,6 +22,7 @@ export default function Companies() {
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Shift</th>
                 <th className={styles.hide_on_mobile}>Website</th>
                 <th className={styles.hide_on_mobile}>Code</th>
                 <th>Budget/day</th>
@@ -36,6 +37,7 @@ export default function Companies() {
                       <a>{company.name}</a>
                     </Link>
                   </td>
+                  <td>{company.shift}</td>
                   <td className={styles.hide_on_mobile}>{company.website}</td>
                   <td className={styles.hide_on_mobile}>{company.code}</td>
                   <td>${company.dailyBudget}</td>
