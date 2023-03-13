@@ -23,7 +23,7 @@ export default function CompanyForm({
     addressLine2,
   } = formData;
 
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+  function handleChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     // Id and value
     const id = e.target.id;
     const value = e.target.value;
@@ -40,6 +40,16 @@ export default function CompanyForm({
       <div className={styles.item}>
         <label htmlFor="name">Name</label>
         <input type="text" id="name" value={name} onChange={handleChange} />
+      </div>
+
+      <div className={styles.item}>
+        <select id="shift" onChange={handleChange}>
+          <option hidden value="Please select a shift">
+            Please select a shift
+          </option>
+          <option value="Day">Day</option>
+          <option value="Night">Night</option>
+        </select>
       </div>
 
       <div className={styles.item}>

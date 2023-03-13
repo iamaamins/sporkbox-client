@@ -21,6 +21,7 @@ export default function AddCompany() {
     code: "",
     city: "",
     state: "",
+    shift: "",
     website: "",
     dailyBudget: 0,
     addressLine1: "",
