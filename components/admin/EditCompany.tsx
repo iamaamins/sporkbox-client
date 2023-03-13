@@ -3,8 +3,8 @@ import { useData } from "@context/Data";
 import { useRouter } from "next/router";
 import CompanyForm from "./CompanyForm";
 import { useAlert } from "@context/Alert";
-import { IAxiosError, ICompany, ICompanyFormData } from "types";
 import styles from "@styles/admin/EditCompany.module.css";
+import { IAxiosError, ICompany, ICompanyFormData } from "types";
 import React, { FormEvent, useEffect, useState } from "react";
 import {
   axiosInstance,
@@ -21,6 +21,7 @@ export default function EditCompany() {
     city: "",
     state: "",
     zip: "",
+    shift: "",
     website: "",
     dailyBudget: 0,
     addressLine1: "",
@@ -49,6 +50,7 @@ export default function EditCompany() {
         setFormData({
           name: company.name,
           code: company.code,
+          shift: company.shift,
           zip: company.address.zip,
           website: company.website,
           city: company.address.city,

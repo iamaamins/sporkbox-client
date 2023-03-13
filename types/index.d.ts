@@ -84,6 +84,7 @@ export interface ICustomerFavoriteItem {
 export interface ICompany {
   _id: string;
   name: string;
+  shift: string;
   code: string;
   status: string;
   website: string;
@@ -387,6 +388,7 @@ interface IFormProps {
 export interface ICompanyFormData {
   zip: string;
   name: string;
+  shift: string;
   code: string;
   city: string;
   state: string;
