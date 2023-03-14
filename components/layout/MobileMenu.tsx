@@ -13,6 +13,7 @@ import { useData } from "@context/Data";
 import { useUser } from "@context/User";
 import { IoLogIn } from "react-icons/io5";
 import { FaUserAlt } from "react-icons/fa";
+import { CgProfile } from "react-icons/cg";
 import { IAxiosError, IMobileMenuProps } from "types";
 import { BsFillCalendar2DateFill } from "react-icons/bs";
 import styles from "@styles/layout/MobileMenu.module.css";
@@ -65,6 +66,17 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
     <div className={`${styles.mobile_menu} ${isOpen && styles.open}`}>
       <ul className={styles.nav_items}>
         {/* Customer nav items */}
+        <li
+          className={!isCustomer ? styles.hide : ""}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href={`/profile`}>
+            <a>
+              <CgProfile /> Profile
+            </a>
+          </Link>
+        </li>
+
         <li
           className={!date || !isCustomer ? styles.hide : ""}
           onClick={() => setIsOpen(false)}

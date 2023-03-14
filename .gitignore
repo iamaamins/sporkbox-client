@@ -20,6 +20,7 @@ pages/test.tsx
 # misc
 .DS_Store
 *.pem
+notes.txt
 
 # debug
 npm-debug.log*

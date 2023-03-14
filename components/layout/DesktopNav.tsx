@@ -52,7 +52,15 @@ export default function DesktopNav() {
       </div>
 
       <ul className={styles.navigation}>
-        <li className={isAdmin || !isCustomer ? styles.hide : ""}>
+        <li className={!isCustomer ? styles.hide : ""}>
+          <Link href="/profile">
+            <a className={pathName === "/profile" ? styles.active : ""}>
+              Profile
+            </a>
+          </Link>
+        </li>
+
+        <li className={!isCustomer ? styles.hide : ""}>
           <Link href="/dashboard">
             <a className={pathName === "/dashboard" ? styles.active : ""}>
               Dashboard
@@ -92,14 +100,6 @@ export default function DesktopNav() {
           </Link>
         </li>
 
-        <li className={!isAdmin ? styles.hide : ""}>
-          <Link href="/project-scope">
-            <a className={pathName === "/project-scope" ? styles.active : ""}>
-              Project scope
-            </a>
-          </Link>
-        </li>
-
         {/* Admin nav items */}
         <li className={!isAdmin ? styles.hide : ""}>
           <Link href="/admin">
@@ -130,18 +130,6 @@ export default function DesktopNav() {
             </a>
           </Link>
         </li>
-
-        {/* <li className={!isAdmin ? styles.hide : ""}>
-          <Link href="/admin/restaurants/scheduled">
-            <a
-              className={
-                pathName === "/admin/restaurants/scheduled" ? styles.active : ""
-              }
-            >
-              Scheduled
-            </a>
-          </Link>
-        </li> */}
 
         <li className={!isAdmin ? styles.hide : ""}>
           <Link href="/admin/companies">
