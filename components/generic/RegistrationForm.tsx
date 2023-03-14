@@ -16,6 +16,7 @@ export default function RegistrationForm() {
     lastName: "",
     email: "",
     password: "",
+    companyCode: "",
     confirmPassword: "",
   };
 
@@ -28,7 +29,8 @@ export default function RegistrationForm() {
 
   // Destructure form data and check
   // If there is an empty field
-  const { firstName, lastName, email, password, confirmPassword } = formData;
+  const { firstName, lastName, email, password, companyCode, confirmPassword } =
+    formData;
 
   // Check if passwords match
   const passwordsMatch = password === confirmPassword;
@@ -98,11 +100,21 @@ export default function RegistrationForm() {
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="email">Company email</label>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             id="email"
             value={email}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className={styles.item}>
+          <label htmlFor="companyCode">Company code</label>
+          <input
+            type="text"
+            id="companyCode"
+            value={companyCode}
             onChange={handleChange}
           />
         </div>

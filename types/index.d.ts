@@ -8,6 +8,7 @@ export interface IUser {
   role: string;
   status: string;
   createdAt: string;
+  shifts?: string[];
   company?: ICompany;
   restaurant?: IRestaurant;
 }
