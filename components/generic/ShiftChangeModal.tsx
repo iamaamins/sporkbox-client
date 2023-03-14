@@ -36,9 +36,22 @@ export default function ShiftChangeModal() {
       // Show loader
       setIsChangingShift(true);
 
+      // Format shifts
+      const formattedShifts = Object.entries(shifts)
+        .filter((shift) => shift[1] === true)
+        .map((shift) => shift[0]);
+
+      console.log(formattedShifts);
+
       // Make request to the backend
-      const response = await axiosInstance.post("/user/change-shift");
+      const response = await axiosInstance.patch(
+        `/customers/${user?._id}/${user?.companies[0].code}/change-customer-shift`,
+        { shifts: formattedShifts }
+      );
+
+      console.log(response.data);
     } catch (err) {
+      console.log(err);
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
@@ -63,9 +76,9 @@ export default function ShiftChangeModal() {
             <label htmlFor={shift}>{shift}</label>
           </div>
         ))}
-      </form>
 
-      <SubmitButton text="Submit" isLoading={isChangingShift} />
+        <SubmitButton text="Submit" isLoading={isChangingShift} />
+      </form>
     </div>
   );
 }

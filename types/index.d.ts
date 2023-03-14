@@ -9,7 +9,7 @@ export interface IUser {
   status: string;
   createdAt: string;
   shifts?: string[];
-  company?: ICompany;
+  companies: ICompany[];
   restaurant?: IRestaurant;
 }
 
