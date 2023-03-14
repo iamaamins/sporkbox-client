@@ -1,12 +1,12 @@
-import { axiosInstance, showErrorAlert, showSuccessAlert } from "@utils/index";
-import { useData } from "@context/Data";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
+import { useData } from "@context/Data";
 import { useAlert } from "@context/Alert";
 import SubmitButton from "../layout/SubmitButton";
 import { IAxiosError, IFormData, IRestaurant } from "types";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import styles from "@styles/admin/ScheduleRestaurantsModal.module.css";
+import { axiosInstance, showErrorAlert, showSuccessAlert } from "@utils/index";
 
 export default function ScheduleRestaurantsModal() {
   // Initial state

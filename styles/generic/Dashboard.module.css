@@ -6,20 +6,6 @@
   margin-bottom: 1rem;
 }
 
-.details {
-  margin-bottom: 1.5rem;
-}
-
-.details p {
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-}
-
-.details p span {
-  font-weight: 400;
-  color: var(--gray);
-}
-
 .active_orders {
   margin-bottom: 2rem;
 }

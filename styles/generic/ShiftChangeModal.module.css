@@ -1,0 +1,15 @@
+.shift_change_modal form {
+  margin-bottom: 0.75rem;
+}
+
+.shift_change_modal form div {
+  margin-bottom: 1rem;
+}
+
+.shift_change_modal form div:last-child {
+  margin-bottom: 0rem;
+}
+
+.shift_change_modal form div input {
+  margin-right: 0.5rem;
+}
