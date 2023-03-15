@@ -3,19 +3,19 @@ import { Dispatch } from "react";
 import { SetStateAction } from "react";
 import { NextRouter } from "next/router";
 import {
-  IVendor,
-  IRestaurant,
-  Groups,
-  IVendors,
-  ICustomerFavoriteItems,
   IOrder,
-  IOrdersGroup,
   IUser,
-  ICustomers,
   IAlert,
-  ICompanies,
+  Groups,
+  IVendor,
+  IVendors,
   ICompany,
+  ICustomers,
+  ICompanies,
+  IRestaurant,
   IAxiosError,
+  IOrdersGroup,
+  ICustomerFavoriteItems,
 } from "types";
 
 // Current year
@@ -217,6 +217,7 @@ export function updateCustomers(
           lastName: updatedCustomer.lastName,
           email: updatedCustomer.email,
           status: updatedCustomer.status,
+          companies: updatedCustomer.companies,
         };
       } else {
         return customer;

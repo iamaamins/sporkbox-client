@@ -1,15 +1,17 @@
 import { AxiosError } from "axios";
-import { IAxiosError } from "types";
+import { IAxiosError, IShiftChangeModalProps } from "types";
+import { useUser } from "@context/User";
 import { useAlert } from "@context/Alert";
 import { ChangeEvent, FormEvent, useState } from "react";
 import SubmitButton from "@components/layout/SubmitButton";
 import { axiosInstance, showErrorAlert } from "@utils/index";
 import styles from "@styles/generic/ShiftChangeModal.module.css";
-import { useUser } from "@context/User";
 
-export default function ShiftChangeModal() {
+export default function ShiftChangeModal({
+  setShowShiftChangeModal,
+}: IShiftChangeModalProps) {
   // Hooks
-  const { user } = useUser();
+  const { user, setUser } = useUser();
   const { setAlerts } = useAlert();
   const [isChangingShift, setIsChangingShift] = useState(false);
   const [shifts, setShifts] = useState({
@@ -41,15 +43,21 @@ export default function ShiftChangeModal() {
         .filter((shift) => shift[1] === true)
         .map((shift) => shift[0]);
 
-      console.log(formattedShifts);
-
       // Make request to the backend
       const response = await axiosInstance.patch(
-        `/customers/${user?._id}/${user?.companies[0].code}/change-customer-shift`,
+        `/customers/${user?._id}/${
+          user?.companies![0].code
+        }/change-customer-shift`,
         { shifts: formattedShifts }
       );
 
-      console.log(response.data);
+      // Add the updated companies to the user
+      setUser(
+        (currState) => currState && { ...currState, companies: response.data }
+      );
+
+      // Close the modal
+      setShowShiftChangeModal(false);
     } catch (err) {
       console.log(err);
       // Show error alert

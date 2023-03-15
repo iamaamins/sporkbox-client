@@ -9,18 +9,13 @@ export interface IUser {
   status: string;
   createdAt: string;
   shifts?: string[];
-  companies: ICompany[];
+  companies?: ICompany[];
   restaurant?: IRestaurant;
 }
 
 export interface IVendor extends IUser {
   status: string;
   restaurant: IRestaurant;
-}
-
-export interface ICustomers {
-  data: IUser[];
-  isLoading: boolean;
 }
 
 export interface IRestaurant {
@@ -511,4 +506,8 @@ export interface IAxiosError {
 export interface IScheduledRestaurantProps {
   isLoading: boolean;
   restaurants: IScheduledRestaurant[];
+}
+
+export interface IShiftChangeModalProps {
+  setShowShiftChangeModal: Dispatch<SetStateAction<boolean>>;
 }

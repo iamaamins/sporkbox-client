@@ -6,12 +6,13 @@ import styles from "@styles/generic/Profile.module.css";
 import ModalContainer from "@components/layout/ModalContainer";
 
 export default function Profile() {
+  // Hooks
   const { user } = useUser();
   const [showShiftChangeModal, setShowShiftChangeModal] = useState(false);
 
   return (
     <section className={styles.profile}>
-      {user && (
+      {user && user.companies && (
         <div className={styles.details}>
           <h2>Welcome {user.firstName}</h2>
           <p>
@@ -53,9 +54,11 @@ export default function Profile() {
       )}
 
       <ModalContainer
-        component={<ShiftChangeModal />}
         showModalContainer={showShiftChangeModal}
         setShowModalContainer={setShowShiftChangeModal}
+        component={
+          <ShiftChangeModal setShowShiftChangeModal={setShowShiftChangeModal} />
+        }
       />
     </section>
   );
