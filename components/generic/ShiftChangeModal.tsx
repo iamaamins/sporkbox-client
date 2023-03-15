@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import { IAxiosError, IShiftChangeModalProps } from "types";
 import { useUser } from "@context/User";
 import { useAlert } from "@context/Alert";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import SubmitButton from "@components/layout/SubmitButton";
 import { axiosInstance, showErrorAlert } from "@utils/index";
 import styles from "@styles/generic/ShiftChangeModal.module.css";
@@ -19,8 +19,20 @@ export default function ShiftChangeModal({
     night: false,
   });
 
-  // Destructure data
-  const { day, night } = shifts;
+  useEffect(() => {
+    if (user && user.companies) {
+      // Find if a shift exists
+      const doesShiftExist = (shift: string) =>
+        user?.companies?.find((company) => company.shift === shift);
+
+      // Update shift
+      setShifts((currState) => ({
+        ...currState,
+        day: doesShiftExist("day") ? true : false,
+        night: doesShiftExist("night") ? true : false,
+      }));
+    }
+  }, [user]);
 
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -59,7 +71,6 @@ export default function ShiftChangeModal({
       // Close the modal
       setShowShiftChangeModal(false);
     } catch (err) {
-      console.log(err);
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
