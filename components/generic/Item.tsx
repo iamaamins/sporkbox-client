@@ -29,6 +29,7 @@ export default function Item() {
     price: 0,
     image: "",
     quantity: 1,
+    companyId: "",
     addonPrice: 0,
     restaurantId: "",
     deliveryDate: 0,
@@ -60,7 +61,8 @@ export default function Item() {
         (upcomingRestaurant) =>
           convertDateToMS(upcomingRestaurant.date) ===
             +(router.query.date as string) &&
-          upcomingRestaurant._id === router.query.restaurant
+          upcomingRestaurant._id === router.query.restaurant &&
+          upcomingRestaurant.company.shift === router.query.shift
       );
 
       if (upcomingRestaurant) {
@@ -90,6 +92,7 @@ export default function Item() {
             addableIngredients: [],
             removableIngredients: [],
             restaurantId: upcomingRestaurant._id,
+            companyId: upcomingRestaurant.company._id,
             image: item.image || upcomingRestaurant.logo,
           };
 

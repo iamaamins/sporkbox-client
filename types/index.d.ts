@@ -41,6 +41,7 @@ export interface IScheduledRestaurant {
   company: {
     _id: string;
     name: string;
+    shift: string;
   };
   status: string;
   scheduleId: string;
@@ -204,6 +205,7 @@ export interface ICartItem {
   price: number;
   image: string;
   quantity: number;
+  companyId: string;
   addonPrice: number;
   restaurantId: string;
   deliveryDate: number;

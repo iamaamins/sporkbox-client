@@ -123,6 +123,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
       const ordersPayload = cartItems.map((cartItem) => ({
         itemId: cartItem._id,
         quantity: cartItem.quantity,
+        companyId: cartItem.companyId,
         restaurantId: cartItem.restaurantId,
         deliveryDate: cartItem.deliveryDate,
         addedIngredients: cartItem.addableIngredients,

@@ -87,7 +87,7 @@ export default function Calendar() {
                     {restaurant.items.map((item) => (
                       <div key={item._id}>
                         <Link
-                          href={`/place-order/${router.query.date}/${restaurant._id}/${item._id}`}
+                          href={`/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`}
                         >
                           <a className={styles.item}>
                             <div className={styles.item_details}>
