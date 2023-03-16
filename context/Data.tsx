@@ -16,7 +16,6 @@ import {
   ICustomerFavoriteItems,
   ICustomerUpcomingOrders,
   ICustomerDeliveredOrders,
-  ICustomer,
 } from "types";
 import {
   axiosInstance,

@@ -32,3 +32,10 @@
   background: var(--orange);
   color: var(--almost_white);
 }
+
+@media (min-width: 768px) {
+  .profile {
+    max-width: 34rem;
+    margin: 0 auto;
+  }
+}

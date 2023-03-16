@@ -178,6 +178,7 @@ export interface IDataContext {
   deliveredOrdersGroups: IOrdersGroup[];
   allUpcomingOrders: IAllUpcomingOrders;
   allDeliveredOrders: IAllDeliveredOrders;
+  budgetLeftOnShifts: IBudgetLeftOnShift[];
   upcomingRestaurants: IUpcomingRestaurants;
   scheduledRestaurants: IScheduledRestaurants;
   customerFavoriteItems: ICustomerFavoriteItems;
@@ -185,7 +186,6 @@ export interface IDataContext {
   upcomingDatesAndShifts: IUpcomingDateAndShift[];
   customerUpcomingOrders: ICustomerUpcomingOrders;
   customerDeliveredOrders: ICustomerDeliveredOrders;
-  budgetLeftOnShifts: IBudgetLeftOnShift[];
   setCompanies: Dispatch<SetStateAction<ICompanies>>;
   setCustomers: Dispatch<SetStateAction<ICustomers>>;
   setAllUpcomingOrders: Dispatch<SetStateAction<IAllUpcomingOrders>>;
@@ -246,8 +246,8 @@ export interface IOrder {
     address: string;
   };
   status: string;
-  hasReviewed: boolean;
   createdAt: string;
+  hasReviewed: boolean;
   item: {
     _id: string;
     name: string;
