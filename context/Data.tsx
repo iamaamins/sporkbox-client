@@ -5,17 +5,17 @@ import {
   IVendors,
   ICompanies,
   ICustomers,
+  IAxiosError,
   IDataContext,
   ICustomerOrder,
   IAllUpcomingOrders,
   IAllDeliveredOrders,
-  IContextProviderProps,
+  IUpcomingRestaurants,
   IScheduledRestaurants,
+  IContextProviderProps,
   ICustomerFavoriteItems,
   ICustomerUpcomingOrders,
   ICustomerDeliveredOrders,
-  IUpcomingRestaurants,
-  IAxiosError,
 } from "types";
 import {
   axiosInstance,
@@ -77,23 +77,41 @@ export default function DataProvider({ children }: IContextProviderProps) {
   // Group delivered orders by company and delivery date
   const deliveredOrdersGroups = createOrdersGroups(allDeliveredOrders.data);
 
-  // Next week dates
-  const nextWeekDates =
+  // Upcoming dates and shifts
+  const upcomingDatesAndShifts =
     !upcomingRestaurants.isLoading && upcomingRestaurants.data.length > 0
       ? upcomingRestaurants.data
-          .map((upcomingRestaurant) => convertDateToMS(upcomingRestaurant.date))
-          .filter((date, index, dates) => dates.indexOf(date) === index)
+          .map((upcomingRestaurant) => ({
+            date: convertDateToMS(upcomingRestaurant.date),
+            shift: upcomingRestaurant.company.shift,
+          }))
+          .filter(
+            (dayAndShift, index, dayAndShifts) =>
+              dayAndShifts.findIndex(
+                (element) =>
+                  element.date === dayAndShift.date &&
+                  element.shift === dayAndShift.shift
+              ) === index
+          )
       : [];
 
-  // Next week budget and dates
-  const nextWeekBudgetAndDates =
-    isCustomer && nextWeekDates.length > 0 && !customerUpcomingOrders.isLoading
-      ? nextWeekDates.map((nextWeekDate) => {
+  // Budget left on shifts
+  const budgetLeftOnShifts =
+    isCustomer &&
+    upcomingDatesAndShifts.length > 0 &&
+    !customerUpcomingOrders.isLoading
+      ? upcomingDatesAndShifts.map((upcomingDateAndShift) => {
           // Find the orders those match the date
           const upcomingOrders = customerUpcomingOrders.data.filter(
             (customerUpcomingOrder) =>
               convertDateToMS(customerUpcomingOrder.delivery.date) ===
-              nextWeekDate
+                upcomingDateAndShift.date &&
+              customerUpcomingOrder.company.shift === upcomingDateAndShift.shift
+          );
+
+          // Find company
+          const company = user?.companies?.find(
+            (company) => company.shift === upcomingDateAndShift.shift
           );
 
           // If upcoming orders are found on the date
@@ -106,23 +124,70 @@ export default function DataProvider({ children }: IContextProviderProps) {
 
             // Return the date and company budget - upcoming orders total
             return {
-              nextWeekDate,
+              ...upcomingDateAndShift,
               budgetOnHand: formatNumberToUS(
-                user?.company?.dailyBudget! - upcomingOrdersTotal
+                company?.shiftBudget! - upcomingOrdersTotal
               ),
             };
           } else {
             // If no upcoming orders are found with the
             // date then return the date and company budget
             return {
-              nextWeekDate,
-              budgetOnHand: user?.company?.dailyBudget!,
+              ...upcomingDateAndShift,
+              budgetOnHand: company?.shiftBudget!,
             };
           }
         })
       : [];
 
+  // TODO: Remove these
+  // // Next week dates
+  // const nextWeekDates =
+  //   !upcomingRestaurants.isLoading && upcomingRestaurants.data.length > 0
+  //     ? upcomingRestaurants.data
+  //         .map((upcomingRestaurant) => convertDateToMS(upcomingRestaurant.date))
+  //         .filter((date, index, dates) => dates.indexOf(date) === index)
+  //     : [];
+
+  // // Next week budget and dates
+  // const nextWeekBudgetAndDates =
+  //   isCustomer && nextWeekDates.length > 0 && !customerUpcomingOrders.isLoading
+  //     ? nextWeekDates.map((nextWeekDate) => {
+  //         // Find the orders those match the date
+  //         const upcomingOrders = customerUpcomingOrders.data.filter(
+  //           (customerUpcomingOrder) =>
+  //             convertDateToMS(customerUpcomingOrder.delivery.date) ===
+  //             nextWeekDate
+  //         );
+
+  //         // If upcoming orders are found on the date
+  //         if (upcomingOrders.length > 0) {
+  //           // Calculate the upcoming orders total
+  //           const upcomingOrdersTotal = upcomingOrders.reduce(
+  //             (acc, order) => acc + order.item.total,
+  //             0
+  //           );
+
+  //           // Return the date and company budget - upcoming orders total
+  //           return {
+  //             nextWeekDate,
+  //             budgetOnHand: formatNumberToUS(
+  //               user?.company?.dailyBudget! - upcomingOrdersTotal
+  //             ),
+  //           };
+  //         } else {
+  //           // If no upcoming orders are found with the
+  //           // date then return the date and company budget
+  //           return {
+  //             nextWeekDate,
+  //             budgetOnHand: user?.company?.dailyBudget!,
+  //           };
+  //         }
+  //       })
+  //     : [];
+
   // Get admin data
+
   useEffect(() => {
     // Get admin data
     async function getAdminData() {
@@ -340,12 +405,13 @@ export default function DataProvider({ children }: IContextProviderProps) {
         companies,
         allOrders,
         setCompanies,
-        nextWeekDates,
         customers,
         setCustomers,
         allUpcomingOrders,
         customerAllOrders,
+        budgetLeftOnShifts,
         allDeliveredOrders,
+        upcomingRestaurants,
         setAllUpcomingOrders,
         scheduledRestaurants,
         customerFavoriteItems,
@@ -353,9 +419,8 @@ export default function DataProvider({ children }: IContextProviderProps) {
         deliveredOrdersGroups,
         setAllDeliveredOrders,
         customerUpcomingOrders,
-        nextWeekBudgetAndDates,
+        upcomingDatesAndShifts,
         customerDeliveredOrders,
-        upcomingRestaurants,
         setScheduledRestaurants,
         setCustomerFavoriteItems,
         setCustomerUpcomingOrders,

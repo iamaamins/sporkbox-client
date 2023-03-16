@@ -24,16 +24,16 @@ import { currentYear, axiosInstance, showErrorAlert } from "@utils/index";
 export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
   // Hooks
   const { setAlerts } = useAlert();
-  const { nextWeekDates } = useData();
+  const { upcomingDatesAndShifts } = useData();
   const [date, setDate] = useState<number>();
   const { isAdmin, isVendor, isCustomer, setUser } = useUser();
 
   // Get first scheduled date of next week
   useEffect(() => {
-    if (nextWeekDates.length > 0) {
-      setDate(nextWeekDates[0]);
+    if (upcomingDatesAndShifts.length > 0) {
+      setDate(upcomingDatesAndShifts[0].date);
     }
-  }, [nextWeekDates]);
+  }, [upcomingDatesAndShifts]);
 
   // Disable body scroll if MobileMenu is open
   useEffect(() => {

@@ -19,7 +19,7 @@ export default function CompanyForm({
     zip,
     shift,
     website,
-    dailyBudget,
+    shiftBudget,
     addressLine1,
     addressLine2,
   } = formData;
@@ -32,7 +32,7 @@ export default function CompanyForm({
     // Update state
     setFormData((currState) => ({
       ...currState,
-      [id]: id === "dailyBudget" ? +value : value,
+      [id]: id === "shiftBudget" ? +value : value,
     }));
   }
 
@@ -106,11 +106,11 @@ export default function CompanyForm({
       </div>
 
       <div className={styles.item}>
-        <label htmlFor="dailyBudget">Daily budget</label>
+        <label htmlFor="shiftBudget">Daily budget</label>
         <input
           type="number"
-          id="dailyBudget"
-          value={dailyBudget}
+          id="shiftBudget"
+          value={shiftBudget}
           onChange={handleChange}
         />
       </div>

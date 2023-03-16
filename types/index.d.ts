@@ -93,7 +93,7 @@ export interface ICompany {
     addressLine2?: string;
   };
   createdAt: string;
-  dailyBudget: number;
+  shiftBudget: number;
 }
 
 export interface IContextProviderProps {
@@ -153,8 +153,12 @@ export interface ICustomers extends IIsLoading {
   data: IUser[];
 }
 
-export interface INextWeekBudgetAndDates {
-  nextWeekDate: number;
+interface IUpcomingDateAndShift {
+  date: number;
+  shift: string;
+}
+
+export interface IBudgetLeftOnShift extends IUpcomingDateAndShift {
   budgetOnHand: number;
 }
 
@@ -162,7 +166,6 @@ export interface IDataContext {
   vendors: IVendors;
   allOrders: IOrder[];
   companies: ICompanies;
-  nextWeekDates: number[];
   customers: ICustomers;
   customerAllOrders: ICustomerOrder[];
   upcomingOrdersGroups: IOrdersGroup[];
@@ -173,9 +176,10 @@ export interface IDataContext {
   scheduledRestaurants: IScheduledRestaurants;
   customerFavoriteItems: ICustomerFavoriteItems;
   setVendors: Dispatch<SetStateAction<IVendors>>;
+  upcomingDatesAndShifts: IUpcomingDateAndShift[];
   customerUpcomingOrders: ICustomerUpcomingOrders;
   customerDeliveredOrders: ICustomerDeliveredOrders;
-  nextWeekBudgetAndDates: INextWeekBudgetAndDates[];
+  budgetLeftOnShifts: IBudgetLeftOnShift[];
   setCompanies: Dispatch<SetStateAction<ICompanies>>;
   setCustomers: Dispatch<SetStateAction<ICustomers>>;
   setAllUpcomingOrders: Dispatch<SetStateAction<IAllUpcomingOrders>>;
@@ -264,6 +268,9 @@ export interface ICustomerOrder {
   };
   delivery: {
     date: string;
+  };
+  company: {
+    shift: string;
   };
   restaurant: {
     _id: string;
@@ -391,7 +398,7 @@ export interface ICompanyFormData {
   city: string;
   state: string;
   website: string;
-  dailyBudget: number;
+  shiftBudget: number;
   addressLine1: string;
   addressLine2?: string;
 }

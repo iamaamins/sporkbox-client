@@ -245,7 +245,7 @@ export function updateCompanies(
               status: updatedCompany.status,
               website: updatedCompany.website,
               address: updatedCompany.address,
-              dailyBudget: updatedCompany.dailyBudget,
+              shiftBudget: updatedCompany.shiftBudget,
             };
           } else {
             return company;

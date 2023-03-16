@@ -40,7 +40,7 @@ export default function Companies() {
                   <td>{company.shift}</td>
                   <td className={styles.hide_on_mobile}>{company.website}</td>
                   <td className={styles.hide_on_mobile}>{company.code}</td>
-                  <td>${company.dailyBudget}</td>
+                  <td>${company.shiftBudget}</td>
                 </tr>
               ))}
             </tbody>

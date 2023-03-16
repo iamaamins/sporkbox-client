@@ -51,8 +51,9 @@ export default function Company() {
         customers.data
           .filter(
             (customer) =>
-              customer.company?._id === router.query.company &&
-              customer.status === "ACTIVE"
+              customer.companies?.some(
+                (company) => company._id === router.query.company
+              ) && customer.status === "ACTIVE"
           )
           .sort(sortByLastName)
       );
@@ -62,8 +63,9 @@ export default function Company() {
         customers.data
           .filter(
             (customer) =>
-              customer.company?._id === router.query.company &&
-              customer.status === "ARCHIVED"
+              customer.companies?.some(
+                (company) => company._id === router.query.company
+              ) && customer.status === "ARCHIVED"
           )
           .sort(sortByLastName)
       );
@@ -140,7 +142,7 @@ export default function Company() {
                 <span>Code:</span> {company.code}
               </p>
               <p>
-                <span>Daily budget:</span> USD ${company.dailyBudget}
+                <span>Daily budget:</span> USD ${company.shiftBudget}
               </p>
               <p>
                 <span>Address:</span>{" "}

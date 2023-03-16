@@ -23,7 +23,7 @@ export default function AddCompany() {
     state: "",
     shift: "",
     website: "",
-    dailyBudget: 0,
+    shiftBudget: 0,
     addressLine1: "",
     addressLine2: "",
   };

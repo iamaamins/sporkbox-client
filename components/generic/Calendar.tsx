@@ -16,29 +16,34 @@ import styles from "@styles/generic/Calendar.module.css";
 
 export default function Calendar() {
   // Hooks
-  const { user } = useUser();
   const router = useRouter();
   const { cartItems } = useCart();
-  const { nextWeekDates, upcomingRestaurants } = useData();
+  const { upcomingDatesAndShifts, upcomingRestaurants } = useData();
   const [restaurants, setRestaurants] = useState<IUpcomingRestaurant[]>([]);
 
   // Get restaurants for a date
   useEffect(() => {
-    if (nextWeekDates.length > 0 && router.isReady) {
+    if (upcomingDatesAndShifts.length > 0 && router.isReady) {
       // Next week date
-      const nextWeekDate = nextWeekDates.find(
-        (nextWeekDate) => nextWeekDate.toString() === router.query.date
+      const upcomingDateAndShift = upcomingDatesAndShifts.find(
+        (upcomingDateAndShift) =>
+          upcomingDateAndShift.date.toString() === router.query.date
       );
 
-      // Update restaurants state
-      setRestaurants(
-        upcomingRestaurants.data.filter(
-          (upcomingRestaurant) =>
-            convertDateToMS(upcomingRestaurant.date) === nextWeekDate
-        )
-      );
+      if (upcomingDateAndShift) {
+        // Update restaurants state
+        setRestaurants(
+          upcomingRestaurants.data.filter(
+            (upcomingRestaurant) =>
+              convertDateToMS(upcomingRestaurant.date) ===
+              upcomingDateAndShift.date
+          )
+        );
+      }
     }
-  }, [nextWeekDates, router]);
+  }, [upcomingDatesAndShifts, router]);
+
+  // console.log(upcomingDatesAndShifts);
 
   return (
     <section className={styles.calendar}>
@@ -49,38 +54,47 @@ export default function Calendar() {
         upcomingRestaurants.data.length === 0 && <h2>No restaurants</h2>}
 
       {/* If there are restaurant groups */}
-      {nextWeekDates.length > 0 && (
+      {upcomingDatesAndShifts.length > 0 && (
         <>
           {/* Show next week's and scheduled date */}
           <div className={styles.title_and_controller}>
             <h2 className={styles.calendar_title}>Upcoming week</h2>
 
             <div className={styles.controller}>
-              {nextWeekDates.map((nextWeekDate) => (
-                <div key={nextWeekDate}>
-                  <Link href={`/place-order/${nextWeekDate}`}>
-                    <a
-                      key={nextWeekDate}
-                      className={
-                        nextWeekDate.toString() === router.query.date
-                          ? styles.active
-                          : ""
-                      }
-                    >
-                      <span>{getDate(nextWeekDate)}</span>
-                      <span>{getDay(nextWeekDate)}</span>
-                    </a>
-                  </Link>
-                </div>
-              ))}
+              {/* TODO: Remove the filter */}
+              {upcomingDatesAndShifts
+                .filter(
+                  (upcomingDateAndShift, index, array) =>
+                    array.findIndex(
+                      (element) => element.date === upcomingDateAndShift.date
+                    ) === index
+                )
+                .map((upcomingDateAndShift, index) => (
+                  <div key={index}>
+                    <Link href={`/place-order/${upcomingDateAndShift.date}`}>
+                      <a
+                        key={index}
+                        className={
+                          upcomingDateAndShift.date.toString() ===
+                          router.query.date
+                            ? styles.active
+                            : ""
+                        }
+                      >
+                        <span>{getDate(upcomingDateAndShift.date)}</span>
+                        <span>{getDay(upcomingDateAndShift.date)}</span>
+                      </a>
+                    </Link>
+                  </div>
+                ))}
             </div>
           </div>
 
           {restaurants.length > 0 && (
             <>
               {/* Show the scheduled restaurants */}
-              {restaurants.map((restaurant) => (
-                <div key={restaurant._id} className={styles.restaurant}>
+              {restaurants.map((restaurant, index) => (
+                <div key={index} className={styles.restaurant}>
                   <h2 className={styles.restaurant_name}>{restaurant.name}</h2>
 
                   <div className={styles.items}>
