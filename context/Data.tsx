@@ -43,7 +43,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
 
   // Hooks
   const { setAlerts } = useAlert();
-  const { isAdmin, isCustomer, user } = useUser();
+  const { isAdmin, isCustomer, customer } = useUser();
   const [allUpcomingOrders, setAllUpcomingOrders] =
     useState<IAllUpcomingOrders>(initialState);
   const [scheduledRestaurants, setScheduledRestaurants] =
@@ -110,7 +110,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
           );
 
           // Find company
-          const company = (user as ICustomer).companies.find(
+          const company = customer?.companies.find(
             (company) => company.shift === upcomingDateAndShift.shift
           );
 

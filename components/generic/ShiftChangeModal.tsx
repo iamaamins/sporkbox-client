@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { IAxiosError, IShiftChangeModalProps } from "types";
+import { IAxiosError, ICustomer, IShiftChangeModalProps } from "types";
 import { useUser } from "@context/User";
 import { useAlert } from "@context/Alert";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
@@ -11,8 +11,8 @@ export default function ShiftChangeModal({
   setShowShiftChangeModal,
 }: IShiftChangeModalProps) {
   // Hooks
-  const { user, setUser } = useUser();
   const { setAlerts } = useAlert();
+  const { customer, setCustomer } = useUser();
   const [isChangingShift, setIsChangingShift] = useState(false);
   const [shifts, setShifts] = useState({
     day: false,
@@ -20,10 +20,10 @@ export default function ShiftChangeModal({
   });
 
   useEffect(() => {
-    if (user && user.companies) {
+    if (customer) {
       // Find if a shift exists
       const doesShiftExist = (shift: string) =>
-        user?.companies?.find((company) => company.shift === shift);
+        customer.companies.find((company) => company.shift === shift);
 
       // Update shift
       setShifts((currState) => ({
@@ -32,7 +32,7 @@ export default function ShiftChangeModal({
         night: doesShiftExist("night") ? true : false,
       }));
     }
-  }, [user]);
+  }, [customer]);
 
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -57,14 +57,12 @@ export default function ShiftChangeModal({
 
       // Make request to the backend
       const response = await axiosInstance.patch(
-        `/customers/${user?._id}/${
-          user?.companies![0].code
-        }/change-customer-shift`,
+        `/customers/${customer?._id}/${customer?.companies[0].code}/change-customer-shift`,
         { shifts: formattedShifts }
       );
 
       // Add the updated companies to the user
-      setUser(
+      setCustomer(
         (currState) => currState && { ...currState, companies: response.data }
       );
 
@@ -84,7 +82,7 @@ export default function ShiftChangeModal({
       <h2>Change shift</h2>
 
       <form onSubmit={changeShift}>
-        {user?.shifts?.map((shift, index) => (
+        {customer?.shifts.map((shift, index) => (
           <div key={index}>
             <input
               id={shift}

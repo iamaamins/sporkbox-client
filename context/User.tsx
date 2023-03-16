@@ -4,11 +4,11 @@ import { useRouter } from "next/router";
 import { axiosInstance, showErrorAlert } from "@utils/index";
 import { createContext, useContext, useEffect, useState } from "react";
 import {
-  IAxiosError,
-  IContextProviderProps,
+  IAdmin,
   ICustomer,
-  IUser,
+  IAxiosError,
   IUserContext,
+  IContextProviderProps,
 } from "types";
 
 // Create context
@@ -21,7 +21,8 @@ export const useUser = () => useContext(UserContext);
 export default function UserProvider({ children }: IContextProviderProps) {
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const [user, setUser] = useState<IUser | ICustomer | null>(null);
+  const [admin, setAdmin] = useState<IAdmin | null>(null);
+  const [customer, setCustomer] = useState<ICustomer | null>(null);
   const [isUserLoading, setIsUserLoading] = useState<boolean>(true);
 
   // Get user
@@ -35,13 +36,12 @@ export default function UserProvider({ children }: IContextProviderProps) {
           },
         });
 
-        // Get data
-        const user = response.data;
-
         // Update state
-        setUser(
-          response.data.role === "ADMIN" ? (user as IUser) : (user as ICustomer)
-        );
+        if (response.data.role === "ADMIN") {
+          setAdmin(response.data);
+        } else {
+          setCustomer(response.data);
+        }
       } catch (err) {
         // Show error alert
         showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
@@ -56,14 +56,22 @@ export default function UserProvider({ children }: IContextProviderProps) {
   }, [router.isReady]);
 
   // Check if the user is admin
-  const isAdmin = user?.role === "ADMIN";
+  const isAdmin = admin?.role === "ADMIN";
 
   // Check if the user is customer
-  const isCustomer = user?.role === "CUSTOMER";
+  const isCustomer = customer?.role === "CUSTOMER";
 
   return (
     <UserContext.Provider
-      value={{ isUserLoading, user, setUser, isAdmin, isCustomer }}
+      value={{
+        admin,
+        isAdmin,
+        setAdmin,
+        customer,
+        isCustomer,
+        setCustomer,
+        isUserLoading,
+      }}
     >
       {children}
     </UserContext.Provider>

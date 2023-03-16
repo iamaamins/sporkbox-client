@@ -28,7 +28,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
   // Hooks
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const { user, isCustomer } = useUser();
+  const { customer, isCustomer } = useUser();
   const { setCustomerUpcomingOrders } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<ICartItem[]>([]);
@@ -36,8 +36,10 @@ export default function CartProvider({ children }: IContextProviderProps) {
   // Get cart items from local storage on app reload
   useEffect(() => {
     // Get cart items from local storage
-    setCartItems(JSON.parse(localStorage.getItem(`cart-${user?._id}`) || "[]"));
-  }, [user, router.isReady]);
+    setCartItems(
+      JSON.parse(localStorage.getItem(`cart-${customer?._id}`) || "[]")
+    );
+  }, [customer, router.isReady]);
 
   // Calculate total quantity
   const totalCartQuantity = cartItems.reduce(
@@ -92,7 +94,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
     setCartItems(updatedItems);
 
     // Save cart to local storage
-    localStorage.setItem(`cart-${user?._id}`, JSON.stringify(updatedItems));
+    localStorage.setItem(`cart-${customer?._id}`, JSON.stringify(updatedItems));
 
     // Back to calendar page
     router.back();
@@ -113,7 +115,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
     setCartItems(updatedItems);
 
     // Set updated items to local storage
-    localStorage.setItem(`cart-${user?._id}`, JSON.stringify(updatedItems));
+    localStorage.setItem(`cart-${customer?._id}`, JSON.stringify(updatedItems));
   }
 
   // Checkout cart
@@ -145,7 +147,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
         } else {
           // Remove cart items
           setCartItems([]);
-          localStorage.removeItem(`cart-${user?._id}`);
+          localStorage.removeItem(`cart-${customer?._id}`);
 
           // Update customer's active orders state
           setCustomerUpcomingOrders((currState) => ({

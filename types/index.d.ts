@@ -1,15 +1,17 @@
 import { Dispatch, SetStateAction, ReactNode, FormEvent } from "react";
 
-export interface IUser {
+interface IUser {
   _id: string;
   email: string;
   role: string;
-  status: string;
   lastName: string;
   firstName: string;
 }
 
+export interface IAdmin extends IUser {}
+
 export interface ICustomer extends IUser {
+  status: string;
   shifts: string[];
   createdAt: string;
   companies: ICompany[];
@@ -17,6 +19,7 @@ export interface ICustomer extends IUser {
 
 export interface IVendor extends IUser {
   status: string;
+  createdAt: string;
   restaurant: IRestaurant;
 }
 
@@ -103,11 +106,13 @@ export interface IContextProviderProps {
 }
 
 export interface IUserContext {
-  user: IUser | ICustomer | null;
   isAdmin: boolean;
   isCustomer: boolean;
+  admin: IAdmin | null;
   isUserLoading: boolean;
-  setUser: Dispatch<SetStateAction<IUser | null>>;
+  customer: ICustomer | null;
+  setAdmin: Dispatch<SetStateAction<IAdmin | null>>;
+  setCustomer: Dispatch<SetStateAction<ICustomer | null>>;
 }
 
 interface IIsLoading {

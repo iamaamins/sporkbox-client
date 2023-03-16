@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
 import { useAlert } from "@context/Alert";
-import { IAxiosError, IFormData, IUser } from "types";
+import { IAxiosError, IFormData, ICustomer } from "types";
 import styles from "@styles/admin/EditCustomer.module.css";
 import SubmitButton from "@components/layout/SubmitButton";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
@@ -25,8 +25,8 @@ export default function EditCustomer() {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { customers, setCustomers } = useData();
-  const [customer, setCustomer] = useState<IUser>();
   const [isLoading, setIsLoading] = useState(false);
+  const [customer, setCustomer] = useState<ICustomer>();
   const [formData, setFormData] = useState<IFormData>(initialState);
 
   // Destructure form data

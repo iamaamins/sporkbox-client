@@ -18,7 +18,7 @@ export default function DesktopNav() {
   const pathName = useRouter().pathname;
   const [date, setDate] = useState<number>();
   const { upcomingDatesAndShifts } = useData();
-  const { isAdmin, isCustomer, setUser } = useUser();
+  const { isAdmin, isCustomer, setAdmin, setCustomer } = useUser();
 
   // Get first scheduled date of next week
   useEffect(() => {
@@ -33,8 +33,12 @@ export default function DesktopNav() {
       // Make request to backend
       await axiosInstance.post(`/users/logout`, {});
 
-      // Update user
-      setUser(null);
+      // Update state
+      if (isAdmin) {
+        setAdmin(null);
+      } else {
+        setCustomer(null);
+      }
     } catch (err) {
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);

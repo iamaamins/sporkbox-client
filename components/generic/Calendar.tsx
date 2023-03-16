@@ -1,14 +1,13 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { useData } from "@context/Data";
 import { useCart } from "@context/Cart";
-import { useUser } from "@context/User";
+import { useEffect, useState } from "react";
 import {
   getDay,
   getDate,
-  formatCurrencyToUSD,
   convertDateToMS,
+  formatCurrencyToUSD,
 } from "@utils/index";
 import Image from "next/image";
 import { IUpcomingRestaurant } from "types";
@@ -42,8 +41,6 @@ export default function Calendar() {
       }
     }
   }, [upcomingDatesAndShifts, router]);
-
-  // console.log(upcomingDatesAndShifts);
 
   return (
     <section className={styles.calendar}>

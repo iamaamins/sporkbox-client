@@ -14,13 +14,12 @@ export default function LoginForm() {
     password: "",
   };
   // Hooks
-  const { setUser } = useUser();
   const { setAlerts } = useAlert();
+  const { setAdmin, setCustomer } = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<IFormData>(initialSate);
 
-  // Destructure form data and check
-  // If there is an empty field
+  // Destructure form data
   const { email, password } = formData;
 
   // Handle change
@@ -44,7 +43,11 @@ export default function LoginForm() {
       const response = await axiosInstance.post(`/users/login`, formData);
 
       // Update state
-      setUser(response.data);
+      if (response.data.role === "ADMIN") {
+        setAdmin(response.data);
+      } else {
+        setCustomer(response.data);
+      }
 
       // Clear form data
       setFormData({

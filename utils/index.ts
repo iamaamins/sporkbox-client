@@ -4,12 +4,12 @@ import { SetStateAction } from "react";
 import { NextRouter } from "next/router";
 import {
   IOrder,
-  IUser,
   IAlert,
   Groups,
   IVendor,
   IVendors,
   ICompany,
+  ICustomer,
   ICustomers,
   ICompanies,
   IRestaurant,
@@ -199,12 +199,12 @@ export const createOrdersGroups = (orders: IOrder[]) =>
   }, []);
 
 // Sort users by last name
-export const sortByLastName = (a: IUser, b: IUser) =>
+export const sortByLastName = (a: ICustomer, b: ICustomer) =>
   a.lastName.toLowerCase().localeCompare(b.lastName.toLowerCase());
 
 // Update customers
 export function updateCustomers(
-  updatedCustomer: IUser,
+  updatedCustomer: ICustomer,
   setCustomers: Dispatch<SetStateAction<ICustomers>>
 ) {
   setCustomers((currState) => ({

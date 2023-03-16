@@ -22,8 +22,8 @@ export default function RegistrationForm() {
 
   // Hooks
   const router = useRouter();
-  const { setUser } = useUser();
   const { setAlerts } = useAlert();
+  const { setAdmin, setCustomer } = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<IFormData>(initialSate);
 
@@ -59,7 +59,11 @@ export default function RegistrationForm() {
       );
 
       // Update state
-      setUser(response.data);
+      if (response.data.role === "ADMIN") {
+        setAdmin(response.data);
+      } else {
+        setCustomer(response.data);
+      }
 
       // Clear form
       setFormData(initialSate);

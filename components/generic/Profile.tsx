@@ -7,25 +7,25 @@ import ModalContainer from "@components/layout/ModalContainer";
 
 export default function Profile() {
   // Hooks
-  const { user } = useUser();
+  const { customer } = useUser();
   const [showShiftChangeModal, setShowShiftChangeModal] = useState(false);
 
   return (
     <section className={styles.profile}>
-      {user && user.companies && (
+      {customer && (
         <div className={styles.details}>
-          <h2>Welcome {user.firstName}</h2>
+          <h2>Welcome {customer.firstName}</h2>
           <p>
-            Company: <span>{user.companies[0].name}</span>
+            Company: <span>{customer.companies[0].name}</span>
           </p>
 
-          {user.companies.map((company, index) => (
+          {customer.companies.map((company, index) => (
             <div key={index}>
               <p>
                 Shift: <span>{company.shift}</span>
               </p>
               <p>
-                Budget: <span>{formatCurrencyToUSD(company.shiftBudget!)}</span>
+                Budget: <span>{formatCurrencyToUSD(company.shiftBudget)}</span>
               </p>
               <p>
                 Address:{" "}

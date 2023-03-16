@@ -15,7 +15,7 @@ import {
 
 export default function Dashboard() {
   // Hooks
-  const { user } = useUser();
+  const { customer } = useUser();
   const { setAlerts } = useAlert();
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -46,7 +46,7 @@ export default function Dashboard() {
 
   return (
     <section className={styles.dashboard}>
-      {user && (
+      {customer && (
         <>
           {customerUpcomingOrders.isLoading && <h2>Loading...</h2>}
 

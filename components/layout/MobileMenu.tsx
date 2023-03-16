@@ -26,7 +26,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
   const { setAlerts } = useAlert();
   const { upcomingDatesAndShifts } = useData();
   const [date, setDate] = useState<number>();
-  const { isAdmin, isCustomer, setUser } = useUser();
+  const { isAdmin, isCustomer, setAdmin, setCustomer } = useUser();
 
   // Get first scheduled date of next week
   useEffect(() => {
@@ -51,8 +51,12 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
       // Make request to backend
       await axiosInstance.post(`/users/logout`, {});
 
-      // Update user
-      setUser(null);
+      // Update state
+      if (isAdmin) {
+        setAdmin(null);
+      } else {
+        setCustomer(null);
+      }
 
       // Close the menu
       setIsOpen(false);
@@ -143,17 +147,6 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
             </a>
           </Link>
         </li>
-
-        {/* <li
-          className={!isAdmin ? styles.hide : ""}
-          onClick={() => setIsOpen(false)}
-        >
-          <Link href="/admin/restaurants/scheduled">
-            <a>
-              <MdOutlineSchedule /> Scheduled
-            </a>
-          </Link>
-        </li> */}
 
         <li
           className={!isAdmin ? styles.hide : ""}
