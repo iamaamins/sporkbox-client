@@ -5,7 +5,13 @@ import { useRouter } from "next/router";
 import ActionModal from "./ActionModal";
 import { useAlert } from "@context/Alert";
 import Buttons from "@components/layout/Buttons";
-import { IAxiosError, ICompany, IScheduledRestaurant, IUser } from "types";
+import {
+  IAxiosError,
+  ICompany,
+  ICustomer,
+  IScheduledRestaurant,
+  IUser,
+} from "types";
 import styles from "@styles/admin/Company.module.css";
 import { FormEvent, useEffect, useState } from "react";
 import ModalContainer from "@components/layout/ModalContainer";
@@ -30,8 +36,8 @@ export default function Company() {
     useData();
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
   const [restaurants, setRestaurants] = useState<IScheduledRestaurant[]>([]);
-  const [activeCustomers, setActiveCustomers] = useState<IUser[]>([]);
-  const [archivedCustomers, setArchivedCustomers] = useState<IUser[]>([]);
+  const [activeCustomers, setActiveCustomers] = useState<ICustomer[]>([]);
+  const [archivedCustomers, setArchivedCustomers] = useState<ICustomer[]>([]);
   const [isUpdatingCompanyStatus, setIsUpdatingCompanyStatus] = useState(false);
 
   // Get the company
@@ -142,7 +148,7 @@ export default function Company() {
                 <span>Code:</span> {company.code}
               </p>
               <p>
-                <span>Daily budget:</span> USD ${company.shiftBudget}
+                <span>Shift budget:</span> USD ${company.shiftBudget}
               </p>
               <p>
                 <span>Address:</span>{" "}

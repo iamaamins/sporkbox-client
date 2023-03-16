@@ -18,7 +18,7 @@ export default function DesktopNav() {
   const pathName = useRouter().pathname;
   const [date, setDate] = useState<number>();
   const { upcomingDatesAndShifts } = useData();
-  const { isAdmin, isCustomer, isVendor, setUser } = useUser();
+  const { isAdmin, isCustomer, setUser } = useUser();
 
   // Get first scheduled date of next week
   useEffect(() => {
@@ -157,7 +157,7 @@ export default function DesktopNav() {
         <button
           onClick={handleSignOut}
           className={`${styles.sign_out} ${
-            !isAdmin && !isVendor && !isCustomer && styles.hide
+            !isAdmin && !isCustomer && styles.hide
           }`}
         >
           Sign out
@@ -167,7 +167,7 @@ export default function DesktopNav() {
         <Link href="/login">
           <a
             className={`${styles.sing_in} ${
-              (isAdmin || isVendor || isCustomer) && styles.hide
+              (isAdmin || isCustomer) && styles.hide
             }`}
           >
             Sign in

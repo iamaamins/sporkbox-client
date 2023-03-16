@@ -26,7 +26,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
   const { setAlerts } = useAlert();
   const { upcomingDatesAndShifts } = useData();
   const [date, setDate] = useState<number>();
-  const { isAdmin, isVendor, isCustomer, setUser } = useUser();
+  const { isAdmin, isCustomer, setUser } = useUser();
 
   // Get first scheduled date of next week
   useEffect(() => {
@@ -179,7 +179,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
 
         {/* Generic nav items */}
         <li
-          className={isAdmin || isVendor || isCustomer ? styles.hide : ""}
+          className={isAdmin || isCustomer ? styles.hide : ""}
           onClick={() => setIsOpen(false)}
         >
           <Link href="/register">
@@ -190,7 +190,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
         </li>
 
         <li
-          className={isAdmin || isVendor || isCustomer ? styles.hide : ""}
+          className={isAdmin || isCustomer ? styles.hide : ""}
           onClick={() => setIsOpen(false)}
         >
           <Link href="/login">
@@ -220,7 +220,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
         </li>
 
         <li
-          className={!isAdmin && !isVendor && !isCustomer ? styles.hide : ""}
+          className={!isAdmin && !isCustomer ? styles.hide : ""}
           onClick={handleSignOut}
         >
           <span>

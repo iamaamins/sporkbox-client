@@ -3,7 +3,13 @@ import { useAlert } from "./Alert";
 import { useRouter } from "next/router";
 import { axiosInstance, showErrorAlert } from "@utils/index";
 import { createContext, useContext, useEffect, useState } from "react";
-import { IAxiosError, IContextProviderProps, IUser, IUserContext } from "types";
+import {
+  IAxiosError,
+  IContextProviderProps,
+  ICustomer,
+  IUser,
+  IUserContext,
+} from "types";
 
 // Create context
 const UserContext = createContext({} as IUserContext);
@@ -15,7 +21,7 @@ export const useUser = () => useContext(UserContext);
 export default function UserProvider({ children }: IContextProviderProps) {
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const [user, setUser] = useState<IUser | null>(null);
+  const [user, setUser] = useState<IUser | ICustomer | null>(null);
   const [isUserLoading, setIsUserLoading] = useState<boolean>(true);
 
   // Get user
@@ -29,8 +35,13 @@ export default function UserProvider({ children }: IContextProviderProps) {
           },
         });
 
+        // Get data
+        const user = response.data;
+
         // Update state
-        setUser(response.data);
+        setUser(
+          response.data.role === "ADMIN" ? (user as IUser) : (user as ICustomer)
+        );
       } catch (err) {
         // Show error alert
         showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
@@ -50,12 +61,9 @@ export default function UserProvider({ children }: IContextProviderProps) {
   // Check if the user is customer
   const isCustomer = user?.role === "CUSTOMER";
 
-  // Check if the user is customer
-  const isVendor = user?.role === "VENDOR";
-
   return (
     <UserContext.Provider
-      value={{ isUserLoading, user, setUser, isAdmin, isVendor, isCustomer }}
+      value={{ isUserLoading, user, setUser, isAdmin, isCustomer }}
     >
       {children}
     </UserContext.Provider>

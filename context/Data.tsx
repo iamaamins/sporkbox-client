@@ -16,6 +16,7 @@ import {
   ICustomerFavoriteItems,
   ICustomerUpcomingOrders,
   ICustomerDeliveredOrders,
+  ICustomer,
 } from "types";
 import {
   axiosInstance,
@@ -43,7 +44,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
   // Hooks
   const { setAlerts } = useAlert();
   const { isAdmin, isCustomer, user } = useUser();
-
   const [allUpcomingOrders, setAllUpcomingOrders] =
     useState<IAllUpcomingOrders>(initialState);
   const [scheduledRestaurants, setScheduledRestaurants] =
@@ -110,7 +110,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
           );
 
           // Find company
-          const company = user?.companies?.find(
+          const company = (user as ICustomer).companies.find(
             (company) => company.shift === upcomingDateAndShift.shift
           );
 
@@ -140,54 +140,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
         })
       : [];
 
-  // TODO: Remove these
-  // // Next week dates
-  // const nextWeekDates =
-  //   !upcomingRestaurants.isLoading && upcomingRestaurants.data.length > 0
-  //     ? upcomingRestaurants.data
-  //         .map((upcomingRestaurant) => convertDateToMS(upcomingRestaurant.date))
-  //         .filter((date, index, dates) => dates.indexOf(date) === index)
-  //     : [];
-
-  // // Next week budget and dates
-  // const nextWeekBudgetAndDates =
-  //   isCustomer && nextWeekDates.length > 0 && !customerUpcomingOrders.isLoading
-  //     ? nextWeekDates.map((nextWeekDate) => {
-  //         // Find the orders those match the date
-  //         const upcomingOrders = customerUpcomingOrders.data.filter(
-  //           (customerUpcomingOrder) =>
-  //             convertDateToMS(customerUpcomingOrder.delivery.date) ===
-  //             nextWeekDate
-  //         );
-
-  //         // If upcoming orders are found on the date
-  //         if (upcomingOrders.length > 0) {
-  //           // Calculate the upcoming orders total
-  //           const upcomingOrdersTotal = upcomingOrders.reduce(
-  //             (acc, order) => acc + order.item.total,
-  //             0
-  //           );
-
-  //           // Return the date and company budget - upcoming orders total
-  //           return {
-  //             nextWeekDate,
-  //             budgetOnHand: formatNumberToUS(
-  //               user?.company?.dailyBudget! - upcomingOrdersTotal
-  //             ),
-  //           };
-  //         } else {
-  //           // If no upcoming orders are found with the
-  //           // date then return the date and company budget
-  //           return {
-  //             nextWeekDate,
-  //             budgetOnHand: user?.company?.dailyBudget!,
-  //           };
-  //         }
-  //       })
-  //     : [];
-
   // Get admin data
-
   useEffect(() => {
     // Get admin data
     async function getAdminData() {

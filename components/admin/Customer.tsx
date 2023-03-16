@@ -26,23 +26,34 @@ export default function Customer() {
   useEffect(() => {
     // Get customer data and upcoming orders
     if (router.isReady && customers.data.length > 0) {
-      // Update state
-      setCustomer((currState) => ({
-        ...currState,
-        data: customers.data.find(
-          (customer) =>
-            customer.company?._id === router.query.company &&
-            customer._id === router.query.customer
-        ),
-        upcomingOrders: allUpcomingOrders.data.filter(
-          (upcomingOrder) =>
-            upcomingOrder.customer._id === router.query.customer
-        ),
-      }));
+      // Find the customer
+      const customer = customers.data.find(
+        (customer) => customer._id === router.query.customer
+      );
+
+      if (customer) {
+        // Customer with shift
+        const customerWithShift = {
+          ...customer,
+          companies: customer.companies.filter(
+            (company) => company._id === router.query.company
+          ),
+        };
+
+        // Update state
+        setCustomer((currState) => ({
+          ...currState,
+          data: customerWithShift,
+          upcomingOrders: allUpcomingOrders.data.filter(
+            (upcomingOrder) =>
+              upcomingOrder.customer._id === router.query.customer
+          ),
+        }));
+      }
     }
 
     // Get delivered orders when router is ready
-    if (router.isReady) {
+    if (customer) {
       getDeliveredOrders();
     }
   }, [router.isReady, customers, allUpcomingOrders]);
@@ -80,6 +91,7 @@ export default function Customer() {
               <tr>
                 <th>Name</th>
                 <th>Company</th>
+                <th>Shift</th>
                 <th>Address</th>
               </tr>
             </thead>
@@ -88,22 +100,23 @@ export default function Customer() {
                 <td>
                   {customer.data.firstName} {customer.data.lastName}
                 </td>
-                <td>{customer.data.company?.name}</td>
+                <td>{customer.data.companies[0].name}</td>
+                <td>{customer.data.companies[0].shift}</td>
                 <td>
-                  {customer.data.company?.address.addressLine2 ? (
+                  {customer.data.companies[0].address.addressLine2 ? (
                     <>
-                      {customer.data.company?.address.addressLine1},{" "}
-                      {customer.data.company?.address.addressLine2},{" "}
-                      {customer.data.company?.address.city},{" "}
-                      {customer.data.company?.address.state}{" "}
-                      {customer.data.company?.address.zip}
+                      {customer.data.companies[0].address.addressLine1},{" "}
+                      {customer.data.companies[0].address.addressLine2},{" "}
+                      {customer.data.companies[0].address.city},{" "}
+                      {customer.data.companies[0].address.state}{" "}
+                      {customer.data.companies[0].address.zip}
                     </>
                   ) : (
                     <>
-                      {customer.data.company?.address.addressLine1},{" "}
-                      {customer.data.company?.address.city},{" "}
-                      {customer.data.company?.address.state}{" "}
-                      {customer.data.company?.address.zip}
+                      {customer.data.companies[0].address.addressLine1},{" "}
+                      {customer.data.companies[0].address.city},{" "}
+                      {customer.data.companies[0].address.state}{" "}
+                      {customer.data.companies[0].address.zip}
                     </>
                   )}
                 </td>

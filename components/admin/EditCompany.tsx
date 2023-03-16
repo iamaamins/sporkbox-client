@@ -23,7 +23,7 @@ export default function EditCompany() {
     zip: "",
     shift: "",
     website: "",
-    dailyBudget: 0,
+    shiftBudget: 0,
     addressLine1: "",
     addressLine2: "",
   };
@@ -55,7 +55,7 @@ export default function EditCompany() {
           website: company.website,
           city: company.address.city,
           state: company.address.state,
-          dailyBudget: company.dailyBudget,
+          shiftBudget: company.shiftBudget,
           addressLine1: company.address.addressLine1,
           addressLine2: company.address.addressLine2,
         });

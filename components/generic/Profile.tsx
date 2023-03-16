@@ -25,7 +25,7 @@ export default function Profile() {
                 Shift: <span>{company.shift}</span>
               </p>
               <p>
-                Budget: <span>{formatCurrencyToUSD(company.dailyBudget!)}</span>
+                Budget: <span>{formatCurrencyToUSD(company.shiftBudget!)}</span>
               </p>
               <p>
                 Address:{" "}

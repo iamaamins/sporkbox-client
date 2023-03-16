@@ -2,15 +2,17 @@ import { Dispatch, SetStateAction, ReactNode, FormEvent } from "react";
 
 export interface IUser {
   _id: string;
-  firstName: string;
-  lastName: string;
   email: string;
   role: string;
   status: string;
+  lastName: string;
+  firstName: string;
+}
+
+export interface ICustomer extends IUser {
+  shifts: string[];
   createdAt: string;
-  shifts?: string[];
-  companies?: ICompany[];
-  restaurant?: IRestaurant;
+  companies: ICompany[];
 }
 
 export interface IVendor extends IUser {
@@ -101,9 +103,8 @@ export interface IContextProviderProps {
 }
 
 export interface IUserContext {
-  user: IUser | null;
+  user: IUser | ICustomer | null;
   isAdmin: boolean;
-  isVendor: boolean;
   isCustomer: boolean;
   isUserLoading: boolean;
   setUser: Dispatch<SetStateAction<IUser | null>>;
@@ -150,7 +151,7 @@ export interface ICustomerFavoriteItems extends IIsLoading {
 }
 
 export interface ICustomers extends IIsLoading {
-  data: IUser[];
+  data: ICustomer[];
 }
 
 interface IUpcomingDateAndShift {
@@ -458,7 +459,7 @@ export interface IModalContainerProps {
 
 export interface ICustomersProps {
   status: string;
-  customers: IUser[];
+  customers: ICustomer[];
 }
 
 export interface IActionModalProps {
@@ -480,7 +481,7 @@ export interface ICustomerOrdersProps {
 }
 
 export interface ICustomerWithOrders {
-  data: IUser | undefined;
+  data: ICustomer | undefined;
   upcomingOrders: IOrder[];
   deliveredOrders: IOrder[];
 }
