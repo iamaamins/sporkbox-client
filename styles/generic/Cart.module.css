@@ -88,6 +88,10 @@
   color: var(--black);
 }
 
+.shift {
+  text-transform: capitalize;
+}
+
 .budget_exceeded {
   font-weight: 500;
   font-size: 0.9rem;

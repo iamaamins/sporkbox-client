@@ -21,7 +21,7 @@ export default function Profile() {
 
           {customer.companies.map((company, index) => (
             <div key={index}>
-              <p>
+              <p className={styles.shift}>
                 Shift: <span>{company.shift}</span>
               </p>
               <p>
