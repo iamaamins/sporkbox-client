@@ -171,9 +171,9 @@ export interface IOrdersGroup {
     name: string;
     shift: string;
   };
-  shift: string;
-  companyId: string;
-  companyName: string;
+  // shift: string;
+  // companyId: string;
+  // companyName: string;
   restaurants: string[];
   deliveryDate: string;
 }
@@ -371,11 +371,13 @@ export interface IFormData {
 }
 
 export interface IOrdersByRestaurant {
-  shift: string;
-  companyName: string;
-  restaurantName: string;
+  company: {
+    name: string;
+    shift: string;
+  };
   orders: IOrder[];
   deliveryDate: string;
+  restaurantName: string;
 }
 
 export interface IOrdersGroupDetailsProps {

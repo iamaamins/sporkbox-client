@@ -25,6 +25,10 @@
   font-size: 1rem;
 }
 
+.shift {
+  text-transform: capitalize;
+}
+
 .hide_on_mobile {
   display: none;
 }

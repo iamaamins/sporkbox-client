@@ -83,7 +83,7 @@ export default function OrdersGroupRow({
   ];
 
   // Filename
-  const fileName = `${ordersGroup.companyName} - ${
+  const fileName = `${ordersGroup.company.name} - ${
     ordersGroup.deliveryDate.split("T")[0]
   }.csv`;
 
@@ -91,15 +91,15 @@ export default function OrdersGroupRow({
     <tr className={styles.orders_group_row}>
       <td className={styles.important}>
         <Link
-          href={`/admin/${slug}/${createSlug(
-            ordersGroup.companyName
-          )}/${convertDateToMS(ordersGroup.deliveryDate)}`}
+          href={`/admin/${slug}/${ordersGroup.company._id}/${convertDateToMS(
+            ordersGroup.deliveryDate
+          )}`}
         >
           <a>{convertDateToText(ordersGroup.deliveryDate)} </a>
         </Link>
       </td>
-      <td className={styles.hide_on_mobile}>{ordersGroup.companyName}</td>
-      <td>{ordersGroup.shift}</td>
+      <td className={styles.hide_on_mobile}>{ordersGroup.company.name}</td>
+      <td className={styles.shift}>{ordersGroup.company.shift}</td>
       <td className={`${styles.restaurants} ${styles.hide_on_mobile}`}>
         {ordersGroup.restaurants.map((restaurant) => (
           <span key={restaurant}>{restaurant}</span>

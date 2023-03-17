@@ -18,6 +18,10 @@
   padding: 1rem;
 }
 
+.shift {
+  text-transform: capitalize;
+}
+
 .all_companies table th:last-child,
 .all_companies table td:last-child {
   text-align: right;

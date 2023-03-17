@@ -53,7 +53,7 @@ export default function OrdersGroupDetails({
       const ordersGroup = ordersGroups.find(
         (ordersGroup) =>
           convertDateToMS(ordersGroup.deliveryDate) === +router.query.date! &&
-          createSlug(ordersGroup.companyName) === router.query.company
+          ordersGroup.company._id === router.query.company
       );
 
       // Separate orders for each restaurant
@@ -63,9 +63,11 @@ export default function OrdersGroupDetails({
             return [
               ...acc,
               {
+                company: {
+                  name: ordersGroup.company.name,
+                  shift: ordersGroup.company.shift,
+                },
                 restaurantName: curr,
-                shift: ordersGroup.shift,
-                companyName: ordersGroup.companyName,
                 deliveryDate: ordersGroup.deliveryDate,
                 orders: ordersGroup.orders.filter(
                   (order) => order.restaurant.name === curr
@@ -220,8 +222,10 @@ export default function OrdersGroupDetails({
                   <td className={styles.hide_on_mobile}>
                     {convertDateToText(ordersByRestaurant.deliveryDate)}
                   </td>
-                  <td>{ordersByRestaurant.companyName}</td>
-                  <td>{ordersByRestaurant.shift}</td>
+                  <td>{ordersByRestaurant.company.name}</td>
+                  <td className={styles.shift}>
+                    {ordersByRestaurant.company.shift}
+                  </td>
                   <td>{ordersByRestaurant.restaurantName}</td>
                   <td className={styles.hide_on_mobile}>
                     {ordersByRestaurant.orders.length}

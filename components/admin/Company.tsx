@@ -135,7 +135,7 @@ export default function Company() {
           <section className={styles.section}>
             <div className={styles.details}>
               <h2 className={styles.company_name}>{company.name}</h2>
-              <p>
+              <p className={styles.shift}>
                 <span>Shift:</span> {company.shift}
               </p>
               <p>
