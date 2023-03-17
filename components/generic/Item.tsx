@@ -39,9 +39,9 @@ export default function Item() {
 
   // Hooks
   const router = useRouter();
-  const { cartItems, addItemToCart } = useCart();
   const [item, setItem] = useState<IItem>();
   const { upcomingRestaurants } = useData();
+  const { cartItems, addItemToCart } = useCart();
   const [upcomingRestaurant, setUpcomingRestaurant] =
     useState<IUpcomingRestaurant>();
   const [addableIngredients, setAddableIngredients] =

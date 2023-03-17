@@ -64,6 +64,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
       !cartItems.some(
         (cartItem) =>
           cartItem._id === item._id &&
+          cartItem.companyId === item.companyId &&
           cartItem.deliveryDate === item.deliveryDate
       )
     ) {
@@ -74,6 +75,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
       updatedItems = cartItems.map((cartItem) => {
         if (
           cartItem._id === item._id &&
+          cartItem.companyId === item.companyId &&
           cartItem.deliveryDate === item.deliveryDate
         ) {
           return {
@@ -107,6 +109,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
       (cartItem) =>
         !(
           cartItem._id === item._id &&
+          cartItem.companyId === item.companyId &&
           cartItem.deliveryDate === item.deliveryDate
         )
     );
