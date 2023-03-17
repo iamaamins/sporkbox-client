@@ -90,7 +90,9 @@ export default function ShiftChangeModal({
               onChange={handleChange}
               checked={shifts[shift as keyof object]}
             />
-            <label htmlFor={shift}>{shift}</label>
+            <label htmlFor={shift} className={styles.shift}>
+              {shift}
+            </label>
           </div>
         ))}
 

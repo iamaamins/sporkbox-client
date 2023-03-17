@@ -13,3 +13,7 @@
 .shift_change_modal form div input {
   margin-right: 0.5rem;
 }
+
+.shift {
+  text-transform: capitalize;
+}
