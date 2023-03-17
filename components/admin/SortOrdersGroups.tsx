@@ -13,7 +13,7 @@ export default function SortOrdersGroups({
   useEffect(() => {
     if (category === "company") {
       ordersGroups.sort((a, b) =>
-        a.companyName.toLowerCase().localeCompare(b.companyName.toLowerCase())
+        a.company.name.toLowerCase().localeCompare(b.company.name.toLowerCase())
       );
 
       setSorted((currState) => ({
