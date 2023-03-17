@@ -28,6 +28,7 @@ export default function Item() {
     name: "",
     price: 0,
     image: "",
+    shift: "",
     quantity: 1,
     companyId: "",
     addonPrice: 0,
@@ -92,6 +93,7 @@ export default function Item() {
             addableIngredients: [],
             removableIngredients: [],
             restaurantId: upcomingRestaurant._id,
+            shift: upcomingRestaurant.company.shift,
             companyId: upcomingRestaurant.company._id,
             image: item.image || upcomingRestaurant.logo,
           };

@@ -47,7 +47,7 @@ export default function Cart() {
                 </div>
 
                 <Link
-                  href={`/place-order/${cartItem.deliveryDate}/${cartItem.restaurantId}/${cartItem._id}`}
+                  href={`/place-order/${cartItem.deliveryDate}/${cartItem.shift}/${cartItem.restaurantId}/${cartItem._id}`}
                 >
                   <a className={styles.item_details}>
                     <p className={styles.name}>

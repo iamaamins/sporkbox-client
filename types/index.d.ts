@@ -214,6 +214,7 @@ export interface ICartItem {
   name: string;
   price: number;
   image: string;
+  shift: string;
   quantity: number;
   companyId: string;
   addonPrice: number;
