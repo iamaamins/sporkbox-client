@@ -164,6 +164,20 @@ interface IUpcomingDateAndShift {
   shift: string;
 }
 
+export interface IOrdersGroup {
+  orders: IOrder[];
+  company: {
+    _id: string;
+    name: string;
+    shift: string;
+  };
+  shift: string;
+  companyId: string;
+  companyName: string;
+  restaurants: string[];
+  deliveryDate: string;
+}
+
 export interface IDataContext {
   vendors: IVendors;
   allOrders: IOrder[];
@@ -236,6 +250,7 @@ export interface IOrder {
   company: {
     _id: string;
     name: string;
+    shift: string;
   };
   delivery: {
     date: string;
@@ -285,10 +300,6 @@ export interface ICustomerOrder {
 
 export interface ICustomerOrderProps {
   orders: ICustomerOrder[];
-}
-
-export interface IOrdersGroup {
-  [key: string]: string | IOrder[];
 }
 
 export interface IFiltersData {
@@ -359,14 +370,8 @@ export interface IFormData {
   [key: string]: string | number; // Index type
 }
 
-export interface IOrdersGroup {
-  orders: IOrder[];
-  restaurants: string[];
-  companyName: string;
-  deliveryDate: string;
-}
-
 export interface IOrdersByRestaurant {
+  shift: string;
   companyName: string;
   restaurantName: string;
   orders: IOrder[];

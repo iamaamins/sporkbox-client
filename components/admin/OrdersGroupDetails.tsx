@@ -64,6 +64,7 @@ export default function OrdersGroupDetails({
               ...acc,
               {
                 restaurantName: curr,
+                shift: ordersGroup.shift,
                 companyName: ordersGroup.companyName,
                 deliveryDate: ordersGroup.deliveryDate,
                 orders: ordersGroup.orders.filter(
@@ -206,6 +207,7 @@ export default function OrdersGroupDetails({
               <tr>
                 <th className={styles.hide_on_mobile}>Date</th>
                 <th>Company</th>
+                <th>Shift</th>
                 <th>Restaurant</th>
                 <th className={styles.hide_on_mobile}>Orders</th>
                 <th>Action</th>
@@ -219,6 +221,7 @@ export default function OrdersGroupDetails({
                     {convertDateToText(ordersByRestaurant.deliveryDate)}
                   </td>
                   <td>{ordersByRestaurant.companyName}</td>
+                  <td>{ordersByRestaurant.shift}</td>
                   <td>{ordersByRestaurant.restaurantName}</td>
                   <td className={styles.hide_on_mobile}>
                     {ordersByRestaurant.orders.length}

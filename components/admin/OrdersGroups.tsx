@@ -77,6 +77,7 @@ export default function OrdersGroups({
               <tr>
                 <th>Delivery date</th>
                 <th className={styles.hide_on_mobile}>Company</th>
+                <th>Shift</th>
                 <th className={styles.hide_on_mobile}>Restaurant</th>
                 <th>Orders</th>
                 <th>Action</th>

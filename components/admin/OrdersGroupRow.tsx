@@ -99,6 +99,7 @@ export default function OrdersGroupRow({
         </Link>
       </td>
       <td className={styles.hide_on_mobile}>{ordersGroup.companyName}</td>
+      <td>{ordersGroup.shift}</td>
       <td className={`${styles.restaurants} ${styles.hide_on_mobile}`}>
         {ordersGroup.restaurants.map((restaurant) => (
           <span key={restaurant}>{restaurant}</span>
