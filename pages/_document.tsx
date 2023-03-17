@@ -36,12 +36,6 @@ export default function Document() {
         />
 
         <meta name="msapplication-TileColor" content="#27a89a" />
-
-        {/* Viewport width */}
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1"
-        />
       </Head>
       <body>
         <Main />
