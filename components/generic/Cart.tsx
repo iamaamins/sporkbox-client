@@ -58,7 +58,8 @@ export default function Cart() {
                     </p>
                     <p className={styles.date}>
                       Delivery date:{" "}
-                      <span>{convertDateToText(cartItem.deliveryDate)}</span>
+                      <span>{convertDateToText(cartItem.deliveryDate)}</span> -{" "}
+                      <span>{cartItem.shift}</span>
                     </p>
                   </a>
                 </Link>

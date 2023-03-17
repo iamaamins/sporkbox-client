@@ -9,6 +9,7 @@ export default function Orders({ orders }: ICustomerOrderProps) {
       <thead>
         <tr>
           <th>Delivery date</th>
+          <th>Shift</th>
           <th className={styles.hide_on_mobile}>Restaurant</th>
           <th>Item</th>
           <th>Quantity</th>
@@ -23,6 +24,7 @@ export default function Orders({ orders }: ICustomerOrderProps) {
                 <a>{convertDateToText(order.delivery.date)}</a>
               </Link>
             </td>
+            <td>{order.company.shift}</td>
             <td className={styles.hide_on_mobile}>{order.restaurant.name}</td>
             <td>{order.item.name}</td>
             <td>{order.item.quantity}</td>
