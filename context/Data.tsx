@@ -94,51 +94,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
           )
       : [];
 
-  // Budget left on shifts
-  const budgetLeftOnShifts =
-    isCustomer &&
-    upcomingDatesAndShifts.length > 0 &&
-    !customerUpcomingOrders.isLoading
-      ? upcomingDatesAndShifts.map((upcomingDateAndShift) => {
-          // Find the orders those match the date
-          const upcomingOrders = customerUpcomingOrders.data.filter(
-            (customerUpcomingOrder) =>
-              convertDateToMS(customerUpcomingOrder.delivery.date) ===
-                upcomingDateAndShift.date &&
-              customerUpcomingOrder.company.shift === upcomingDateAndShift.shift
-          );
-
-          // Find company
-          const company = customer?.companies.find(
-            (company) => company.shift === upcomingDateAndShift.shift
-          );
-
-          // If upcoming orders are found on the date
-          if (upcomingOrders.length > 0) {
-            // Calculate the upcoming orders total
-            const upcomingOrdersTotal = upcomingOrders.reduce(
-              (acc, order) => acc + order.item.total,
-              0
-            );
-
-            // Return the date and company budget - upcoming orders total
-            return {
-              ...upcomingDateAndShift,
-              budgetOnHand: formatNumberToUS(
-                company?.shiftBudget! - upcomingOrdersTotal
-              ),
-            };
-          } else {
-            // If no upcoming orders are found with the
-            // date then return the date and company budget
-            return {
-              ...upcomingDateAndShift,
-              budgetOnHand: company?.shiftBudget!,
-            };
-          }
-        })
-      : [];
-
   // Get admin data
   useEffect(() => {
     // Get admin data
@@ -361,7 +316,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setCustomers,
         allUpcomingOrders,
         customerAllOrders,
-        budgetLeftOnShifts,
         allDeliveredOrders,
         upcomingRestaurants,
         setAllUpcomingOrders,

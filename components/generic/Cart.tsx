@@ -24,11 +24,8 @@ export default function Cart() {
         <>
           <h2 className={styles.cart_title}>Your basket</h2>
           <div className={styles.items}>
-            {cartItems.map((cartItem) => (
-              <div
-                key={cartItem._id + cartItem.deliveryDate}
-                className={styles.item}
-              >
+            {cartItems.map((cartItem, index) => (
+              <div key={index} className={styles.item}>
                 <div className={styles.cover_image}>
                   <Image
                     src={cartItem.image}

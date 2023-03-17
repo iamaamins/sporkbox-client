@@ -135,44 +135,42 @@ export default function CartProvider({ children }: IContextProviderProps) {
         removedIngredients: cartItem.removableIngredients.join(", "),
       }));
 
-      console.log(ordersPayload);
+      try {
+        // Show loader
+        setIsLoading(true);
 
-      // try {
-      //   // Show loader
-      //   setIsLoading(true);
+        // Make request to the backend
+        const response = await axiosInstance.post(`/orders/create-orders`, {
+          ordersPayload,
+        });
 
-      //   // Make request to the backend
-      //   const response = await axiosInstance.post(`/orders/create-orders`, {
-      //     ordersPayload,
-      //   });
+        if (typeof response.data === "string") {
+          // Push to the dashboard page
+          location.assign(response.data);
+        } else {
+          // Remove cart items
+          setCartItems([]);
+          localStorage.removeItem(`cart-${customer?._id}`);
 
-      //   if (typeof response.data === "string") {
-      //     // Push to the dashboard page
-      //     location.assign(response.data);
-      //   } else {
-      //     // Remove cart items
-      //     setCartItems([]);
-      //     localStorage.removeItem(`cart-${customer?._id}`);
+          // Update customer's active orders state
+          setCustomerUpcomingOrders((currState) => ({
+            ...currState,
+            data: [...currState.data, ...response.data],
+          }));
 
-      //     // Update customer's active orders state
-      //     setCustomerUpcomingOrders((currState) => ({
-      //       ...currState,
-      //       data: [...currState.data, ...response.data],
-      //     }));
+          // Show success alert
+          showSuccessAlert("Orders placed", setAlerts);
 
-      //     // Show success alert
-      //     showSuccessAlert("Orders placed", setAlerts);
-
-      //     // Push to the dashboard page
-      //     router.push("/dashboard");
-      //   }
-      // } catch (err) {
-      //   // Show error alert
-      //   showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
-      // } finally {
-      //   // Remove loader
-      //   setIsLoading(false);
-      // }
+          // Push to the dashboard page
+          router.push("/dashboard");
+        }
+      } catch (err) {
+        // Show error alert
+        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      } finally {
+        // Remove loader
+        setIsLoading(false);
+      }
     } else {
       router.push("/login");
     }

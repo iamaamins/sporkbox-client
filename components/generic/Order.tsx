@@ -151,8 +151,6 @@ export default function Order() {
     }
   }
 
-  console.log(order);
-
   return (
     <section className={styles.order}>
       {!order && <h2>No order found</h2>}
@@ -203,7 +201,8 @@ export default function Order() {
                     from <span>{order.restaurant.name}</span> is currently{" "}
                     <span>{order.status.toLowerCase()}</span>. The order will be
                     delivered on{" "}
-                    <span>{convertDateToText(order.delivery.date)}</span>
+                    <span>{convertDateToText(order.delivery.date)}</span> -{" "}
+                    <span>{order.company.shift}</span>.
                   </p>
 
                   {order.item.addedIngredients && (
@@ -237,7 +236,8 @@ export default function Order() {
                     </span>{" "}
                     from <span>{order.restaurant.name}</span> was{" "}
                     <span>{order.status.toLowerCase()}</span> on{" "}
-                    <span>{convertDateToText(order.delivery.date)}</span>.
+                    <span>{convertDateToText(order.delivery.date)}</span> -{" "}
+                    <span>{order.company.shift}</span>.
                   </p>
 
                   {order.item.addedIngredients && (

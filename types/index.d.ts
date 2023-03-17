@@ -164,10 +164,6 @@ interface IUpcomingDateAndShift {
   shift: string;
 }
 
-export interface IBudgetLeftOnShift extends IUpcomingDateAndShift {
-  budgetOnHand: number;
-}
-
 export interface IDataContext {
   vendors: IVendors;
   allOrders: IOrder[];
@@ -178,7 +174,6 @@ export interface IDataContext {
   deliveredOrdersGroups: IOrdersGroup[];
   allUpcomingOrders: IAllUpcomingOrders;
   allDeliveredOrders: IAllDeliveredOrders;
-  budgetLeftOnShifts: IBudgetLeftOnShift[];
   upcomingRestaurants: IUpcomingRestaurants;
   scheduledRestaurants: IScheduledRestaurants;
   customerFavoriteItems: ICustomerFavoriteItems;
