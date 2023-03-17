@@ -124,7 +124,9 @@ export default function Calendar() {
                                 (cartItem) =>
                                   cartItem.deliveryDate.toString() ===
                                     router.query.date &&
-                                  cartItem._id === item._id && (
+                                  cartItem._id === item._id &&
+                                  cartItem.companyId ===
+                                    restaurant.company._id && (
                                     <span
                                       key={item._id}
                                       className={styles.quantity}

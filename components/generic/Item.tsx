@@ -100,7 +100,8 @@ export default function Item() {
           const itemInCart = cartItems.find(
             (cartItem) =>
               cartItem._id === item._id &&
-              cartItem.deliveryDate === deliveryDate
+              cartItem.deliveryDate === deliveryDate &&
+              cartItem.companyId === upcomingRestaurant.company._id
           );
 
           if (itemInCart) {

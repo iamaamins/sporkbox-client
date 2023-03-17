@@ -132,42 +132,44 @@ export default function CartProvider({ children }: IContextProviderProps) {
         removedIngredients: cartItem.removableIngredients.join(", "),
       }));
 
-      try {
-        // Show loader
-        setIsLoading(true);
+      console.log(ordersPayload);
 
-        // Make request to the backend
-        const response = await axiosInstance.post(`/orders/create-orders`, {
-          ordersPayload,
-        });
+      // try {
+      //   // Show loader
+      //   setIsLoading(true);
 
-        if (typeof response.data === "string") {
-          // Push to the dashboard page
-          location.assign(response.data);
-        } else {
-          // Remove cart items
-          setCartItems([]);
-          localStorage.removeItem(`cart-${customer?._id}`);
+      //   // Make request to the backend
+      //   const response = await axiosInstance.post(`/orders/create-orders`, {
+      //     ordersPayload,
+      //   });
 
-          // Update customer's active orders state
-          setCustomerUpcomingOrders((currState) => ({
-            ...currState,
-            data: [...currState.data, ...response.data],
-          }));
+      //   if (typeof response.data === "string") {
+      //     // Push to the dashboard page
+      //     location.assign(response.data);
+      //   } else {
+      //     // Remove cart items
+      //     setCartItems([]);
+      //     localStorage.removeItem(`cart-${customer?._id}`);
 
-          // Show success alert
-          showSuccessAlert("Orders placed", setAlerts);
+      //     // Update customer's active orders state
+      //     setCustomerUpcomingOrders((currState) => ({
+      //       ...currState,
+      //       data: [...currState.data, ...response.data],
+      //     }));
 
-          // Push to the dashboard page
-          router.push("/dashboard");
-        }
-      } catch (err) {
-        // Show error alert
-        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
-      } finally {
-        // Remove loader
-        setIsLoading(false);
-      }
+      //     // Show success alert
+      //     showSuccessAlert("Orders placed", setAlerts);
+
+      //     // Push to the dashboard page
+      //     router.push("/dashboard");
+      //   }
+      // } catch (err) {
+      //   // Show error alert
+      //   showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      // } finally {
+      //   // Remove loader
+      //   setIsLoading(false);
+      // }
     } else {
       router.push("/login");
     }
