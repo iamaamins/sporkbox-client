@@ -9,6 +9,7 @@ export default function CompanyForm({
   setFormData,
   buttonText,
   handleSubmit,
+  showShiftAndCodeField,
 }: ICompanyFormProps) {
   // Destructure form data
   const {
@@ -43,15 +44,17 @@ export default function CompanyForm({
         <input type="text" id="name" value={name} onChange={handleChange} />
       </div>
 
-      <div className={styles.item}>
-        <select id="shift" value={shift} onChange={handleChange}>
-          <option hidden value="Please select a shift">
-            Please select a shift
-          </option>
-          <option value="Day">Day</option>
-          <option value="Night">Night</option>
-        </select>
-      </div>
+      {showShiftAndCodeField && (
+        <div className={styles.item}>
+          <select id="shift" value={shift} onChange={handleChange}>
+            <option hidden value="Please select a shift">
+              Please select a shift
+            </option>
+            <option value="Day">Day</option>
+            <option value="Night">Night</option>
+          </select>
+        </div>
+      )}
 
       <div className={styles.item}>
         <label htmlFor="website">Website</label>
@@ -100,10 +103,12 @@ export default function CompanyForm({
         </div>
       </div>
 
-      <div className={styles.item}>
-        <label htmlFor="code">Code</label>
-        <input type="text" id="code" value={code} onChange={handleChange} />
-      </div>
+      {showShiftAndCodeField && (
+        <div className={styles.item}>
+          <label htmlFor="code">Code</label>
+          <input type="text" id="code" value={code} onChange={handleChange} />
+        </div>
+      )}
 
       <div className={styles.item}>
         <label htmlFor="shiftBudget">Daily budget</label>

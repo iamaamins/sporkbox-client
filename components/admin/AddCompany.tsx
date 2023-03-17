@@ -79,6 +79,7 @@ export default function AddCompany() {
         buttonText="Add company"
         setFormData={setFormData}
         handleSubmit={handleSubmit}
+        showShiftAndCodeField={true}
       />
     </section>
   );

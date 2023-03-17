@@ -402,10 +402,10 @@ interface IFormProps {
 export interface ICompanyFormData {
   zip: string;
   name: string;
-  shift: string;
-  code: string;
   city: string;
+  code?: string;
   state: string;
+  shift?: string;
   website: string;
   shiftBudget: number;
   addressLine1: string;
@@ -414,6 +414,7 @@ export interface ICompanyFormData {
 
 export interface ICompanyFormProps extends IFormProps {
   formData: ICompanyFormData;
+  showShiftAndCodeField: boolean;
   handleSubmit: (e: FormEvent) => Promise<void>;
   setFormData: Dispatch<SetStateAction<ICompanyFormData>>;
 }

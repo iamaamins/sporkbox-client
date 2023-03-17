@@ -17,11 +17,9 @@ export default function EditCompany() {
   // Initial state
   const initialState = {
     name: "",
-    code: "",
     city: "",
     state: "",
     zip: "",
-    shift: "",
     website: "",
     shiftBudget: 0,
     addressLine1: "",
@@ -49,8 +47,6 @@ export default function EditCompany() {
         setCompany(company);
         setFormData({
           name: company.name,
-          code: company.code,
-          shift: company.shift,
           zip: company.address.zip,
           website: company.website,
           city: company.address.city,
@@ -110,6 +106,7 @@ export default function EditCompany() {
             isLoading={isLoading}
             setFormData={setFormData}
             handleSubmit={handleSubmit}
+            showShiftAndCodeField={false}
           />
         </>
       )}
