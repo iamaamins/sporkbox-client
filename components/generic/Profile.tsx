@@ -50,9 +50,11 @@ export default function Profile() {
               </div>
             ))}
 
-          <button onClick={() => setShowShiftChangeModal(true)}>
-            Change shift
-          </button>
+          {customer.shifts.length > 0 && (
+            <button onClick={() => setShowShiftChangeModal(true)}>
+              Change shift
+            </button>
+          )}
         </div>
       )}
 

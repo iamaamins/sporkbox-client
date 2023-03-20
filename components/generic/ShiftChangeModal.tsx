@@ -23,7 +23,9 @@ export default function ShiftChangeModal({
     if (customer) {
       // Find if a shift exists
       const doesShiftExist = (shift: string) =>
-        customer.companies.find((company) => company.shift === shift);
+        customer.companies
+          .filter((company) => company.status === "ACTIVE")
+          .find((company) => company.shift === shift);
 
       // Update shift
       setShifts((currState) => ({
