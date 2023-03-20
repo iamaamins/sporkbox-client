@@ -34,7 +34,6 @@ export default function Document() {
           name="msapplication-config"
           content="/favicon/browserconfig.xml"
         />
-
         <meta name="msapplication-TileColor" content="#27a89a" />
       </Head>
       <body>

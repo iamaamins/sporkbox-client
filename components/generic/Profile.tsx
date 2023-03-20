@@ -19,33 +19,36 @@ export default function Profile() {
             Company: <span>{customer.companies[0].name}</span>
           </p>
 
-          {customer.companies.map((company, index) => (
-            <div key={index}>
-              <p className={styles.shift}>
-                Shift: <span>{company.shift}</span>
-              </p>
-              <p>
-                Budget: <span>{formatCurrencyToUSD(company.shiftBudget)}</span>
-              </p>
-              <p>
-                Address:{" "}
-                <span>
-                  {company.address.addressLine2 ? (
-                    <>
-                      {company.address.addressLine1},{" "}
-                      {company.address.addressLine2}, {company.address.city},{" "}
-                      {company.address.state} {company.address.zip}
-                    </>
-                  ) : (
-                    <>
-                      {company.address.addressLine1}, {company.address.city},{" "}
-                      {company.address.state} {company.address.zip}
-                    </>
-                  )}
-                </span>
-              </p>
-            </div>
-          ))}
+          {customer.companies
+            .filter((company) => company.status === "ACTIVE")
+            .map((company, index) => (
+              <div key={index}>
+                <p className={styles.shift}>
+                  Shift: <span>{company.shift}</span>
+                </p>
+                <p>
+                  Budget:{" "}
+                  <span>{formatCurrencyToUSD(company.shiftBudget)}</span>
+                </p>
+                <p>
+                  Address:{" "}
+                  <span>
+                    {company.address.addressLine2 ? (
+                      <>
+                        {company.address.addressLine1},{" "}
+                        {company.address.addressLine2}, {company.address.city},{" "}
+                        {company.address.state} {company.address.zip}
+                      </>
+                    ) : (
+                      <>
+                        {company.address.addressLine1}, {company.address.city},{" "}
+                        {company.address.state} {company.address.zip}
+                      </>
+                    )}
+                  </span>
+                </p>
+              </div>
+            ))}
 
           <button onClick={() => setShowShiftChangeModal(true)}>
             Change shift
