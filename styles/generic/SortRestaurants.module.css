@@ -1,0 +1,14 @@
+.sort_restaurants select {
+  text-align: center;
+  width: fit-content;
+  padding: 6px 16px;
+  color: var(--gray);
+  border-radius: 2rem;
+  -webkit-appearance: none;
+  border: 1px solid var(--border_color);
+}
+
+.sort_restaurants select:focus {
+  outline: none;
+  border: 1px solid var(--orange);
+}

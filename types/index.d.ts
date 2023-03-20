@@ -318,14 +318,14 @@ export interface IOrdersGroupsProps {
   ordersGroups: IOrdersGroup[];
 }
 
-export interface ISorted {
+export interface ISortedOrdersGroups {
   byCompany: boolean;
   byDeliveryDate: boolean;
 }
 
-export interface IFilterAndSortProps {
+export interface ISortOrdersGroupsProps {
   ordersGroups: IOrdersGroup[];
-  setSorted: Dispatch<SetStateAction<ISorted>>;
+  setSorted: Dispatch<SetStateAction<ISortedOrdersGroups>>;
 }
 
 export interface IButtons {
@@ -529,4 +529,8 @@ export interface IScheduledRestaurantProps {
 
 export interface IShiftChangeModalProps {
   setShowShiftChangeModal: Dispatch<SetStateAction<boolean>>;
+}
+
+export interface IFilterRestaurantsProps {
+  setRestaurants: Dispatch<SetStateAction<IUpcomingRestaurant[]>>;
 }

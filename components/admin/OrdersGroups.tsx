@@ -8,7 +8,7 @@ import SortOrdersGroups from "./SortOrdersGroups";
 import styles from "@styles/admin/OrdersGroups.module.css";
 import ActionButton from "@components/layout/ActionButton";
 import { axiosInstance, showErrorAlert } from "@utils/index";
-import { IAxiosError, IOrdersGroupsProps, ISorted } from "types";
+import { IAxiosError, IOrdersGroupsProps, ISortedOrdersGroups } from "types";
 
 export default function OrdersGroups({
   slug,
@@ -21,7 +21,7 @@ export default function OrdersGroups({
   const [isLoading, setIsLoading] = useState(false);
   const { allUpcomingOrders, allDeliveredOrders, setAllDeliveredOrders } =
     useData();
-  const [sorted, setSorted] = useState<ISorted>({
+  const [sorted, setSorted] = useState<ISortedOrdersGroups>({
     byCompany: false,
     byDeliveryDate: false,
   });

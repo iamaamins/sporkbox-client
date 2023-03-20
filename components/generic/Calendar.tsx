@@ -12,6 +12,7 @@ import {
 import Image from "next/image";
 import { IUpcomingRestaurant } from "types";
 import styles from "@styles/generic/Calendar.module.css";
+import SortRestaurants from "./SortRestaurants";
 
 export default function Calendar() {
   // Hooks
@@ -19,11 +20,15 @@ export default function Calendar() {
   const { cartItems } = useCart();
   const { upcomingDatesAndShifts, upcomingRestaurants } = useData();
   const [restaurants, setRestaurants] = useState<IUpcomingRestaurant[]>([]);
+  const [sorted, setSorted] = useState({
+    byDay: false,
+    byNight: false,
+  });
 
   // Get restaurants for a date
   useEffect(() => {
     if (upcomingDatesAndShifts.length > 0 && router.isReady) {
-      // Next week date
+      // Upcoming dates and shifts
       const upcomingDateAndShift = upcomingDatesAndShifts.find(
         (upcomingDateAndShift) =>
           upcomingDateAndShift.date.toString() === router.query.date
@@ -56,6 +61,9 @@ export default function Calendar() {
           {/* Show next week's and scheduled date */}
           <div className={styles.title_and_controller}>
             <h2 className={styles.calendar_title}>Upcoming week</h2>
+
+            {/* Sort restaurants */}
+            <SortRestaurants setRestaurants={setRestaurants} />
 
             <div className={styles.controller}>
               {/* TODO: Remove the filter */}
