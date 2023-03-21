@@ -50,6 +50,12 @@ export default function Dashboard() {
         <>
           {customerUpcomingOrders.isLoading && <h2>Loading...</h2>}
 
+          {/* If there are no upcoming orders */}
+          {!customerUpcomingOrders.isLoading &&
+            customerUpcomingOrders.data.length === 0 && (
+              <h2>No upcoming orders</h2>
+            )}
+
           {/* Active orders */}
           {customerUpcomingOrders.data.length > 0 && (
             <div className={styles.active_orders}>
@@ -59,6 +65,12 @@ export default function Dashboard() {
           )}
 
           {customerDeliveredOrders.isLoading && <h2>Loading...</h2>}
+
+          {/* If there are no upcoming orders */}
+          {!customerDeliveredOrders.isLoading &&
+            customerDeliveredOrders.data.length === 0 && (
+              <h2>No delivered orders</h2>
+            )}
 
           {/* Delivered orders */}
           {customerDeliveredOrders.data.length > 0 && (
