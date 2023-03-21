@@ -481,10 +481,14 @@ export interface ICustomerOrdersProps {
   orderStatus: string;
 }
 
+interface ICustomerWithCompany extends Omit<ICustomer, "companies"> {
+  company: ICompany;
+}
+
 export interface ICustomerWithOrders {
-  data: ICustomer | undefined;
   upcomingOrders: IOrder[];
   deliveredOrders: IOrder[];
+  data: ICustomerWithCompany | null;
 }
 
 export interface IAddOrRemovableIngredients {

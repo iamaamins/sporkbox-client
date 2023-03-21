@@ -5,7 +5,7 @@ import { useAlert } from "@context/Alert";
 import { useEffect, useState } from "react";
 import CustomerOrders from "./CustomerOrders";
 import styles from "@styles/admin/Customer.module.css";
-import { IAxiosError, ICustomerWithOrders } from "types";
+import { IAxiosError, ICompany, ICustomerWithOrders, IOrder } from "types";
 import {
   axiosInstance,
   groupIdenticalOrders,
@@ -18,7 +18,7 @@ export default function Customer() {
   const { setAlerts } = useAlert();
   const { customers, allUpcomingOrders } = useData();
   const [customer, setCustomer] = useState<ICustomerWithOrders>({
-    data: undefined,
+    data: null,
     upcomingOrders: [],
     deliveredOrders: [],
   });
@@ -32,21 +32,25 @@ export default function Customer() {
       );
 
       if (customer) {
+        // Destructure customer
+        const { companies, ...rest } = customer;
+
         // Customer with shift
-        const customerWithShift = {
-          ...customer,
-          companies: customer.companies.filter(
+        const customerWithCompany = {
+          ...rest,
+          company: companies.find(
             (company) => company._id === router.query.company
-          ),
+          ) as ICompany,
         };
 
         // Update state
         setCustomer((currState) => ({
           ...currState,
-          data: customerWithShift,
+          data: customerWithCompany,
           upcomingOrders: allUpcomingOrders.data.filter(
             (upcomingOrder) =>
-              upcomingOrder.customer._id === router.query.customer
+              upcomingOrder.customer._id === router.query.customer &&
+              upcomingOrder.company._id === router.query.company
           ),
         }));
       }
@@ -62,14 +66,17 @@ export default function Customer() {
   async function getDeliveredOrders() {
     try {
       // Make request to the backend
-      const response = await axiosInstance.get(
+      const response = await axiosInstance.get<IOrder[]>(
         `/orders/${router.query.customer}/all-delivered-orders`
       );
 
       // Update state
       setCustomer((currState) => ({
         ...currState,
-        deliveredOrders: response.data,
+        deliveredOrders: response.data.filter(
+          (deliveredOrder) =>
+            deliveredOrder.company._id === router.query.company
+        ),
       }));
     } catch (err) {
       // Show error alert
@@ -100,23 +107,23 @@ export default function Customer() {
                 <td>
                   {customer.data.firstName} {customer.data.lastName}
                 </td>
-                <td>{customer.data.companies[0].name}</td>
-                <td>{customer.data.companies[0].shift}</td>
+                <td>{customer.data.company.name}</td>
+                <td>{customer.data.company.shift}</td>
                 <td>
-                  {customer.data.companies[0].address.addressLine2 ? (
+                  {customer.data.company.address.addressLine2 ? (
                     <>
-                      {customer.data.companies[0].address.addressLine1},{" "}
-                      {customer.data.companies[0].address.addressLine2},{" "}
-                      {customer.data.companies[0].address.city},{" "}
-                      {customer.data.companies[0].address.state}{" "}
-                      {customer.data.companies[0].address.zip}
+                      {customer.data.company.address.addressLine1},{" "}
+                      {customer.data.company.address.addressLine2},{" "}
+                      {customer.data.company.address.city},{" "}
+                      {customer.data.company.address.state}{" "}
+                      {customer.data.company.address.zip}
                     </>
                   ) : (
                     <>
-                      {customer.data.companies[0].address.addressLine1},{" "}
-                      {customer.data.companies[0].address.city},{" "}
-                      {customer.data.companies[0].address.state}{" "}
-                      {customer.data.companies[0].address.zip}
+                      {customer.data.company.address.addressLine1},{" "}
+                      {customer.data.company.address.city},{" "}
+                      {customer.data.company.address.state}{" "}
+                      {customer.data.company.address.zip}
                     </>
                   )}
                 </td>
