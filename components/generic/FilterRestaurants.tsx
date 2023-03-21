@@ -11,6 +11,7 @@ export default function FilterRestaurants({
   // Hooks
   const router = useRouter();
   const [shift, setShift] = useState("");
+  const [shifts, setShifts] = useState<string[]>([]);
   const { upcomingRestaurants, upcomingDates } = useData();
 
   // Reset shift on route change
@@ -33,6 +34,13 @@ export default function FilterRestaurants({
             convertDateToMS(upcomingRestaurant.date) === upcomingDate
         );
 
+        // Update states
+        setShifts(
+          upcomingRestaurantsOnDate
+            .map((el) => el.company.shift)
+            .filter((el, index, shifts) => shifts.indexOf(el) === index)
+        );
+
         setRestaurants(() =>
           shift === ""
             ? upcomingRestaurantsOnDate
@@ -42,7 +50,7 @@ export default function FilterRestaurants({
         );
       }
     }
-  }, [shift]);
+  }, [shift, router]);
 
   return (
     <div className={styles.filter_restaurants}>
@@ -54,8 +62,11 @@ export default function FilterRestaurants({
         <option hidden aria-hidden>
           Filter restaurants
         </option>
-        <option value="day">By day</option>
-        <option value="night">By night</option>
+        {shifts.map((shift, index) => (
+          <option key={index} value={shift}>
+            By {shift}
+          </option>
+        ))}
       </select>
     </div>
   );
