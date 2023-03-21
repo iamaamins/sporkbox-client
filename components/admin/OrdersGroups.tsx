@@ -48,7 +48,13 @@ export default function OrdersGroups({
 
   return (
     <section className={styles.orders_groups}>
-      {(allUpcomingOrders.isLoading || allDeliveredOrders.isLoading) && (
+      {/* Upcoming orders loader */}
+      {slug === "upcoming-orders" && allUpcomingOrders.isLoading && (
+        <h2>Loading...</h2>
+      )}
+
+      {/* Delivered orders loader */}
+      {slug === "delivered-orders" && allDeliveredOrders.isLoading && (
         <h2>Loading...</h2>
       )}
 
