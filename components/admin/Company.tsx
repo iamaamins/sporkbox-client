@@ -77,11 +77,13 @@ export default function Company() {
 
       // Update unenrolled customers
       setUnenrolledCustomers(
-        customers.data.filter((customer) =>
-          customer.companies
-            .filter((company) => company.status === "ARCHIVED")
-            .some((company) => company._id === router.query.company)
-        )
+        customers.data
+          .filter((customer) =>
+            customer.companies
+              .filter((company) => company.status === "ARCHIVED")
+              .some((company) => company._id === router.query.company)
+          )
+          .sort(sortByLastName)
       );
     }
 
