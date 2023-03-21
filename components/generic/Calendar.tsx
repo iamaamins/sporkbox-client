@@ -18,6 +18,7 @@ export default function Calendar() {
   // Hooks
   const router = useRouter();
   const { cartItems } = useCart();
+  const [shifts, setShifts] = useState<string[]>([]);
   const { upcomingDates, upcomingRestaurants } = useData();
   const [restaurants, setRestaurants] = useState<IUpcomingRestaurant[]>([]);
 
@@ -30,13 +31,21 @@ export default function Calendar() {
       );
 
       if (upcomingDate) {
-        // Update restaurants state
-        setRestaurants(
-          upcomingRestaurants.data.filter(
-            (upcomingRestaurant) =>
-              convertDateToMS(upcomingRestaurant.date) === upcomingDate
-          )
+        // Get upcoming restaurants on a date
+        const upcomingRestaurantsOnDate = upcomingRestaurants.data.filter(
+          (upcomingRestaurant) =>
+            convertDateToMS(upcomingRestaurant.date) === upcomingDate
         );
+
+        // Update states
+        setShifts(
+          upcomingRestaurantsOnDate
+            .map((el) => el.company.shift)
+            .filter((el, index, shifts) => shifts.indexOf(el) === index)
+        );
+
+        // Update restaurants state
+        setRestaurants(upcomingRestaurantsOnDate);
       }
     }
   }, [upcomingDates, router]);
@@ -58,14 +67,11 @@ export default function Calendar() {
               <h2>Upcoming week</h2>
 
               {/* Show filter option if there are multiple shifts */}
-              {upcomingRestaurants.data.reduce((acc, curr) => {
-                if (acc.includes(curr.company.shift)) {
-                  return acc;
-                } else {
-                  return [...acc, curr.company.shift];
-                }
-              }, [] as string[]).length > 1 && (
-                <FilterRestaurants setRestaurants={setRestaurants} />
+              {shifts.length > 1 && (
+                <FilterRestaurants
+                  shifts={shifts}
+                  setRestaurants={setRestaurants}
+                />
               )}
             </div>
 

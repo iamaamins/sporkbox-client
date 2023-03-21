@@ -6,18 +6,13 @@ import { IFilterRestaurantsProps } from "types";
 import styles from "@styles/generic/FilterRestaurants.module.css";
 
 export default function FilterRestaurants({
+  shifts,
   setRestaurants,
 }: IFilterRestaurantsProps) {
   // Hooks
   const router = useRouter();
   const [shift, setShift] = useState("");
-  const [shifts, setShifts] = useState<string[]>([]);
   const { upcomingRestaurants, upcomingDates } = useData();
-
-  // Reset shift on route change
-  useEffect(() => {
-    setShift("");
-  }, [router]);
 
   // Filter restaurants on shift change
   useEffect(() => {
@@ -34,13 +29,6 @@ export default function FilterRestaurants({
             convertDateToMS(upcomingRestaurant.date) === upcomingDate
         );
 
-        // Update states
-        setShifts(
-          upcomingRestaurantsOnDate
-            .map((el) => el.company.shift)
-            .filter((el, index, shifts) => shifts.indexOf(el) === index)
-        );
-
         setRestaurants(() =>
           shift === ""
             ? upcomingRestaurantsOnDate
@@ -50,7 +38,7 @@ export default function FilterRestaurants({
         );
       }
     }
-  }, [shift, router]);
+  }, [shift]);
 
   return (
     <div className={styles.filter_restaurants}>

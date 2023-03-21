@@ -528,5 +528,6 @@ export interface IShiftChangeModalProps {
 }
 
 export interface IFilterRestaurantsProps {
+  shifts: string[];
   setRestaurants: Dispatch<SetStateAction<IUpcomingRestaurant[]>>;
 }
