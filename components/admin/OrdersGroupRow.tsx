@@ -28,6 +28,9 @@ export default function OrdersGroupRow({
     addedIngredients: order.item.addedIngredients,
     removedIngredients: order.item.removedIngredients,
     deliveryDate: convertDateToText(order.delivery.date),
+    shift: `${order.company.shift[0].toUpperCase()}${order.company.shift.slice(
+      1
+    )}`,
   }));
 
   // CSV headers
@@ -39,6 +42,10 @@ export default function OrdersGroupRow({
     {
       label: "Company",
       key: "companyName",
+    },
+    {
+      label: "Shift",
+      key: "shift",
     },
     {
       label: "First name",
