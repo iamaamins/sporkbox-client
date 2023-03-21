@@ -459,7 +459,7 @@ export interface IModalContainerProps {
 }
 
 export interface ICustomersProps {
-  status: string;
+  status?: string;
   customers: ICustomer[];
 }
 

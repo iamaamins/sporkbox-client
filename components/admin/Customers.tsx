@@ -109,12 +109,14 @@ export default function Customers({ status, customers }: ICustomersProps) {
                     Edit
                   </a>
                 </Link>
-                <span
-                  className={`${styles.button} ${styles.change_status}`}
-                  onClick={(e) => initiateStatusUpdate(e, customer._id)}
-                >
-                  {status === "active" ? "Archive" : "Activate"}
-                </span>
+                {status && (
+                  <span
+                    className={`${styles.button} ${styles.change_status}`}
+                    onClick={(e) => initiateStatusUpdate(e, customer._id)}
+                  >
+                    {status === "active" ? "Archive" : "Activate"}
+                  </span>
+                )}
               </td>
             </tr>
           ))}

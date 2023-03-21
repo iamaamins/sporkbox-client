@@ -108,7 +108,7 @@ export default function Customer() {
                   {customer.data.firstName} {customer.data.lastName}
                 </td>
                 <td>{customer.data.company.name}</td>
-                <td>{customer.data.company.shift}</td>
+                <td className={styles.shift}>{customer.data.company.shift}</td>
                 <td>
                   {customer.data.company.address.addressLine2 ? (
                     <>

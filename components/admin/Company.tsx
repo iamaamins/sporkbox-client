@@ -33,6 +33,9 @@ export default function Company() {
   const [activeCustomers, setActiveCustomers] = useState<ICustomer[]>([]);
   const [archivedCustomers, setArchivedCustomers] = useState<ICustomer[]>([]);
   const [isUpdatingCompanyStatus, setIsUpdatingCompanyStatus] = useState(false);
+  const [unenrolledCustomers, setUnenrolledCustomers] = useState<ICustomer[]>(
+    []
+  );
 
   // Get the company
   useEffect(() => {
@@ -70,6 +73,15 @@ export default function Company() {
               customer.status === "ARCHIVED"
           )
           .sort(sortByLastName)
+      );
+
+      // Update unenrolled customers
+      setUnenrolledCustomers(
+        customers.data.filter((customer) =>
+          customer.companies
+            .filter((company) => company.status === "ARCHIVED")
+            .some((company) => company._id === router.query.company)
+        )
       );
     }
 
@@ -205,6 +217,15 @@ export default function Company() {
               <h2>Archived customers</h2>
 
               <Customers status="archived" customers={archivedCustomers} />
+            </section>
+          )}
+
+          {/* Unenrolled customers */}
+          {unenrolledCustomers.length > 0 && (
+            <section className={styles.section}>
+              <h2>Unenrolled customers</h2>
+
+              <Customers customers={unenrolledCustomers} />
             </section>
           )}
 
