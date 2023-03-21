@@ -42,18 +42,18 @@ export default function LoginForm() {
       // Fetch data
       const response = await axiosInstance.post(`/users/login`, formData);
 
+      // Clear form data
+      setFormData({
+        email: "",
+        password: "",
+      });
+
       // Update state
       if (response.data.role === "ADMIN") {
         setAdmin(response.data);
       } else {
         setCustomer(response.data);
       }
-
-      // Clear form data
-      setFormData({
-        email: "",
-        password: "",
-      });
     } catch (err) {
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);

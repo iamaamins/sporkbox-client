@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { AxiosError } from "axios";
 import { useUser } from "@context/User";
-import { useRouter } from "next/router";
 import { useAlert } from "@context/Alert";
 import { IAxiosError, IFormData } from "types";
 import { ChangeEvent, FormEvent, useState } from "react";
@@ -21,9 +20,8 @@ export default function RegistrationForm() {
   };
 
   // Hooks
-  const router = useRouter();
   const { setAlerts } = useAlert();
-  const { setAdmin, setCustomer } = useUser();
+  const { setCustomer } = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<IFormData>(initialSate);
 
@@ -58,18 +56,11 @@ export default function RegistrationForm() {
         formData
       );
 
-      // Update state
-      if (response.data.role === "ADMIN") {
-        setAdmin(response.data);
-      } else {
-        setCustomer(response.data);
-      }
-
       // Clear form
       setFormData(initialSate);
 
-      // Push to dashboard page
-      router.push("/dashboard");
+      // Update state
+      setCustomer(response.data);
     } catch (err) {
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
