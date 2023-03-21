@@ -86,7 +86,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
 
   // Get admin data
   useEffect(() => {
-    // Get admin data
     async function getAdminData() {
       // Get all upcoming orders
       try {
@@ -209,7 +208,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
 
   // Get customer data
   useEffect(() => {
-    // Get customer data
     async function getCustomerData() {
       // Get all upcoming orders
       try {
@@ -249,26 +247,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
         showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
       }
 
-      // Get upcoming week restaurants
-      try {
-        // Make request to backend
-        const response = await axiosInstance.get(
-          `/restaurants/upcoming-restaurants`
-        );
-
-        // Update state
-        setUpcomingRestaurants({ isLoading: false, data: response.data });
-      } catch (err) {
-        // Remove loader
-        setUpcomingRestaurants((currState) => ({
-          ...currState,
-          isLoading: false,
-        }));
-
-        // Show error alert
-        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
-      }
-
       // Get favorite items
       try {
         // Make request to backend
@@ -293,6 +271,35 @@ export default function DataProvider({ children }: IContextProviderProps) {
       getCustomerData();
     }
   }, [isCustomer]);
+
+  // Get customer upcoming restaurants
+  useEffect(() => {
+    async function getUpcomingRestaurants() {
+      try {
+        // Make request to backend
+        const response = await axiosInstance.get(
+          `/restaurants/upcoming-restaurants`
+        );
+
+        // Update state
+        setUpcomingRestaurants({ isLoading: false, data: response.data });
+      } catch (err) {
+        // Remove loader
+        setUpcomingRestaurants((currState) => ({
+          ...currState,
+          isLoading: false,
+        }));
+
+        // Show error alert
+        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      }
+    }
+
+    // Only run this function if there is a customer
+    if (isCustomer) {
+      getUpcomingRestaurants();
+    }
+  }, [customer]);
 
   return (
     <DataContext.Provider
