@@ -56,9 +56,9 @@ export default function Favorite() {
                               <Link
                                 href={`/place-order/${convertDateToMS(
                                   upcomingRestaurant.date
-                                )}/${customerFavoriteItem.restaurant._id}/${
-                                  customerFavoriteItem.item._id
-                                }`}
+                                )}/${upcomingRestaurant.company.shift}/${
+                                  customerFavoriteItem.restaurant._id
+                                }/${customerFavoriteItem.item._id}`}
                               >
                                 <a>
                                   <span>{getDay(upcomingRestaurant.date)}</span>
