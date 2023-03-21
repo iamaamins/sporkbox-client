@@ -159,11 +159,6 @@ export interface ICustomers extends IIsLoading {
   data: ICustomer[];
 }
 
-interface IUpcomingDateAndShift {
-  date: number;
-  shift: string;
-}
-
 export interface IOrdersGroup {
   orders: IOrder[];
   company: {
@@ -171,9 +166,6 @@ export interface IOrdersGroup {
     name: string;
     shift: string;
   };
-  // shift: string;
-  // companyId: string;
-  // companyName: string;
   restaurants: string[];
   deliveryDate: string;
 }
@@ -183,6 +175,7 @@ export interface IDataContext {
   allOrders: IOrder[];
   companies: ICompanies;
   customers: ICustomers;
+  upcomingDates: number[];
   customerAllOrders: ICustomerOrder[];
   upcomingOrdersGroups: IOrdersGroup[];
   deliveredOrdersGroups: IOrdersGroup[];
@@ -192,7 +185,6 @@ export interface IDataContext {
   scheduledRestaurants: IScheduledRestaurants;
   customerFavoriteItems: ICustomerFavoriteItems;
   setVendors: Dispatch<SetStateAction<IVendors>>;
-  upcomingDatesAndShifts: IUpcomingDateAndShift[];
   customerUpcomingOrders: ICustomerUpcomingOrders;
   customerDeliveredOrders: ICustomerDeliveredOrders;
   setCompanies: Dispatch<SetStateAction<ICompanies>>;

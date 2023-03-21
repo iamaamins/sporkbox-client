@@ -76,22 +76,12 @@ export default function DataProvider({ children }: IContextProviderProps) {
   // Group delivered orders by company and delivery date
   const deliveredOrdersGroups = createOrdersGroups(allDeliveredOrders.data);
 
-  // Upcoming dates and shifts
-  const upcomingDatesAndShifts =
+  // Upcoming dates
+  const upcomingDates =
     !upcomingRestaurants.isLoading && upcomingRestaurants.data.length > 0
       ? upcomingRestaurants.data
-          .map((upcomingRestaurant) => ({
-            date: convertDateToMS(upcomingRestaurant.date),
-            shift: upcomingRestaurant.company.shift,
-          }))
-          .filter(
-            (dayAndShift, index, dayAndShifts) =>
-              dayAndShifts.findIndex(
-                (element) =>
-                  element.date === dayAndShift.date &&
-                  element.shift === dayAndShift.shift
-              ) === index
-          )
+          .map((upcomingRestaurant) => convertDateToMS(upcomingRestaurant.date))
+          .filter((date, index, dates) => dates.indexOf(date) === index)
       : [];
 
   // Get admin data
@@ -325,7 +315,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
         deliveredOrdersGroups,
         setAllDeliveredOrders,
         customerUpcomingOrders,
-        upcomingDatesAndShifts,
+        upcomingDates,
         customerDeliveredOrders,
         setScheduledRestaurants,
         setCustomerFavoriteItems,

@@ -15,17 +15,17 @@ import styles from "@styles/layout/DesktopNav.module.css";
 export default function DesktopNav() {
   // Hooks
   const { setAlerts } = useAlert();
+  const { upcomingDates } = useData();
   const pathName = useRouter().pathname;
   const [date, setDate] = useState<number>();
-  const { upcomingDatesAndShifts } = useData();
   const { isAdmin, isCustomer, setAdmin, setCustomer } = useUser();
 
   // Get first scheduled date of next week
   useEffect(() => {
-    if (upcomingDatesAndShifts.length > 0) {
-      setDate(upcomingDatesAndShifts[0].date);
+    if (upcomingDates.length > 0) {
+      setDate(upcomingDates[0]);
     }
-  }, [upcomingDatesAndShifts]);
+  }, [upcomingDates]);
 
   // Handle sign out
   async function handleSignOut() {

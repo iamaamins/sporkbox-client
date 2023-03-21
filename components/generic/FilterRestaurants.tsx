@@ -1,36 +1,36 @@
-import { useEffect, useState } from "react";
-import { IFilterRestaurantsProps } from "types";
-import styles from "@styles/generic/SortRestaurants.module.css";
-import { useData } from "@context/Data";
-import { convertDateToMS } from "@utils/index";
 import { useRouter } from "next/router";
+import { useData } from "@context/Data";
+import { useEffect, useState } from "react";
+import { convertDateToMS } from "@utils/index";
+import { IFilterRestaurantsProps } from "types";
+import styles from "@styles/generic/FilterRestaurants.module.css";
 
-export default function SortRestaurants({
+export default function FilterRestaurants({
   setRestaurants,
 }: IFilterRestaurantsProps) {
   // Hooks
   const router = useRouter();
   const [shift, setShift] = useState("");
-  const { upcomingRestaurants, upcomingDatesAndShifts } = useData();
+  const { upcomingRestaurants, upcomingDates } = useData();
 
+  // Reset shift on route change
   useEffect(() => {
     setShift("");
   }, [router]);
 
+  // Filter restaurants on shift change
   useEffect(() => {
-    if (upcomingDatesAndShifts.length > 0 && router.isReady) {
+    if (upcomingDates.length > 0 && router.isReady) {
       // Upcoming date and shift
-      const upcomingDateAndShift = upcomingDatesAndShifts.find(
-        (upcomingDateAndShift) =>
-          upcomingDateAndShift.date.toString() === router.query.date
+      const upcomingDate = upcomingDates.find(
+        (upcomingDate) => upcomingDate.toString() === router.query.date
       );
 
-      if (upcomingDateAndShift) {
+      if (upcomingDate) {
         // Get upcoming restaurants on a date
         const upcomingRestaurantsOnDate = upcomingRestaurants.data.filter(
           (upcomingRestaurant) =>
-            convertDateToMS(upcomingRestaurant.date) ===
-            upcomingDateAndShift?.date
+            convertDateToMS(upcomingRestaurant.date) === upcomingDate
         );
 
         setRestaurants(() =>
@@ -45,14 +45,14 @@ export default function SortRestaurants({
   }, [shift]);
 
   return (
-    <div className={styles.sort_restaurants}>
+    <div className={styles.filter_restaurants}>
       <select
         name="shift"
         value={shift}
         onChange={(e) => setShift(e.target.value)}
       >
         <option hidden aria-hidden>
-          Sort restaurants
+          Filter restaurants
         </option>
         <option value="day">By day</option>
         <option value="night">By night</option>

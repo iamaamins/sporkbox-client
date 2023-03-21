@@ -11,41 +11,35 @@ import {
 } from "@utils/index";
 import Image from "next/image";
 import { IUpcomingRestaurant } from "types";
+import FilterRestaurants from "./FilterRestaurants";
 import styles from "@styles/generic/Calendar.module.css";
-import SortRestaurants from "./SortRestaurants";
 
 export default function Calendar() {
   // Hooks
   const router = useRouter();
   const { cartItems } = useCart();
-  const { upcomingDatesAndShifts, upcomingRestaurants } = useData();
+  const { upcomingDates, upcomingRestaurants } = useData();
   const [restaurants, setRestaurants] = useState<IUpcomingRestaurant[]>([]);
-  const [sorted, setSorted] = useState({
-    byDay: false,
-    byNight: false,
-  });
 
   // Get restaurants for a date
   useEffect(() => {
-    if (upcomingDatesAndShifts.length > 0 && router.isReady) {
+    if (upcomingDates.length > 0 && router.isReady) {
       // Upcoming dates and shifts
-      const upcomingDateAndShift = upcomingDatesAndShifts.find(
-        (upcomingDateAndShift) =>
-          upcomingDateAndShift.date.toString() === router.query.date
+      const upcomingDate = upcomingDates.find(
+        (upcomingDate) => upcomingDate.toString() === router.query.date
       );
 
-      if (upcomingDateAndShift) {
+      if (upcomingDate) {
         // Update restaurants state
         setRestaurants(
           upcomingRestaurants.data.filter(
             (upcomingRestaurant) =>
-              convertDateToMS(upcomingRestaurant.date) ===
-              upcomingDateAndShift.date
+              convertDateToMS(upcomingRestaurant.date) === upcomingDate
           )
         );
       }
     }
-  }, [upcomingDatesAndShifts, router]);
+  }, [upcomingDates, router]);
 
   return (
     <section className={styles.calendar}>
@@ -56,42 +50,43 @@ export default function Calendar() {
         upcomingRestaurants.data.length === 0 && <h2>No restaurants</h2>}
 
       {/* If there are restaurant groups */}
-      {upcomingDatesAndShifts.length > 0 && (
+      {upcomingDates.length > 0 && (
         <>
           {/* Show next week's and scheduled date */}
           <div className={styles.title_and_controller}>
-            <h2 className={styles.calendar_title}>Upcoming week</h2>
+            <div className={styles.title_and_filter}>
+              <h2>Upcoming week</h2>
 
-            {/* Sort restaurants */}
-            <SortRestaurants setRestaurants={setRestaurants} />
+              {/* Show filter option if there are multiple shifts */}
+              {upcomingRestaurants.data.reduce((acc, curr) => {
+                if (acc.includes(curr.company.shift)) {
+                  return acc;
+                } else {
+                  return [...acc, curr.company.shift];
+                }
+              }, [] as string[]).length > 1 && (
+                <FilterRestaurants setRestaurants={setRestaurants} />
+              )}
+            </div>
 
             <div className={styles.controller}>
-              {/* TODO: Remove the filter */}
-              {upcomingDatesAndShifts
-                .filter(
-                  (upcomingDateAndShift, index, array) =>
-                    array.findIndex(
-                      (element) => element.date === upcomingDateAndShift.date
-                    ) === index
-                )
-                .map((upcomingDateAndShift, index) => (
-                  <div key={index}>
-                    <Link href={`/place-order/${upcomingDateAndShift.date}`}>
-                      <a
-                        key={index}
-                        className={
-                          upcomingDateAndShift.date.toString() ===
-                          router.query.date
-                            ? styles.active
-                            : ""
-                        }
-                      >
-                        <span>{getDate(upcomingDateAndShift.date)}</span>
-                        <span>{getDay(upcomingDateAndShift.date)}</span>
-                      </a>
-                    </Link>
-                  </div>
-                ))}
+              {upcomingDates.map((upcomingDate, index) => (
+                <div key={index}>
+                  <Link href={`/place-order/${upcomingDate}`}>
+                    <a
+                      key={index}
+                      className={
+                        upcomingDate.toString() === router.query.date
+                          ? styles.active
+                          : ""
+                      }
+                    >
+                      <span>{getDate(upcomingDate)}</span>
+                      <span>{getDay(upcomingDate)}</span>
+                    </a>
+                  </Link>
+                </div>
+              ))}
             </div>
           </div>
 
