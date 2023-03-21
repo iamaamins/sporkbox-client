@@ -20,7 +20,6 @@ import {
 import {
   axiosInstance,
   convertDateToMS,
-  formatNumberToUS,
   createOrdersGroups,
   showErrorAlert,
 } from "@utils/index";

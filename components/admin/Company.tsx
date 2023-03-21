@@ -5,9 +5,9 @@ import { useRouter } from "next/router";
 import ActionModal from "./ActionModal";
 import { useAlert } from "@context/Alert";
 import Buttons from "@components/layout/Buttons";
-import ScheduledRestaurants from "./ScheduledRestaurants";
 import styles from "@styles/admin/Company.module.css";
 import { FormEvent, useEffect, useState } from "react";
+import ScheduledRestaurants from "./ScheduledRestaurants";
 import ModalContainer from "@components/layout/ModalContainer";
 import ScheduleRestaurantsModal from "@components/admin/ScheduleRestaurantsModal";
 import {
