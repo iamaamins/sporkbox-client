@@ -209,7 +209,7 @@ export default function OrdersGroupDetails({
               <tr>
                 <th className={styles.hide_on_mobile}>Date</th>
                 <th>Company</th>
-                <th>Shift</th>
+                <th className={styles.hide_on_mobile}>Shift</th>
                 <th>Restaurant</th>
                 <th className={styles.hide_on_mobile}>Orders</th>
                 <th>Action</th>
@@ -223,7 +223,7 @@ export default function OrdersGroupDetails({
                     {convertDateToText(ordersByRestaurant.deliveryDate)}
                   </td>
                   <td>{ordersByRestaurant.company.name}</td>
-                  <td className={styles.shift}>
+                  <td className={`${styles.shift} ${styles.hide_on_mobile}`}>
                     {ordersByRestaurant.company.shift}
                   </td>
                   <td>{ordersByRestaurant.restaurantName}</td>
@@ -243,10 +243,10 @@ export default function OrdersGroupDetails({
                           )
                         }
                       >
-                        Send delivery email
+                        Deliver
                       </span>
                     ) : (
-                      <span>Orders delivered</span>
+                      <span>Delivered</span>
                     )}
                   </td>
                 </tr>
@@ -363,7 +363,7 @@ export default function OrdersGroupDetails({
                             Archive
                           </span>
                         ) : (
-                          <span>Order delivered</span>
+                          <span>Delivered</span>
                         )}
                       </td>
                     </tr>
