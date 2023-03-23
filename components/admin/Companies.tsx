@@ -25,7 +25,7 @@ export default function Companies() {
                 <th>Shift</th>
                 <th className={styles.hide_on_mobile}>Website</th>
                 <th className={styles.hide_on_mobile}>Code</th>
-                <th>Budget/day</th>
+                <th>Budget/shift</th>
               </tr>
             </thead>
 

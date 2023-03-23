@@ -73,7 +73,7 @@ export default function RestaurantForm({
         } as React.CSSProperties
       }
     >
-      <p className={styles.form_title}>Owner info</p>
+      <p className={styles.form_title}>Contact info</p>
 
       <div className={styles.item}>
         <label htmlFor="firstName">First name</label>

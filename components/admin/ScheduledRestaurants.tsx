@@ -203,7 +203,7 @@ export default function ScheduledRestaurants({
           <table>
             <thead>
               <tr>
-                <th>Scheduled on</th>
+                <th>Date</th>
                 <th>Restaurant</th>
                 <th>Company</th>
                 <th>Shift</th>
