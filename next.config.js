@@ -3,7 +3,11 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["d1nsp5ljvyq4nc.cloudfront.net", "cdn.sporkbox.app"],
+    domains: [
+      "cdn.sporkbox.app",
+      "cdn-dev.sporkbox.app",
+      "d1nsp5ljvyq4nc.cloudfront.net",
+    ],
   },
 };
 
