@@ -145,7 +145,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       // Get 25 latest vendors
       try {
         // Make request to backend
-        const response = await axiosInstance.get(`/vendors/25`);
+        const response = await axiosInstance.get(`/vendors/0`);
 
         // Update state
         setVendors({ isLoading: false, data: response.data });
