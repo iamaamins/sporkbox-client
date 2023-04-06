@@ -26,8 +26,13 @@ export default function Company() {
   const [action, setAction] = useState("");
   const [company, setCompany] = useState<ICompany>();
   const [showModal, setShowModal] = useState(false);
-  const { companies, customers, setCompanies, scheduledRestaurants } =
-    useData();
+  const {
+    companies,
+    customers,
+    setCompanies,
+    allUpcomingOrders,
+    scheduledRestaurants,
+  } = useData();
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
   const [restaurants, setRestaurants] = useState<IScheduledRestaurant[]>([]);
   const [activeCustomers, setActiveCustomers] = useState<ICustomer[]>([]);
@@ -54,10 +59,14 @@ export default function Company() {
         customers.data
           .filter(
             (customer) =>
-              customer.companies
-                .filter((company) => company.status === "ACTIVE")
-                .some((company) => company._id === router.query.company) &&
-              customer.status === "ACTIVE"
+              (customer.status === "ACTIVE" &&
+                customer.companies
+                  .filter((company) => company.status === "ACTIVE")
+                  .some((company) => company._id === router.query.company)) ||
+              allUpcomingOrders.data.some(
+                (upcomingOrder) =>
+                  upcomingOrder.company._id === router.query.company
+              )
           )
           .sort(sortByLastName)
       );
@@ -67,10 +76,10 @@ export default function Company() {
         customers.data
           .filter(
             (customer) =>
-              customer.companies
-                .filter((company) => company.status === "ACTIVE")
-                .some((company) => company._id === router.query.company) &&
-              customer.status === "ARCHIVED"
+              customer.status === "ARCHIVED" &&
+              customer.companies.some(
+                (company) => company._id === router.query.company
+              )
           )
           .sort(sortByLastName)
       );
@@ -78,10 +87,15 @@ export default function Company() {
       // Update unenrolled customers
       setUnenrolledCustomers(
         customers.data
-          .filter((customer) =>
-            customer.companies
-              .filter((company) => company.status === "ARCHIVED")
-              .some((company) => company._id === router.query.company)
+          .filter(
+            (customer) =>
+              customer.companies
+                .filter((company) => company.status === "ARCHIVED")
+                .some((company) => company._id === router.query.company) &&
+              !allUpcomingOrders.data.some(
+                (upcomingOrder) =>
+                  upcomingOrder.company._id === router.query.company
+              )
           )
           .sort(sortByLastName)
       );
