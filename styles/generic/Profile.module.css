@@ -43,7 +43,7 @@
 
 .title {
   font-weight: 600;
-  font-size: 1.25rem;
+  font-size: 18px;
   margin-bottom: 0.5rem;
 }
 
@@ -78,5 +78,15 @@
   .profile {
     max-width: 34rem;
     margin: 0 auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .profile {
+    max-width: 65rem;
+    margin: 0 auto;
+    display: grid;
+    gap: 3rem;
+    grid-template-columns: 2.5fr 4fr;
   }
 }
