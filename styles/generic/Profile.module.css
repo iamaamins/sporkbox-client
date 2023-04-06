@@ -6,6 +6,10 @@
   margin-bottom: 1rem;
 }
 
+.details {
+  margin-bottom: 1rem;
+}
+
 .details p {
   font-weight: 500;
   margin-bottom: 0.5rem;
@@ -35,6 +39,39 @@
   justify-content: center;
   background: var(--orange);
   color: var(--almost_white);
+}
+
+.title {
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.video_link {
+  display: block;
+  margin-bottom: 1rem;
+  color: var(--teal);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.instruction {
+  margin-bottom: 1rem;
+}
+
+.instruction p {
+  font-size: 16px;
+  margin-bottom: 0.25rem;
+}
+
+.instruction ul li {
+  margin-left: 1.5rem;
+  list-style: disc;
+  margin-bottom: 6px;
+}
+
+.instruction ul li a {
+  color: var(--orange);
 }
 
 @media (min-width: 768px) {
