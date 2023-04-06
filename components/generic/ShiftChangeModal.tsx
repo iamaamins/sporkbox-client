@@ -13,36 +13,20 @@ export default function ShiftChangeModal({
   // Hooks
   const { setAlerts } = useAlert();
   const { customer, setCustomer } = useUser();
+  const [selectedShift, setSelectedShift] = useState("");
   const [isChangingShift, setIsChangingShift] = useState(false);
-  const [shifts, setShifts] = useState({
-    day: false,
-    night: false,
-  });
 
   useEffect(() => {
     if (customer) {
-      // Find if a shift exists
-      const doesShiftExist = (shift: string) =>
-        customer.companies
-          .filter((company) => company.status === "ACTIVE")
-          .find((company) => company.shift === shift);
+      // Find the active
+      const activeCompany = customer.companies.find(
+        (company) => company.status === "ACTIVE"
+      );
 
-      // Update shift
-      setShifts((currState) => ({
-        ...currState,
-        day: doesShiftExist("day") ? true : false,
-        night: doesShiftExist("night") ? true : false,
-      }));
+      // Update state
+      activeCompany && setSelectedShift(activeCompany.shift);
     }
   }, [customer]);
-
-  // Handle change
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    setShifts((currState) => ({
-      ...currState,
-      [e.target.id]: e.target.checked,
-    }));
-  }
 
   // Change shift
   async function changeShift(e: FormEvent) {
@@ -52,15 +36,10 @@ export default function ShiftChangeModal({
       // Show loader
       setIsChangingShift(true);
 
-      // Format shifts
-      const formattedShifts = Object.entries(shifts)
-        .filter((shift) => shift[1] === true)
-        .map((shift) => shift[0]);
-
       // Make request to the backend
       const response = await axiosInstance.patch(
         `/customers/${customer?._id}/${customer?.companies[0].code}/change-customer-shift`,
-        { shifts: formattedShifts }
+        { shift: selectedShift }
       );
 
       // Add the updated companies to the user
@@ -81,16 +60,17 @@ export default function ShiftChangeModal({
 
   return (
     <div className={styles.shift_change_modal}>
-      <h2>Change shift</h2>
+      <h2>Select shift</h2>
 
       <form onSubmit={changeShift}>
         {customer?.shifts.map((shift, index) => (
           <div key={index}>
             <input
               id={shift}
-              type="checkbox"
-              onChange={handleChange}
-              checked={shifts[shift as keyof object]}
+              name="shift"
+              type="radio"
+              checked={shift === selectedShift}
+              onChange={(e) => setSelectedShift(e.target.id)}
             />
             <label htmlFor={shift} className={styles.shift}>
               {shift}
