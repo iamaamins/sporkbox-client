@@ -60,13 +60,20 @@ export default function Company() {
           .filter(
             (customer) =>
               (customer.status === "ACTIVE" &&
-                customer.companies
-                  .filter((company) => company.status === "ACTIVE")
-                  .some((company) => company._id === router.query.company)) ||
-              allUpcomingOrders.data.some(
-                (upcomingOrder) =>
-                  upcomingOrder.company._id === router.query.company
-              )
+                customer.companies.some(
+                  (company) =>
+                    company.status === "ACTIVE" &&
+                    company._id === router.query.company
+                )) ||
+              (customer.status === "ACTIVE" &&
+                customer.companies.some(
+                  (company) => company._id === router.query.company
+                ) &&
+                allUpcomingOrders.data.some(
+                  (upcomingOrder) =>
+                    upcomingOrder.customer._id === customer._id &&
+                    upcomingOrder.company._id === router.query.company
+                ))
           )
           .sort(sortByLastName)
       );
@@ -89,11 +96,14 @@ export default function Company() {
         customers.data
           .filter(
             (customer) =>
-              customer.companies
-                .filter((company) => company.status === "ARCHIVED")
-                .some((company) => company._id === router.query.company) &&
+              customer.companies.some(
+                (company) =>
+                  company.status === "ARCHIVED" &&
+                  company._id === router.query.company
+              ) &&
               !allUpcomingOrders.data.some(
                 (upcomingOrder) =>
+                  upcomingOrder.customer._id === customer._id &&
                   upcomingOrder.company._id === router.query.company
               )
           )
