@@ -29,11 +29,17 @@ export default function Calendar() {
       );
 
       if (upcomingDate) {
-        // Get upcoming restaurants on a date
-        const upcomingRestaurantsOnDate = upcomingRestaurants.data.filter(
-          (upcomingRestaurant) =>
-            convertDateToMS(upcomingRestaurant.date) === upcomingDate
-        );
+        // Get upcoming restaurants on a date and sort
+        const upcomingRestaurantsOnDate = upcomingRestaurants.data
+          .filter(
+            (upcomingRestaurant) =>
+              convertDateToMS(upcomingRestaurant.date) === upcomingDate
+          )
+          .sort(
+            (a, b) =>
+              new Date(a.scheduledAt).getTime() -
+              new Date(b.scheduledAt).getTime()
+          );
 
         // Update restaurants state
         setRestaurants(upcomingRestaurantsOnDate);
