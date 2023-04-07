@@ -58,6 +58,7 @@
 }
 
 .add_or_removable_item label {
+  cursor: pointer;
   color: var(--gray);
   margin-left: 0.5rem;
   text-transform: capitalize;
