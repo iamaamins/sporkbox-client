@@ -68,12 +68,12 @@ export default function Profile() {
           </p>
           <ul>
             <li>
-              Click the 'Select shift' button and select the shift you currently
-              work on.
+              Click the &apos;Select shift&apos; button and select the shift you
+              currently work on.
             </li>
             <li>
-              The details of your shift will display above the 'Change shift'
-              button.
+              The details of your shift will display above the &apos;Change
+              shift&apos; button.
             </li>
           </ul>
         </div>
@@ -83,15 +83,17 @@ export default function Profile() {
             <strong>Step 2</strong>: Place your lunch orders
           </p>
           <ul>
-            <li>Click the 'Place order' tab on the menu bar above.</li>
             <li>
-              You'll see all of the upcoming days that have scheduled
+              Click the &apos;Place order&apos; tab on the menu bar above.
+            </li>
+            <li>
+              You&apos;ll see all of the upcoming days that have scheduled
               restaurants for ordering.
             </li>
             <li>
               Your daily budget is how much your company will cover for you each
-              day. Any daily total over that amount, you'll need to cover at
-              check out.
+              day. Any daily total over that amount, you&apos;ll need to cover
+              at check out.
             </li>
             <li>Prices includes all fees and gratuity.</li>
           </ul>
@@ -103,21 +105,21 @@ export default function Profile() {
           </p>
           <ul>
             <li>
-              Make all of your selections for the week or time frame that you'll
-              be at the office.
+              Make all of your selections for the week or time frame that
+              you&apos;ll be at the office.
             </li>
             <li>
-              Once you've made all of your selections, click on the bag logo at
-              the top right to see your cart.
+              Once you&apos;ve made all of your selections, click on the bag
+              logo at the top right to see your cart.
             </li>
             <li>
-              If the cart looks good, click 'Check out'. If any days you've
-              order for exceed your company's budget, you'll need to check out
-              fo the remainder with a credit card.
+              If the cart looks good, click &apos;Check out&apos;. If any days
+              you&apos;ve order for exceed your company&apos;s budget,
+              you&apos;ll need to check out fo the remainder with a credit card.
             </li>
             <li>
-              Once you've checkout out, your 'Dashboard' tab on the menu will
-              show all of your upcoming and delivered orders.
+              Once you&apos;ve checkout out, your &apos;Dashboard&apos; tab on
+              the menu will show all of your upcoming and delivered orders.
             </li>
             <li>
               If you need to modify an order, contact{" "}
