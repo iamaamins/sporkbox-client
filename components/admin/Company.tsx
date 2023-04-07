@@ -59,16 +59,12 @@ export default function Company() {
         customers.data
           .filter(
             (customer) =>
-              (customer.status === "ACTIVE" &&
-                customer.companies.some(
-                  (company) =>
-                    company.status === "ACTIVE" &&
-                    company._id === router.query.company
-                )) ||
-              (customer.status === "ACTIVE" &&
-                customer.companies.some(
-                  (company) => company._id === router.query.company
-                ) &&
+              customer.status === "ACTIVE" &&
+              (customer.companies.some(
+                (company) =>
+                  company.status === "ACTIVE" &&
+                  company._id === router.query.company
+              ) ||
                 allUpcomingOrders.data.some(
                   (upcomingOrder) =>
                     upcomingOrder.customer._id === customer._id &&
