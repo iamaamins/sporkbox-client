@@ -6,14 +6,8 @@
   margin-bottom: 2.5rem;
 }
 
-.title_and_filter {
-  display: flex;
-  align-items: center;
+.title_and_controller h2 {
   margin-bottom: 1.5rem;
-}
-
-.title_and_filter h2 {
-  margin-right: 1rem;
 }
 
 .controller {

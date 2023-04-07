@@ -11,14 +11,12 @@ import {
 } from "@utils/index";
 import Image from "next/image";
 import { IUpcomingRestaurant } from "types";
-import FilterRestaurants from "./FilterRestaurants";
 import styles from "@styles/generic/Calendar.module.css";
 
 export default function Calendar() {
   // Hooks
   const router = useRouter();
   const { cartItems } = useCart();
-  const [shifts, setShifts] = useState<string[]>([]);
   const { upcomingDates, upcomingRestaurants } = useData();
   const [restaurants, setRestaurants] = useState<IUpcomingRestaurant[]>([]);
 
@@ -35,13 +33,6 @@ export default function Calendar() {
         const upcomingRestaurantsOnDate = upcomingRestaurants.data.filter(
           (upcomingRestaurant) =>
             convertDateToMS(upcomingRestaurant.date) === upcomingDate
-        );
-
-        // Update states
-        setShifts(
-          upcomingRestaurantsOnDate
-            .map((el) => el.company.shift)
-            .filter((el, index, shifts) => shifts.indexOf(el) === index)
         );
 
         // Update restaurants state
@@ -63,17 +54,7 @@ export default function Calendar() {
         <>
           {/* Show next week's and scheduled date */}
           <div className={styles.title_and_controller}>
-            <div className={styles.title_and_filter}>
-              <h2>Upcoming week</h2>
-
-              {/* Show filter option if there are multiple shifts */}
-              {shifts.length > 1 && (
-                <FilterRestaurants
-                  shifts={shifts}
-                  setRestaurants={setRestaurants}
-                />
-              )}
-            </div>
+            <h2>Upcoming week</h2>
 
             <div className={styles.controller}>
               {upcomingDates.map((upcomingDate, index) => (
