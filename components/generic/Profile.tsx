@@ -135,7 +135,7 @@ export default function Profile() {
           Watch a video on how Spork Box works here!{" "}
         </a>
 
-        <LinkButton linkText="Leave feedback" href="/leave-feedback" />
+        <LinkButton linkText="Leave feedback" href="/" />
       </div>
 
       <ModalContainer
