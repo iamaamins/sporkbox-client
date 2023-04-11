@@ -13,7 +13,7 @@ export default function LoginPage() {
     if (isAdmin) {
       router.push("/admin");
     } else if (isCustomer) {
-      router.push("/dashboard");
+      router.push("/profile");
     }
   }, [isAdmin, isCustomer]);
 
