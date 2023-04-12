@@ -12,7 +12,6 @@ import {
   IOrdersGroupDetailsProps,
 } from "types";
 import {
-  createSlug,
   axiosInstance,
   convertDateToMS,
   showErrorAlert,
@@ -93,16 +92,17 @@ export default function OrdersGroupDetails({
   useEffect(() => {
     if (!allUpcomingOrders.isLoading && !allDeliveredOrders.isLoading) {
       // Filter condition
-      const filterCondition = (order: IOrder) =>
+      const filterConditions = (order: IOrder) =>
         convertDateToMS(order.delivery.date) === +router.query.date! &&
         order.company._id === router.query.company;
 
       // Update state
       const allOrders = [
-        ...allUpcomingOrders.data.filter((order) => filterCondition(order)),
-        ...allDeliveredOrders.data.filter((order) => filterCondition(order)),
+        ...allUpcomingOrders.data.filter((order) => filterConditions(order)),
+        ...allDeliveredOrders.data.filter((order) => filterConditions(order)),
       ];
 
+      // Update state
       setAmount({
         paid: allOrders
           .filter((order) => order.payment)
@@ -229,6 +229,9 @@ export default function OrdersGroupDetails({
     }
   }
 
+  // Get date in text
+  const date = convertDateToText(+(router.query.date as string));
+
   // Check added ingredients
   const hasAddedIngredients = (ordersByRestaurant: IOrdersByRestaurant) =>
     ordersByRestaurant.orders.some((order) => order.item.addedIngredients);
@@ -247,7 +250,7 @@ export default function OrdersGroupDetails({
 
       {ordersByRestaurants.length > 0 && (
         <>
-          <h2>Order details - {convertDateToText(+router.query.date!)}</h2>
+          <h2>Order details - {date}</h2>
           <table>
             <thead>
               <tr>
@@ -301,8 +304,7 @@ export default function OrdersGroupDetails({
           {ordersByRestaurants.map((ordersByRestaurant, index) => (
             <div key={index}>
               <h2>
-                Order summary - {ordersByRestaurant.restaurantName} -{" "}
-                {convertDateToText(ordersByRestaurant.deliveryDate)}
+                Order summary - {ordersByRestaurant.restaurantName} - {date}
               </h2>
 
               <table>
@@ -375,7 +377,7 @@ export default function OrdersGroupDetails({
 
               <h2>
                 Customer information - {ordersByRestaurant.restaurantName} -{" "}
-                {convertDateToText(ordersByRestaurant.deliveryDate)}
+                {date}
               </h2>
 
               <table>
@@ -417,7 +419,7 @@ export default function OrdersGroupDetails({
             </div>
           ))}
 
-          <h2>Charge information</h2>
+          <h2>Charge information - {date}</h2>
 
           <table>
             <thead>
