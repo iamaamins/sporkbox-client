@@ -250,12 +250,12 @@ export interface IOrder {
     address: string;
   };
   status: string;
-  createdAt: string;
-  hasReviewed: boolean;
   payment?: {
     intent: string;
     amount: number;
   };
+  createdAt: string;
+  hasReviewed: boolean;
   item: {
     _id: string;
     name: string;

@@ -32,7 +32,16 @@ export default function OrdersGroupDetails({
   const router = useRouter();
   const { setAlerts } = useAlert();
   const [orderId, setOrderId] = useState("");
-  const { setAllUpcomingOrders, setAllDeliveredOrders } = useData();
+  const [amount, setAmount] = useState({
+    paid: 0,
+    total: 0,
+  });
+  const {
+    allUpcomingOrders,
+    setAllUpcomingOrders,
+    allDeliveredOrders,
+    setAllDeliveredOrders,
+  } = useData();
   const [isUpdatingOrdersStatus, setIsUpdatingOrdersStatus] = useState(false);
   const [ordersByRestaurants, setOrdersByRestaurants] = useState<
     IOrdersByRestaurant[]
@@ -79,6 +88,41 @@ export default function OrdersGroupDetails({
       }
     }
   }, [router.isReady, isLoading, ordersGroups]);
+
+  // Get amounts
+  useEffect(() => {
+    if (!allUpcomingOrders.isLoading && !allDeliveredOrders.isLoading) {
+      // Filter condition
+      const filterCondition = (order: IOrder) =>
+        convertDateToMS(order.delivery.date) === +router.query.date! &&
+        order.company._id === router.query.company;
+
+      // Update state
+      const allOrders = [
+        ...allUpcomingOrders.data.filter((order) => filterCondition(order)),
+        ...allDeliveredOrders.data.filter((order) => filterCondition(order)),
+      ];
+
+      setAmount({
+        paid: allOrders
+          .filter((order) => order.payment)
+          .reduce((acc: IOrder[], curr) => {
+            // Remove orders with duplicate payment intent
+            if (
+              !acc.some(
+                (order) => order.payment?.intent === curr.payment?.intent
+              )
+            ) {
+              return [...acc, curr];
+            } else {
+              return acc;
+            }
+          }, [])
+          .reduce((acc, curr) => acc + (curr.payment?.amount as number), 0),
+        total: allOrders.reduce((acc, curr) => acc + curr.item.total, 0),
+      });
+    }
+  }, [allUpcomingOrders, allDeliveredOrders]);
 
   // Initiate orders delivery
   function initiateOrdersDelivery(orders: IOrder[], restaurantName: string) {
@@ -192,35 +236,6 @@ export default function OrdersGroupDetails({
   // Check removed ingredients
   const hasRemovedIngredients = (ordersByRestaurant: IOrdersByRestaurant) =>
     ordersByRestaurant.orders.some((order) => order.item.removedIngredients);
-
-  // Total order amount
-  const ordersTotal = ordersByRestaurants.reduce((acc, curr) => {
-    // Get orders total for each restaurant
-    const restaurantTotal = curr.orders.reduce((acc, curr) => {
-      return acc + curr.item.total;
-    }, 0);
-
-    // Return orders total
-    return acc + restaurantTotal;
-  }, 0);
-
-  // Total paid amount
-  const paidTotal = ordersByRestaurants
-    .reduce((acc: IOrder[], curr) => {
-      // Get the order with payment details
-      return [...acc, ...curr.orders.filter((order) => order.payment)];
-    }, [])
-    .reduce((acc: IOrder[], curr) => {
-      // Remove orders with duplicate payment intent
-      if (
-        !acc.some((order) => order.payment?.intent === curr.payment?.intent)
-      ) {
-        return [...acc, curr];
-      } else {
-        return acc;
-      }
-    }, [])
-    .reduce((acc, curr) => acc + (curr.payment?.amount as number), 0);
 
   return (
     <section className={styles.orders_group_details}>
@@ -415,9 +430,9 @@ export default function OrdersGroupDetails({
 
             <tbody>
               <tr>
-                <td>{formatCurrencyToUSD(ordersTotal - paidTotal)}</td>
-                <td>{formatCurrencyToUSD(paidTotal)}</td>
-                <td>{formatCurrencyToUSD(ordersTotal)}</td>
+                <td>{formatCurrencyToUSD(amount.total - amount.paid)}</td>
+                <td>{formatCurrencyToUSD(amount.paid)}</td>
+                <td>{formatCurrencyToUSD(amount.total)}</td>
               </tr>
             </tbody>
           </table>
