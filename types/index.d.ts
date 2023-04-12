@@ -252,6 +252,10 @@ export interface IOrder {
   status: string;
   createdAt: string;
   hasReviewed: boolean;
+  payment?: {
+    intent: string;
+    amount: number;
+  };
   item: {
     _id: string;
     name: string;
