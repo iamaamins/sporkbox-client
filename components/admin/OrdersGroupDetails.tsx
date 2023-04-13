@@ -60,7 +60,8 @@ export default function OrdersGroupDetails({
       // Find the orders group
       const ordersGroup = ordersGroups.find(
         (ordersGroup) =>
-          convertDateToMS(ordersGroup.deliveryDate) === +router.query.date! &&
+          convertDateToMS(ordersGroup.deliveryDate).toString() ===
+            router.query.date &&
           ordersGroup.company._id === router.query.company
       );
 
@@ -93,7 +94,7 @@ export default function OrdersGroupDetails({
     if (!allUpcomingOrders.isLoading && !allDeliveredOrders.isLoading) {
       // Filter condition
       const filterConditions = (order: IOrder) =>
-        convertDateToMS(order.delivery.date) === +router.query.date! &&
+        convertDateToMS(order.delivery.date).toString() === router.query.date &&
         order.company._id === router.query.company;
 
       // Update state

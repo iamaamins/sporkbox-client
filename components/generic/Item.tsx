@@ -60,8 +60,8 @@ export default function Item() {
       // Find the restaurant
       const upcomingRestaurant = upcomingRestaurants.data.find(
         (upcomingRestaurant) =>
-          convertDateToMS(upcomingRestaurant.date) ===
-            +(router.query.date as string) &&
+          convertDateToMS(upcomingRestaurant.date).toString() ===
+            router.query.date &&
           upcomingRestaurant._id === router.query.restaurant &&
           upcomingRestaurant.company.shift === router.query.shift
       );
