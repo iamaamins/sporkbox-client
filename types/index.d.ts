@@ -345,6 +345,7 @@ export interface ISubmitButtonProps {
 
 export interface ILinkButtonProps {
   href: string;
+  target?: string;
   linkText: string;
 }
 

@@ -2,10 +2,16 @@ import Link from "next/link";
 import { ILinkButtonProps } from "types";
 import styles from "@styles/layout/LinkButton.module.css";
 
-export default function LinkButton({ href, linkText }: ILinkButtonProps) {
+export default function LinkButton({
+  href,
+  target,
+  linkText,
+}: ILinkButtonProps) {
   return (
     <Link href={href}>
-      <a className={styles.link_button}>{linkText}</a>
+      <a target={target} className={styles.link_button}>
+        {linkText}
+      </a>
     </Link>
   );
 }

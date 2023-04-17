@@ -72,7 +72,7 @@ export default function Profile() {
               currently work on.
             </li>
             <li>
-              The details of your shift will display above the &apos;Change
+              The details of your shift will display above the &apos;Select
               shift&apos; button.
             </li>
           </ul>
@@ -87,8 +87,8 @@ export default function Profile() {
               Click the &apos;Place order&apos; tab on the menu bar above.
             </li>
             <li>
-              You&apos;ll see all of the upcoming days that have scheduled
-              restaurants for ordering.
+              You&apos;ll see all of the upcoming dates that are ready for
+              ordering.
             </li>
             <li>
               Your daily budget is how much your company will cover for you each
@@ -131,11 +131,20 @@ export default function Profile() {
           </ul>
         </div>
 
-        <a href="/" target="_blank" className={styles.video_link}>
+        <a
+          target="_blank"
+          rel="noreferrer"
+          className={styles.video_link}
+          href="https://www.loom.com/share/f2074c4c42ba4e95a524485716ea5fe0"
+        >
           Watch a video on how Spork Box works here!{" "}
         </a>
 
-        <LinkButton linkText="Leave feedback" href="/" />
+        <LinkButton
+          target="_blank"
+          linkText="Leave feedback"
+          href="https://form.typeform.com/to/Xzws3eDc"
+        />
       </div>
 
       <ModalContainer
