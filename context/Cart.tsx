@@ -145,8 +145,8 @@ export default function CartProvider({ children }: IContextProviderProps) {
         });
 
         if (typeof response.data === "string") {
-          // Push to the dashboard page
-          location.assign(response.data);
+          // Open Stripe checkout page
+          open(response.data);
         } else {
           // Remove cart items
           setCartItems([]);
