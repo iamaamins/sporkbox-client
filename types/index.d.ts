@@ -459,6 +459,7 @@ export interface IRestaurantFormProps extends IFormProps {
 }
 
 export interface IModalContainerProps {
+  width?: string;
   component: JSX.Element;
   showModalContainer: boolean;
   setShowModalContainer: Dispatch<SetStateAction<boolean>>;
@@ -536,4 +537,11 @@ export interface IShiftChangeModalProps {
 export interface IFilterRestaurantsProps {
   shifts: string[];
   setRestaurants: Dispatch<SetStateAction<IUpcomingRestaurant[]>>;
+}
+
+export interface ICalendarFiltersProps {
+  restaurants: IUpcomingRestaurant[];
+  setShowCalendarFilters: Dispatch<SetStateAction<boolean>>;
+  setRestaurants: Dispatch<SetStateAction<IUpcomingRestaurant[]>>;
+  setUpdatedRestaurants: Dispatch<SetStateAction<IUpcomingRestaurant[]>>;
 }

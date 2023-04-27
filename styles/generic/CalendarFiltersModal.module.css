@@ -1,0 +1,42 @@
+.tags,
+.calendar_filters_modal h2,
+.calendar_filters_modal form select {
+  margin-bottom: 1rem;
+}
+
+.calendar_filters_modal form input[type="submit"] {
+  border: none;
+  width: 10rem;
+  cursor: pointer;
+  height: 2.75rem;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  border-radius: 0.25rem;
+  background: var(--orange);
+  color: var(--almost_white);
+  transition: all 150ms ease-in-out;
+}
+
+.calendar_filters_modal form select {
+  padding: 8px 12px;
+  width: fit-content;
+  border-radius: 0.25rem;
+  -webkit-appearance: none;
+  border: 1px solid var(--border_color);
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.tag input {
+  margin-right: 0.5rem;
+}
+
+.tag label {
+  cursor: pointer;
+}
