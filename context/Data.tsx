@@ -164,7 +164,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
       try {
         // Make request to backend
         const response = await axiosInstance.get(
-          `/orders/all-delivered-orders/25`
+          `/orders/all-delivered-orders/0`
         );
 
         // Update state
