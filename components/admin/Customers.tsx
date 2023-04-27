@@ -64,6 +64,9 @@ export default function Customers({ status, customers }: ICustomersProps) {
       // Show success alert
       showSuccessAlert("Status updated", setAlerts);
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {

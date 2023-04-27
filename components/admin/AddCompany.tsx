@@ -61,6 +61,9 @@ export default function AddCompany() {
       // Push to dashboard
       router.push("/admin/companies");
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {

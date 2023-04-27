@@ -77,6 +77,9 @@ export default function Order() {
       // Show success alert
       showSuccessAlert("Added to favorite", setAlerts);
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     }
@@ -143,6 +146,9 @@ export default function Order() {
       // Show success alert
       showSuccessAlert("Review added", setAlerts);
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {

@@ -65,6 +65,9 @@ export default function Restaurant() {
       // Show success alert
       showSuccessAlert("Status updated", setAlerts);
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {

@@ -52,7 +52,7 @@ export default function CalendarFiltersModal({
       );
     }
 
-    // Filter items
+    // Filter items by dietary tags
     if (tags.length > 0) {
       updatedRestaurants = updatedRestaurants
         .map((updatedRestaurant) => ({

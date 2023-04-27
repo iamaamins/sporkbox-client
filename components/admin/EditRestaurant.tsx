@@ -119,6 +119,9 @@ export default function EditRestaurant() {
       // Push to dashboard
       router.push(`/admin/restaurants/${response.data.restaurant._id}`);
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {

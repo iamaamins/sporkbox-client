@@ -86,6 +86,9 @@ export default function AddItem() {
       // Back to the restaurant page
       router.push(`/admin/restaurants/${router.query.restaurant}`);
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {

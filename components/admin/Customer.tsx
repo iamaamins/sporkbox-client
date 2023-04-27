@@ -79,6 +79,9 @@ export default function Customer() {
         ),
       }));
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     }

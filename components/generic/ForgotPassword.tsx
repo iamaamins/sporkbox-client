@@ -37,6 +37,9 @@ export default function ForgotPassword() {
       // Push to home page
       router.push("/");
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {

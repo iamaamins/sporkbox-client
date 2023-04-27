@@ -58,6 +58,9 @@ export default function ResetPassword() {
       // Push to login page
       router.push("/login");
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {

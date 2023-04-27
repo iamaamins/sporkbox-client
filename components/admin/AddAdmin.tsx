@@ -53,6 +53,9 @@ export default function AddAdmin() {
       // Show success alert
       showSuccessAlert("Admin added", setAlerts);
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {

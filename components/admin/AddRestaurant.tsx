@@ -91,6 +91,9 @@ export default function AddRestaurant() {
       // Push to dashboard
       router.push("/admin/restaurants");
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {

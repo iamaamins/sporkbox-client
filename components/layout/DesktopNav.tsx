@@ -40,6 +40,9 @@ export default function DesktopNav() {
         setCustomer(null);
       }
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     }

@@ -94,6 +94,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update state
         setAllUpcomingOrders({ isLoading: false, data: response.data });
       } catch (err) {
+        // Log error
+        console.log(err);
+
         // Remove loader
         setAllUpcomingOrders((currState) => ({
           ...currState,
@@ -114,6 +117,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update state
         setScheduledRestaurants({ isLoading: false, data: response.data });
       } catch (err) {
+        // Log error
+        console.log(err);
+
         // Remove loader
         setScheduledRestaurants((currState) => ({
           ...currState,
@@ -132,6 +138,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update state
         setCompanies({ isLoading: false, data: response.data });
       } catch (err) {
+        // Log error
+        console.log(err);
+
         // Remove loader
         setCompanies((currState) => ({
           ...currState,
@@ -150,6 +159,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update state
         setVendors({ isLoading: false, data: response.data });
       } catch (err) {
+        // Log error
+        console.log(err);
+
         // Remove loader
         setVendors((currState) => ({
           ...currState,
@@ -170,6 +182,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update state
         setAllDeliveredOrders({ isLoading: false, data: response.data });
       } catch (err) {
+        // Log error
+        console.log(err);
+
         // Remove loader
         setAllDeliveredOrders((currState) => ({
           ...currState,
@@ -188,6 +203,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update state
         setCustomers({ isLoading: false, data: response.data });
       } catch (err) {
+        // Log error
+        console.log(err);
+
         // Remove loader
         setCustomers((currState) => ({
           ...currState,
@@ -216,6 +234,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update state
         setCustomerUpcomingOrders({ isLoading: false, data: response.data });
       } catch (err) {
+        // Log error
+        console.log(err);
+
         // Remove loader
         setCustomerUpcomingOrders((currState) => ({
           ...currState,
@@ -236,6 +257,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update state
         setCustomerDeliveredOrders({ isLoading: false, data: response.data });
       } catch (err) {
+        // Log error
+        console.log(err);
+
         // Remove loader
         setCustomerDeliveredOrders((currState) => ({
           ...currState,
@@ -254,6 +278,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update data
         setCustomerFavoriteItems({ isLoading: false, data: response.data });
       } catch (err) {
+        // Log error
+        console.log(err);
+
         // Remove loader
         setCustomerFavoriteItems((currState) => ({
           ...currState,
@@ -283,6 +310,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
         // Update state
         setUpcomingRestaurants({ isLoading: false, data: response.data });
       } catch (err) {
+        // Log error
+        console.log(err);
+
         // Remove loader
         setUpcomingRestaurants((currState) => ({
           ...currState,

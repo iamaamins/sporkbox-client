@@ -78,6 +78,9 @@ export default function ScheduleRestaurantsModal() {
       // Show success alert
       showSuccessAlert("Restaurant scheduled", setAlerts);
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {

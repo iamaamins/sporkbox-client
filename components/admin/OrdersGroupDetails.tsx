@@ -182,6 +182,9 @@ export default function OrdersGroupDetails({
       // Push to the dashboard when there are no restaurant
       ordersByRestaurants.length === 1 && router.push("/admin");
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
@@ -221,6 +224,9 @@ export default function OrdersGroupDetails({
         .map((ordersByRestaurant) => ordersByRestaurant.orders)
         .flat().length === 1 && router.push("/admin");
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {

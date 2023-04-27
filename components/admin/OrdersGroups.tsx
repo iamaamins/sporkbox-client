@@ -38,6 +38,9 @@ export default function OrdersGroups({
       // Update state
       setAllDeliveredOrders(response.data);
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {

@@ -108,6 +108,9 @@ export default function ScheduledRestaurants({
       // Show success alert
       showSuccessAlert("Status updated", setAlerts);
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
@@ -179,6 +182,9 @@ export default function ScheduledRestaurants({
       // Show success alert
       showSuccessAlert("Schedule removed", setAlerts);
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {

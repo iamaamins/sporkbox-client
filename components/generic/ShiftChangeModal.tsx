@@ -50,6 +50,9 @@ export default function ShiftChangeModal({
       // Close the modal
       setShowShiftChangeModal(false);
     } catch (err) {
+      // Log error
+      console.log(err);
+
       // Show error alert
       showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     } finally {
