@@ -9,6 +9,7 @@ export default function CalendarFiltersModal({
   setShowCalendarFilters,
 }: ICalendarFiltersProps) {
   // Hooks
+  const [twentyAndUnder, setTwentyAndUnder] = useState(false);
   const [tagsData, setTagsData] = useState(
     tags.reduce((acc, curr) => ({ ...acc, [curr.toLowerCase()]: false }), {})
   );
@@ -45,6 +46,14 @@ export default function CalendarFiltersModal({
         .filter((updatedRestaurant) => updatedRestaurant.items.length > 0);
     }
 
+    // Filter items with price $20 and less
+    if (twentyAndUnder) {
+      updatedRestaurants = updatedRestaurants.map((updatedRestaurant) => ({
+        ...updatedRestaurant,
+        items: updatedRestaurant.items.filter((item) => item.price <= 20),
+      }));
+    }
+
     // Update states
     setShowCalendarFilters(false);
     setUpdatedRestaurants(updatedRestaurants);
@@ -54,7 +63,7 @@ export default function CalendarFiltersModal({
     <div className={styles.calendar_filters_modal}>
       <h2>Filters</h2>
 
-      <form onSubmit={filterItemsByTags} className={styles.tags}>
+      <form onSubmit={filterItemsByTags}>
         {tags.map((tag, index) => (
           <div key={index} className={styles.tag}>
             <input
@@ -66,6 +75,16 @@ export default function CalendarFiltersModal({
             <label htmlFor={tag}>{tag}</label>
           </div>
         ))}
+
+        <div className={styles.less_than_20}>
+          <input
+            type="checkbox"
+            id="twentyAndUnder"
+            checked={twentyAndUnder}
+            onChange={(e) => setTwentyAndUnder(e.target.checked)}
+          />
+          <label htmlFor="twentyAndUnder">$20 and under</label>
+        </div>
 
         <input type="submit" value="Apply" />
       </form>

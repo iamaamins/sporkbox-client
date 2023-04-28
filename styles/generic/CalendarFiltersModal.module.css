@@ -2,6 +2,22 @@
   margin-bottom: 1rem;
 }
 
+.tag,
+.less_than_20 {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.tag input,
+.less_than_20 input {
+  margin-right: 0.5rem;
+}
+
+.tag label {
+  cursor: pointer;
+}
+
 .calendar_filters_modal form input[type="submit"] {
   border: none;
   width: 10rem;
@@ -15,18 +31,4 @@
   background: var(--orange);
   color: var(--almost_white);
   transition: all 150ms ease-in-out;
-}
-
-.tag {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.75rem;
-}
-
-.tag input {
-  margin-right: 0.5rem;
-}
-
-.tag label {
-  cursor: pointer;
 }
