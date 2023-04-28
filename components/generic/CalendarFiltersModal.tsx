@@ -1,16 +1,14 @@
 import { tags } from "@utils/index";
 import { ICalendarFiltersProps } from "types";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import styles from "@styles/generic/CalendarFiltersModal.module.css";
 
 export default function CalendarFiltersModal({
   restaurants,
-  setRestaurants,
   setUpdatedRestaurants,
   setShowCalendarFilters,
 }: ICalendarFiltersProps) {
   // Hooks
-  const [sortBy, setSortBy] = useState("");
   const [tagsData, setTagsData] = useState(
     tags.reduce((acc, curr) => ({ ...acc, [curr.toLowerCase()]: false }), {})
   );
@@ -35,23 +33,6 @@ export default function CalendarFiltersModal({
       .filter((data) => data[1] === true)
       .map((data) => data[0]);
 
-    // Sort items by price
-    if (sortBy === "lowToHigh") {
-      setRestaurants((currState) =>
-        currState.map((restaurant) => ({
-          ...restaurant,
-          items: restaurant.items.sort((a, b) => a.price - b.price),
-        }))
-      );
-    } else if (sortBy === "highToLow") {
-      setRestaurants((currState) =>
-        currState.map((restaurant) => ({
-          ...restaurant,
-          items: restaurant.items.sort((a, b) => b.price - a.price),
-        }))
-      );
-    }
-
     // Filter items by dietary tags
     if (tags.length > 0) {
       updatedRestaurants = updatedRestaurants
@@ -73,26 +54,18 @@ export default function CalendarFiltersModal({
     <div className={styles.calendar_filters_modal}>
       <h2>Filters</h2>
 
-      <form onSubmit={filterItemsByTags}>
-        <select onChange={(e) => setSortBy(e.target.value)}>
-          <option hidden>Sort items</option>
-          <option value="lowToHigh">Price: Low to high</option>
-          <option value="highToLow">Price: High to low</option>
-        </select>
-
-        <div className={styles.tags}>
-          {tags.map((tag, index) => (
-            <div key={index} className={styles.tag}>
-              <input
-                type="checkbox"
-                id={tag}
-                onChange={handleTagsChange}
-                checked={tagsData[tag.toLowerCase() as keyof object]}
-              />
-              <label htmlFor={tag}>{tag}</label>
-            </div>
-          ))}
-        </div>
+      <form onSubmit={filterItemsByTags} className={styles.tags}>
+        {tags.map((tag, index) => (
+          <div key={index} className={styles.tag}>
+            <input
+              type="checkbox"
+              id={tag}
+              onChange={handleTagsChange}
+              checked={tagsData[tag.toLowerCase() as keyof object]}
+            />
+            <label htmlFor={tag}>{tag}</label>
+          </div>
+        ))}
 
         <input type="submit" value="Apply" />
       </form>

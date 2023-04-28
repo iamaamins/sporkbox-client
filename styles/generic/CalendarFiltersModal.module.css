@@ -1,6 +1,4 @@
-.tags,
-.calendar_filters_modal h2,
-.calendar_filters_modal form select {
+.calendar_filters_modal h2 {
   margin-bottom: 1rem;
 }
 
@@ -17,14 +15,6 @@
   background: var(--orange);
   color: var(--almost_white);
   transition: all 150ms ease-in-out;
-}
-
-.calendar_filters_modal form select {
-  padding: 8px 12px;
-  width: fit-content;
-  border-radius: 0.25rem;
-  -webkit-appearance: none;
-  border: 1px solid var(--border_color);
 }
 
 .tag {

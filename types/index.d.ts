@@ -545,3 +545,10 @@ export interface ICalendarFiltersProps {
   setRestaurants: Dispatch<SetStateAction<IUpcomingRestaurant[]>>;
   setUpdatedRestaurants: Dispatch<SetStateAction<IUpcomingRestaurant[]>>;
 }
+
+export interface ICalendarSortProps {
+  updatedRestaurants: IUpcomingRestaurant[];
+  setSorted: Dispatch<
+    SetStateAction<{ byLowToHigh: boolean; byHighToLow: boolean }>
+  >;
+}

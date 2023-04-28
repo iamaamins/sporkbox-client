@@ -10,6 +10,7 @@ import {
   convertDateToMS,
   formatCurrencyToUSD,
 } from "@utils/index";
+import CalendarSort from "./CalendarSort";
 import { IUpcomingRestaurant } from "types";
 import CalendarFiltersModal from "./CalendarFiltersModal";
 import styles from "@styles/generic/Calendar.module.css";
@@ -19,6 +20,10 @@ export default function Calendar() {
   // Hooks
   const router = useRouter();
   const { cartItems } = useCart();
+  const [sorted, setSorted] = useState({
+    byLowToHigh: false,
+    byHighToLow: false,
+  });
   const { upcomingDates, upcomingRestaurants } = useData();
   const [showCalendarFilters, setShowCalendarFilters] = useState(false);
   const [restaurants, setRestaurants] = useState<IUpcomingRestaurant[]>([]);
@@ -70,7 +75,20 @@ export default function Calendar() {
             <div className={styles.header_and_controller}>
               <div className={styles.header}>
                 <h2>Upcoming week</h2>
-                <p onClick={() => setShowCalendarFilters(true)}>All Filters</p>
+
+                <CalendarSort
+                  setSorted={setSorted}
+                  updatedRestaurants={updatedRestaurants}
+                />
+
+                <p
+                  onClick={() => setShowCalendarFilters(true)}
+                  className={`${styles.filter} ${
+                    showCalendarFilters && styles.active
+                  }`}
+                >
+                  Filter
+                </p>
               </div>
 
               <div className={styles.controller}>
