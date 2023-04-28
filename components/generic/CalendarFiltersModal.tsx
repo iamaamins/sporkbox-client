@@ -36,14 +36,12 @@ export default function CalendarFiltersModal({
 
     // Filter items by dietary tags
     if (tags.length > 0) {
-      updatedRestaurants = updatedRestaurants
-        .map((updatedRestaurant) => ({
-          ...updatedRestaurant,
-          items: updatedRestaurant.items.filter((item) =>
-            tags.some((tag) => item.tags.toLowerCase().includes(tag))
-          ),
-        }))
-        .filter((updatedRestaurant) => updatedRestaurant.items.length > 0);
+      updatedRestaurants = updatedRestaurants.map((updatedRestaurant) => ({
+        ...updatedRestaurant,
+        items: updatedRestaurant.items.filter((item) =>
+          tags.some((tag) => item.tags.toLowerCase().includes(tag))
+        ),
+      }));
     }
 
     // Filter items with price $20 and less
@@ -56,7 +54,11 @@ export default function CalendarFiltersModal({
 
     // Update states
     setShowCalendarFilters(false);
-    setUpdatedRestaurants(updatedRestaurants);
+    setUpdatedRestaurants(
+      updatedRestaurants.filter(
+        (updatedRestaurant) => updatedRestaurant.items.length > 0
+      )
+    );
   }
 
   return (
@@ -76,7 +78,7 @@ export default function CalendarFiltersModal({
           </div>
         ))}
 
-        <div className={styles.less_than_20}>
+        <div className={styles.twenty_and_under}>
           <input
             type="checkbox"
             id="twentyAndUnder"

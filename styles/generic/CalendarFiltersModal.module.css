@@ -3,18 +3,19 @@
 }
 
 .tag,
-.less_than_20 {
+.twenty_and_under {
   display: flex;
   align-items: center;
   margin-bottom: 0.75rem;
 }
 
 .tag input,
-.less_than_20 input {
+.twenty_and_under input {
   margin-right: 0.5rem;
 }
 
-.tag label {
+.tag label,
+.twenty_and_under label {
   cursor: pointer;
 }
 

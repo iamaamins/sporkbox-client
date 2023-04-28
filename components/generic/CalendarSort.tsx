@@ -16,12 +16,14 @@ export default function CalendarSort({
         updatedRestaurant.items.sort((a, b) => a.price - b.price)
       );
 
+      // Update state
       setSorted(() => ({ byLowToHigh: true, byHighToLow: false }));
     } else if (sortBy === "highToLow") {
       updatedRestaurants.map((updatedRestaurant) =>
         updatedRestaurant.items.sort((a, b) => b.price - a.price)
       );
 
+      // Update state
       setSorted(() => ({ byLowToHigh: false, byHighToLow: true }));
     }
   }, [sortBy, updatedRestaurants]);

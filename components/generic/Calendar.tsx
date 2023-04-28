@@ -59,6 +59,8 @@ export default function Calendar() {
     }
   }, [upcomingDates, router]);
 
+  console.log(restaurants);
+
   return (
     <>
       <section className={styles.calendar}>
