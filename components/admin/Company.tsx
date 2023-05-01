@@ -1,9 +1,11 @@
 import { AxiosError } from "axios";
 import Customers from "./Customers";
+import { CSVLink } from "react-csv";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
 import ActionModal from "./ActionModal";
 import { useAlert } from "@context/Alert";
+import { FiDownload } from "react-icons/fi";
 import Buttons from "@components/layout/Buttons";
 import styles from "@styles/admin/Company.module.css";
 import { FormEvent, useEffect, useState } from "react";
@@ -155,6 +157,43 @@ export default function Company() {
     }
   }
 
+  // CSV data
+  const data = [
+    ...activeCustomers,
+    ...archivedCustomers,
+    ...unenrolledCustomers,
+  ].map((customer) => ({
+    firstName: customer.firstName,
+    lastName: customer.lastName,
+    email: customer.email,
+    status: customer.status,
+  }));
+
+  // CSV headers
+  const headers = [
+    {
+      label: "First Name",
+      key: "firstName",
+    },
+    {
+      label: "Last Name",
+      key: "lastName",
+    },
+    {
+      label: "Email",
+      key: "email",
+    },
+    {
+      label: "Status",
+      key: "status",
+    },
+  ];
+
+  // CSV file name
+  const fileName = `Customer info - ${
+    company?.name
+  } - ${company?.shift[0].toUpperCase()}${company?.shift.slice(1)} shift`;
+
   return (
     <>
       {companies.isLoading && (
@@ -217,6 +256,12 @@ export default function Company() {
               >
                 Schedule restaurants
               </button>
+
+              <CSVLink data={data} headers={headers} filename={fileName}>
+                <button className={styles.customer_info_download_button}>
+                  Customer info <FiDownload />
+                </button>
+              </CSVLink>
             </div>
           </section>
 

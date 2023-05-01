@@ -5,7 +5,6 @@ import { FiDownload } from "react-icons/fi";
 import {
   convertDateToMS,
   convertDateToText,
-  createSlug,
   formatCurrencyToUSD,
 } from "@utils/index";
 import styles from "@styles/admin/OrdersGroupRow.module.css";
