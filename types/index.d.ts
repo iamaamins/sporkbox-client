@@ -553,7 +553,7 @@ export interface ICalendarSortProps {
   >;
 }
 
-export interface ICSVData {
+export interface IOrderData {
   tags: string;
   price: string;
   shift: string;

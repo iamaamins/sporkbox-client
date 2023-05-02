@@ -1,4 +1,4 @@
-import { ICSVData, ICompany, ICustomer, IOrdersGroup } from "types";
+import { IOrderData, ICompany, ICustomer, IOrdersGroup } from "types";
 import { convertDateToText, formatCurrencyToUSD } from "@utils/index";
 
 // Order headers
@@ -67,47 +67,48 @@ export const orderFileName = (ordersGroup: IOrdersGroup) =>
 
 // Order data
 export const orderData = (ordersGroup: IOrdersGroup) =>
-  ordersGroup.orders
-    .map((order) => ({
-      tags: order.item.tags,
-      price: order.item.total,
-      itemName: order.item.name,
-      quantity: order.item.quantity,
-      companyName: order.company.name,
-      lastName: order.customer.lastName,
-      customerEmail: order.customer.email,
-      description: order.item.description,
-      firstName: order.customer.firstName,
-      restaurantName: order.restaurant.name,
-      addedIngredients: order.item.addedIngredients,
-      removedIngredients: order.item.removedIngredients,
-      deliveryDate: convertDateToText(order.delivery.date),
-      shift: `${order.company.shift[0].toUpperCase()}${order.company.shift.slice(
+  ordersGroup.orders.reduce((acc, curr) => {
+    // Create order
+    const order = {
+      tags: curr.item.tags,
+      price: curr.item.total,
+      itemName: curr.item.name,
+      quantity: curr.item.quantity,
+      companyName: curr.company.name,
+      lastName: curr.customer.lastName,
+      customerEmail: curr.customer.email,
+      description: curr.item.description,
+      firstName: curr.customer.firstName,
+      restaurantName: curr.restaurant.name,
+      addedIngredients: curr.item.addedIngredients,
+      removedIngredients: curr.item.removedIngredients,
+      deliveryDate: convertDateToText(curr.delivery.date),
+      shift: `${curr.company.shift[0].toUpperCase()}${curr.company.shift.slice(
         1
       )}`,
-    }))
-    .reduce((acc, curr) => {
-      if (curr.quantity === 1) {
-        // Format price and add curr order to acc
-        return [...acc, { ...curr, price: formatCurrencyToUSD(curr.price) }];
-      } else {
-        // Create orders array
-        let orders = [];
+    };
 
-        // Loop through quantity, create an order
-        // for each quantity and add the item to the orders array
-        for (let i = 0; i < curr.quantity; i++) {
-          orders.push({
-            ...curr,
-            quantity: 1,
-            price: formatCurrencyToUSD(curr.price / curr.quantity),
-          });
-        }
+    if (order.quantity === 1) {
+      // Format price and add order to acc
+      return [...acc, { ...order, price: formatCurrencyToUSD(order.price) }];
+    } else {
+      // Create orders array
+      let orders = [];
 
-        // Return the acc with created orders
-        return [...acc, ...orders];
+      // Loop through quantity, create an order
+      // for each quantity and add the item to the orders array
+      for (let i = 0; i < order.quantity; i++) {
+        orders.push({
+          ...order,
+          quantity: 1,
+          price: formatCurrencyToUSD(order.price / order.quantity),
+        });
       }
-    }, [] as ICSVData[]);
+
+      // Return the acc with created orders
+      return [...acc, ...orders];
+    }
+  }, [] as IOrderData[]);
 
 // Customer header
 export const customerHeaders = [
