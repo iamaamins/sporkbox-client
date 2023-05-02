@@ -552,3 +552,20 @@ export interface ICalendarSortProps {
     SetStateAction<{ byLowToHigh: boolean; byHighToLow: boolean }>
   >;
 }
+
+export interface ICSVData {
+  tags: string;
+  price: string;
+  shift: string;
+  itemName: string;
+  quantity: number;
+  companyName: string;
+  lastName: string;
+  customerEmail: string;
+  description: string;
+  firstName: string;
+  deliveryDate: string;
+  restaurantName: string;
+  addedIngredients?: string;
+  removedIngredients?: string;
+}

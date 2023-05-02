@@ -20,6 +20,7 @@ import {
   updateCompanies,
 } from "@utils/index";
 import { IAxiosError, ICompany, ICustomer, IScheduledRestaurant } from "types";
+import { customerData, customerFileName, customerHeaders } from "@utils/csv";
 
 export default function Company() {
   // Hooks
@@ -157,43 +158,6 @@ export default function Company() {
     }
   }
 
-  // CSV data
-  const data = [
-    ...activeCustomers,
-    ...archivedCustomers,
-    ...unenrolledCustomers,
-  ].map((customer) => ({
-    firstName: customer.firstName,
-    lastName: customer.lastName,
-    email: customer.email,
-    status: customer.status,
-  }));
-
-  // CSV headers
-  const headers = [
-    {
-      label: "First Name",
-      key: "firstName",
-    },
-    {
-      label: "Last Name",
-      key: "lastName",
-    },
-    {
-      label: "Email",
-      key: "email",
-    },
-    {
-      label: "Status",
-      key: "status",
-    },
-  ];
-
-  // CSV file name
-  const fileName = `Customer info - ${
-    company?.name
-  } - ${company?.shift[0].toUpperCase()}${company?.shift.slice(1)} shift`;
-
   return (
     <>
       {companies.isLoading && (
@@ -257,7 +221,15 @@ export default function Company() {
                 Schedule restaurants
               </button>
 
-              <CSVLink data={data} headers={headers} filename={fileName}>
+              <CSVLink
+                data={customerData([
+                  ...activeCustomers,
+                  ...archivedCustomers,
+                  ...unenrolledCustomers,
+                ])}
+                headers={customerHeaders}
+                filename={customerFileName(company)}
+              >
                 <button className={styles.customer_info_download_button}>
                   Customer info <FiDownload />
                 </button>
