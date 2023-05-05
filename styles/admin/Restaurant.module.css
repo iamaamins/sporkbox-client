@@ -57,11 +57,12 @@
 
 .name svg {
   color: #2eb82e;
-  font-size: 18px;
+  font-size: 20px;
   margin-left: 0.5rem;
 }
 
 .name svg.archive_icon {
+  font-size: 18px;
   color: var(--global);
 }
 
