@@ -41,22 +41,23 @@
   color: var(--almost_white);
 }
 
+.order_timeline,
+.instruction {
+  margin-bottom: 1rem;
+}
+
 .title {
   font-weight: 600;
   font-size: 18px;
   margin-bottom: 0.5rem;
 }
 
-.video_link {
-  display: block;
-  margin-bottom: 1rem;
-  color: var(--teal);
-  font-weight: 600;
-  text-decoration: underline;
+.timeline_items p {
+  margin-bottom: 6px;
 }
 
-.instruction {
-  margin-bottom: 1rem;
+.timeline_items p:last-child {
+  margin-bottom: 0px;
 }
 
 .instruction p {
@@ -72,6 +73,14 @@
 
 .instruction ul li a {
   color: var(--orange);
+}
+
+.video_link {
+  display: block;
+  margin-bottom: 1rem;
+  color: var(--teal);
+  font-weight: 600;
+  text-decoration: underline;
 }
 
 @media (min-width: 768px) {
