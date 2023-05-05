@@ -35,6 +35,23 @@ export default function Home() {
 
         <p>Get started by sending us a sample error:</p>
         <button
+          style={{
+            padding: "12px",
+            cursor: "pointer",
+            backgroundColor: "#AD6CAA",
+            borderRadius: "4px",
+            border: "none",
+            color: "white",
+            fontSize: "14px",
+            margin: "18px",
+          }}
+          onClick={() => {
+            throw new Error("Client error");
+          }}
+        >
+          Throw client error
+        </button>
+        <button
           type="button"
           style={{
             padding: "12px",
@@ -65,7 +82,7 @@ export default function Home() {
             }
           }}
         >
-          Throw error!
+          Throw API error!
         </button>
 
         <p>
