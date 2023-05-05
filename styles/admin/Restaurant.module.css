@@ -48,9 +48,21 @@
 }
 
 .name {
+  display: flex;
+  align-items: center;
   font-weight: 600;
   font-size: 15px;
   margin-bottom: 0.5rem;
+}
+
+.name svg {
+  color: #2eb82e;
+  font-size: 18px;
+  margin-left: 0.5rem;
+}
+
+.name svg.archive_icon {
+  color: var(--global);
 }
 
 .price {

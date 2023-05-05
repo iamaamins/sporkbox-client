@@ -1,10 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import ActionModal from "./ActionModal";
-import { IAxiosError, IVendor } from "types";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
+import { IAxiosError, IVendor } from "types";
+import { HiBadgeCheck } from "react-icons/hi";
 import Buttons from "@components/layout/Buttons";
+import { RiDeleteBack2Fill } from "react-icons/ri";
 import { FormEvent, useEffect, useState } from "react";
 import styles from "@styles/admin/Restaurant.module.css";
 import {
@@ -150,7 +152,16 @@ export default function Restaurant() {
                       >
                         <a className={styles.item}>
                           <div className={styles.item_details}>
-                            <p className={styles.name}>{item.name}</p>
+                            <p className={styles.name}>
+                              {item.name}
+                              {item.status === "ACTIVE" ? (
+                                <HiBadgeCheck />
+                              ) : (
+                                <RiDeleteBack2Fill
+                                  className={styles.archive_icon}
+                                />
+                              )}
+                            </p>
                             <p className={styles.price}>
                               {formatCurrencyToUSD(item.price)}
                             </p>
