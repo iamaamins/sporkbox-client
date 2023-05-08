@@ -7,7 +7,7 @@ import { IAxiosError, IItem, IVendor } from "types";
 import { FormEvent, useEffect, useState } from "react";
 import {
   axiosInstance,
-  formatAddableIngredients,
+  formatAddons,
   formatCurrencyToUSD,
   showErrorAlert,
   showSuccessAlert,
@@ -123,11 +123,20 @@ export default function Item() {
               ))}
             </p>
 
-            {item.addableIngredients && (
+            {item.optionalAddons && (
               <>
-                <p className={styles.title}>Addable ingredients</p>
+                <p className={styles.title}>Optional addons</p>
                 <p className={styles.ingredients}>
-                  {formatAddableIngredients(item.addableIngredients).join(", ")}
+                  {formatAddons(item.optionalAddons.addons).join(", ")}
+                </p>
+              </>
+            )}
+
+            {item.requiredAddons && (
+              <>
+                <p className={styles.title}>Required addons</p>
+                <p className={styles.ingredients}>
+                  {formatAddons(item.requiredAddons.addons).join(", ")}
                 </p>
               </>
             )}

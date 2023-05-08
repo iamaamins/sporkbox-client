@@ -5,11 +5,25 @@
   margin-bottom: 1.5rem;
 }
 
+.addons {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  justify-content: space-between;
+}
+
+.addons div {
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+}
+
 .dietary_tags {
   margin-bottom: 0.5rem;
 }
 
 .item label,
+.addons label,
 .dietary_tags p {
   font-size: 0.9rem;
   color: var(--gray);
@@ -17,6 +31,7 @@
 }
 
 .item input,
+.addons input,
 .item textarea {
   padding: 12px;
   border-radius: 0.25rem;

@@ -9,15 +9,17 @@ import {
   convertDateToMS,
   formatCurrencyToUSD,
   convertDateToText,
-  formatAddableIngredients,
+  formatAddons,
   splitTags,
 } from "@utils/index";
 import {
   IItem,
+  IAddons,
   IInitialItem,
   SetIngredients,
   IngredientsType,
   IUpcomingRestaurant,
+  IRemovableIngredients,
   IAddOrRemovableIngredients,
 } from "types";
 
@@ -34,7 +36,8 @@ export default function Item() {
     addonPrice: 0,
     restaurantId: "",
     deliveryDate: 0,
-    addableIngredients: [],
+    optionalAddons: [],
+    requiredAddons: [],
     removableIngredients: [],
   };
 
@@ -45,10 +48,10 @@ export default function Item() {
   const { cartItems, addItemToCart } = useCart();
   const [upcomingRestaurant, setUpcomingRestaurant] =
     useState<IUpcomingRestaurant>();
-  const [addableIngredients, setAddableIngredients] =
-    useState<IAddOrRemovableIngredients>();
+  const [optionalAddons, setOptionalAddons] = useState<IAddons>();
+  const [requiredAddons, setRequiredAddons] = useState<IAddons>();
   const [removableIngredients, setRemovableIngredients] =
-    useState<IAddOrRemovableIngredients>();
+    useState<IRemovableIngredients>();
   const [initialItem, setInitialItem] = useState<IInitialItem>(initialState);
 
   // Price and quantity
@@ -90,7 +93,8 @@ export default function Item() {
             _id: item._id,
             name: item.name,
             price: item.price,
-            addableIngredients: [],
+            optionalAddons: [],
+            requiredAddons: [],
             removableIngredients: [],
             restaurantId: upcomingRestaurant._id,
             shift: upcomingRestaurant.company.shift,
@@ -111,7 +115,9 @@ export default function Item() {
               ...itemDetails,
               quantity: itemInCart.quantity,
               addonPrice: itemInCart.addonPrice,
-              addableIngredients: itemInCart.addableIngredients,
+              optionalAddons: itemInCart.optionalAddons,
+              requiredAddons: itemInCart.requiredAddons,
+              // addableIngredients: itemInCart.addableIngredients,
               removableIngredients: itemInCart.removableIngredients,
             });
           } else {
@@ -119,22 +125,19 @@ export default function Item() {
             setInitialItem(itemDetails);
           }
 
-          if (item.addableIngredients) {
+          if (item.optionalAddons) {
             // Update addable ingredients state
-            setAddableIngredients(
-              formatAddableIngredients(item.addableIngredients).reduce(
-                (acc, curr) => {
-                  // Trim ingredients
-                  const ingredient = curr.trim();
+            setOptionalAddons(
+              formatAddons(item.optionalAddons.addons).reduce((acc, curr) => {
+                // Trim ingredients
+                const ingredient = curr.trim();
 
-                  if (itemInCart?.addableIngredients.includes(ingredient)) {
-                    return { ...acc, [ingredient]: true };
-                  } else {
-                    return { ...acc, [ingredient]: false };
-                  }
-                },
-                {}
-              )
+                if (itemInCart?.optionalAddons.includes(ingredient)) {
+                  return { ...acc, [ingredient]: true };
+                } else {
+                  return { ...acc, [ingredient]: false };
+                }
+              }, {})
             );
           }
 
@@ -197,7 +200,7 @@ export default function Item() {
     setInitialItem((currState) => ({
       ...currState,
       addonPrice:
-        ingredientsType === "addableIngredients" &&
+        ingredientsType === "optionalAddons" &&
         e.target.name.split("-").length > 1
           ? e.target.checked
             ? currState.addonPrice + getAddonPrice(e.target.name)
@@ -235,14 +238,15 @@ export default function Item() {
     </div>
   );
 
-  // Addable ingredients
-  const renderAddableIngredients =
-    addableIngredients &&
-    renderIngredients(
-      addableIngredients,
-      setAddableIngredients,
-      "addableIngredients"
-    );
+  // Optional addons
+  const renderOptionalAddons =
+    optionalAddons &&
+    renderIngredients(optionalAddons, setOptionalAddons, "optionalAddons");
+
+  // Required addons
+  const renderRequiredAddons =
+    requiredAddons &&
+    renderIngredients(requiredAddons, setRequiredAddons, "requiredAddons");
 
   // Removable ingredients
   const renderRemovableIngredients =
@@ -287,10 +291,17 @@ export default function Item() {
                 {convertDateToText(+(router.query.date as string))}
               </p>
 
-              {item.addableIngredients && (
-                <div className={styles.addable}>
-                  <p>Add ingredients</p>
-                  {renderAddableIngredients}
+              {item.optionalAddons && (
+                <div className={styles.optional_addons}>
+                  <p>Optional addons</p>
+                  {renderOptionalAddons}
+                </div>
+              )}
+
+              {item.requiredAddons && (
+                <div className={styles.required_addons}>
+                  <p>Required addons</p>
+                  {renderRequiredAddons}
                 </div>
               )}
 

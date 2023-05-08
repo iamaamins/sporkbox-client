@@ -35,12 +35,14 @@
   font-weight: 600;
 }
 
-.addable,
+.optional_addons,
+.required_addons,
 .delivery_date {
   margin-bottom: 1rem;
 }
 
-.addable p,
+.optional_addons p,
+.required_addons p,
 .removable p {
   font-weight: 500;
   margin-bottom: 0.5rem;

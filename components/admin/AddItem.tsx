@@ -21,7 +21,14 @@ export default function AddItem() {
     file: undefined,
     updatedTags: [],
     description: "",
-    addableIngredients: "",
+    optionalAddons: {
+      addons: "",
+      addable: 0,
+    },
+    requiredAddons: {
+      addons: "",
+      addable: 0,
+    },
     removableIngredients: "",
   };
 
@@ -39,7 +46,8 @@ export default function AddItem() {
     price,
     updatedTags,
     description,
-    addableIngredients,
+    optionalAddons,
+    requiredAddons,
     removableIngredients,
   } = formData;
 
@@ -59,7 +67,8 @@ export default function AddItem() {
     data.append("price", price as string);
     file && data.append("file", file as File);
     data.append("description", description as string);
-    data.append("addableIngredients", addableIngredients as string);
+    data.append("optionalAddons", JSON.stringify(optionalAddons));
+    data.append("requiredAddons", JSON.stringify(requiredAddons));
     data.append("removableIngredients", removableIngredients as string);
 
     // Add a new item

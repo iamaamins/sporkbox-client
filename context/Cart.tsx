@@ -82,7 +82,9 @@ export default function CartProvider({ children }: IContextProviderProps) {
             ...cartItem,
             quantity: item.quantity,
             addonPrice: item.addonPrice,
-            addableIngredients: item.addableIngredients,
+            optionalAddons: item.optionalAddons,
+            requiredAddons: item.requiredAddons,
+            // addableIngredients: item.addableIngredients,
             removableIngredients: item.removableIngredients,
           };
         } else {
@@ -131,7 +133,9 @@ export default function CartProvider({ children }: IContextProviderProps) {
         companyId: cartItem.companyId,
         restaurantId: cartItem.restaurantId,
         deliveryDate: cartItem.deliveryDate,
-        addedIngredients: cartItem.addableIngredients,
+        optionalAddons: cartItem.optionalAddons,
+        requiredAddons: cartItem.requiredAddons,
+        // addedIngredients: cartItem.addableIngredients,
         removedIngredients: cartItem.removableIngredients.join(", "),
       }));
 

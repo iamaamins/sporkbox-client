@@ -325,7 +325,7 @@ export const groupIdenticalOrders = (orders: IOrder[]) =>
   }, []);
 
 // Format addable ingredients
-export const formatAddableIngredients = (ingredients: string) =>
+export const formatAddons = (ingredients: string) =>
   ingredients
     .split(",")
     .map((ingredient) => ingredient.trim())

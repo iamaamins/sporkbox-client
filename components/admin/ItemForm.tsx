@@ -33,7 +33,8 @@ export default function ItemForm({
     image,
     currentTags,
     description,
-    addableIngredients,
+    optionalAddons,
+    requiredAddons,
     removableIngredients,
   } = formData;
 
@@ -75,7 +76,7 @@ export default function ItemForm({
     }
   }, [currentTags]);
 
-  // Handle change
+  // Handle change form data
   function handleChangeFormData(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
@@ -87,6 +88,25 @@ export default function ItemForm({
     setFormData((currState) => ({
       ...currState,
       [id]: id === "price" ? +value : value,
+    }));
+  }
+
+  // Handle change addons
+  function handleChangeAddons(
+    e: ChangeEvent<HTMLInputElement>,
+    addons: "optionalAddons" | "requiredAddons"
+  ) {
+    // Name and value
+    const name = e.target.name;
+    const value = e.target.value;
+
+    // Update state
+    setFormData((currState) => ({
+      ...currState,
+      [addons]: {
+        ...currState[addons],
+        [name]: name === "addable" ? +value : value,
+      },
     }));
   }
 
@@ -109,6 +129,8 @@ export default function ItemForm({
     }));
   }
 
+  console.log(formData);
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -128,15 +150,56 @@ export default function ItemForm({
         />
       </div>
 
-      <div className={styles.item}>
-        <label htmlFor="addableIngredients">Addable ingredients</label>
-        <input
-          type="text"
-          id="addableIngredients"
-          value={addableIngredients}
-          onChange={handleChangeFormData}
-          placeholder="E.g. Cheese - 2, Mayo - 0"
-        />
+      <div className={styles.addons}>
+        <div>
+          <label htmlFor="optionalAddons">Optional addons</label>
+          <input
+            type="text"
+            id="optionalAddons"
+            name="addons"
+            value={optionalAddons?.addons}
+            placeholder="E.g. Cheese - 2, Mayo - 0"
+            onChange={(e) => handleChangeAddons(e, "optionalAddons")}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="optionalAddable">Optional addable</label>
+          <input
+            type="number"
+            name="addable"
+            id="optionalAddable"
+            placeholder="E.g. 0"
+            value={optionalAddons?.addable}
+            onChange={(e) => handleChangeAddons(e, "optionalAddons")}
+          />
+        </div>
+      </div>
+
+      <div className={styles.addons}>
+        <div>
+          <label htmlFor="requiredAddons">Required addons</label>
+          <input
+            type="text"
+            name="addons"
+            id="requiredAddons"
+            value={requiredAddons?.addons}
+            placeholder="E.g. Cheese - 2, Mayo - 0"
+            onChange={(e) => handleChangeAddons(e, "requiredAddons")}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="requiredAddable">Required addable</label>
+          <input
+            type="number"
+            name="addable"
+            id="requiredAddable"
+            placeholder="E.g. 0"
+            value={requiredAddons?.addable}
+            onChange={(e) => handleChangeAddons(e, "requiredAddons")}
+          />
+        </div>
       </div>
 
       <div className={styles.item}>

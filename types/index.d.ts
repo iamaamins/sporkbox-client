@@ -66,7 +66,15 @@ interface IItem {
   image: string;
   status: string;
   description: string;
-  addableIngredients?: string;
+  optionalAddons?: {
+    addons: string;
+    addable: number;
+  };
+  requiredAddons?: {
+    addons: string;
+    addable: number;
+  };
+  // addableIngredients?: string;
   removableIngredients?: string;
 }
 
@@ -222,7 +230,9 @@ export interface ICartItem {
   addonPrice: number;
   restaurantId: string;
   deliveryDate: number;
-  addableIngredients: string[];
+  optionalAddons: string[];
+  requiredAddons: string[];
+  // addableIngredients: string[];
   removableIngredients: string[];
 }
 
@@ -425,7 +435,15 @@ export interface IItemFormData {
   updatedTags: string[];
   price: string | number;
   file?: File | undefined;
-  addableIngredients?: string;
+  optionalAddons?: {
+    addons: string;
+    addable: number;
+  };
+  requiredAddons?: {
+    addons: string;
+    addable: number;
+  };
+  // addableIngredients?: string;
   removableIngredients?: string;
 }
 
@@ -498,15 +516,19 @@ export interface ICustomerWithOrders {
   data: ICustomerWithCompany | null;
 }
 
-export interface IAddOrRemovableIngredients {
+export interface IAddons {
   [key: string]: boolean;
 }
 
-export type IngredientsType = "addableIngredients" | "removableIngredients";
+export interface IRemovableIngredients extends IAddons {}
+export interface IAddOrRemovableIngredients extends IAddons {}
 
-export type SetIngredients = Dispatch<
-  SetStateAction<IAddOrRemovableIngredients | undefined>
->;
+export type IngredientsType =
+  | "requiredAddons"
+  | "optionalAddons"
+  | "removableIngredients";
+
+export type SetIngredients = Dispatch<SetStateAction<IAddons | undefined>>;
 
 export interface IAlert {
   type: string;

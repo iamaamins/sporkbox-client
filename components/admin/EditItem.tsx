@@ -6,12 +6,12 @@ import { useAlert } from "@context/Alert";
 import { IItem, IAxiosError, IItemFormData } from "types";
 import styles from "@styles/admin/EditItem.module.css";
 import {
+  tags,
+  splitTags,
   axiosInstance,
   showErrorAlert,
   updateVendors,
   showSuccessAlert,
-  splitTags,
-  tags,
 } from "@utils/index";
 import React, { FormEvent, useEffect, useState } from "react";
 
@@ -25,7 +25,14 @@ export default function EditItem() {
     file: undefined,
     updatedTags: [],
     description: "",
-    addableIngredients: "",
+    optionalAddons: {
+      addons: "",
+      addable: 0,
+    },
+    requiredAddons: {
+      addons: "",
+      addable: 0,
+    },
     removableIngredients: "",
   };
 
@@ -45,7 +52,8 @@ export default function EditItem() {
     image,
     updatedTags,
     description,
-    addableIngredients,
+    optionalAddons,
+    requiredAddons,
     removableIngredients,
   } = formData;
 
@@ -66,7 +74,14 @@ export default function EditItem() {
           image: item.image,
           currentTags: item.tags,
           description: item.description,
-          addableIngredients: item.addableIngredients,
+          optionalAddons: {
+            addons: item.optionalAddons?.addons || "",
+            addable: item.optionalAddons?.addable || 0,
+          },
+          requiredAddons: {
+            addons: item.requiredAddons?.addons || "",
+            addable: item.requiredAddons?.addable || 0,
+          },
           removableIngredients: item.removableIngredients,
           updatedTags: splitTags(item.tags).filter((currTag) =>
             tags.includes(currTag)
@@ -93,7 +108,8 @@ export default function EditItem() {
     file && data.append("file", file as File);
     image && data.append("image", image as string);
     data.append("description", description as string);
-    data.append("addableIngredients", addableIngredients as string);
+    data.append("optionalAddons", JSON.stringify(optionalAddons));
+    data.append("requiredAddons", JSON.stringify(requiredAddons));
     data.append("removableIngredients", removableIngredients as string);
 
     // Add a new item
