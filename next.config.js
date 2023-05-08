@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
@@ -13,26 +14,18 @@ const nextConfig = {
 
 module.exports = nextConfig;
 
-// Inected Content via Sentry Wizard Below
-
+// Injected Content via Sentry Wizard Below
 const { withSentryConfig } = require("@sentry/nextjs");
 
 module.exports = withSentryConfig(
   module.exports,
   {
-    // For all available options, see:
-    // https://github.com/getsentry/sentry-webpack-plugin#options
-
     // Suppresses source map uploading logs during build
     silent: true,
-
     org: process.env.SENTRY_ORG,
     project: process.env.SENTRY_PROJECT,
   },
   {
-    // For all available options, see:
-    // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
-
     // Upload a larger set of source maps for prettier stack traces (increases build time)
     widenClientFileUpload: true,
 
