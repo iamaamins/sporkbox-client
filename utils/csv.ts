@@ -44,8 +44,12 @@ export const orderHeaders = [
     key: "tags",
   },
   {
-    label: "Added ingredients",
-    key: "addedIngredients",
+    label: "Optional addons",
+    key: "optionalAddons",
+  },
+  {
+    label: "Required addons",
+    key: "requiredAddons",
   },
   {
     label: "Removed ingredients",
@@ -80,7 +84,8 @@ export const orderData = (ordersGroup: IOrdersGroup) =>
       description: curr.item.description,
       firstName: curr.customer.firstName,
       restaurantName: curr.restaurant.name,
-      addedIngredients: curr.item.addedIngredients,
+      optionalAddons: curr.item.optionalAddons,
+      requiredAddons: curr.item.requiredAddons,
       removedIngredients: curr.item.removedIngredients,
       deliveryDate: convertDateToText(curr.delivery.date),
       shift: `${curr.company.shift[0].toUpperCase()}${curr.company.shift.slice(

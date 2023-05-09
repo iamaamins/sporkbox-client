@@ -272,7 +272,8 @@ export interface IOrder {
     description: string;
     quantity: number;
     total: number;
-    addedIngredients?: string;
+    optionalAddons?: string;
+    requiredAddons?: string;
     removedIngredients?: string;
   };
 }
