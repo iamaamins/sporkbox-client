@@ -3,8 +3,9 @@ import { AxiosError } from "axios";
 import { useData } from "@context/Data";
 import { useRouter } from "next/router";
 import { useAlert } from "@context/Alert";
-import { IItem, IAxiosError, IItemFormData } from "types";
 import styles from "@styles/admin/EditItem.module.css";
+import { FormEvent, useEffect, useState } from "react";
+import { IItem, IAxiosError, IItemFormData } from "types";
 import {
   tags,
   splitTags,
@@ -13,7 +14,6 @@ import {
   updateVendors,
   showSuccessAlert,
 } from "@utils/index";
-import React, { FormEvent, useEffect, useState } from "react";
 
 export default function EditItem() {
   // Initial state
@@ -74,14 +74,8 @@ export default function EditItem() {
           image: item.image,
           currentTags: item.tags,
           description: item.description,
-          optionalAddons: {
-            addons: item.optionalAddons?.addons || "",
-            addable: item.optionalAddons?.addable || 0,
-          },
-          requiredAddons: {
-            addons: item.requiredAddons?.addons || "",
-            addable: item.requiredAddons?.addable || 0,
-          },
+          optionalAddons: item.optionalAddons,
+          requiredAddons: item.requiredAddons,
           removableIngredients: item.removableIngredients,
           updatedTags: splitTags(item.tags).filter((currTag) =>
             tags.includes(currTag)

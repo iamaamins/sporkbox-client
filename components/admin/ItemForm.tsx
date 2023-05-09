@@ -129,8 +129,6 @@ export default function ItemForm({
     }));
   }
 
-  console.log(formData);
-
   return (
     <form
       onSubmit={handleSubmit}
@@ -157,7 +155,7 @@ export default function ItemForm({
             type="text"
             id="optionalAddons"
             name="addons"
-            value={optionalAddons?.addons}
+            value={optionalAddons.addons}
             placeholder="E.g. Cheese - 2, Mayo - 0"
             onChange={(e) => handleChangeAddons(e, "optionalAddons")}
           />
@@ -170,7 +168,7 @@ export default function ItemForm({
             name="addable"
             id="optionalAddable"
             placeholder="E.g. 0"
-            value={optionalAddons?.addable}
+            value={optionalAddons.addable}
             onChange={(e) => handleChangeAddons(e, "optionalAddons")}
           />
         </div>
@@ -183,7 +181,7 @@ export default function ItemForm({
             type="text"
             name="addons"
             id="requiredAddons"
-            value={requiredAddons?.addons}
+            value={requiredAddons.addons}
             placeholder="E.g. Cheese - 2, Mayo - 0"
             onChange={(e) => handleChangeAddons(e, "requiredAddons")}
           />
@@ -196,7 +194,7 @@ export default function ItemForm({
             name="addable"
             id="requiredAddable"
             placeholder="E.g. 0"
-            value={requiredAddons?.addable}
+            value={requiredAddons.addable}
             onChange={(e) => handleChangeAddons(e, "requiredAddons")}
           />
         </div>

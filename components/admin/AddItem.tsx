@@ -7,8 +7,8 @@ import { IAxiosError, IItemFormData } from "types";
 import {
   axiosInstance,
   showErrorAlert,
-  showSuccessAlert,
   updateVendors,
+  showSuccessAlert,
 } from "@utils/index";
 import { AxiosError } from "axios";
 import styles from "@styles/admin/AddItem.module.css";

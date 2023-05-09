@@ -66,15 +66,14 @@ interface IItem {
   image: string;
   status: string;
   description: string;
-  optionalAddons?: {
+  optionalAddons: {
     addons: string;
     addable: number;
   };
-  requiredAddons?: {
+  requiredAddons: {
     addons: string;
     addable: number;
   };
-  // addableIngredients?: string;
   removableIngredients?: string;
 }
 
@@ -232,7 +231,6 @@ export interface ICartItem {
   deliveryDate: number;
   optionalAddons: string[];
   requiredAddons: string[];
-  // addableIngredients: string[];
   removableIngredients: string[];
 }
 
@@ -435,15 +433,14 @@ export interface IItemFormData {
   updatedTags: string[];
   price: string | number;
   file?: File | undefined;
-  optionalAddons?: {
+  optionalAddons: {
     addons: string;
     addable: number;
   };
-  requiredAddons?: {
+  requiredAddons: {
     addons: string;
     addable: number;
   };
-  // addableIngredients?: string;
   removableIngredients?: string;
 }
 
