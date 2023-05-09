@@ -48,18 +48,18 @@
   margin-bottom: 0.5rem;
 }
 
-.add_or_removable_items {
+.addons_and_removable_items {
   display: flex;
   align-items: center;
 }
 
-.add_or_removable_item {
+.addons_and_removable_item {
   display: flex;
   align-items: center;
   margin-right: 1rem;
 }
 
-.add_or_removable_item label {
+.addons_and_removable_item label {
   cursor: pointer;
   color: var(--gray);
   margin-left: 0.5rem;

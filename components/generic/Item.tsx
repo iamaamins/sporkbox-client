@@ -6,22 +6,24 @@ import { HiMinus, HiPlus } from "react-icons/hi";
 import styles from "@styles/generic/Item.module.css";
 import { ChangeEvent, useEffect, useState } from "react";
 import {
-  convertDateToMS,
-  formatCurrencyToUSD,
-  convertDateToText,
-  formatAddons,
   splitTags,
+  formatAddons,
+  convertDateToMS,
+  convertDateToText,
+  formatCurrencyToUSD,
+  showErrorAlert,
 } from "@utils/index";
 import {
   IItem,
   IAddons,
   IInitialItem,
-  SetIngredients,
-  IngredientsType,
   IUpcomingRestaurant,
   IRemovableIngredients,
-  IAddOrRemovableIngredients,
+  SetAddonsOrRemovableIngredients,
+  IAddonsOrRemovableIngredientsType,
+  IAxiosError,
 } from "types";
+import { useAlert } from "@context/Alert";
 
 export default function Item() {
   // Initial state
@@ -43,6 +45,7 @@ export default function Item() {
 
   // Hooks
   const router = useRouter();
+  const { setAlerts } = useAlert();
   const [item, setItem] = useState<IItem>();
   const { upcomingRestaurants } = useData();
   const { cartItems, addItemToCart } = useCart();
@@ -117,7 +120,6 @@ export default function Item() {
               addonPrice: itemInCart.addonPrice,
               optionalAddons: itemInCart.optionalAddons,
               requiredAddons: itemInCart.requiredAddons,
-              // addableIngredients: itemInCart.addableIngredients,
               removableIngredients: itemInCart.removableIngredients,
             });
           } else {
@@ -125,14 +127,30 @@ export default function Item() {
             setInitialItem(itemDetails);
           }
 
-          if (item.optionalAddons) {
-            // Update addable ingredients state
+          if (item.optionalAddons.addons) {
+            // Update optional addons state
             setOptionalAddons(
               formatAddons(item.optionalAddons.addons).reduce((acc, curr) => {
                 // Trim ingredients
                 const ingredient = curr.trim();
 
                 if (itemInCart?.optionalAddons.includes(ingredient)) {
+                  return { ...acc, [ingredient]: true };
+                } else {
+                  return { ...acc, [ingredient]: false };
+                }
+              }, {})
+            );
+          }
+
+          if (item.requiredAddons.addons) {
+            // Update required addons state
+            setRequiredAddons(
+              formatAddons(item.requiredAddons.addons).reduce((acc, curr) => {
+                // Trim ingredients
+                const ingredient = curr.trim();
+
+                if (itemInCart?.requiredAddons.includes(ingredient)) {
                   return { ...acc, [ingredient]: true };
                 } else {
                   return { ...acc, [ingredient]: false };
@@ -177,14 +195,32 @@ export default function Item() {
     }));
   }
 
-  // Handle change addable and removable ingredients
-  function changeIngredients(
+  // Handle change optional and required
+  // addons, and removable ingredients
+  function changeAddonsOrRemovableIngredients(
     e: ChangeEvent<HTMLInputElement>,
-    setIngredients: SetIngredients,
-    ingredientsType: IngredientsType
+    setAddonsOrRemovableIngredients: SetAddonsOrRemovableIngredients,
+    addonsOrRemovableIngredientsType: IAddonsOrRemovableIngredientsType
   ) {
-    // Update addable or removable ingredients state
-    setIngredients((currState) => ({
+    // Check optional and required addons' addable
+    if (
+      (addonsOrRemovableIngredientsType === "optionalAddons" ||
+        addonsOrRemovableIngredientsType === "requiredAddons") &&
+      item &&
+      item[addonsOrRemovableIngredientsType].addable ===
+        initialItem[addonsOrRemovableIngredientsType].length &&
+      e.target.checked
+    ) {
+      // Show alert
+      return showErrorAlert(
+        `Can't add more than ${item[addonsOrRemovableIngredientsType].addable}`,
+        setAlerts
+      );
+    }
+
+    // Update optional and required
+    // addons, and removable ingredients state
+    setAddonsOrRemovableIngredients((currState) => ({
       ...currState,
       [e.target.name]: e.target.checked,
     }));
@@ -200,62 +236,83 @@ export default function Item() {
     setInitialItem((currState) => ({
       ...currState,
       addonPrice:
-        ingredientsType === "optionalAddons" &&
+        (addonsOrRemovableIngredientsType === "optionalAddons" ||
+          addonsOrRemovableIngredientsType === "requiredAddons") &&
         e.target.name.split("-").length > 1
           ? e.target.checked
             ? currState.addonPrice + getAddonPrice(e.target.name)
             : currState.addonPrice - getAddonPrice(e.target.name)
           : currState.addonPrice,
-      [ingredientsType]: e.target.checked
-        ? [...currState[ingredientsType], e.target.name]
-        : currState[ingredientsType].filter(
+      [addonsOrRemovableIngredientsType]: e.target.checked
+        ? [...currState[addonsOrRemovableIngredientsType], e.target.name]
+        : currState[addonsOrRemovableIngredientsType].filter(
             (ingredient) => ingredient !== e.target.name
           ),
     }));
   }
 
-  // Render ingredients
-  const renderIngredients = (
-    ingredients: IAddOrRemovableIngredients,
-    setIngredients: SetIngredients,
-    ingredientsType: IngredientsType
+  // Render addons and removable ingredients
+  const renderAddonsOrRemovableIngredients = (
+    addonsOrRemovableIngredients: IAddons | IRemovableIngredients,
+    setAddonsOrRemovableIngredients: SetAddonsOrRemovableIngredients,
+    addonsOrRemovableIngredientsType: IAddonsOrRemovableIngredientsType
   ) => (
-    <div className={styles.add_or_removable_items}>
-      {Object.keys(ingredients).map((ingredient, index) => (
-        <div key={index} className={styles.add_or_removable_item}>
-          <input
-            type="checkbox"
-            name={ingredient}
-            id={ingredient}
-            checked={ingredients[ingredient]}
-            onChange={(e) =>
-              changeIngredients(e, setIngredients, ingredientsType)
-            }
-          />
-          <label htmlFor={ingredient}>{ingredient}</label>
-        </div>
-      ))}
+    <div className={styles.addons_and_removable_items}>
+      {Object.keys(addonsOrRemovableIngredients).map(
+        (addonsOrRemovableIngredient, index) => (
+          <div key={index} className={styles.addons_and_removable_item}>
+            <input
+              type="checkbox"
+              name={addonsOrRemovableIngredient}
+              id={addonsOrRemovableIngredient}
+              checked={
+                addonsOrRemovableIngredients[addonsOrRemovableIngredient]
+              }
+              onChange={(e) =>
+                changeAddonsOrRemovableIngredients(
+                  e,
+                  setAddonsOrRemovableIngredients,
+                  addonsOrRemovableIngredientsType
+                )
+              }
+            />
+            <label htmlFor={addonsOrRemovableIngredient}>
+              {addonsOrRemovableIngredient}
+            </label>
+          </div>
+        )
+      )}
     </div>
   );
 
   // Optional addons
   const renderOptionalAddons =
     optionalAddons &&
-    renderIngredients(optionalAddons, setOptionalAddons, "optionalAddons");
+    renderAddonsOrRemovableIngredients(
+      optionalAddons,
+      setOptionalAddons,
+      "optionalAddons"
+    );
 
   // Required addons
   const renderRequiredAddons =
     requiredAddons &&
-    renderIngredients(requiredAddons, setRequiredAddons, "requiredAddons");
+    renderAddonsOrRemovableIngredients(
+      requiredAddons,
+      setRequiredAddons,
+      "requiredAddons"
+    );
 
   // Removable ingredients
   const renderRemovableIngredients =
     removableIngredients &&
-    renderIngredients(
+    renderAddonsOrRemovableIngredients(
       removableIngredients,
       setRemovableIngredients,
       "removableIngredients"
     );
+
+  console.log(initialItem);
 
   return (
     <section className={styles.item}>
@@ -291,16 +348,16 @@ export default function Item() {
                 {convertDateToText(+(router.query.date as string))}
               </p>
 
-              {item.optionalAddons && (
+              {item.optionalAddons.addons && (
                 <div className={styles.optional_addons}>
-                  <p>Optional addons</p>
+                  <p>Optional addons - {item.optionalAddons.addable} addable</p>
                   {renderOptionalAddons}
                 </div>
               )}
 
-              {item.requiredAddons && (
+              {item.requiredAddons.addons && (
                 <div className={styles.required_addons}>
-                  <p>Required addons</p>
+                  <p>Required addons - {item.requiredAddons.addable} addable</p>
                   {renderRequiredAddons}
                 </div>
               )}

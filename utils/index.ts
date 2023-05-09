@@ -272,21 +272,25 @@ export function showSuccessAlert(
   message: string,
   setAlerts: Dispatch<SetStateAction<IAlert[]>>
 ) {
+  // Update state
   setAlerts((currState) => [...currState, { message, type: "success" }]);
 }
 
 // Error alert
 export function showErrorAlert(
-  err: AxiosError<IAxiosError>,
+  err: AxiosError<IAxiosError> | string,
   setAlerts: Dispatch<SetStateAction<IAlert[]>>
 ) {
+  // Error type
+  const type = "failed";
+
+  // Update state
   setAlerts((currState) =>
-    err.response
-      ? [
-          ...currState,
-          { message: err.response?.data.message as string, type: "failed" },
-        ]
-      : [...currState, { message: "Something wen't wrong", type: "failed" }]
+    typeof err === "string"
+      ? [...currState, { message: err, type }]
+      : err.response
+      ? [...currState, { message: err.response.data.message, type }]
+      : [...currState, { message: "Something wen't wrong", type }]
   );
 }
 

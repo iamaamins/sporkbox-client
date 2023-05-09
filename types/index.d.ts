@@ -518,14 +518,15 @@ export interface IAddons {
 }
 
 export interface IRemovableIngredients extends IAddons {}
-export interface IAddOrRemovableIngredients extends IAddons {}
 
-export type IngredientsType =
+export type IAddonsOrRemovableIngredientsType =
   | "requiredAddons"
   | "optionalAddons"
   | "removableIngredients";
 
-export type SetIngredients = Dispatch<SetStateAction<IAddons | undefined>>;
+export type SetAddonsOrRemovableIngredients = Dispatch<
+  SetStateAction<IAddons | IRemovableIngredients | undefined>
+>;
 
 export interface IAlert {
   type: string;
