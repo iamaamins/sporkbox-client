@@ -213,7 +213,7 @@ export default function Item() {
     ) {
       // Show alert
       return showErrorAlert(
-        `Can't add more than ${item[addonsOrRemovableIngredientsType].addable}`,
+        `Can't add more than ${item[addonsOrRemovableIngredientsType].addable} addons`,
         setAlerts
       );
     }
@@ -312,8 +312,6 @@ export default function Item() {
       "removableIngredients"
     );
 
-  console.log(initialItem);
-
   return (
     <section className={styles.item}>
       {upcomingRestaurants.isLoading && <h2>Loading...</h2>}
@@ -387,7 +385,7 @@ export default function Item() {
 
             <button
               className={`${styles.button}`}
-              onClick={() => addItemToCart(initialItem)}
+              onClick={() => addItemToCart(initialItem, item)}
             >
               Add {quantity} to basket •{" "}
               {formatCurrencyToUSD(quantity * price + addonPrice)} USD

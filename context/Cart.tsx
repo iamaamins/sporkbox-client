@@ -4,9 +4,10 @@ import { useData } from "@context/Data";
 import { useUser } from "@context/User";
 import { useRouter } from "next/router";
 import {
+  IItem,
+  ICartItem,
   IAxiosError,
   ICartContext,
-  ICartItem,
   IContextProviderProps,
 } from "types";
 import { useState, useEffect, useContext, createContext } from "react";
@@ -55,37 +56,45 @@ export default function CartProvider({ children }: IContextProviderProps) {
   );
 
   // Add item to cart
-  function addItemToCart(item: ICartItem) {
-    let updatedItems = [];
+  function addItemToCart(initialItem: ICartItem, item: IItem) {
+    // Check if the required addons are added
+    if (initialItem.requiredAddons.length < item.requiredAddons.addable) {
+      return showErrorAlert(
+        `Please add ${item.requiredAddons.addable} required addons`,
+        setAlerts
+      );
+    }
+
+    // Initiate updated items array
+    let updatedCartItems: ICartItem[] = [];
 
     // Add item to cart if the
     // item ins't already in cart
     if (
       !cartItems.some(
         (cartItem) =>
-          cartItem._id === item._id &&
-          cartItem.companyId === item.companyId &&
-          cartItem.deliveryDate === item.deliveryDate
+          cartItem._id === initialItem._id &&
+          cartItem.companyId === initialItem.companyId &&
+          cartItem.deliveryDate === initialItem.deliveryDate
       )
     ) {
-      updatedItems = [...cartItems, item];
+      updatedCartItems = [...cartItems, initialItem];
     } else {
       // If the item is already
       // in cart update the quantity
-      updatedItems = cartItems.map((cartItem) => {
+      updatedCartItems = cartItems.map((cartItem) => {
         if (
-          cartItem._id === item._id &&
-          cartItem.companyId === item.companyId &&
-          cartItem.deliveryDate === item.deliveryDate
+          cartItem._id === initialItem._id &&
+          cartItem.companyId === initialItem.companyId &&
+          cartItem.deliveryDate === initialItem.deliveryDate
         ) {
           return {
             ...cartItem,
-            quantity: item.quantity,
-            addonPrice: item.addonPrice,
-            optionalAddons: item.optionalAddons,
-            requiredAddons: item.requiredAddons,
-            // addableIngredients: item.addableIngredients,
-            removableIngredients: item.removableIngredients,
+            quantity: initialItem.quantity,
+            addonPrice: initialItem.addonPrice,
+            optionalAddons: initialItem.optionalAddons,
+            requiredAddons: initialItem.requiredAddons,
+            removableIngredients: initialItem.removableIngredients,
           };
         } else {
           // Return other cart items
@@ -95,10 +104,13 @@ export default function CartProvider({ children }: IContextProviderProps) {
     }
 
     // Update state
-    setCartItems(updatedItems);
+    setCartItems(updatedCartItems);
 
     // Save cart to local storage
-    localStorage.setItem(`cart-${customer?._id}`, JSON.stringify(updatedItems));
+    localStorage.setItem(
+      `cart-${customer?._id}`,
+      JSON.stringify(updatedCartItems)
+    );
 
     // Back to calendar page
     router.back();
@@ -107,7 +119,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
   // Remove cart item
   function removeItemFromCart(item: ICartItem) {
     // Filter the items by item id
-    const updatedItems = cartItems.filter(
+    const updatedCartItems = cartItems.filter(
       (cartItem) =>
         !(
           cartItem._id === item._id &&
@@ -117,10 +129,13 @@ export default function CartProvider({ children }: IContextProviderProps) {
     );
 
     // Set updated items to cart
-    setCartItems(updatedItems);
+    setCartItems(updatedCartItems);
 
     // Set updated items to local storage
-    localStorage.setItem(`cart-${customer?._id}`, JSON.stringify(updatedItems));
+    localStorage.setItem(
+      `cart-${customer?._id}`,
+      JSON.stringify(updatedCartItems)
+    );
   }
 
   // Checkout cart
@@ -135,7 +150,6 @@ export default function CartProvider({ children }: IContextProviderProps) {
         deliveryDate: cartItem.deliveryDate,
         optionalAddons: cartItem.optionalAddons,
         requiredAddons: cartItem.requiredAddons,
-        // addedIngredients: cartItem.addableIngredients,
         removedIngredients: cartItem.removableIngredients.join(", "),
       }));
 

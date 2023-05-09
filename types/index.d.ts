@@ -213,9 +213,9 @@ export interface ICartContext {
   totalCartPrice: number;
   totalCartQuantity: number;
   checkoutCart: () => Promise<void>;
-  addItemToCart: (item: ICartItem) => void;
   removeItemFromCart: (item: ICartItem) => void;
   setCartItems: Dispatch<SetStateAction<ICartItem[]>>;
+  addItemToCart: (initialItem: ICartItem, item: IItem) => void;
 }
 
 export interface ICartItem {
