@@ -239,9 +239,17 @@ export default function OrdersGroupDetails({
   // Get date in text
   const date = convertDateToText(+(router.query.date as string));
 
-  // Check added ingredients
-  const hasAddedIngredients = (ordersByRestaurant: IOrdersByRestaurant) =>
-    ordersByRestaurant.orders.some((order) => order.item.addedIngredients);
+  // Check optional addons
+  const hasOptionalAddons = (ordersByRestaurant: IOrdersByRestaurant) =>
+    ordersByRestaurant.orders.some((order) => order.item.optionalAddons);
+
+  // Check required addons
+  const hasRequiredAddons = (ordersByRestaurant: IOrdersByRestaurant) =>
+    ordersByRestaurant.orders.some((order) => order.item.requiredAddons);
+
+  // // Check added ingredients
+  // const hasAddedIngredients = (ordersByRestaurant: IOrdersByRestaurant) =>
+  //   ordersByRestaurant.orders.some((order) => order.item.addedIngredients);
 
   // Check removed ingredients
   const hasRemovedIngredients = (ordersByRestaurant: IOrdersByRestaurant) =>
@@ -318,8 +326,12 @@ export default function OrdersGroupDetails({
                 <thead>
                   <tr>
                     <th>Dish</th>
-                    {hasAddedIngredients(ordersByRestaurant) && (
-                      <th className={styles.hide_on_mobile}>Added</th>
+                    {hasOptionalAddons(ordersByRestaurant) && (
+                      <th className={styles.hide_on_mobile}>Optional addons</th>
+                    )}
+
+                    {hasRequiredAddons(ordersByRestaurant) && (
+                      <th className={styles.hide_on_mobile}>Required addons</th>
                     )}
 
                     {hasRemovedIngredients(ordersByRestaurant) && (
@@ -336,13 +348,23 @@ export default function OrdersGroupDetails({
                     (order, index) => (
                       <tr key={index}>
                         <td>{order.item.name}</td>
-                        {hasAddedIngredients(ordersByRestaurant) && (
+
+                        {hasOptionalAddons(ordersByRestaurant) && (
                           <td
                             className={`${styles.hide_on_mobile} ${styles.ingredients}`}
                           >
-                            {order.item.addedIngredients}
+                            {order.item.optionalAddons}
                           </td>
                         )}
+
+                        {hasRequiredAddons(ordersByRestaurant) && (
+                          <td
+                            className={`${styles.hide_on_mobile} ${styles.ingredients}`}
+                          >
+                            {order.item.requiredAddons}
+                          </td>
+                        )}
+
                         {hasRemovedIngredients(ordersByRestaurant) && (
                           <td
                             className={`${styles.hide_on_mobile} ${styles.ingredients}`}
@@ -358,9 +380,14 @@ export default function OrdersGroupDetails({
                   )}
                   <tr className={styles.total}>
                     <td>Total</td>
-                    {hasAddedIngredients(ordersByRestaurant) && (
+                    {hasOptionalAddons(ordersByRestaurant) && (
                       <td className={styles.hide_on_mobile}></td>
                     )}
+
+                    {hasRequiredAddons(ordersByRestaurant) && (
+                      <td className={styles.hide_on_mobile}></td>
+                    )}
+
                     {hasRemovedIngredients(ordersByRestaurant) && (
                       <td className={styles.hide_on_mobile}></td>
                     )}
