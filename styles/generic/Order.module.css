@@ -41,7 +41,8 @@
   margin-bottom: 0.25rem;
 }
 
-.details p.ingredients {
+.details p.addons,
+.details p.removed_ingredients {
   color: var(--gray);
   text-transform: capitalize;
 }

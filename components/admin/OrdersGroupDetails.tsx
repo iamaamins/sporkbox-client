@@ -247,10 +247,6 @@ export default function OrdersGroupDetails({
   const hasRequiredAddons = (ordersByRestaurant: IOrdersByRestaurant) =>
     ordersByRestaurant.orders.some((order) => order.item.requiredAddons);
 
-  // // Check added ingredients
-  // const hasAddedIngredients = (ordersByRestaurant: IOrdersByRestaurant) =>
-  //   ordersByRestaurant.orders.some((order) => order.item.addedIngredients);
-
   // Check removed ingredients
   const hasRemovedIngredients = (ordersByRestaurant: IOrdersByRestaurant) =>
     ordersByRestaurant.orders.some((order) => order.item.removedIngredients);

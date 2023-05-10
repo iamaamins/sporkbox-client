@@ -286,7 +286,8 @@ export interface ICustomerOrder {
     total: number;
     image: string;
     quantity: number;
-    addedIngredients?: string;
+    optionalAddons?: string;
+    requiredAddons?: string;
     removedIngredients?: string;
   };
   delivery: {
@@ -587,6 +588,7 @@ export interface IOrderData {
   firstName: string;
   deliveryDate: string;
   restaurantName: string;
-  addedIngredients?: string;
+  optionalAddons?: string;
+  requiredAddons?: string;
   removedIngredients?: string;
 }

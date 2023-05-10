@@ -211,11 +211,20 @@ export default function Order() {
                     <span>{order.company.shift}</span>.
                   </p>
 
-                  {order.item.addedIngredients && (
+                  {order.item.optionalAddons && (
                     <>
-                      <p className={styles.title}>Added ingredients</p>
-                      <p className={styles.ingredients}>
-                        {order.item.addedIngredients}
+                      <p className={styles.title}>Optional addons</p>
+                      <p className={styles.addons}>
+                        {order.item.optionalAddons}
+                      </p>
+                    </>
+                  )}
+
+                  {order.item.requiredAddons && (
+                    <>
+                      <p className={styles.title}>Required addons</p>
+                      <p className={styles.addons}>
+                        {order.item.requiredAddons}
                       </p>
                     </>
                   )}
@@ -223,7 +232,7 @@ export default function Order() {
                   {order.item.removedIngredients && (
                     <>
                       <p className={styles.title}>Removed ingredients</p>
-                      <p className={styles.ingredients}>
+                      <p className={styles.removed_ingredients}>
                         {order.item.removedIngredients}
                       </p>
                     </>
@@ -246,11 +255,20 @@ export default function Order() {
                     <span>{order.company.shift}</span>.
                   </p>
 
-                  {order.item.addedIngredients && (
+                  {order.item.optionalAddons && (
                     <>
-                      <p className={styles.title}>Added ingredients</p>
-                      <p className={styles.ingredients}>
-                        {order.item.addedIngredients}
+                      <p className={styles.title}>Optional addons</p>
+                      <p className={styles.addons}>
+                        {order.item.optionalAddons}
+                      </p>
+                    </>
+                  )}
+
+                  {order.item.requiredAddons && (
+                    <>
+                      <p className={styles.title}>Required addons</p>
+                      <p className={styles.addons}>
+                        {order.item.requiredAddons}
                       </p>
                     </>
                   )}
@@ -258,7 +276,7 @@ export default function Order() {
                   {order.item.removedIngredients && (
                     <>
                       <p className={styles.title}>Removed ingredients</p>
-                      <p className={styles.ingredients}>
+                      <p className={styles.removed_ingredients}>
                         {order.item.removedIngredients}
                       </p>
                     </>
