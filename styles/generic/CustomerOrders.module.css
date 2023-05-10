@@ -2,7 +2,8 @@
   display: none;
 }
 
-.ingredients {
+.addons,
+.removed_ingredients {
   text-transform: capitalize;
 }
 

@@ -6,15 +6,17 @@ export default function CustomerOrders({
   orders,
   orderStatus,
 }: ICustomerOrdersProps) {
-  // Check added ingredients
-  const hasAddedIngredients = orders.some(
-    (order) => order.item.addedIngredients
-  );
+  // Check optional addons
+  const hasOptionalAddons = orders.some((order) => order.item.optionalAddons);
+
+  // Check optional addons
+  const hasRequiredAddons = orders.some((order) => order.item.requiredAddons);
 
   // Check removed ingredients
   const hasRemovedIngredients = orders.some(
     (order) => order.item.removedIngredients
   );
+
   return (
     <>
       <h2>{orderStatus} orders</h2>
@@ -23,8 +25,11 @@ export default function CustomerOrders({
           <tr>
             <th>Date</th>
             <th>Item</th>
-            {hasAddedIngredients && (
-              <th className={styles.hide_on_mobile}>Added</th>
+            {hasOptionalAddons && (
+              <th className={styles.hide_on_mobile}>Optional addons</th>
+            )}
+            {hasRequiredAddons && (
+              <th className={styles.hide_on_mobile}>Required addons</th>
             )}
             {hasRemovedIngredients && (
               <th className={styles.hide_on_mobile}>Removed</th>
@@ -41,16 +46,21 @@ export default function CustomerOrders({
             <tr key={index}>
               <td>{convertDateToText(order.delivery.date)}</td>
               <td>{order.item.name}</td>
-              {hasAddedIngredients && (
-                <td
-                  className={`${styles.hide_on_mobile} ${styles.ingredients}`}
-                >
-                  {order.item.addedIngredients}
+              {hasOptionalAddons && (
+                <td className={`${styles.hide_on_mobile} ${styles.addons}`}>
+                  {order.item.optionalAddons}
                 </td>
               )}
+
+              {hasRequiredAddons && (
+                <td className={`${styles.hide_on_mobile} ${styles.addons}`}>
+                  {order.item.requiredAddons}
+                </td>
+              )}
+
               {hasRemovedIngredients && (
                 <td
-                  className={`${styles.hide_on_mobile} ${styles.ingredients}`}
+                  className={`${styles.hide_on_mobile} ${styles.removed_ingredients}`}
                 >
                   {order.item.removedIngredients}
                 </td>
