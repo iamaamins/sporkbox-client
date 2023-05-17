@@ -128,7 +128,7 @@ export const getDate = (date: number | string) =>
 
 // Get the first letter of the UTC day
 export const getDay = (date: number | string) =>
-  new Date(date).toUTCString().split("").slice(0, 2).join("").toUpperCase();
+  new Date(date).toString().split("").slice(0, 2).join("").toUpperCase();
 
 // Handle remove from favorite
 export async function handleRemoveFromFavorite(
