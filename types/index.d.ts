@@ -564,7 +564,6 @@ export interface IFilterRestaurantsProps {
 export interface ICalendarFiltersProps {
   restaurants: IUpcomingRestaurant[];
   setShowCalendarFilters: Dispatch<SetStateAction<boolean>>;
-  setRestaurants: Dispatch<SetStateAction<IUpcomingRestaurant[]>>;
   setUpdatedRestaurants: Dispatch<SetStateAction<IUpcomingRestaurant[]>>;
 }
 

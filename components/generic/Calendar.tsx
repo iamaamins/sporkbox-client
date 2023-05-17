@@ -185,7 +185,6 @@ export default function Calendar() {
         component={
           <CalendarFiltersModal
             restaurants={restaurants}
-            setRestaurants={setRestaurants}
             setUpdatedRestaurants={setUpdatedRestaurants}
             setShowCalendarFilters={setShowCalendarFilters}
           />
