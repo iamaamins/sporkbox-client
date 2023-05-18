@@ -348,14 +348,18 @@ export default function Item() {
 
               {item.optionalAddons.addons && (
                 <div className={styles.optional_addons}>
-                  <p>Optional addons - {item.optionalAddons.addable} addable</p>
+                  <p>
+                    Optional add-ons - add up to {item.optionalAddons.addable}
+                  </p>
                   {renderOptionalAddons}
                 </div>
               )}
 
               {item.requiredAddons.addons && (
                 <div className={styles.required_addons}>
-                  <p>Required addons - {item.requiredAddons.addable} addable</p>
+                  <p>
+                    Required add-ons - must choose {item.requiredAddons.addable}
+                  </p>
                   {renderRequiredAddons}
                 </div>
               )}
