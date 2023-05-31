@@ -63,14 +63,27 @@
 }
 
 .restaurant_name {
+  display: flex;
+  align-items: center;
+  width: fit-content;
   font-size: 18px;
   font-weight: 600;
-  display: inline-block;
+  cursor: pointer;
   padding: 5px 14px;
-  border-radius: 0.25rem;
   margin-bottom: 1rem;
+  border-radius: 0.25rem;
   background: var(--orange);
   color: var(--almost_white);
+}
+
+.restaurant_name_arrow {
+  margin-left: 0.5rem;
+  font-size: 18px;
+  transition: all 250ms ease-in-out;
+}
+
+.rotate_arrow {
+  rotate: 180deg;
 }
 
 .items {
@@ -134,6 +147,11 @@
   border-radius: 100%;
   color: var(--white);
   background: var(--black);
+}
+
+.collapsed_text {
+  font-weight: 500;
+  color: var(--gray);
 }
 
 @media (min-width: 768px) {

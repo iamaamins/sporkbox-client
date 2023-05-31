@@ -12,6 +12,7 @@ import {
 } from "@utils/index";
 import CalendarSort from "./CalendarSort";
 import { IUpcomingRestaurant } from "types";
+import { IoIosArrowUp } from "react-icons/io";
 import CalendarFiltersModal from "./CalendarFiltersModal";
 import styles from "@styles/generic/Calendar.module.css";
 import ModalContainer from "@components/layout/ModalContainer";
@@ -24,6 +25,9 @@ export default function Calendar() {
     byLowToHigh: false,
     byHighToLow: false,
   });
+  const [activeRestaurants, setActiveRestaurants] = useState<
+    { id: string; show: boolean }[]
+  >([]);
   const { upcomingDates, upcomingRestaurants } = useData();
   const [showCalendarFilters, setShowCalendarFilters] = useState(false);
   const [restaurants, setRestaurants] = useState<IUpcomingRestaurant[]>([]);
@@ -52,12 +56,37 @@ export default function Calendar() {
               new Date(b.scheduledAt).getTime()
           );
 
-        // Update restaurants state
+        // Active restaurants
+        const activeRestaurants = upcomingRestaurantsOnDate.map(
+          (upcomingRestaurant) => ({
+            id: upcomingRestaurant._id,
+            show: true,
+          })
+        );
+
+        // Update states
+        setActiveRestaurants(activeRestaurants);
         setRestaurants(upcomingRestaurantsOnDate);
         setUpdatedRestaurants(upcomingRestaurantsOnDate);
       }
     }
   }, [upcomingDates, router]);
+
+  // Update active restaurants
+  function updateActiveRestaurants(restaurant: IUpcomingRestaurant) {
+    setActiveRestaurants((currState) =>
+      currState.map((activeRestaurant) => {
+        if (activeRestaurant.id === restaurant._id) {
+          return {
+            ...activeRestaurant,
+            show: !activeRestaurant.show,
+          };
+        } else {
+          return activeRestaurant;
+        }
+      })
+    );
+  }
 
   return (
     <>
@@ -117,57 +146,79 @@ export default function Calendar() {
                 {/* Show the scheduled restaurants */}
                 {updatedRestaurants.map((restaurant, index) => (
                   <div key={index} className={styles.restaurant}>
-                    <h2 className={styles.restaurant_name}>
-                      {restaurant.name}
+                    <h2
+                      className={styles.restaurant_name}
+                      onClick={() => updateActiveRestaurants(restaurant)}
+                    >
+                      {restaurant.name}{" "}
+                      <IoIosArrowUp
+                        className={`${styles.restaurant_name_arrow} ${
+                          activeRestaurants.some(
+                            (activeRestaurant) =>
+                              !activeRestaurant.show &&
+                              activeRestaurant.id === restaurant._id
+                          ) && styles.rotate_arrow
+                        }`}
+                      />
                     </h2>
 
-                    <div className={styles.items}>
-                      {restaurant.items.map((item) => (
-                        <div key={item._id}>
-                          <Link
-                            href={`/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`}
-                          >
-                            <a className={styles.item}>
-                              <div className={styles.item_details}>
-                                <p className={styles.name}>{item.name}</p>
-                                <p className={styles.price}>
-                                  {formatCurrencyToUSD(item.price)}
-                                </p>
-                                <p className={styles.description}>
-                                  {item.description}
-                                </p>
-                              </div>
+                    {activeRestaurants.some(
+                      (activeRestaurant) =>
+                        activeRestaurant.show &&
+                        activeRestaurant.id === restaurant._id
+                    ) ? (
+                      <div className={styles.items}>
+                        {restaurant.items.map((item) => (
+                          <div key={item._id}>
+                            <Link
+                              href={`/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`}
+                            >
+                              <a className={styles.item}>
+                                <div className={styles.item_details}>
+                                  <p className={styles.name}>{item.name}</p>
+                                  <p className={styles.price}>
+                                    {formatCurrencyToUSD(item.price)}
+                                  </p>
+                                  <p className={styles.description}>
+                                    {item.description}
+                                  </p>
+                                </div>
 
-                              <div className={styles.item_image}>
-                                <Image
-                                  src={item.image || restaurant.logo}
-                                  width={16}
-                                  height={10}
-                                  objectFit="cover"
-                                  layout="responsive"
-                                />
+                                <div className={styles.item_image}>
+                                  <Image
+                                    src={item.image || restaurant.logo}
+                                    width={16}
+                                    height={10}
+                                    objectFit="cover"
+                                    layout="responsive"
+                                  />
 
-                                {cartItems.map(
-                                  (cartItem) =>
-                                    cartItem.deliveryDate.toString() ===
-                                      router.query.date &&
-                                    cartItem._id === item._id &&
-                                    cartItem.companyId ===
-                                      restaurant.company._id && (
-                                      <span
-                                        key={item._id}
-                                        className={styles.quantity}
-                                      >
-                                        {cartItem.quantity}
-                                      </span>
-                                    )
-                                )}
-                              </div>
-                            </a>
-                          </Link>
-                        </div>
-                      ))}
-                    </div>
+                                  {cartItems.map(
+                                    (cartItem) =>
+                                      cartItem.deliveryDate.toString() ===
+                                        router.query.date &&
+                                      cartItem._id === item._id &&
+                                      cartItem.companyId ===
+                                        restaurant.company._id && (
+                                        <span
+                                          key={item._id}
+                                          className={styles.quantity}
+                                        >
+                                          {cartItem.quantity}
+                                        </span>
+                                      )
+                                  )}
+                                </div>
+                              </a>
+                            </Link>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className={styles.collapsed_text}>
+                        Items are collapsed!
+                      </p>
+                    )}
                   </div>
                 ))}
               </>
