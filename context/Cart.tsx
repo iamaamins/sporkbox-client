@@ -150,7 +150,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
         deliveryDate: cartItem.deliveryDate,
         optionalAddons: cartItem.optionalAddons,
         requiredAddons: cartItem.requiredAddons,
-        removedIngredients: cartItem.removableIngredients.join(", "),
+        removedIngredients: cartItem.removableIngredients,
       }));
 
       try {
