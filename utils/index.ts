@@ -361,6 +361,7 @@ export const tags = [
   "Dairy-Free",
   "Contains Nuts",
   "Contains Soy",
+  "Enjoy Later",
 ];
 
 // Split tags
