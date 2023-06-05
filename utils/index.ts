@@ -302,6 +302,7 @@ export const groupIdenticalOrders = (orders: IOrder[]) =>
       !acc.some(
         (order) =>
           order.item._id === curr.item._id &&
+          order.delivery.date === curr.delivery.date &&
           order.item.optionalAddons === curr.item.optionalAddons &&
           order.item.requiredAddons === curr.item.requiredAddons &&
           order.item.removedIngredients === curr.item.removedIngredients
@@ -312,6 +313,7 @@ export const groupIdenticalOrders = (orders: IOrder[]) =>
       return acc.map((order) => {
         if (
           order.item._id === curr.item._id &&
+          order.delivery.date === curr.delivery.date &&
           order.item.optionalAddons === curr.item.optionalAddons &&
           order.item.requiredAddons === curr.item.requiredAddons &&
           order.item.removedIngredients === curr.item.removedIngredients
