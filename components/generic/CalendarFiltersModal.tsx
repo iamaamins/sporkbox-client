@@ -33,14 +33,12 @@ export default function CalendarFiltersModal({
   useEffect(() => {
     // Get filters data from local storage
     const savedFilters = JSON.parse(
-      localStorage.getItem(
-        `filters-${customer?._id}-${router.query.date}`
-      ) as string
+      localStorage.getItem(`filters-${customer?._id}`) as string
     );
 
     // Update state
     setFiltersData(savedFilters || initialFilters);
-  }, [customer, router]);
+  }, [customer, router.isReady]);
 
   // Handle tags change
   function handleFilterChange(e: ChangeEvent<HTMLInputElement>) {
@@ -102,7 +100,7 @@ export default function CalendarFiltersModal({
 
     // Save filters data to local storage
     localStorage.setItem(
-      `filters-${customer?._id}-${router.query.date}`,
+      `filters-${customer?._id}`,
       JSON.stringify(filtersData)
     );
   }
