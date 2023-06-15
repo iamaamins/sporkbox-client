@@ -2,7 +2,7 @@ import ItemForm from "./ItemForm";
 import { useRouter } from "next/router";
 import { useData } from "@context/Data";
 import { useAlert } from "@context/Alert";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { IAxiosError, IItemFormData } from "types";
 import {
   axiosInstance,
@@ -17,7 +17,7 @@ export default function AddItem() {
   // Initial states
   const initialState = {
     name: "",
-    price: 0,
+    price: "",
     file: undefined,
     updatedTags: [],
     description: "",
@@ -35,7 +35,8 @@ export default function AddItem() {
   // Hooks
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const { setVendors } = useData();
+  const { setVendors, vendors } = useData();
+  const [index, setIndex] = useState<string>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<IItemFormData>(initialState);
 
@@ -51,6 +52,20 @@ export default function AddItem() {
     removableIngredients,
   } = formData;
 
+  useEffect(() => {
+    if (vendors.data.length > 0 && router.isReady) {
+      // Find the vendor
+      const vendor = vendors.data.find(
+        (vendor) => vendor.restaurant._id === router.query.restaurant
+      );
+
+      if (vendor) {
+        // Update state
+        setIndex(vendor.restaurant.items.length.toString());
+      }
+    }
+  }, [vendors, router.isReady]);
+
   // Handle submit
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -65,6 +80,7 @@ export default function AddItem() {
     data.append("name", name as string);
     data.append("tags", tags as string);
     data.append("price", price as string);
+    data.append("index", index as string);
     file && data.append("file", file as File);
     data.append("description", description as string);
     data.append("optionalAddons", JSON.stringify(optionalAddons));

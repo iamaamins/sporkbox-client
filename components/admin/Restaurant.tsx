@@ -18,6 +18,7 @@ import {
 } from "@utils/index";
 import { AxiosError } from "axios";
 import { useAlert } from "@context/Alert";
+import ReorderAbleItems from "./ReorderAbleItems";
 import ModalContainer from "@components/layout/ModalContainer";
 
 export default function Restaurant() {
@@ -26,6 +27,7 @@ export default function Restaurant() {
   const [action, setAction] = useState("");
   const { vendors, setVendors } = useData();
   const [vendor, setVendor] = useState<IVendor>();
+  const [reorderItems, setReorderItems] = useState(false);
   const [isUpdatingVendorStatus, setIsUpdatingVendorStatus] = useState(false);
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
 
@@ -76,6 +78,38 @@ export default function Restaurant() {
       // Remove loader and close the modal
       setIsUpdatingVendorStatus(false);
       setShowStatusUpdateModal(false);
+    }
+  }
+
+  // Update items order
+  async function updateItemsIndex() {
+    // Return if there is no vendor
+    if (!vendor) return;
+
+    // Get reordered items' id and index
+    const reorderedItems = vendor.restaurant.items.map((item, index) => ({
+      _id: item._id,
+      index,
+    }));
+
+    try {
+      // Update items' index
+      const response = await axiosInstance.patch(
+        `/restaurants/${vendor.restaurant._id}/update-items-index`,
+        { reorderedItems }
+      );
+
+      // Update state
+      setReorderItems(false);
+
+      // Show success alert
+      showSuccessAlert(response.data, setAlerts);
+    } catch (err) {
+      // Log error
+      console.log(err);
+
+      // Show error alert
+      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
     }
   }
 
@@ -143,47 +177,70 @@ export default function Restaurant() {
             {/* Items */}
             {vendor.restaurant.items.length > 0 && (
               <>
-                <h2 className={styles.items_title}>Items</h2>
-                <div className={styles.items}>
-                  {vendor.restaurant.items.map((item) => (
-                    <div key={item._id}>
-                      <Link
-                        href={`/admin/restaurants/${vendor.restaurant._id}/${item._id}`}
-                      >
-                        <a className={styles.item}>
-                          <div className={styles.item_details}>
-                            <p className={styles.name}>
-                              {item.name}
-                              {item.status === "ACTIVE" ? (
-                                <HiBadgeCheck />
-                              ) : (
-                                <RiDeleteBack2Fill
-                                  className={styles.archive_icon}
-                                />
-                              )}
-                            </p>
-                            <p className={styles.price}>
-                              {formatCurrencyToUSD(item.price)}
-                            </p>
-                            <p className={styles.description}>
-                              {item.description}
-                            </p>
-                          </div>
+                <div className={styles.items_header}>
+                  <h2 className={styles.items_title}>Items</h2>
 
-                          <div className={styles.item_image}>
-                            <Image
-                              src={item.image || vendor.restaurant.logo}
-                              width={16}
-                              height={10}
-                              objectFit="cover"
-                              layout="responsive"
-                            />
-                          </div>
-                        </a>
-                      </Link>
+                  {reorderItems ? (
+                    <div className={styles.reorder_actions}>
+                      <button onClick={updateItemsIndex}>Save order</button>
+                      <button onClick={() => setReorderItems(false)}>
+                        Cancel
+                      </button>
                     </div>
-                  ))}
+                  ) : (
+                    <p
+                      className={styles.reorder_button}
+                      onClick={() => setReorderItems(true)}
+                    >
+                      Reorder items
+                    </p>
+                  )}
                 </div>
+
+                {reorderItems ? (
+                  <ReorderAbleItems vendor={vendor} setVendor={setVendor} />
+                ) : (
+                  <div className={styles.items}>
+                    {vendor.restaurant.items.map((item) => (
+                      <div key={item._id}>
+                        <Link
+                          href={`/admin/restaurants/${vendor.restaurant._id}/${item._id}`}
+                        >
+                          <a className={styles.item}>
+                            <div className={styles.item_details}>
+                              <p className={styles.name}>
+                                {item.name}
+                                {item.status === "ACTIVE" ? (
+                                  <HiBadgeCheck />
+                                ) : (
+                                  <RiDeleteBack2Fill
+                                    className={styles.archive_icon}
+                                  />
+                                )}
+                              </p>
+                              <p className={styles.price}>
+                                {formatCurrencyToUSD(item.price)}
+                              </p>
+                              <p className={styles.description}>
+                                {item.description}
+                              </p>
+                            </div>
+
+                            <div className={styles.item_image}>
+                              <Image
+                                src={item.image || vendor.restaurant.logo}
+                                width={16}
+                                height={10}
+                                objectFit="cover"
+                                layout="responsive"
+                              />
+                            </div>
+                          </a>
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </>
             )}
           </div>

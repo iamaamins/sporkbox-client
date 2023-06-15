@@ -80,14 +80,10 @@ export default function ItemForm({
   function handleChangeFormData(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
-    // Id and value
-    const id = e.target.id;
-    const value = e.target.value;
-
     // Update state
     setFormData((currState) => ({
       ...currState,
-      [id]: id === "price" ? +value : value,
+      [e.target.id]: e.target.value,
     }));
   }
 

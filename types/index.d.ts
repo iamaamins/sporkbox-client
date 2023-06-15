@@ -591,3 +591,8 @@ export interface IOrderData {
   requiredAddons?: string;
   removedIngredients?: string;
 }
+
+interface IReorderAbleItemsProps {
+  vendor: IVendor;
+  setVendor: Dispatch<SetStateAction<IVendor | undefined>>;
+}
