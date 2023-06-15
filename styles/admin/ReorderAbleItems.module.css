@@ -48,6 +48,7 @@
 .item_image {
   width: 30%;
   position: relative;
+  pointer-events: none;
   border-radius: 0.25rem;
   border: 1px solid var(--border_color);
 }
