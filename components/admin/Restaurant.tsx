@@ -11,10 +11,10 @@ import { FormEvent, useEffect, useState } from "react";
 import styles from "@styles/admin/Restaurant.module.css";
 import {
   axiosInstance,
-  formatCurrencyToUSD,
+  updateVendors,
   showErrorAlert,
   showSuccessAlert,
-  updateVendors,
+  formatCurrencyToUSD,
 } from "@utils/index";
 import { AxiosError } from "axios";
 import { useAlert } from "@context/Alert";
@@ -30,6 +30,7 @@ export default function Restaurant() {
   const [reorderItems, setReorderItems] = useState(false);
   const [isUpdatingVendorStatus, setIsUpdatingVendorStatus] = useState(false);
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
+  const [isDesktop, setIsDesktop] = useState<boolean>();
 
   // Get the restaurant
   useEffect(() => {
@@ -41,6 +42,15 @@ export default function Restaurant() {
       );
     }
   }, [vendors, router.isReady]);
+
+  // Check if desktop
+  useEffect(() => {
+    // Get window width
+    const windowWidth = window.innerWidth;
+
+    // Update state
+    setIsDesktop(windowWidth > 428);
+  }, []);
 
   // Handle update status
   function initiateStatusUpdate(e: FormEvent) {
@@ -81,7 +91,7 @@ export default function Restaurant() {
     }
   }
 
-  // Update items order
+  // Update items index
   async function updateItemsIndex() {
     // Return if there is no vendor
     if (!vendor) return;
@@ -180,24 +190,28 @@ export default function Restaurant() {
                 <div className={styles.items_header}>
                   <h2 className={styles.items_title}>Items</h2>
 
-                  {reorderItems ? (
-                    <div className={styles.reorder_actions}>
-                      <button onClick={updateItemsIndex}>Save order</button>
-                      <button onClick={() => setReorderItems(false)}>
-                        Cancel
-                      </button>
-                    </div>
-                  ) : (
-                    <p
-                      className={styles.reorder_button}
-                      onClick={() => setReorderItems(true)}
-                    >
-                      Reorder items
-                    </p>
+                  {isDesktop && (
+                    <>
+                      {reorderItems ? (
+                        <div className={styles.reorder_actions}>
+                          <button onClick={updateItemsIndex}>Save order</button>
+                          <button onClick={() => setReorderItems(false)}>
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <p
+                          className={styles.reorder_button}
+                          onClick={() => setReorderItems(true)}
+                        >
+                          Reorder items
+                        </p>
+                      )}
+                    </>
                   )}
                 </div>
 
-                {reorderItems ? (
+                {isDesktop && reorderItems ? (
                   <ReorderAbleItems vendor={vendor} setVendor={setVendor} />
                 ) : (
                   <div className={styles.items}>
