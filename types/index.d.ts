@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, ReactNode, FormEvent } from "react";
+import { Dispatch, SetStateAction, ReactNode, FormEvent } from 'react';
 
 interface IUser {
   _id: string;
@@ -174,8 +174,9 @@ export interface IOrdersGroup {
     name: string;
     shift: string;
   };
-  restaurants: string[];
+  customers: string[];
   deliveryDate: string;
+  restaurants: string[];
 }
 
 export interface IDataContext {
@@ -505,7 +506,7 @@ export interface ICustomerOrdersProps {
   orderStatus: string;
 }
 
-interface ICustomerWithCompany extends Omit<ICustomer, "companies"> {
+interface ICustomerWithCompany extends Omit<ICustomer, 'companies'> {
   company: ICompany;
 }
 
@@ -522,9 +523,9 @@ export interface IAddons {
 export interface IRemovableIngredients extends IAddons {}
 
 export type IAddonsOrRemovableIngredientsType =
-  | "requiredAddons"
-  | "optionalAddons"
-  | "removableIngredients";
+  | 'requiredAddons'
+  | 'optionalAddons'
+  | 'removableIngredients';
 
 export type SetAddonsOrRemovableIngredients = Dispatch<
   SetStateAction<IAddons | IRemovableIngredients | undefined>

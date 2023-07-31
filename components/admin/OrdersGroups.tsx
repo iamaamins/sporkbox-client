@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { AxiosError } from "axios";
-import { useData } from "@context/Data";
-import { useRouter } from "next/router";
-import { useAlert } from "@context/Alert";
-import OrdersGroupRow from "./OrdersGroupRow";
-import SortOrdersGroups from "./SortOrdersGroups";
-import styles from "@styles/admin/OrdersGroups.module.css";
-import ActionButton from "@components/layout/ActionButton";
-import { axiosInstance, showErrorAlert } from "@utils/index";
-import { IAxiosError, IOrdersGroupsProps, ISortedOrdersGroups } from "types";
+import { useState } from 'react';
+import { AxiosError } from 'axios';
+import { useData } from '@context/Data';
+import { useRouter } from 'next/router';
+import { useAlert } from '@context/Alert';
+import OrdersGroupRow from './OrdersGroupRow';
+import SortOrdersGroups from './SortOrdersGroups';
+import styles from '@styles/admin/OrdersGroups.module.css';
+import ActionButton from '@components/layout/ActionButton';
+import { axiosInstance, showErrorAlert } from '@utils/index';
+import { IAxiosError, IOrdersGroupsProps, ISortedOrdersGroups } from 'types';
 
 export default function OrdersGroups({
   slug,
@@ -52,12 +52,12 @@ export default function OrdersGroups({
   return (
     <section className={styles.orders_groups}>
       {/* Upcoming orders loader */}
-      {slug === "upcoming-orders" && allUpcomingOrders.isLoading && (
+      {slug === 'upcoming-orders' && allUpcomingOrders.isLoading && (
         <h2>Loading...</h2>
       )}
 
       {/* Delivered orders loader */}
-      {slug === "delivered-orders" && allDeliveredOrders.isLoading && (
+      {slug === 'delivered-orders' && allDeliveredOrders.isLoading && (
         <h2>Loading...</h2>
       )}
 
@@ -88,6 +88,7 @@ export default function OrdersGroups({
                 <th className={styles.hide_on_mobile}>Company</th>
                 <th>Shift</th>
                 <th className={styles.hide_on_mobile}>Restaurant</th>
+                <th>Headcount</th>
                 <th>Orders</th>
                 <th>Action</th>
               </tr>
@@ -105,11 +106,11 @@ export default function OrdersGroups({
           </table>
 
           {/* Load all orders button */}
-          {router.pathname === "/admin/orders" &&
+          {router.pathname === '/admin/orders' &&
             ordersGroups.length === 25 && (
               <span className={styles.load_all}>
                 <ActionButton
-                  buttonText="Load all orders"
+                  buttonText='Load all orders'
                   isLoading={isLoading}
                   handleClick={handleLoadAllDeliveredOrders}
                 />

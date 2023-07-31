@@ -1,7 +1,7 @@
-import { Dispatch } from "react";
-import axios, { AxiosError } from "axios";
-import { SetStateAction } from "react";
-import { NextRouter } from "next/router";
+import { Dispatch } from 'react';
+import axios, { AxiosError } from 'axios';
+import { SetStateAction } from 'react';
+import { NextRouter } from 'next/router';
 import {
   IOrder,
   IAlert,
@@ -16,20 +16,20 @@ import {
   IAxiosError,
   IOrdersGroup,
   ICustomerFavoriteItems,
-} from "types";
+} from 'types';
 
 // Current year
 export const currentYear = new Date().getFullYear();
 
 // Convert number
 export const formatNumberToUS = (number: number) =>
-  +number.toLocaleString("en-US");
+  +number.toLocaleString('en-US');
 
 // Format currency
 export const formatCurrencyToUSD = (number: number) =>
-  new Intl.NumberFormat("en-us", {
-    style: "currency",
-    currency: "USD",
+  new Intl.NumberFormat('en-us', {
+    style: 'currency',
+    currency: 'USD',
   }).format(number);
 
 // Convert date to milliseconds
@@ -37,7 +37,7 @@ export const convertDateToMS = (date: string) => new Date(date).getTime();
 
 // Convert date to string
 export const convertDateToText = (date: Date | string | number): string =>
-  new Date(date).toUTCString().split(" ").slice(0, 3).join(" ");
+  new Date(date).toUTCString().split(' ').slice(0, 3).join(' ');
 
 // Check if there is an admin
 export function checkUser(
@@ -46,7 +46,7 @@ export function checkUser(
   router: NextRouter
 ) {
   if (!isUserLoading && !user) {
-    router.push("/login");
+    router.push('/login');
   }
 }
 
@@ -59,7 +59,7 @@ export function updateVendors(
   setVendors((currState) => ({
     ...currState,
     data: currState.data.map((vendor) => {
-      if (vendor._id === updatedVendor._id && "restaurant" in updatedVendor) {
+      if (vendor._id === updatedVendor._id && 'restaurant' in updatedVendor) {
         return {
           ...vendor,
           firstName: updatedVendor.firstName,
@@ -71,7 +71,7 @@ export function updateVendors(
         };
       } else if (
         vendor.restaurant._id === updatedVendor._id &&
-        "items" in updatedVendor
+        'items' in updatedVendor
       ) {
         return {
           ...vendor,
@@ -124,11 +124,11 @@ export function groupBy<
 
 // Get the UTC date
 export const getDate = (date: number | string) =>
-  new Date(date).getUTCDate().toString().padStart(2, "0");
+  new Date(date).getUTCDate().toString().padStart(2, '0');
 
 // Get the first letter of the UTC day
 export const getDay = (date: number | string) =>
-  new Date(date).toUTCString().split("").slice(0, 2).join("").toUpperCase();
+  new Date(date).toUTCString().split('').slice(0, 2).join('').toUpperCase();
 
 // Handle remove from favorite
 export async function handleRemoveFromFavorite(
@@ -149,7 +149,7 @@ export async function handleRemoveFromFavorite(
     }));
 
     // Show success alert
-    showSuccessAlert("Favorite removed", setAlerts);
+    showSuccessAlert('Favorite removed', setAlerts);
   } catch (err) {
     // Log error
     console.log(err);
@@ -161,7 +161,7 @@ export async function handleRemoveFromFavorite(
 
 // Create text to slug
 export const createSlug = (text: string) =>
-  text.toLowerCase().split(" ").join("-");
+  text.toLowerCase().split(' ').join('-');
 
 // Group orders by company name and delivery date
 export const createOrdersGroups = (orders: IOrder[]) =>
@@ -182,10 +182,11 @@ export const createOrdersGroups = (orders: IOrder[]) =>
             shift: curr.company.shift,
             name: curr.company.name,
           },
+          customers: [curr.customer._id],
           deliveryDate: curr.delivery.date,
           restaurants: [curr.restaurant.name],
         },
-      ] as IOrdersGroup[];
+      ];
     } else {
       return acc.map((ordersGroup) => {
         if (
@@ -195,14 +196,17 @@ export const createOrdersGroups = (orders: IOrder[]) =>
           return {
             ...ordersGroup,
             orders: [...ordersGroup.orders, curr],
+            customers: ordersGroup.customers.includes(curr.customer._id)
+              ? ordersGroup.customers
+              : [...ordersGroup.customers, curr.customer._id],
             restaurants: ordersGroup.restaurants.includes(curr.restaurant.name)
-              ? [...ordersGroup.restaurants]
+              ? ordersGroup.restaurants
               : [...ordersGroup.restaurants, curr.restaurant.name],
           };
         } else {
           return ordersGroup;
         }
-      }) as IOrdersGroup[];
+      });
     }
   }, []);
 
@@ -265,7 +269,7 @@ export function updateCompanies(
 // Format image name
 export const formatImageName = (name: string) =>
   name.length > 15
-    ? `${name.slice(0, 10)}.${name.split(".")[name.split(".").length - 1]}`
+    ? `${name.slice(0, 10)}.${name.split('.')[name.split('.').length - 1]}`
     : name;
 
 // Success alert
@@ -274,7 +278,7 @@ export function showSuccessAlert(
   setAlerts: Dispatch<SetStateAction<IAlert[]>>
 ) {
   // Update state
-  setAlerts((currState) => [...currState, { message, type: "success" }]);
+  setAlerts((currState) => [...currState, { message, type: 'success' }]);
 }
 
 // Error alert
@@ -283,11 +287,11 @@ export function showErrorAlert(
   setAlerts: Dispatch<SetStateAction<IAlert[]>>
 ) {
   // Error type
-  const type = "failed";
+  const type = 'failed';
 
   // Update state
   setAlerts((currState) =>
-    typeof err === "string"
+    typeof err === 'string'
       ? [...currState, { message: err, type }]
       : err.response
       ? [...currState, { message: err.response.data.message, type }]
@@ -336,10 +340,10 @@ export const groupIdenticalOrders = (orders: IOrder[]) =>
 // Format addable ingredients
 export const formatAddons = (ingredients: string) =>
   ingredients
-    .split(",")
+    .split(',')
     .map((ingredient) => ingredient.trim())
     .map((ingredient) =>
-      ingredient.split("-").map((ingredient) => ingredient.trim())
+      ingredient.split('-').map((ingredient) => ingredient.trim())
     )
     .map((ingredient) =>
       +ingredient[1] > 0
@@ -355,20 +359,20 @@ export const axiosInstance = axios.create({
 
 // Dietary tags
 export const tags = [
-  "Vegan",
-  "Vegetarian",
-  "Gluten-Free",
-  "Nut-Free",
-  "Soy-Free",
-  "Dairy-Free",
-  "Contains Nuts",
-  "Contains Soy",
-  "Enjoy Later",
+  'Vegan',
+  'Vegetarian',
+  'Gluten-Free',
+  'Nut-Free',
+  'Soy-Free',
+  'Dairy-Free',
+  'Contains Nuts',
+  'Contains Soy',
+  'Enjoy Later',
 ];
 
 // Split tags
 export const splitTags = (tags: string) =>
-  tags.split(",").map((tag) => tag.trim());
+  tags.split(',').map((tag) => tag.trim());
 
 // https://api.sporkbox.app
 // https://api.sporkbox.octib.com

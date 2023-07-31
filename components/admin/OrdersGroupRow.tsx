@@ -1,10 +1,10 @@
-import Link from "next/link";
-import { CSVLink } from "react-csv";
-import { IOrdersGroupRowProps } from "types";
-import { FiDownload } from "react-icons/fi";
-import styles from "@styles/admin/OrdersGroupRow.module.css";
-import { convertDateToMS, convertDateToText } from "@utils/index";
-import { orderData, orderFileName, orderHeaders } from "@utils/csv";
+import Link from 'next/link';
+import { CSVLink } from 'react-csv';
+import { IOrdersGroupRowProps } from 'types';
+import { FiDownload } from 'react-icons/fi';
+import styles from '@styles/admin/OrdersGroupRow.module.css';
+import { convertDateToMS, convertDateToText } from '@utils/index';
+import { orderData, orderFileName, orderHeaders } from '@utils/csv';
 
 export default function OrdersGroupRow({
   slug,
@@ -28,6 +28,7 @@ export default function OrdersGroupRow({
           <span key={restaurant}>{restaurant}</span>
         ))}
       </td>
+      <td>{ordersGroup.customers.length}</td>
       <td>{ordersGroup.orders.length}</td>
       <td className={styles.action}>
         <CSVLink
