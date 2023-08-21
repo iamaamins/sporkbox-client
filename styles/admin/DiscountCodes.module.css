@@ -18,9 +18,25 @@
   padding: 1rem;
 }
 
+.discount_codes table td:first-child {
+  text-transform: uppercase;
+}
+
+.redeemability {
+  text-transform: capitalize;
+}
+
 .discount_codes table th:last-child,
 .discount_codes table td:last-child {
   text-align: right;
+}
+
+.discount_codes table td:last-child span {
+  border-radius: 2rem;
+  padding: 4px 8px;
+  cursor: pointer;
+  color: var(--orange);
+  border: 1px solid var(--orange);
 }
 
 .discount_codes table thead tr {

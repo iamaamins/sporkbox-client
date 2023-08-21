@@ -112,10 +112,11 @@ export interface ICompany {
 }
 
 export interface IDiscountCode {
+  _id: string;
   code: string;
   value: number;
-  redeemability: number;
   totalRedeem: number;
+  redeemability: string;
 }
 
 export interface IContextProviderProps {

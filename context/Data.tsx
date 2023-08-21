@@ -223,7 +223,13 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setDiscountCodes({
           isLoading: false,
           data: [
-            { code: 'dkghaad', value: 5, redeemability: 1, totalRedeem: 1 },
+            {
+              _id: '1',
+              value: 5,
+              totalRedeem: 1,
+              code: 'dkghaad',
+              redeemability: 'once',
+            },
           ],
         });
       } catch (err) {

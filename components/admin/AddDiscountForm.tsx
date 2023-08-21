@@ -84,11 +84,11 @@ export default function AddDiscountForm() {
           <input
             type='checkbox'
             id='redeemability'
-            checked={redeemability === '1'}
+            checked={redeemability === 'once'}
             onChange={(e) =>
               setFormData((prevState) => ({
                 ...prevState,
-                redeemability: e.target.checked ? '1' : 'unlimited',
+                redeemability: e.target.checked ? 'once' : 'unlimited',
               }))
             }
           />

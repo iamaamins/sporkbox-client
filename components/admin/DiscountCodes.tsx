@@ -1,10 +1,31 @@
-import LinkButton from '@components/layout/LinkButton';
+import { useState } from 'react';
+import { CustomAxiosError } from 'types';
+import { useAlert } from '@context/Alert';
 import { useData } from '@context/Data';
+import { showErrorAlert } from '@utils/index';
+import LinkButton from '@components/layout/LinkButton';
 import styles from '@styles/admin/DiscountCodes.module.css';
 
 export default function DiscountCodes() {
   // Hooks
-  const { discountCodes } = useData();
+  const { setAlerts } = useAlert();
+  const [isLoading, setIsLoading] = useState(false);
+  const { discountCodes, setDiscountCodes } = useData();
+
+  // Handle delete discount code
+  async function handleDelete() {
+    try {
+      // Make request to the backend
+      // Update state
+      // setDiscountCodes(prevState => prevState.data.filter(discountCode => discountCode.id !== request.data._id))
+    } catch (err) {
+      // Log err
+      console.log(err);
+
+      // Show error alert
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    }
+  }
 
   return (
     <section className={styles.discount_codes}>
@@ -31,14 +52,18 @@ export default function DiscountCodes() {
 
             <tbody>
               {discountCodes.data.map((discountCode) => (
-                <tr>
+                <tr key={discountCode._id}>
                   <td>{discountCode.code}</td>
                   <td>{discountCode.value}</td>
-                  <td>{discountCode.redeemability}</td>
+                  <td className={styles.redeemability}>
+                    {discountCode.redeemability}
+                  </td>
                   <td className={styles.hide_on_mobile}>
                     {discountCode.totalRedeem}
                   </td>
-                  <td>Delete</td>
+                  <td onClick={handleDelete}>
+                    <span>Delete</span>
+                  </td>
                 </tr>
               ))}
             </tbody>
