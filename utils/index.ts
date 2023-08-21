@@ -368,7 +368,7 @@ export const tags = [
   'Contains Nuts',
   'Contains Soy',
   'Enjoy Later',
-];
+] as const;
 
 // Split tags
 export const splitTags = (tags: string) =>

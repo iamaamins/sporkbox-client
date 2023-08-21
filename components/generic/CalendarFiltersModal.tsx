@@ -1,7 +1,7 @@
 import { useUser } from '@context/User';
 import { useRouter } from 'next/router';
 import { ICalendarFiltersProps } from 'types';
-import { tags as tagsFilters } from '@utils/index';
+import { tags as tagFilters } from '@utils/index';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import styles from '@styles/generic/CalendarFiltersModal.module.css';
 
@@ -11,13 +11,18 @@ export default function CalendarFiltersModal({
   setShowCalendarFilters,
 }: ICalendarFiltersProps) {
   // All filters
-  const additionalFilters = ['No Pork', '$20 and under'];
-  const allFilters = [...tagsFilters, ...additionalFilters];
+  const additionalFilters = ['No Pork', '$20 and under'] as const;
+  const allInitialFilters = [...tagFilters, ...additionalFilters] as const;
+
+  // Initial filters type
+  type InitialFilters = {
+    [key in (typeof allInitialFilters)[number]]: boolean;
+  };
 
   // Initial filters
-  const initialFilters = allFilters.reduce(
-    (acc, curr) => ({ ...acc, [curr.toLowerCase()]: false }),
-    {}
+  const initialFilters = allInitialFilters.reduce(
+    (acc, curr) => ({ ...acc, [curr]: false }),
+    {} as InitialFilters
   );
 
   // Hooks
@@ -44,7 +49,7 @@ export default function CalendarFiltersModal({
   function handleFilterChange(e: ChangeEvent<HTMLInputElement>) {
     setFiltersData((currState) => ({
       ...currState,
-      [e.target.id.toLowerCase()]: e.target.checked,
+      [e.target.id]: e.target.checked,
     }));
   }
 
@@ -53,25 +58,33 @@ export default function CalendarFiltersModal({
     // Create updated restaurants
     let updatedRestaurants = restaurants;
 
+    // All filters type
+    type AllFilters = (typeof allInitialFilters)[number][];
+
     // All filters array
     const allFilters = Object.entries(filtersData)
       .filter((data) => data[1] === true)
-      .map((data) => data[0]);
+      .map((data) => data[0]) as AllFilters;
+
+    // Tag filters type
+    type TagFilters = (typeof tagFilters)[number][];
 
     // Only keep tag filters
     const tagsFilters = allFilters.filter(
       (filter) =>
         !additionalFilters.some(
-          (additionalFilter) => additionalFilter.toLowerCase() === filter
+          (additionalFilter) => additionalFilter === filter
         )
-    );
+    ) as TagFilters;
 
     // Filter items by dietary tags
     if (tagsFilters.length > 0) {
       updatedRestaurants = updatedRestaurants.map((updatedRestaurant) => ({
         ...updatedRestaurant,
         items: updatedRestaurant.items.filter((item) =>
-          tagsFilters.some((tag) => item.tags.toLowerCase().includes(tag))
+          tagsFilters.some((tag) =>
+            item.tags.toLowerCase().includes(tag.toLowerCase())
+          )
         ),
       }));
     }
@@ -85,7 +98,7 @@ export default function CalendarFiltersModal({
     }
 
     // Filter items without pork
-    if (allFilters.includes('no pork')) {
+    if (allFilters.includes('No Pork')) {
       updatedRestaurants = updatedRestaurants.map((updatedRestaurant) => ({
         ...updatedRestaurant,
         items: updatedRestaurant.items.filter(
@@ -123,13 +136,13 @@ export default function CalendarFiltersModal({
       <h2>Filters</h2>
 
       <form onSubmit={filterItemsOnSubmit}>
-        {allFilters.map((filter, index) => (
+        {allInitialFilters.map((filter, index) => (
           <div key={index} className={styles.tag}>
             <input
               type='checkbox'
               id={filter}
               onChange={handleFilterChange}
-              checked={filtersData[filter.toLowerCase() as keyof object]}
+              checked={filtersData[filter as keyof object]}
             />
             <label htmlFor={filter}>{filter}</label>
           </div>
