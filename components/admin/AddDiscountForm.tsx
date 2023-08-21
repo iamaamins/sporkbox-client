@@ -1,6 +1,11 @@
+import { showErrorAlert } from '@utils/index';
+import { CustomAxiosError } from 'types';
+import { useAlert } from '@context/Alert';
+import { useRouter } from 'next/router';
+import { useData } from '@context/Data';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import styles from '@styles/admin/AddDiscountForm.module.css';
 import SubmitButton from '@components/layout/SubmitButton';
+import styles from '@styles/admin/AddDiscountForm.module.css';
 
 export default function AddDiscountForm() {
   const initialState = {
@@ -9,6 +14,9 @@ export default function AddDiscountForm() {
     redeemability: 'unlimited',
   };
   // Hooks
+  const router = useRouter();
+  const { setAlerts } = useAlert();
+  const { setDiscountCodes } = useData();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(initialState);
 
@@ -27,7 +35,33 @@ export default function AddDiscountForm() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    console.log(formData);
+    try {
+      // Show loader
+      setIsLoading(true);
+
+      // Make request to the backend
+
+      // Update state
+      setDiscountCodes((prevState) => ({
+        ...prevState,
+        data: [
+          ...prevState.data,
+          // Add the new code
+        ],
+      }));
+
+      // Push to discount codes page
+      router.push('/admin/discount-codes');
+    } catch (err) {
+      // Log error
+      console.log(err);
+
+      // Show error alert
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      // Remove loader
+      setIsLoading(false);
+    }
   }
 
   return (

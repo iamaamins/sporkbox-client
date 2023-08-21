@@ -212,7 +212,7 @@ export interface IDataContext {
   customerDeliveredOrders: ICustomerDeliveredOrders;
   setCompanies: Dispatch<SetStateAction<ICompanies>>;
   setCustomers: Dispatch<SetStateAction<ICustomers>>;
-  setDiscountCodes: Dispatch<SetStateAction<IIDiscountCodes>>;
+  setDiscountCodes: Dispatch<SetStateAction<IDiscountCodes>>;
   setAllUpcomingOrders: Dispatch<SetStateAction<IAllUpcomingOrders>>;
   setAllDeliveredOrders: Dispatch<SetStateAction<IAllDeliveredOrders>>;
   setCustomerUpcomingOrders: Dispatch<SetStateAction<ICustomerUpcomingOrders>>;
