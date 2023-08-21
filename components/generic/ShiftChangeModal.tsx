@@ -1,11 +1,10 @@
-import { AxiosError } from "axios";
-import { IAxiosError, ICustomer, IShiftChangeModalProps } from "types";
-import { useUser } from "@context/User";
-import { useAlert } from "@context/Alert";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import SubmitButton from "@components/layout/SubmitButton";
-import { axiosInstance, showErrorAlert } from "@utils/index";
-import styles from "@styles/generic/ShiftChangeModal.module.css";
+import { useUser } from '@context/User';
+import { useAlert } from '@context/Alert';
+import { FormEvent, useEffect, useState } from 'react';
+import SubmitButton from '@components/layout/SubmitButton';
+import { axiosInstance, showErrorAlert } from '@utils/index';
+import { CustomAxiosError, IShiftChangeModalProps } from 'types';
+import styles from '@styles/generic/ShiftChangeModal.module.css';
 
 export default function ShiftChangeModal({
   setShowShiftChangeModal,
@@ -13,14 +12,14 @@ export default function ShiftChangeModal({
   // Hooks
   const { setAlerts } = useAlert();
   const { customer, setCustomer } = useUser();
-  const [selectedShift, setSelectedShift] = useState("");
+  const [selectedShift, setSelectedShift] = useState('');
   const [isChangingShift, setIsChangingShift] = useState(false);
 
   useEffect(() => {
     if (customer) {
       // Find the active
       const activeCompany = customer.companies.find(
-        (company) => company.status === "ACTIVE"
+        (company) => company.status === 'ACTIVE'
       );
 
       // Update state
@@ -44,7 +43,7 @@ export default function ShiftChangeModal({
 
       // Add the updated companies to the user
       setCustomer(
-        (currState) => currState && { ...currState, companies: response.data }
+        (prevState) => prevState && { ...prevState, companies: response.data }
       );
 
       // Close the modal
@@ -54,7 +53,7 @@ export default function ShiftChangeModal({
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader
       setIsChangingShift(false);
@@ -70,8 +69,8 @@ export default function ShiftChangeModal({
           <div key={index}>
             <input
               id={shift}
-              name="shift"
-              type="radio"
+              name='shift'
+              type='radio'
               checked={shift === selectedShift}
               onChange={(e) => setSelectedShift(e.target.id)}
             />
@@ -81,7 +80,7 @@ export default function ShiftChangeModal({
           </div>
         ))}
 
-        <SubmitButton text="Submit" isLoading={isChangingShift} />
+        <SubmitButton text='Submit' isLoading={isChangingShift} />
       </form>
     </div>
   );

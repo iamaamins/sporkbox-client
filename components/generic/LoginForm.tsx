@@ -1,17 +1,16 @@
-import Link from "next/link";
-import { AxiosError } from "axios";
-import { useUser } from "@context/User";
-import { useAlert } from "@context/Alert";
-import { IAxiosError, IFormData } from "types";
-import { ChangeEvent, FormEvent, useState } from "react";
-import styles from "@styles/generic/LoginForm.module.css";
-import SubmitButton from "@components/layout/SubmitButton";
-import { axiosInstance, showErrorAlert } from "@utils/index";
+import Link from 'next/link';
+import { useUser } from '@context/User';
+import { useAlert } from '@context/Alert';
+import { CustomAxiosError, IFormData } from 'types';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import styles from '@styles/generic/LoginForm.module.css';
+import SubmitButton from '@components/layout/SubmitButton';
+import { axiosInstance, showErrorAlert } from '@utils/index';
 
 export default function LoginForm() {
   const initialSate = {
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   };
   // Hooks
   const { setAlerts } = useAlert();
@@ -25,8 +24,8 @@ export default function LoginForm() {
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     // Update state
-    setFormData((currState) => ({
-      ...currState,
+    setFormData((prevState) => ({
+      ...prevState,
       [e.target.id]: e.target.value,
     }));
   }
@@ -44,12 +43,12 @@ export default function LoginForm() {
 
       // Clear form data
       setFormData({
-        email: "",
-        password: "",
+        email: '',
+        password: '',
       });
 
       // Update state
-      if (response.data.role === "ADMIN") {
+      if (response.data.role === 'ADMIN') {
         setAdmin(response.data);
       } else {
         setCustomer(response.data);
@@ -59,7 +58,7 @@ export default function LoginForm() {
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);
@@ -71,38 +70,38 @@ export default function LoginForm() {
       <p className={styles.title}>Sign in to your account</p>
       <form onSubmit={handleSubmit}>
         <div className={styles.item}>
-          <label htmlFor="email">Your email</label>
+          <label htmlFor='email'>Your email</label>
           <input
-            type="email"
-            id="email"
+            type='email'
+            id='email'
             value={email}
             onChange={handleChange}
           />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="password">Password</label>
+          <label htmlFor='password'>Password</label>
           <input
-            type="password"
-            id="password"
+            type='password'
+            id='password'
             value={password}
             onChange={handleChange}
           />
         </div>
 
-        <SubmitButton text="Sign in" isLoading={isLoading} />
+        <SubmitButton text='Sign in' isLoading={isLoading} />
       </form>
 
       <div className={styles.actions}>
         <p>
-          Don&apos;t have an account? Register{" "}
-          <Link href="/register">
+          Don&apos;t have an account? Register{' '}
+          <Link href='/register'>
             <a>here</a>
           </Link>
         </p>
         <p>
-          Forgot password? Reset{" "}
-          <Link href="/forgot-password">
+          Forgot password? Reset{' '}
+          <Link href='/forgot-password'>
             <a>here</a>
           </Link>
         </p>

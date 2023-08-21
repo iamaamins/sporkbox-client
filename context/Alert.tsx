@@ -1,6 +1,6 @@
-import Alert from "@components/layout/Alert";
-import { IAlert, IAlertContext, IContextProviderProps } from "types";
-import { createContext, useContext, useEffect, useState } from "react";
+import Alert from '@components/layout/Alert';
+import { IAlert, IAlertContext, IContextProviderProps } from 'types';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 // Create context
 const AlertContext = createContext({} as IAlertContext);
@@ -17,8 +17,8 @@ export default function AlertProvider({ children }: IContextProviderProps) {
     if (alerts.length > 0) {
       // Remove alert after 3 seconds
       const removeAlert = setTimeout(() => {
-        setAlerts((currState) =>
-          currState.filter((alert, index) => index !== 0)
+        setAlerts((prevState) =>
+          prevState.filter((alert, index) => index !== 0)
         );
       }, 3000);
 

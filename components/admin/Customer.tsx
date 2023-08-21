@@ -1,16 +1,15 @@
-import { AxiosError } from "axios";
-import { useData } from "@context/Data";
-import { useRouter } from "next/router";
-import { useAlert } from "@context/Alert";
-import { useEffect, useState } from "react";
-import CustomerOrders from "./CustomerOrders";
-import styles from "@styles/admin/Customer.module.css";
-import { IAxiosError, ICompany, ICustomerWithOrders, IOrder } from "types";
+import { useData } from '@context/Data';
+import { useRouter } from 'next/router';
+import { useAlert } from '@context/Alert';
+import { useEffect, useState } from 'react';
+import CustomerOrders from './CustomerOrders';
+import styles from '@styles/admin/Customer.module.css';
+import { CustomAxiosError, ICompany, ICustomerWithOrders, IOrder } from 'types';
 import {
   axiosInstance,
   groupIdenticalOrders,
   showErrorAlert,
-} from "@utils/index";
+} from '@utils/index';
 
 export default function Customer() {
   // Hooks
@@ -44,8 +43,8 @@ export default function Customer() {
         };
 
         // Update state
-        setCustomer((currState) => ({
-          ...currState,
+        setCustomer((prevState) => ({
+          ...prevState,
           data: customerWithCompany,
           upcomingOrders: allUpcomingOrders.data.filter(
             (upcomingOrder) =>
@@ -71,8 +70,8 @@ export default function Customer() {
       );
 
       // Update state
-      setCustomer((currState) => ({
-        ...currState,
+      setCustomer((prevState) => ({
+        ...prevState,
         deliveredOrders: response.data.filter(
           (deliveredOrder) =>
             deliveredOrder.company._id === router.query.company
@@ -83,7 +82,7 @@ export default function Customer() {
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     }
   }
 
@@ -115,17 +114,17 @@ export default function Customer() {
                 <td>
                   {customer.data.company.address.addressLine2 ? (
                     <>
-                      {customer.data.company.address.addressLine1},{" "}
-                      {customer.data.company.address.addressLine2},{" "}
-                      {customer.data.company.address.city},{" "}
-                      {customer.data.company.address.state}{" "}
+                      {customer.data.company.address.addressLine1},{' '}
+                      {customer.data.company.address.addressLine2},{' '}
+                      {customer.data.company.address.city},{' '}
+                      {customer.data.company.address.state}{' '}
                       {customer.data.company.address.zip}
                     </>
                   ) : (
                     <>
-                      {customer.data.company.address.addressLine1},{" "}
-                      {customer.data.company.address.city},{" "}
-                      {customer.data.company.address.state}{" "}
+                      {customer.data.company.address.addressLine1},{' '}
+                      {customer.data.company.address.city},{' '}
+                      {customer.data.company.address.state}{' '}
                       {customer.data.company.address.zip}
                     </>
                   )}
@@ -139,7 +138,7 @@ export default function Customer() {
       {/* Upcoming orders */}
       {customer.upcomingOrders.length > 0 && (
         <CustomerOrders
-          orderStatus="Upcoming"
+          orderStatus='Upcoming'
           orders={groupIdenticalOrders(customer.upcomingOrders)}
         />
       )}
@@ -147,7 +146,7 @@ export default function Customer() {
       {/* Delivered orders */}
       {customer.deliveredOrders.length > 0 && (
         <CustomerOrders
-          orderStatus="Delivered"
+          orderStatus='Delivered'
           orders={groupIdenticalOrders(customer.deliveredOrders)}
         />
       )}

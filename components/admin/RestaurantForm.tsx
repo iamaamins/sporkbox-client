@@ -1,11 +1,11 @@
-import Image from "next/image";
-import { IRestaurantFormProps } from "types";
-import { FiUpload } from "react-icons/fi";
-import { formatImageName } from "@utils/index";
-import { RiDeleteBinLine } from "react-icons/ri";
-import SubmitButton from "@components/layout/SubmitButton";
-import styles from "@styles/admin/RestaurantForm.module.css";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import Image from 'next/image';
+import { IRestaurantFormProps } from 'types';
+import { FiUpload } from 'react-icons/fi';
+import { formatImageName } from '@utils/index';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import SubmitButton from '@components/layout/SubmitButton';
+import styles from '@styles/admin/RestaurantForm.module.css';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 export default function RestaurantForm({
   isLoading,
@@ -45,11 +45,11 @@ export default function RestaurantForm({
     }
 
     // Add resize event to window
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     // Remove resize event from window
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -58,8 +58,8 @@ export default function RestaurantForm({
 
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    setFormData((currState) => ({
-      ...currState,
+    setFormData((prevState) => ({
+      ...prevState,
       [e.target.id]: e.target.value,
     }));
   }
@@ -69,56 +69,56 @@ export default function RestaurantForm({
       onSubmit={handleSubmit}
       style={
         {
-          "--logo_height": `${logoHeight}px`,
+          '--logo_height': `${logoHeight}px`,
         } as React.CSSProperties
       }
     >
       <p className={styles.form_title}>Contact info</p>
 
       <div className={styles.item}>
-        <label htmlFor="firstName">First name</label>
+        <label htmlFor='firstName'>First name</label>
         <input
-          type="text"
-          id="firstName"
+          type='text'
+          id='firstName'
           value={firstName}
           onChange={handleChange}
         />
       </div>
 
       <div className={styles.item}>
-        <label htmlFor="lastName">Last name</label>
+        <label htmlFor='lastName'>Last name</label>
         <input
-          type="text"
-          id="lastName"
+          type='text'
+          id='lastName'
           value={lastName}
           onChange={handleChange}
         />
       </div>
 
       <div className={styles.item}>
-        <label htmlFor="email">Email address</label>
-        <input type="email" id="email" value={email} onChange={handleChange} />
+        <label htmlFor='email'>Email address</label>
+        <input type='email' id='email' value={email} onChange={handleChange} />
       </div>
 
       {showPasswordFields && (
         <>
           <div className={styles.item}>
-            <label htmlFor="password">Password</label>
+            <label htmlFor='password'>Password</label>
             <input
-              type="password"
-              id="password"
+              type='password'
+              id='password'
               value={password}
               onChange={handleChange}
             />
           </div>
 
           <div className={styles.item}>
-            <label htmlFor="confirmPassword">
+            <label htmlFor='confirmPassword'>
               Confirm password {!passwordsMatch && " - Passwords don't match"}
             </label>
             <input
-              type="password"
-              id="confirmPassword"
+              type='password'
+              id='confirmPassword'
               value={confirmPassword}
               onChange={handleChange}
             />
@@ -129,30 +129,30 @@ export default function RestaurantForm({
       <p className={styles.form_title}>Restaurant info</p>
 
       <div className={styles.item}>
-        <label htmlFor="restaurantName">Name</label>
+        <label htmlFor='restaurantName'>Name</label>
         <input
-          type="text"
-          id="restaurantName"
+          type='text'
+          id='restaurantName'
           value={restaurantName}
           onChange={handleChange}
         />
       </div>
 
       <div className={styles.item}>
-        <label htmlFor="addressLine1">Address line 1</label>
+        <label htmlFor='addressLine1'>Address line 1</label>
         <input
-          type="text"
-          id="addressLine1"
+          type='text'
+          id='addressLine1'
           value={addressLine1}
           onChange={handleChange}
         />
       </div>
 
       <div className={styles.item}>
-        <label htmlFor="addressLine2">Address line 2</label>
+        <label htmlFor='addressLine2'>Address line 2</label>
         <input
-          type="text"
-          id="addressLine2"
+          type='text'
+          id='addressLine2'
           value={addressLine2}
           onChange={handleChange}
         />
@@ -160,18 +160,18 @@ export default function RestaurantForm({
 
       <div className={styles.city_state_zip}>
         <div className={styles.item}>
-          <label htmlFor="city">City</label>
-          <input type="text" id="city" value={city} onChange={handleChange} />
+          <label htmlFor='city'>City</label>
+          <input type='text' id='city' value={city} onChange={handleChange} />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="state">State</label>
-          <input type="text" id="state" value={state} onChange={handleChange} />
+          <label htmlFor='state'>State</label>
+          <input type='text' id='state' value={state} onChange={handleChange} />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="zip">Zip</label>
-          <input type="text" id="zip" value={zip} onChange={handleChange} />
+          <label htmlFor='zip'>Zip</label>
+          <input type='text' id='zip' value={zip} onChange={handleChange} />
         </div>
       </div>
 
@@ -179,14 +179,14 @@ export default function RestaurantForm({
         <div className={styles.upload}>
           <div className={styles.upload_icon_and_text}>
             <FiUpload />
-            <span>{file ? formatImageName(file.name) : "Upload logo"}</span>
+            <span>{file ? formatImageName(file.name) : 'Upload logo'}</span>
           </div>
 
           {file && (
             <span
               className={styles.remove_logo}
               onClick={() =>
-                setFormData((currState) => ({ ...currState, file: undefined }))
+                setFormData((prevState) => ({ ...prevState, file: undefined }))
               }
             >
               Remove <RiDeleteBinLine />
@@ -195,12 +195,12 @@ export default function RestaurantForm({
         </div>
 
         <input
-          type="file"
-          id="image"
-          accept="image/*"
+          type='file'
+          id='image'
+          accept='image/*'
           onChange={(e) =>
-            setFormData((currState) => ({
-              ...currState,
+            setFormData((prevState) => ({
+              ...prevState,
               file: e.target.files?.[0],
             }))
           }
@@ -212,8 +212,8 @@ export default function RestaurantForm({
               src={logo}
               width={16}
               height={10}
-              objectFit="cover"
-              layout="responsive"
+              objectFit='cover'
+              layout='responsive'
             />
           </div>
         )}

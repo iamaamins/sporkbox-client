@@ -13,8 +13,8 @@ import {
   ICustomers,
   ICompanies,
   IRestaurant,
-  IAxiosError,
   IOrdersGroup,
+  CustomAxiosError,
   ICustomerFavoriteItems,
 } from 'types';
 
@@ -56,9 +56,9 @@ export function updateVendors(
   setVendors: Dispatch<SetStateAction<IVendors>>
 ) {
   // Update vendors
-  setVendors((currState) => ({
-    ...currState,
-    data: currState.data.map((vendor) => {
+  setVendors((prevState) => ({
+    ...prevState,
+    data: prevState.data.map((vendor) => {
       if (vendor._id === updatedVendor._id && 'restaurant' in updatedVendor) {
         return {
           ...vendor,
@@ -141,9 +141,9 @@ export async function handleRemoveFromFavorite(
     await axiosInstance.delete(`/favorites/${itemId}/remove-from-favorite`);
 
     // Update state
-    setCustomerFavoriteItems((currState) => ({
-      ...currState,
-      data: currState.data.filter(
+    setCustomerFavoriteItems((prevState) => ({
+      ...prevState,
+      data: prevState.data.filter(
         (customerFavoriteItem) => customerFavoriteItem._id !== itemId
       ),
     }));
@@ -155,7 +155,7 @@ export async function handleRemoveFromFavorite(
     console.log(err);
 
     // Show error alert
-    showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+    showErrorAlert(err as CustomAxiosError, setAlerts);
   }
 }
 
@@ -219,9 +219,9 @@ export function updateCustomers(
   updatedCustomer: ICustomer,
   setCustomers: Dispatch<SetStateAction<ICustomers>>
 ) {
-  setCustomers((currState) => ({
-    ...currState,
-    data: currState.data.map((customer) => {
+  setCustomers((prevState) => ({
+    ...prevState,
+    data: prevState.data.map((customer) => {
       if (customer._id === updatedCustomer._id) {
         return {
           ...customer,
@@ -243,11 +243,11 @@ export function updateCompanies(
   updatedCompany: ICompany,
   setCompanies: Dispatch<SetStateAction<ICompanies>>
 ) {
-  setCompanies((currState) => ({
-    ...currState,
-    data: !currState.data.some((company) => company._id === updatedCompany._id)
-      ? [...currState.data, updatedCompany]
-      : currState.data.map((company) => {
+  setCompanies((prevState) => ({
+    ...prevState,
+    data: !prevState.data.some((company) => company._id === updatedCompany._id)
+      ? [...prevState.data, updatedCompany]
+      : prevState.data.map((company) => {
           if (company._id === updatedCompany._id) {
             return {
               ...company,
@@ -278,24 +278,24 @@ export function showSuccessAlert(
   setAlerts: Dispatch<SetStateAction<IAlert[]>>
 ) {
   // Update state
-  setAlerts((currState) => [...currState, { message, type: 'success' }]);
+  setAlerts((prevState) => [...prevState, { message, type: 'success' }]);
 }
 
 // Error alert
 export function showErrorAlert(
-  err: AxiosError<IAxiosError> | string,
+  err: CustomAxiosError | string,
   setAlerts: Dispatch<SetStateAction<IAlert[]>>
 ) {
   // Error type
   const type = 'failed';
 
   // Update state
-  setAlerts((currState) =>
+  setAlerts((prevState) =>
     typeof err === 'string'
-      ? [...currState, { message: err, type }]
+      ? [...prevState, { message: err, type }]
       : err.response
-      ? [...currState, { message: err.response.data.message, type }]
-      : [...currState, { message: "Something wen't wrong", type }]
+      ? [...prevState, { message: err.response.data.message, type }]
+      : [...prevState, { message: "Something wen't wrong", type }]
   );
 }
 
@@ -370,9 +370,12 @@ export const tags = [
   'Enjoy Later',
 ] as const;
 
+// Tag types
+type Tags = (typeof tags)[number][];
+
 // Split tags
 export const splitTags = (tags: string) =>
-  tags.split(',').map((tag) => tag.trim());
+  tags.split(',').map((tag) => tag.trim()) as Tags;
 
 // https://api.sporkbox.app
 // https://api.sporkbox.octib.com

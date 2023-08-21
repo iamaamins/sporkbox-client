@@ -1,20 +1,19 @@
-import Link from "next/link";
-import { AxiosError } from "axios";
-import ActionModal from "./ActionModal";
-import { useRouter } from "next/router";
-import { useData } from "@context/Data";
-import { useAlert } from "@context/Alert";
-import { FormEvent, useState } from "react";
+import Link from 'next/link';
+import ActionModal from './ActionModal';
+import { useRouter } from 'next/router';
+import { useData } from '@context/Data';
+import { useAlert } from '@context/Alert';
+import { FormEvent, useState } from 'react';
 import {
   axiosInstance,
   convertDateToText,
   showErrorAlert,
   showSuccessAlert,
   updateCustomers,
-} from "@utils/index";
-import { IAxiosError, ICustomersProps } from "types";
-import styles from "@styles/admin/Customers.module.css";
-import ModalContainer from "@components/layout/ModalContainer";
+} from '@utils/index';
+import { CustomAxiosError, ICustomersProps } from 'types';
+import styles from '@styles/admin/Customers.module.css';
+import ModalContainer from '@components/layout/ModalContainer';
 
 export default function Customers({ status, customers }: ICustomersProps) {
   // Hooks
@@ -22,10 +21,10 @@ export default function Customers({ status, customers }: ICustomersProps) {
   const { setAlerts } = useAlert();
   const { setCustomers } = useData();
   const [statusUpdatePayload, setStatusUpdatePayload] = useState({
-    action: "",
+    action: '',
     data: {
-      customerId: "",
-      customerName: "",
+      customerId: '',
+      customerName: '',
     },
   });
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
@@ -62,13 +61,13 @@ export default function Customers({ status, customers }: ICustomersProps) {
       updateCustomers(response.data, setCustomers);
 
       // Show success alert
-      showSuccessAlert("Status updated", setAlerts);
+      showSuccessAlert('Status updated', setAlerts);
     } catch (err) {
       // Log error
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader and close modal
       setIsUpdatingCustomerStatus(false);
@@ -117,7 +116,7 @@ export default function Customers({ status, customers }: ICustomersProps) {
                     className={`${styles.button} ${styles.change_status}`}
                     onClick={(e) => initiateStatusUpdate(e, customer._id)}
                   >
-                    {status === "active" ? "Archive" : "Activate"}
+                    {status === 'active' ? 'Archive' : 'Activate'}
                   </span>
                 )}
               </td>

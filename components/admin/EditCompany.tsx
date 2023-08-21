@@ -1,29 +1,28 @@
-import { AxiosError } from "axios";
-import { useData } from "@context/Data";
-import { useRouter } from "next/router";
-import CompanyForm from "./CompanyForm";
-import { useAlert } from "@context/Alert";
-import styles from "@styles/admin/EditCompany.module.css";
-import { IAxiosError, ICompany, ICompanyFormData } from "types";
-import React, { FormEvent, useEffect, useState } from "react";
+import { useData } from '@context/Data';
+import { useRouter } from 'next/router';
+import CompanyForm from './CompanyForm';
+import { useAlert } from '@context/Alert';
+import styles from '@styles/admin/EditCompany.module.css';
+import { CustomAxiosError, ICompany, ICompanyFormData } from 'types';
+import React, { FormEvent, useEffect, useState } from 'react';
 import {
   axiosInstance,
   showErrorAlert,
   showSuccessAlert,
   updateCompanies,
-} from "@utils/index";
+} from '@utils/index';
 
 export default function EditCompany() {
   // Initial state
   const initialState = {
-    name: "",
-    city: "",
-    state: "",
-    zip: "",
-    website: "",
+    name: '',
+    city: '',
+    state: '',
+    zip: '',
+    website: '',
     shiftBudget: 0,
-    addressLine1: "",
-    addressLine2: "",
+    addressLine1: '',
+    addressLine2: '',
   };
 
   // Hooks
@@ -77,7 +76,7 @@ export default function EditCompany() {
       updateCompanies(response.data, setCompanies);
 
       // Show success alert
-      showSuccessAlert("Company updated", setAlerts);
+      showSuccessAlert('Company updated', setAlerts);
 
       // Push to dashboard
       router.push(`/admin/companies/${response.data._id}`);
@@ -86,7 +85,7 @@ export default function EditCompany() {
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);
@@ -104,7 +103,7 @@ export default function EditCompany() {
           <h2>Edit the details</h2>
 
           <CompanyForm
-            buttonText="Save"
+            buttonText='Save'
             formData={formData}
             isLoading={isLoading}
             setFormData={setFormData}

@@ -1,11 +1,11 @@
-import Image from "next/image";
-import { FiUpload } from "react-icons/fi";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { IStaticTags, IItemFormProps } from "types";
-import styles from "@styles/admin/ItemForm.module.css";
-import SubmitButton from "@components/layout/SubmitButton";
-import { formatImageName, splitTags, tags } from "@utils/index";
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import Image from 'next/image';
+import { FiUpload } from 'react-icons/fi';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { IStaticTags, IItemFormProps } from 'types';
+import styles from '@styles/admin/ItemForm.module.css';
+import SubmitButton from '@components/layout/SubmitButton';
+import { formatImageName, splitTags, tags } from '@utils/index';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 export default function ItemForm({
   formData,
@@ -47,11 +47,11 @@ export default function ItemForm({
     }
 
     // Add resize event to window
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     // Remove resize event from window
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -81,8 +81,8 @@ export default function ItemForm({
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
     // Update state
-    setFormData((currState) => ({
-      ...currState,
+    setFormData((prevState) => ({
+      ...prevState,
       [e.target.id]: e.target.value,
     }));
   }
@@ -90,18 +90,18 @@ export default function ItemForm({
   // Handle change addons
   function handleChangeAddons(
     e: ChangeEvent<HTMLInputElement>,
-    addons: "optionalAddons" | "requiredAddons"
+    addons: 'optionalAddons' | 'requiredAddons'
   ) {
     // Name and value
     const name = e.target.name;
     const value = e.target.value;
 
     // Update state
-    setFormData((currState) => ({
-      ...currState,
+    setFormData((prevState) => ({
+      ...prevState,
       [addons]: {
-        ...currState[addons],
-        [name]: name === "addable" ? +value : value,
+        ...prevState[addons],
+        [name]: name === 'addable' ? +value : value,
       },
     }));
   }
@@ -109,17 +109,17 @@ export default function ItemForm({
   // Handle change tags
   function handleChangeTags(e: ChangeEvent<HTMLInputElement>) {
     // Update tags
-    setStaticTags((currState) => ({
-      ...currState,
+    setStaticTags((prevState) => ({
+      ...prevState,
       [e.target.name]: e.target.checked,
     }));
 
     // Update form data
-    setFormData((currState) => ({
-      ...currState,
+    setFormData((prevState) => ({
+      ...prevState,
       updatedTags: e.target.checked
-        ? [...currState.updatedTags, e.target.name]
-        : currState.updatedTags.filter(
+        ? [...prevState.updatedTags, e.target.name]
+        : prevState.updatedTags.filter(
             (updatedTag) => updatedTag !== e.target.name
           ),
     }));
@@ -130,15 +130,15 @@ export default function ItemForm({
       onSubmit={handleSubmit}
       style={
         {
-          "--image_height": `${imageHeight}px`,
+          '--image_height': `${imageHeight}px`,
         } as React.CSSProperties
       }
     >
       <div className={styles.item}>
-        <label htmlFor="name">Item name</label>
+        <label htmlFor='name'>Item name</label>
         <input
-          type="text"
-          id="name"
+          type='text'
+          id='name'
           value={name}
           onChange={handleChangeFormData}
         />
@@ -146,72 +146,72 @@ export default function ItemForm({
 
       <div className={styles.addons}>
         <div>
-          <label htmlFor="optionalAddons">Optional addons</label>
+          <label htmlFor='optionalAddons'>Optional addons</label>
           <input
-            type="text"
-            id="optionalAddons"
-            name="addons"
+            type='text'
+            id='optionalAddons'
+            name='addons'
             value={optionalAddons.addons}
-            placeholder="E.g. Cheese - 2, Mayo - 0"
-            onChange={(e) => handleChangeAddons(e, "optionalAddons")}
+            placeholder='E.g. Cheese - 2, Mayo - 0'
+            onChange={(e) => handleChangeAddons(e, 'optionalAddons')}
           />
         </div>
 
         <div>
-          <label htmlFor="optionalAddable">Optional addable</label>
+          <label htmlFor='optionalAddable'>Optional addable</label>
           <input
-            type="number"
-            name="addable"
-            id="optionalAddable"
-            placeholder="E.g. 0"
+            type='number'
+            name='addable'
+            id='optionalAddable'
+            placeholder='E.g. 0'
             value={optionalAddons.addable}
-            onChange={(e) => handleChangeAddons(e, "optionalAddons")}
+            onChange={(e) => handleChangeAddons(e, 'optionalAddons')}
           />
         </div>
       </div>
 
       <div className={styles.addons}>
         <div>
-          <label htmlFor="requiredAddons">Required addons</label>
+          <label htmlFor='requiredAddons'>Required addons</label>
           <input
-            type="text"
-            name="addons"
-            id="requiredAddons"
+            type='text'
+            name='addons'
+            id='requiredAddons'
             value={requiredAddons.addons}
-            placeholder="E.g. Cheese - 2, Mayo - 0"
-            onChange={(e) => handleChangeAddons(e, "requiredAddons")}
+            placeholder='E.g. Cheese - 2, Mayo - 0'
+            onChange={(e) => handleChangeAddons(e, 'requiredAddons')}
           />
         </div>
 
         <div>
-          <label htmlFor="requiredAddable">Required addable</label>
+          <label htmlFor='requiredAddable'>Required addable</label>
           <input
-            type="number"
-            name="addable"
-            id="requiredAddable"
-            placeholder="E.g. 0"
+            type='number'
+            name='addable'
+            id='requiredAddable'
+            placeholder='E.g. 0'
             value={requiredAddons.addable}
-            onChange={(e) => handleChangeAddons(e, "requiredAddons")}
+            onChange={(e) => handleChangeAddons(e, 'requiredAddons')}
           />
         </div>
       </div>
 
       <div className={styles.item}>
-        <label htmlFor="removableIngredients">Removable ingredients</label>
+        <label htmlFor='removableIngredients'>Removable ingredients</label>
         <input
-          type="text"
-          id="removableIngredients"
+          type='text'
+          id='removableIngredients'
           value={removableIngredients}
           onChange={handleChangeFormData}
-          placeholder="E.g. Cheese, Mayo"
+          placeholder='E.g. Cheese, Mayo'
         />
       </div>
 
       <div className={styles.item}>
-        <label htmlFor="price">Item price</label>
+        <label htmlFor='price'>Item price</label>
         <input
-          type="number"
-          id="price"
+          type='number'
+          id='price'
           value={price}
           onChange={handleChangeFormData}
         />
@@ -224,7 +224,7 @@ export default function ItemForm({
           {Object.keys(staticTags).map((staticTag, index) => (
             <div className={styles.tag} key={index}>
               <input
-                type="checkbox"
+                type='checkbox'
                 id={staticTag}
                 name={staticTag}
                 onChange={handleChangeTags}
@@ -237,9 +237,9 @@ export default function ItemForm({
       </div>
 
       <div className={styles.item}>
-        <label htmlFor="description">Item description</label>
+        <label htmlFor='description'>Item description</label>
         <textarea
-          id="description"
+          id='description'
           value={description}
           onChange={handleChangeFormData}
         />
@@ -249,15 +249,15 @@ export default function ItemForm({
         <div className={styles.upload}>
           <div className={styles.upload_icon_and_text}>
             <FiUpload />
-            <span>{file ? formatImageName(file.name) : "Upload image"}</span>
+            <span>{file ? formatImageName(file.name) : 'Upload image'}</span>
           </div>
 
           {file && (
             <span
               className={styles.remove_upload}
               onClick={() =>
-                setFormData((currState) => ({
-                  ...currState,
+                setFormData((prevState) => ({
+                  ...prevState,
                   file: undefined,
                 }))
               }
@@ -268,12 +268,12 @@ export default function ItemForm({
         </div>
 
         <input
-          type="file"
-          id="image"
-          accept="image/*"
+          type='file'
+          id='image'
+          accept='image/*'
           onChange={(e) =>
-            setFormData((currState) => ({
-              ...currState,
+            setFormData((prevState) => ({
+              ...prevState,
               file: e.target.files?.[0],
             }))
           }
@@ -285,16 +285,16 @@ export default function ItemForm({
               src={image}
               width={16}
               height={10}
-              objectFit="cover"
-              layout="responsive"
+              objectFit='cover'
+              layout='responsive'
             />
 
             <span
               className={styles.remove_image}
               onClick={() =>
-                setFormData((currState) => ({
-                  ...currState,
-                  image: "",
+                setFormData((prevState) => ({
+                  ...prevState,
+                  image: '',
                 }))
               }
             >

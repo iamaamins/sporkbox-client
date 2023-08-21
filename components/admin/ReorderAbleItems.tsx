@@ -1,15 +1,15 @@
-import Image from "next/image";
-import { IReorderAbleItemsProps } from "types";
-import { HiBadgeCheck } from "react-icons/hi";
-import { formatCurrencyToUSD } from "@utils/index";
-import { RiDeleteBack2Fill } from "react-icons/ri";
-import styles from "@styles/admin/ReorderAbleItems.module.css";
+import Image from 'next/image';
+import { IReorderAbleItemsProps } from 'types';
+import { HiBadgeCheck } from 'react-icons/hi';
+import { formatCurrencyToUSD } from '@utils/index';
+import { RiDeleteBack2Fill } from 'react-icons/ri';
+import styles from '@styles/admin/ReorderAbleItems.module.css';
 import {
   swap,
   GridItem,
   GridDropZone,
   GridContextProvider,
-} from "react-grid-dnd";
+} from 'react-grid-dnd';
 
 export default function ReorderAbleItems({
   vendor,
@@ -30,11 +30,11 @@ export default function ReorderAbleItems({
 
     // Update vendor
     setVendor(
-      (currState) =>
-        currState && {
-          ...currState,
+      (prevState) =>
+        prevState && {
+          ...prevState,
           restaurant: {
-            ...currState.restaurant,
+            ...prevState.restaurant,
             items: updatedItems,
           },
         }
@@ -44,7 +44,7 @@ export default function ReorderAbleItems({
   return (
     <GridContextProvider onChange={handleReorder}>
       <GridDropZone
-        id="items"
+        id='items'
         boxesPerRow={3}
         rowHeight={300}
         style={{
@@ -57,7 +57,7 @@ export default function ReorderAbleItems({
               <div className={styles.item_details}>
                 <p className={styles.name}>
                   {item.name}
-                  {item.status === "ACTIVE" ? (
+                  {item.status === 'ACTIVE' ? (
                     <HiBadgeCheck />
                   ) : (
                     <RiDeleteBack2Fill className={styles.archive_icon} />
@@ -74,8 +74,8 @@ export default function ReorderAbleItems({
                   src={item.image || vendor.restaurant.logo}
                   width={16}
                   height={10}
-                  objectFit="cover"
-                  layout="responsive"
+                  objectFit='cover'
+                  layout='responsive'
                 />
               </div>
             </div>

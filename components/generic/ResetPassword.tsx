@@ -1,18 +1,17 @@
-import Link from "next/link";
-import { AxiosError } from "axios";
-import { useRouter } from "next/router";
-import { useAlert } from "@context/Alert";
-import { IAxiosError, IFormData } from "types";
-import { ChangeEvent, FormEvent, useState } from "react";
-import SubmitButton from "@components/layout/SubmitButton";
-import styles from "@styles/generic/ResetPassword.module.css";
-import { axiosInstance, showErrorAlert, showSuccessAlert } from "@utils/index";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useAlert } from '@context/Alert';
+import { CustomAxiosError, IFormData } from 'types';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import SubmitButton from '@components/layout/SubmitButton';
+import styles from '@styles/generic/ResetPassword.module.css';
+import { axiosInstance, showErrorAlert, showSuccessAlert } from '@utils/index';
 
 export default function ResetPassword() {
   // Initial state
   const initialState = {
-    password: "",
-    confirmPassword: "",
+    password: '',
+    confirmPassword: '',
   };
 
   // Hooks
@@ -29,8 +28,8 @@ export default function ResetPassword() {
 
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    setFormData((currState) => ({
-      ...currState,
+    setFormData((prevState) => ({
+      ...prevState,
       [e.target.id]: e.target.value,
     }));
   }
@@ -56,13 +55,13 @@ export default function ResetPassword() {
       showSuccessAlert(response.data, setAlerts);
 
       // Push to login page
-      router.push("/login");
+      router.push('/login');
     } catch (err) {
       // Log error
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);
@@ -74,41 +73,41 @@ export default function ResetPassword() {
       <p className={styles.title}>Reset password?</p>
       <form onSubmit={handleSubmit}>
         <div className={styles.item}>
-          <label htmlFor="password">Password</label>
+          <label htmlFor='password'>Password</label>
           <input
-            type="password"
-            id="password"
+            type='password'
+            id='password'
             value={password}
             onChange={handleChange}
           />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="confirmPassword">
+          <label htmlFor='confirmPassword'>
             Confirm password {!passwordsMatch && " - Passwords don't match"}
           </label>
           <input
-            type="password"
-            id="confirmPassword"
+            type='password'
+            id='confirmPassword'
             value={confirmPassword}
             onChange={handleChange}
           />
         </div>
 
-        <SubmitButton text="Submit" isLoading={isLoading} />
+        <SubmitButton text='Submit' isLoading={isLoading} />
       </form>
 
       <div className={styles.actions}>
         <p>
-          Don&apos;t have an account? Register{" "}
-          <Link href="/register">
+          Don&apos;t have an account? Register{' '}
+          <Link href='/register'>
             <a>here</a>
           </Link>
         </p>
 
         <p>
-          Have the password? Sign in{" "}
-          <Link href="/login">
+          Have the password? Sign in{' '}
+          <Link href='/login'>
             <a>here</a>
           </Link>
         </p>

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { AxiosError } from 'axios';
 import { useData } from '@context/Data';
 import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
@@ -8,7 +7,11 @@ import SortOrdersGroups from './SortOrdersGroups';
 import styles from '@styles/admin/OrdersGroups.module.css';
 import ActionButton from '@components/layout/ActionButton';
 import { axiosInstance, showErrorAlert } from '@utils/index';
-import { IAxiosError, IOrdersGroupsProps, ISortedOrdersGroups } from 'types';
+import {
+  CustomAxiosError,
+  IOrdersGroupsProps,
+  ISortedOrdersGroups,
+} from 'types';
 
 export default function OrdersGroups({
   slug,
@@ -42,7 +45,7 @@ export default function OrdersGroups({
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);

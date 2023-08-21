@@ -1,10 +1,9 @@
-import Image from "next/image";
-import { AxiosError } from "axios";
-import { useData } from "@context/Data";
-import { useRouter } from "next/router";
-import { useAlert } from "@context/Alert";
-import { IAxiosError, IItem, IVendor } from "types";
-import { FormEvent, useEffect, useState } from "react";
+import Image from 'next/image';
+import { useData } from '@context/Data';
+import { useRouter } from 'next/router';
+import { useAlert } from '@context/Alert';
+import { CustomAxiosError, IItem, IVendor } from 'types';
+import { FormEvent, useEffect, useState } from 'react';
 import {
   axiosInstance,
   formatAddons,
@@ -13,11 +12,11 @@ import {
   showSuccessAlert,
   splitTags,
   updateVendors,
-} from "@utils/index";
-import ActionModal from "./ActionModal";
-import Buttons from "@components/layout/Buttons";
-import styles from "@styles/admin/Item.module.css";
-import ModalContainer from "@components/layout/ModalContainer";
+} from '@utils/index';
+import ActionModal from './ActionModal';
+import Buttons from '@components/layout/Buttons';
+import styles from '@styles/admin/Item.module.css';
+import ModalContainer from '@components/layout/ModalContainer';
 
 export default function Item() {
   const router = useRouter();
@@ -26,9 +25,9 @@ export default function Item() {
   const [item, setItem] = useState<IItem>();
   const [vendor, setVendor] = useState<IVendor>();
   const [statusUpdatePayload, setStatusUpdatePayload] = useState({
-    action: "",
+    action: '',
     item: {
-      name: "",
+      name: '',
     },
   });
   const [isUpdatingItemStatus, setIsUpdatingItemStatus] = useState(false);
@@ -81,13 +80,13 @@ export default function Item() {
       updateVendors(response.data, setVendors);
 
       // Show success alert
-      showSuccessAlert("Status updated", setAlerts);
+      showSuccessAlert('Status updated', setAlerts);
     } catch (err) {
       // Log error
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader and close modal
       setIsUpdatingItemStatus(false);
@@ -108,8 +107,8 @@ export default function Item() {
               src={item.image || vendor.restaurant.logo}
               width={16}
               height={10}
-              objectFit="cover"
-              layout="responsive"
+              objectFit='cover'
+              layout='responsive'
             />
           </div>
 
@@ -129,7 +128,7 @@ export default function Item() {
                   Optional addons - {item.optionalAddons.addable} addable
                 </p>
                 <p className={styles.ingredients}>
-                  {formatAddons(item.optionalAddons.addons).join(", ")}
+                  {formatAddons(item.optionalAddons.addons).join(', ')}
                 </p>
               </>
             )}
@@ -140,7 +139,7 @@ export default function Item() {
                   Required addons - {item.requiredAddons.addable} addable
                 </p>
                 <p className={styles.ingredients}>
-                  {formatAddons(item.requiredAddons.addons).join(", ")}
+                  {formatAddons(item.requiredAddons.addons).join(', ')}
                 </p>
               </>
             )}
@@ -157,8 +156,8 @@ export default function Item() {
             {/* Buttons */}
             <Buttons
               initiateStatusUpdate={(e) => initiateStatusUpdate(e, item.name)}
-              linkText="Edit details"
-              buttonText={item.status === "ARCHIVED" ? "Activate" : "Archive"}
+              linkText='Edit details'
+              buttonText={item.status === 'ARCHIVED' ? 'Activate' : 'Archive'}
               href={`/admin/restaurants/${router.query.restaurant}/${router.query.item}/edit-item`}
             />
           </div>

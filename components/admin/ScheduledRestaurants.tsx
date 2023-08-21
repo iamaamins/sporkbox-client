@@ -1,22 +1,21 @@
-import Link from "next/link";
-import { AxiosError } from "axios";
-import { useData } from "@context/Data";
-import { useAlert } from "@context/Alert";
-import ActionModal from "./ActionModal";
-import { FormEvent, useState } from "react";
+import Link from 'next/link';
+import { useData } from '@context/Data';
+import { useAlert } from '@context/Alert';
+import ActionModal from './ActionModal';
+import { FormEvent, useState } from 'react';
 import {
-  IAxiosError,
+  CustomAxiosError,
   IScheduledRestaurant,
   IScheduledRestaurantProps,
-} from "types";
+} from 'types';
 import {
   axiosInstance,
   convertDateToText,
   showErrorAlert,
   showSuccessAlert,
-} from "@utils/index";
-import ModalContainer from "@components/layout/ModalContainer";
-import styles from "@styles/admin/ScheduledRestaurants.module.css";
+} from '@utils/index';
+import ModalContainer from '@components/layout/ModalContainer';
+import styles from '@styles/admin/ScheduledRestaurants.module.css';
 
 export default function ScheduledRestaurants({
   isLoading,
@@ -28,23 +27,23 @@ export default function ScheduledRestaurants({
   const [isUpdatingScheduleStatus, setIsUpdatingScheduleStatus] =
     useState(false);
   const [statusUpdatePayload, setStatusUpdatePayload] = useState({
-    action: "",
+    action: '',
     restaurant: {
-      _id: "",
-      name: "",
+      _id: '',
+      name: '',
     },
-    scheduleId: "",
+    scheduleId: '',
   });
   const [scheduleRemovalPayload, setScheduleRemovalPayload] = useState({
     restaurant: {
-      _id: "",
-      name: "",
+      _id: '',
+      name: '',
     },
     schedule: {
-      _id: "",
-      date: "",
+      _id: '',
+      date: '',
     },
-    companyId: "",
+    companyId: '',
   });
   const [isRemovingSchedule, setIsRemovingSchedule] = useState(false);
   const [showScheduleRemovalModal, setShowScheduleRemovalModal] =
@@ -89,9 +88,9 @@ export default function ScheduledRestaurants({
       );
 
       // Update state
-      setScheduledRestaurants((currState) => ({
-        ...currState,
-        data: currState.data.map((scheduledRestaurant) => {
+      setScheduledRestaurants((prevState) => ({
+        ...prevState,
+        data: prevState.data.map((scheduledRestaurant) => {
           if (
             scheduledRestaurant.scheduleId === statusUpdatePayload.scheduleId
           ) {
@@ -106,13 +105,13 @@ export default function ScheduledRestaurants({
       }));
 
       // Show success alert
-      showSuccessAlert("Status updated", setAlerts);
+      showSuccessAlert('Status updated', setAlerts);
     } catch (err) {
       // Log error
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader and close modal
       setIsUpdatingScheduleStatus(false);
@@ -155,9 +154,9 @@ export default function ScheduledRestaurants({
       );
 
       // Remove the schedule
-      setScheduledRestaurants((currState) => ({
-        ...currState,
-        data: currState.data.filter(
+      setScheduledRestaurants((prevState) => ({
+        ...prevState,
+        data: prevState.data.filter(
           (scheduledRestaurant) =>
             scheduledRestaurant.scheduleId !==
             scheduleRemovalPayload.schedule._id
@@ -165,9 +164,9 @@ export default function ScheduledRestaurants({
       }));
 
       // Remove upcoming orders
-      setAllUpcomingOrders((currState) => ({
-        ...currState,
-        data: currState.data.filter(
+      setAllUpcomingOrders((prevState) => ({
+        ...prevState,
+        data: prevState.data.filter(
           (upcomingOrder) =>
             !(
               upcomingOrder.company._id === scheduleRemovalPayload.companyId &&
@@ -180,13 +179,13 @@ export default function ScheduledRestaurants({
       }));
 
       // Show success alert
-      showSuccessAlert("Schedule removed", setAlerts);
+      showSuccessAlert('Schedule removed', setAlerts);
     } catch (err) {
       // Log error
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Close modal and remove loader
       setIsRemovingSchedule(false);
@@ -244,9 +243,9 @@ export default function ScheduledRestaurants({
                         )
                       }
                     >
-                      {scheduledRestaurant.status === "ACTIVE"
-                        ? "Deactivate"
-                        : "Activate"}
+                      {scheduledRestaurant.status === 'ACTIVE'
+                        ? 'Deactivate'
+                        : 'Activate'}
                     </span>
                     <span
                       className={styles.remove}
@@ -291,7 +290,7 @@ export default function ScheduledRestaurants({
         setShowModalContainer={setShowScheduleRemovalModal}
         component={
           <ActionModal
-            action="Remove"
+            action='Remove'
             performAction={removeSchedule}
             isPerformingAction={isRemovingSchedule}
             name={scheduleRemovalPayload.restaurant.name}

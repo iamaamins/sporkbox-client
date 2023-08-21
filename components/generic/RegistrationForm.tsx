@@ -1,22 +1,21 @@
-import Link from "next/link";
-import { AxiosError } from "axios";
-import { useUser } from "@context/User";
-import { useAlert } from "@context/Alert";
-import { IAxiosError, IFormData } from "types";
-import { ChangeEvent, FormEvent, useState } from "react";
-import SubmitButton from "@components/layout/SubmitButton";
-import { axiosInstance, showErrorAlert } from "@utils/index";
-import styles from "@styles/generic/RegistrationForm.module.css";
+import Link from 'next/link';
+import { useUser } from '@context/User';
+import { useAlert } from '@context/Alert';
+import { CustomAxiosError, IFormData } from 'types';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import SubmitButton from '@components/layout/SubmitButton';
+import { axiosInstance, showErrorAlert } from '@utils/index';
+import styles from '@styles/generic/RegistrationForm.module.css';
 
 export default function RegistrationForm() {
   // Initial state
   const initialSate = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    companyCode: "",
-    confirmPassword: "",
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    companyCode: '',
+    confirmPassword: '',
   };
 
   // Hooks
@@ -36,8 +35,8 @@ export default function RegistrationForm() {
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     // Update state
-    setFormData((currState) => ({
-      ...currState,
+    setFormData((prevState) => ({
+      ...prevState,
       [e.target.id]: e.target.value,
     }));
   }
@@ -66,7 +65,7 @@ export default function RegistrationForm() {
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);
@@ -78,73 +77,73 @@ export default function RegistrationForm() {
       <p className={styles.title}>Create your account</p>
       <form onSubmit={handleSubmit}>
         <div className={styles.item}>
-          <label htmlFor="firstName">First name</label>
+          <label htmlFor='firstName'>First name</label>
           <input
-            type="text"
-            id="firstName"
+            type='text'
+            id='firstName'
             value={firstName}
             onChange={handleChange}
           />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="lastName">Last name</label>
+          <label htmlFor='lastName'>Last name</label>
           <input
-            type="text"
-            id="lastName"
+            type='text'
+            id='lastName'
             value={lastName}
             onChange={handleChange}
           />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="email">Email</label>
+          <label htmlFor='email'>Email</label>
           <input
-            type="email"
-            id="email"
+            type='email'
+            id='email'
             value={email}
             onChange={handleChange}
           />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="companyCode">Company code</label>
+          <label htmlFor='companyCode'>Company code</label>
           <input
-            type="text"
-            id="companyCode"
+            type='text'
+            id='companyCode'
             value={companyCode}
             onChange={handleChange}
           />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="password">Password</label>
+          <label htmlFor='password'>Password</label>
           <input
-            type="password"
-            id="password"
+            type='password'
+            id='password'
             value={password}
             onChange={handleChange}
           />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="confirmPassword">
+          <label htmlFor='confirmPassword'>
             Confirm password {!passwordsMatch && " - Passwords don't match"}
           </label>
           <input
-            type="password"
-            id="confirmPassword"
+            type='password'
+            id='confirmPassword'
             value={confirmPassword}
             onChange={handleChange}
           />
         </div>
 
-        <SubmitButton text="Create account" isLoading={isLoading} />
+        <SubmitButton text='Create account' isLoading={isLoading} />
       </form>
 
       <p className={styles.action}>
-        Already have an account? Sign in{" "}
-        <Link href="/login">
+        Already have an account? Sign in{' '}
+        <Link href='/login'>
           <a>here</a>
         </Link>
       </p>

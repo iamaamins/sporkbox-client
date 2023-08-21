@@ -1,13 +1,13 @@
-import { useUser } from "./User";
-import { AxiosError } from "axios";
-import { useAlert } from "./Alert";
+import { useUser } from './User';
+import { useAlert } from './Alert';
 import {
   IVendors,
   ICompanies,
   ICustomers,
-  IAxiosError,
   IDataContext,
   ICustomerOrder,
+  IDiscountCodes,
+  CustomAxiosError,
   IAllUpcomingOrders,
   IAllDeliveredOrders,
   IUpcomingRestaurants,
@@ -16,14 +16,14 @@ import {
   ICustomerFavoriteItems,
   ICustomerUpcomingOrders,
   ICustomerDeliveredOrders,
-} from "types";
+} from 'types';
 import {
   axiosInstance,
   convertDateToMS,
   createOrdersGroups,
   showErrorAlert,
-} from "@utils/index";
-import { useState, createContext, useContext, useEffect } from "react";
+} from '@utils/index';
+import { useState, createContext, useContext, useEffect } from 'react';
 
 // Create context
 const DataContext = createContext({} as IDataContext);
@@ -59,6 +59,8 @@ export default function DataProvider({ children }: IContextProviderProps) {
     useState<IUpcomingRestaurants>(initialState);
   const [customerFavoriteItems, setCustomerFavoriteItems] =
     useState<ICustomerFavoriteItems>(initialState);
+  const [discountCodes, setDiscountCodes] =
+    useState<IDiscountCodes>(initialState);
 
   // All admin orders
   const allOrders = [...allUpcomingOrders.data, ...allDeliveredOrders.data];
@@ -98,13 +100,13 @@ export default function DataProvider({ children }: IContextProviderProps) {
         console.log(err);
 
         // Remove loader
-        setAllUpcomingOrders((currState) => ({
-          ...currState,
+        setAllUpcomingOrders((prevState) => ({
+          ...prevState,
           isLoading: false,
         }));
 
         // Show error alert
-        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+        showErrorAlert(err as CustomAxiosError, setAlerts);
       }
 
       // Get scheduled restaurants
@@ -121,13 +123,13 @@ export default function DataProvider({ children }: IContextProviderProps) {
         console.log(err);
 
         // Remove loader
-        setScheduledRestaurants((currState) => ({
-          ...currState,
+        setScheduledRestaurants((prevState) => ({
+          ...prevState,
           isLoading: false,
         }));
 
         // Show error alert
-        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+        showErrorAlert(err as CustomAxiosError, setAlerts);
       }
 
       // Get all companies
@@ -142,13 +144,13 @@ export default function DataProvider({ children }: IContextProviderProps) {
         console.log(err);
 
         // Remove loader
-        setCompanies((currState) => ({
-          ...currState,
+        setCompanies((prevState) => ({
+          ...prevState,
           isLoading: false,
         }));
 
         // Show error alert
-        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+        showErrorAlert(err as CustomAxiosError, setAlerts);
       }
 
       // Get 25 latest vendors
@@ -163,13 +165,13 @@ export default function DataProvider({ children }: IContextProviderProps) {
         console.log(err);
 
         // Remove loader
-        setVendors((currState) => ({
-          ...currState,
+        setVendors((prevState) => ({
+          ...prevState,
           isLoading: false,
         }));
 
         // Show error alert
-        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+        showErrorAlert(err as CustomAxiosError, setAlerts);
       }
 
       // Get 25 delivered orders
@@ -186,19 +188,19 @@ export default function DataProvider({ children }: IContextProviderProps) {
         console.log(err);
 
         // Remove loader
-        setAllDeliveredOrders((currState) => ({
-          ...currState,
+        setAllDeliveredOrders((prevState) => ({
+          ...prevState,
           isLoading: false,
         }));
 
         // Show error alert
-        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+        showErrorAlert(err as CustomAxiosError, setAlerts);
       }
 
       // Get all customers
       try {
         // Make request to backend
-        const response = await axiosInstance.get("/customers");
+        const response = await axiosInstance.get('/customers');
 
         // Update state
         setCustomers({ isLoading: false, data: response.data });
@@ -207,13 +209,35 @@ export default function DataProvider({ children }: IContextProviderProps) {
         console.log(err);
 
         // Remove loader
-        setCustomers((currState) => ({
-          ...currState,
+        setCustomers((prevState) => ({
+          ...prevState,
           isLoading: false,
         }));
 
         // Show error alert
-        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+        showErrorAlert(err as CustomAxiosError, setAlerts);
+      }
+
+      // Get discount codes
+      try {
+        setDiscountCodes({
+          isLoading: false,
+          data: [
+            { code: 'dkghaad', value: 5, redeemability: 1, totalRedeem: 1 },
+          ],
+        });
+      } catch (err) {
+        // Log error
+        console.log(err);
+
+        // Remove loader
+        setDiscountCodes((prevState) => ({
+          ...prevState,
+          isLoading: false,
+        }));
+
+        // Show error alert
+        showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
 
@@ -238,13 +262,13 @@ export default function DataProvider({ children }: IContextProviderProps) {
         console.log(err);
 
         // Remove loader
-        setCustomerUpcomingOrders((currState) => ({
-          ...currState,
+        setCustomerUpcomingOrders((prevState) => ({
+          ...prevState,
           isLoading: false,
         }));
 
         // Show error alert
-        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+        showErrorAlert(err as CustomAxiosError, setAlerts);
       }
 
       // Get 10 latest delivered orders
@@ -261,13 +285,13 @@ export default function DataProvider({ children }: IContextProviderProps) {
         console.log(err);
 
         // Remove loader
-        setCustomerDeliveredOrders((currState) => ({
-          ...currState,
+        setCustomerDeliveredOrders((prevState) => ({
+          ...prevState,
           isLoading: false,
         }));
 
         // Show error alert
-        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+        showErrorAlert(err as CustomAxiosError, setAlerts);
       }
 
       // Get favorite items
@@ -282,13 +306,13 @@ export default function DataProvider({ children }: IContextProviderProps) {
         console.log(err);
 
         // Remove loader
-        setCustomerFavoriteItems((currState) => ({
-          ...currState,
+        setCustomerFavoriteItems((prevState) => ({
+          ...prevState,
           isLoading: false,
         }));
 
         // Show error alert
-        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+        showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
 
@@ -314,13 +338,13 @@ export default function DataProvider({ children }: IContextProviderProps) {
         console.log(err);
 
         // Remove loader
-        setUpcomingRestaurants((currState) => ({
-          ...currState,
+        setUpcomingRestaurants((prevState) => ({
+          ...prevState,
           isLoading: false,
         }));
 
         // Show error alert
-        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+        showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
 
@@ -340,6 +364,9 @@ export default function DataProvider({ children }: IContextProviderProps) {
         setCompanies,
         customers,
         setCustomers,
+        upcomingDates,
+        discountCodes,
+        setDiscountCodes,
         allUpcomingOrders,
         customerAllOrders,
         allDeliveredOrders,
@@ -351,7 +378,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
         deliveredOrdersGroups,
         setAllDeliveredOrders,
         customerUpcomingOrders,
-        upcomingDates,
         customerDeliveredOrders,
         setScheduledRestaurants,
         setCustomerFavoriteItems,

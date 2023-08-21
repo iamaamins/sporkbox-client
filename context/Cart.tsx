@@ -1,22 +1,21 @@
-import { AxiosError } from "axios";
-import { useAlert } from "./Alert";
-import { useData } from "@context/Data";
-import { useUser } from "@context/User";
-import { useRouter } from "next/router";
+import { useAlert } from './Alert';
+import { useData } from '@context/Data';
+import { useUser } from '@context/User';
+import { useRouter } from 'next/router';
 import {
   IItem,
   ICartItem,
-  IAxiosError,
   ICartContext,
+  CustomAxiosError,
   IContextProviderProps,
-} from "types";
-import { useState, useEffect, useContext, createContext } from "react";
+} from 'types';
+import { useState, useEffect, useContext, createContext } from 'react';
 import {
   axiosInstance,
   formatNumberToUS,
   showErrorAlert,
   showSuccessAlert,
-} from "@utils/index";
+} from '@utils/index';
 
 // Create context
 const CartContext = createContext({} as ICartContext);
@@ -38,7 +37,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
   useEffect(() => {
     // Get cart items from local storage
     setCartItems(
-      JSON.parse(localStorage.getItem(`cart-${customer?._id}`) || "[]")
+      JSON.parse(localStorage.getItem(`cart-${customer?._id}`) || '[]')
     );
   }, [customer, router.isReady]);
 
@@ -162,7 +161,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
           ordersPayload,
         });
 
-        if (typeof response.data === "string") {
+        if (typeof response.data === 'string') {
           // Open Stripe checkout page
           open(response.data);
         } else {
@@ -171,29 +170,29 @@ export default function CartProvider({ children }: IContextProviderProps) {
           localStorage.removeItem(`cart-${customer?._id}`);
 
           // Update customer's active orders state
-          setCustomerUpcomingOrders((currState) => ({
-            ...currState,
-            data: [...currState.data, ...response.data],
+          setCustomerUpcomingOrders((prevState) => ({
+            ...prevState,
+            data: [...prevState.data, ...response.data],
           }));
 
           // Show success alert
-          showSuccessAlert("Orders placed", setAlerts);
+          showSuccessAlert('Orders placed', setAlerts);
 
           // Push to the dashboard page
-          router.push("/dashboard");
+          router.push('/dashboard');
         }
       } catch (err) {
         // Log error
         console.log(err);
 
         // Show error alert
-        showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+        showErrorAlert(err as CustomAxiosError, setAlerts);
       } finally {
         // Remove loader
         setIsLoading(false);
       }
     } else {
-      router.push("/login");
+      router.push('/login');
     }
   }
 

@@ -1,11 +1,10 @@
-import ItemForm from "./ItemForm";
-import { AxiosError } from "axios";
-import { useData } from "@context/Data";
-import { useRouter } from "next/router";
-import { useAlert } from "@context/Alert";
-import styles from "@styles/admin/EditItem.module.css";
-import { FormEvent, useEffect, useState } from "react";
-import { IItem, IAxiosError, IItemFormData } from "types";
+import ItemForm from './ItemForm';
+import { useData } from '@context/Data';
+import { useRouter } from 'next/router';
+import { useAlert } from '@context/Alert';
+import styles from '@styles/admin/EditItem.module.css';
+import { FormEvent, useEffect, useState } from 'react';
+import { IItem, CustomAxiosError, IItemFormData } from 'types';
 import {
   tags,
   splitTags,
@@ -13,27 +12,27 @@ import {
   showErrorAlert,
   updateVendors,
   showSuccessAlert,
-} from "@utils/index";
+} from '@utils/index';
 
 export default function EditItem() {
   // Initial state
   const initialState = {
-    name: "",
+    name: '',
     price: 0,
-    image: "",
-    currentTags: "",
+    image: '',
+    currentTags: '',
     file: undefined,
     updatedTags: [],
-    description: "",
+    description: '',
     optionalAddons: {
-      addons: "",
+      addons: '',
       addable: 0,
     },
     requiredAddons: {
-      addons: "",
+      addons: '',
       addable: 0,
     },
-    removableIngredients: "",
+    removableIngredients: '',
   };
 
   // Hooks
@@ -93,18 +92,18 @@ export default function EditItem() {
     const data = new FormData();
 
     // Create tags string
-    const tags = updatedTags.join(", ");
+    const tags = updatedTags.join(', ');
 
     // Append the data
-    data.append("name", name as string);
-    data.append("tags", tags as string);
-    data.append("price", price as string);
-    file && data.append("file", file as File);
-    image && data.append("image", image as string);
-    data.append("description", description as string);
-    data.append("optionalAddons", JSON.stringify(optionalAddons));
-    data.append("requiredAddons", JSON.stringify(requiredAddons));
-    data.append("removableIngredients", removableIngredients as string);
+    data.append('name', name as string);
+    data.append('tags', tags as string);
+    data.append('price', price as string);
+    file && data.append('file', file as File);
+    image && data.append('image', image as string);
+    data.append('description', description as string);
+    data.append('optionalAddons', JSON.stringify(optionalAddons));
+    data.append('requiredAddons', JSON.stringify(requiredAddons));
+    data.append('removableIngredients', removableIngredients as string);
 
     // Add a new item
     try {
@@ -115,14 +114,14 @@ export default function EditItem() {
       const response = await axiosInstance.patch(
         `/restaurants/${router.query.restaurant}/${router.query.item}/update-item-details`,
         data,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        { headers: { 'Content-Type': 'multipart/form-data' } }
       );
 
       // Update vendors with updated items
       updateVendors(response.data, setVendors);
 
       // Show success alert
-      showSuccessAlert("Item updated", setAlerts);
+      showSuccessAlert('Item updated', setAlerts);
 
       // Back to the restaurant page
       router.push(`/admin/restaurants/${router.query.restaurant}`);
@@ -131,7 +130,7 @@ export default function EditItem() {
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);
@@ -149,7 +148,7 @@ export default function EditItem() {
           <h2>Edit the details</h2>
 
           <ItemForm
-            buttonText="Save"
+            buttonText='Save'
             formData={formData}
             isLoading={isLoading}
             setFormData={setFormData}

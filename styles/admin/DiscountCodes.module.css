@@ -1,0 +1,60 @@
+.discount_codes {
+  padding: var(--section_padding);
+}
+
+.discount_codes h2 {
+  margin-bottom: 1rem;
+}
+
+.discount_codes table {
+  width: 100%;
+  margin-bottom: 1.25rem;
+  border-collapse: collapse;
+}
+
+.discount_codes table th,
+.discount_codes table td {
+  text-align: left;
+  padding: 1rem;
+}
+
+.discount_codes table th:last-child,
+.discount_codes table td:last-child {
+  text-align: right;
+}
+
+.discount_codes table thead tr {
+  background-color: var(--almost_white);
+}
+
+.discount_codes table tbody tr {
+  border-bottom: 1px solid var(--border_color);
+}
+
+.discount_codes table td {
+  font-weight: 500;
+  color: var(--gray);
+  font-size: 0.9rem;
+}
+
+.hide_on_mobile {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .discount_codes {
+    max-width: 85%;
+    margin: 0 auto;
+  }
+
+  .hide_on_mobile {
+    display: table-cell;
+  }
+}
+
+@media (min-width: 1024px) {
+  .discount_codes {
+    max-width: 80%;
+    margin: 0 auto;
+  }
+}

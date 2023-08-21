@@ -1,24 +1,23 @@
-import { AxiosError } from "axios";
-import { useData } from "@context/Data";
-import { useRouter } from "next/router";
-import { useAlert } from "@context/Alert";
-import { IAxiosError, IFormData, ICustomer } from "types";
-import styles from "@styles/admin/EditCustomer.module.css";
-import SubmitButton from "@components/layout/SubmitButton";
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useData } from '@context/Data';
+import { useRouter } from 'next/router';
+import { useAlert } from '@context/Alert';
+import { CustomAxiosError, IFormData, ICustomer } from 'types';
+import styles from '@styles/admin/EditCustomer.module.css';
+import SubmitButton from '@components/layout/SubmitButton';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import {
   axiosInstance,
   showErrorAlert,
   showSuccessAlert,
   updateCustomers,
-} from "@utils/index";
+} from '@utils/index';
 
 export default function EditCustomer() {
   // Initial state
   const initialState = {
-    email: "",
-    lastName: "",
-    firstName: "",
+    email: '',
+    lastName: '',
+    firstName: '',
   };
 
   // Hooks
@@ -55,8 +54,8 @@ export default function EditCustomer() {
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     // Update state
-    setFormData((currState) => ({
-      ...currState,
+    setFormData((prevState) => ({
+      ...prevState,
       [e.target.id]: e.target.value,
     }));
   }
@@ -79,7 +78,7 @@ export default function EditCustomer() {
       updateCustomers(response.data, setCustomers);
 
       // Show success alert
-      showSuccessAlert("Customer updated", setAlerts);
+      showSuccessAlert('Customer updated', setAlerts);
 
       // Redirect to the company page
       router.push(`/admin/companies/${router.query.company}`);
@@ -88,7 +87,7 @@ export default function EditCustomer() {
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);
@@ -107,36 +106,36 @@ export default function EditCustomer() {
 
           <form onSubmit={handleSubmit}>
             <div className={styles.item}>
-              <label htmlFor="firstName">First name</label>
+              <label htmlFor='firstName'>First name</label>
               <input
-                type="text"
-                id="firstName"
+                type='text'
+                id='firstName'
                 value={firstName}
                 onChange={handleChange}
               />
             </div>
 
             <div className={styles.item}>
-              <label htmlFor="lastName">Last name</label>
+              <label htmlFor='lastName'>Last name</label>
               <input
-                type="text"
-                id="lastName"
+                type='text'
+                id='lastName'
                 value={lastName}
                 onChange={handleChange}
               />
             </div>
 
             <div className={styles.item}>
-              <label htmlFor="email">Email address</label>
+              <label htmlFor='email'>Email address</label>
               <input
-                type="email"
-                id="email"
+                type='email'
+                id='email'
                 value={email}
                 onChange={handleChange}
               />
             </div>
 
-            <SubmitButton text="Save" isLoading={isLoading} />
+            <SubmitButton text='Save' isLoading={isLoading} />
           </form>
         </>
       )}

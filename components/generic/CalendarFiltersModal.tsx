@@ -47,8 +47,8 @@ export default function CalendarFiltersModal({
 
   // Handle tags change
   function handleFilterChange(e: ChangeEvent<HTMLInputElement>) {
-    setFiltersData((currState) => ({
-      ...currState,
+    setFiltersData((prevState) => ({
+      ...prevState,
       [e.target.id]: e.target.checked,
     }));
   }

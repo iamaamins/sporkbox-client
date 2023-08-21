@@ -1,17 +1,16 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import {
   axiosInstance,
   formatCurrencyToUSD,
   showErrorAlert,
-} from "@utils/index";
-import { AxiosError } from "axios";
-import { IAxiosError } from "types";
-import { useUser } from "@context/User";
-import { useCart } from "@context/Cart";
-import { useAlert } from "@context/Alert";
-import { AiFillCheckCircle } from "react-icons/ai";
-import styles from "@styles/generic/CheckoutSuccess.module.css";
+} from '@utils/index';
+import { CustomAxiosError } from 'types';
+import { useUser } from '@context/User';
+import { useCart } from '@context/Cart';
+import { useAlert } from '@context/Alert';
+import { AiFillCheckCircle } from 'react-icons/ai';
+import styles from '@styles/generic/CheckoutSuccess.module.css';
 
 export default function CheckoutSuccess() {
   // Hooks
@@ -47,7 +46,7 @@ export default function CheckoutSuccess() {
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);

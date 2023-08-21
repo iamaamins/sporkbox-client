@@ -1,3 +1,5 @@
+import { DiscountCodes } from '@components/admin/DiscountCodes';
+import { AxiosError } from 'axios';
 import { Dispatch, SetStateAction, ReactNode, FormEvent } from 'react';
 
 interface IUser {
@@ -109,6 +111,13 @@ export interface ICompany {
   shiftBudget: number;
 }
 
+export interface IDiscountCode {
+  code: string;
+  value: number;
+  redeemability: number;
+  totalRedeem: number;
+}
+
 export interface IContextProviderProps {
   children: ReactNode;
 }
@@ -167,6 +176,10 @@ export interface ICustomers extends IIsLoading {
   data: ICustomer[];
 }
 
+export interface IDiscountCodes extends IIsLoading {
+  data: IDiscountCode[];
+}
+
 export interface IOrdersGroup {
   orders: IOrder[];
   company: {
@@ -185,6 +198,7 @@ export interface IDataContext {
   companies: ICompanies;
   customers: ICustomers;
   upcomingDates: number[];
+  discountCodes: IDiscountCodes;
   customerAllOrders: ICustomerOrder[];
   upcomingOrdersGroups: IOrdersGroup[];
   deliveredOrdersGroups: IOrdersGroup[];
@@ -198,6 +212,7 @@ export interface IDataContext {
   customerDeliveredOrders: ICustomerDeliveredOrders;
   setCompanies: Dispatch<SetStateAction<ICompanies>>;
   setCustomers: Dispatch<SetStateAction<ICustomers>>;
+  setDiscountCodes: Dispatch<SetStateAction<IIDiscountCodes>>;
   setAllUpcomingOrders: Dispatch<SetStateAction<IAllUpcomingOrders>>;
   setAllDeliveredOrders: Dispatch<SetStateAction<IAllDeliveredOrders>>;
   setCustomerUpcomingOrders: Dispatch<SetStateAction<ICustomerUpcomingOrders>>;
@@ -544,9 +559,9 @@ export interface IAlertContext {
   setAlerts: Dispatch<SetStateAction<IAlert[]>>;
 }
 
-export interface IAxiosError {
+export type CustomAxiosError = AxiosError<{
   message: string;
-}
+}>;
 
 export interface IScheduledRestaurantProps {
   isLoading: boolean;

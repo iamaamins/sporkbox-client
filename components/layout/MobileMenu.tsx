@@ -1,25 +1,25 @@
-import Link from "next/link";
-import { AxiosError } from "axios";
-import { useAlert } from "@context/Alert";
-import { useEffect, useState } from "react";
+import Link from 'next/link';
+import { useAlert } from '@context/Alert';
+import { useEffect, useState } from 'react';
 import {
   MdGroups,
   MdLogout,
+  MdDiscount,
   MdSpaceDashboard,
   MdAdminPanelSettings,
   MdOutlineRestaurantMenu,
-} from "react-icons/md";
-import { useData } from "@context/Data";
-import { useUser } from "@context/User";
-import { IoLogIn } from "react-icons/io5";
-import { FaUserAlt } from "react-icons/fa";
-import { CgProfile } from "react-icons/cg";
-import { IAxiosError, IMobileMenuProps } from "types";
-import { BsFillCalendar2DateFill } from "react-icons/bs";
-import styles from "@styles/layout/MobileMenu.module.css";
-import { AiTwotonePhone, AiTwotoneStar } from "react-icons/ai";
-import { TbBuildingStore, TbBuildingSkyscraper } from "react-icons/tb";
-import { currentYear, axiosInstance, showErrorAlert } from "@utils/index";
+} from 'react-icons/md';
+import { useData } from '@context/Data';
+import { useUser } from '@context/User';
+import { IoLogIn } from 'react-icons/io5';
+import { FaUserAlt } from 'react-icons/fa';
+import { CgProfile } from 'react-icons/cg';
+import { CustomAxiosError, IMobileMenuProps } from 'types';
+import { BsFillCalendar2DateFill } from 'react-icons/bs';
+import styles from '@styles/layout/MobileMenu.module.css';
+import { AiTwotonePhone, AiTwotoneStar } from 'react-icons/ai';
+import { TbBuildingStore, TbBuildingSkyscraper } from 'react-icons/tb';
+import { currentYear, axiosInstance, showErrorAlert } from '@utils/index';
 
 export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
   // Hooks
@@ -37,11 +37,11 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
 
   // Disable body scroll if MobileMenu is open
   useEffect(() => {
-    const body = document.querySelector("body");
+    const body = document.querySelector('body');
 
     isOpen
-      ? (body!.style.overflow = "hidden")
-      : (body!.style.overflow = "auto");
+      ? (body!.style.overflow = 'hidden')
+      : (body!.style.overflow = 'auto');
   });
 
   // Logout user
@@ -65,7 +65,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     }
   }
 
@@ -74,7 +74,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
       <ul className={styles.nav_items}>
         {/* Customer nav items */}
         <li
-          className={!isCustomer ? styles.hide : ""}
+          className={!isCustomer ? styles.hide : ''}
           onClick={() => setIsOpen(false)}
         >
           <Link href={`/profile`}>
@@ -85,7 +85,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
         </li>
 
         <li
-          className={!date || !isCustomer ? styles.hide : ""}
+          className={!date || !isCustomer ? styles.hide : ''}
           onClick={() => setIsOpen(false)}
         >
           <Link href={`/place-order/${date}`}>
@@ -96,10 +96,10 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
         </li>
 
         <li
-          className={isAdmin || !isCustomer ? styles.hide : ""}
+          className={isAdmin || !isCustomer ? styles.hide : ''}
           onClick={() => setIsOpen(false)}
         >
-          <Link href="/dashboard">
+          <Link href='/dashboard'>
             <a>
               <MdSpaceDashboard /> Dashboard
             </a>
@@ -107,10 +107,10 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
         </li>
 
         <li
-          className={isAdmin || !isCustomer ? styles.hide : ""}
+          className={isAdmin || !isCustomer ? styles.hide : ''}
           onClick={() => setIsOpen(false)}
         >
-          <Link href="/favorite">
+          <Link href='/favorite'>
             <a>
               <AiTwotoneStar /> Favorite
             </a>
@@ -119,10 +119,10 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
 
         {/* Admin nav items */}
         <li
-          className={!isAdmin ? styles.hide : ""}
+          className={!isAdmin ? styles.hide : ''}
           onClick={() => setIsOpen(false)}
         >
-          <Link href="/admin">
+          <Link href='/admin'>
             <a>
               <MdSpaceDashboard /> Dashboard
             </a>
@@ -130,10 +130,10 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
         </li>
 
         <li
-          className={!isAdmin ? styles.hide : ""}
+          className={!isAdmin ? styles.hide : ''}
           onClick={() => setIsOpen(false)}
         >
-          <Link href="/admin/delivered-orders">
+          <Link href='/admin/delivered-orders'>
             <a>
               <MdOutlineRestaurantMenu /> Delivered
             </a>
@@ -141,10 +141,10 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
         </li>
 
         <li
-          className={!isAdmin ? styles.hide : ""}
+          className={!isAdmin ? styles.hide : ''}
           onClick={() => setIsOpen(false)}
         >
-          <Link href="/admin/restaurants">
+          <Link href='/admin/restaurants'>
             <a>
               <TbBuildingStore /> Restaurants
             </a>
@@ -152,10 +152,10 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
         </li>
 
         <li
-          className={!isAdmin ? styles.hide : ""}
+          className={!isAdmin ? styles.hide : ''}
           onClick={() => setIsOpen(false)}
         >
-          <Link href="/admin/companies">
+          <Link href='/admin/companies'>
             <a>
               <TbBuildingSkyscraper /> Companies
             </a>
@@ -163,22 +163,33 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
         </li>
 
         <li
-          className={!isAdmin ? styles.hide : ""}
+          className={!isAdmin ? styles.hide : ''}
           onClick={() => setIsOpen(false)}
         >
-          <Link href="/admin/add-admin">
+          <Link href='/admin/add-admin'>
             <a>
               <MdAdminPanelSettings /> Add admin
             </a>
           </Link>
         </li>
 
-        {/* Generic nav items */}
         <li
-          className={isAdmin || isCustomer ? styles.hide : ""}
+          className={!isAdmin ? styles.hide : ''}
           onClick={() => setIsOpen(false)}
         >
-          <Link href="/register">
+          <Link href='/admin/discount-codes'>
+            <a>
+              <MdDiscount /> Discount codes
+            </a>
+          </Link>
+        </li>
+
+        {/* Generic nav items */}
+        <li
+          className={isAdmin || isCustomer ? styles.hide : ''}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href='/register'>
             <a>
               <FaUserAlt /> Create account
             </a>
@@ -186,10 +197,10 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
         </li>
 
         <li
-          className={isAdmin || isCustomer ? styles.hide : ""}
+          className={isAdmin || isCustomer ? styles.hide : ''}
           onClick={() => setIsOpen(false)}
         >
-          <Link href="/login">
+          <Link href='/login'>
             <a>
               <IoLogIn /> Sign in
             </a>
@@ -197,10 +208,10 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
         </li>
 
         <li
-          className={isAdmin ? styles.hide : ""}
+          className={isAdmin ? styles.hide : ''}
           onClick={() => setIsOpen(false)}
         >
-          <Link href="/contact-us">
+          <Link href='/contact-us'>
             <a>
               <AiTwotonePhone /> Contact
             </a>
@@ -208,7 +219,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
         </li>
 
         <li className={styles.hide} onClick={() => setIsOpen(false)}>
-          <Link href="/about-us">
+          <Link href='/about-us'>
             <a>
               <MdGroups /> About us
             </a>
@@ -216,7 +227,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
         </li>
 
         <li
-          className={!isAdmin && !isCustomer ? styles.hide : ""}
+          className={!isAdmin && !isCustomer ? styles.hide : ''}
           onClick={handleSignOut}
         >
           <span>

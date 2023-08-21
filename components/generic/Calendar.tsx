@@ -1,21 +1,21 @@
-import Link from "next/link";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { useData } from "@context/Data";
-import { useCart } from "@context/Cart";
-import { useEffect, useState } from "react";
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useData } from '@context/Data';
+import { useCart } from '@context/Cart';
+import { useEffect, useState } from 'react';
 import {
   getDay,
   getDate,
   convertDateToMS,
   formatCurrencyToUSD,
-} from "@utils/index";
-import CalendarSort from "./CalendarSort";
-import { IUpcomingRestaurant } from "types";
-import { IoIosArrowUp } from "react-icons/io";
-import CalendarFiltersModal from "./CalendarFiltersModal";
-import styles from "@styles/generic/Calendar.module.css";
-import ModalContainer from "@components/layout/ModalContainer";
+} from '@utils/index';
+import CalendarSort from './CalendarSort';
+import { IUpcomingRestaurant } from 'types';
+import { IoIosArrowUp } from 'react-icons/io';
+import CalendarFiltersModal from './CalendarFiltersModal';
+import styles from '@styles/generic/Calendar.module.css';
+import ModalContainer from '@components/layout/ModalContainer';
 
 export default function Calendar() {
   // Hooks
@@ -74,8 +74,8 @@ export default function Calendar() {
 
   // Update active restaurants
   function updateActiveRestaurants(restaurant: IUpcomingRestaurant) {
-    setActiveRestaurants((currState) =>
-      currState.map((activeRestaurant) => {
+    setActiveRestaurants((prevState) =>
+      prevState.map((activeRestaurant) => {
         if (activeRestaurant.id === restaurant._id) {
           return {
             ...activeRestaurant,
@@ -129,7 +129,7 @@ export default function Calendar() {
                         className={
                           upcomingDate.toString() === router.query.date
                             ? styles.active
-                            : ""
+                            : ''
                         }
                       >
                         <span>{getDate(upcomingDate)}</span>
@@ -150,7 +150,7 @@ export default function Calendar() {
                       className={styles.restaurant_name}
                       onClick={() => updateActiveRestaurants(restaurant)}
                     >
-                      {restaurant.name}{" "}
+                      {restaurant.name}{' '}
                       <IoIosArrowUp
                         className={`${styles.restaurant_name_arrow} ${
                           activeRestaurants.some(
@@ -189,8 +189,8 @@ export default function Calendar() {
                                     src={item.image || restaurant.logo}
                                     width={16}
                                     height={10}
-                                    objectFit="cover"
-                                    layout="responsive"
+                                    objectFit='cover'
+                                    layout='responsive'
                                   />
 
                                   {cartItems.map(
@@ -230,7 +230,7 @@ export default function Calendar() {
       </section>
 
       <ModalContainer
-        width="20rem"
+        width='20rem'
         showModalContainer={showCalendarFilters}
         setShowModalContainer={setShowCalendarFilters}
         component={

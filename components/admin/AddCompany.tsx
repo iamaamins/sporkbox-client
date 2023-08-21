@@ -1,31 +1,30 @@
-import { useRouter } from "next/router";
-import { useData } from "@context/Data";
-import { useAlert } from "@context/Alert";
-import { AxiosError } from "axios";
-import CompanyForm from "./CompanyForm";
-import { FormEvent, useState } from "react";
-import { IAxiosError, ICompanyFormData } from "types";
+import { useRouter } from 'next/router';
+import { useData } from '@context/Data';
+import { useAlert } from '@context/Alert';
+import CompanyForm from './CompanyForm';
+import { FormEvent, useState } from 'react';
+import { CustomAxiosError, ICompanyFormData } from 'types';
 import {
   axiosInstance,
   showErrorAlert,
   showSuccessAlert,
   updateCompanies,
-} from "@utils/index";
-import styles from "@styles/admin/AddCompany.module.css";
+} from '@utils/index';
+import styles from '@styles/admin/AddCompany.module.css';
 
 export default function AddCompany() {
   // Initial state
   const initialState = {
-    zip: "",
-    name: "",
-    code: "",
-    city: "",
-    state: "",
-    shift: "",
-    website: "",
+    zip: '',
+    name: '',
+    code: '',
+    city: '',
+    state: '',
+    shift: '',
+    website: '',
     shiftBudget: 0,
-    addressLine1: "",
-    addressLine2: "",
+    addressLine1: '',
+    addressLine2: '',
   };
 
   // Hooks
@@ -56,16 +55,16 @@ export default function AddCompany() {
       setFormData(initialState);
 
       // Show success alert
-      showSuccessAlert("Company added", setAlerts);
+      showSuccessAlert('Company added', setAlerts);
 
       // Push to dashboard
-      router.push("/admin/companies");
+      router.push('/admin/companies');
     } catch (err) {
       // Log error
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);
@@ -79,7 +78,7 @@ export default function AddCompany() {
       <CompanyForm
         formData={formData}
         isLoading={isLoading}
-        buttonText="Add company"
+        buttonText='Add company'
         setFormData={setFormData}
         handleSubmit={handleSubmit}
         showShiftAndCodeField={true}

@@ -1,32 +1,36 @@
-import { AxiosError } from "axios";
-import Customers from "./Customers";
-import { CSVLink } from "react-csv";
-import { useData } from "@context/Data";
-import { useRouter } from "next/router";
-import ActionModal from "./ActionModal";
-import { useAlert } from "@context/Alert";
-import { FiDownload } from "react-icons/fi";
-import Buttons from "@components/layout/Buttons";
-import styles from "@styles/admin/Company.module.css";
-import { FormEvent, useEffect, useState } from "react";
-import ScheduledRestaurants from "./ScheduledRestaurants";
-import ModalContainer from "@components/layout/ModalContainer";
-import ScheduleRestaurantsModal from "@components/admin/ScheduleRestaurantsModal";
+import Customers from './Customers';
+import { CSVLink } from 'react-csv';
+import { useData } from '@context/Data';
+import { useRouter } from 'next/router';
+import ActionModal from './ActionModal';
+import { useAlert } from '@context/Alert';
+import { FiDownload } from 'react-icons/fi';
+import Buttons from '@components/layout/Buttons';
+import styles from '@styles/admin/Company.module.css';
+import { FormEvent, useEffect, useState } from 'react';
+import ScheduledRestaurants from './ScheduledRestaurants';
+import ModalContainer from '@components/layout/ModalContainer';
+import ScheduleRestaurantsModal from '@components/admin/ScheduleRestaurantsModal';
 import {
   axiosInstance,
   showErrorAlert,
   showSuccessAlert,
   sortByLastName,
   updateCompanies,
-} from "@utils/index";
-import { IAxiosError, ICompany, ICustomer, IScheduledRestaurant } from "types";
-import { customerData, customerFileName, customerHeaders } from "@utils/csv";
+} from '@utils/index';
+import {
+  ICompany,
+  ICustomer,
+  CustomAxiosError,
+  IScheduledRestaurant,
+} from 'types';
+import { customerData, customerFileName, customerHeaders } from '@utils/csv';
 
 export default function Company() {
   // Hooks
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const [action, setAction] = useState("");
+  const [action, setAction] = useState('');
   const [company, setCompany] = useState<ICompany>();
   const [showModal, setShowModal] = useState(false);
   const {
@@ -62,10 +66,10 @@ export default function Company() {
         customers.data
           .filter(
             (customer) =>
-              customer.status === "ACTIVE" &&
+              customer.status === 'ACTIVE' &&
               (customer.companies.some(
                 (company) =>
-                  company.status === "ACTIVE" &&
+                  company.status === 'ACTIVE' &&
                   company._id === router.query.company
               ) ||
                 allUpcomingOrders.data.some(
@@ -82,7 +86,7 @@ export default function Company() {
         customers.data
           .filter(
             (customer) =>
-              customer.status === "ARCHIVED" &&
+              customer.status === 'ARCHIVED' &&
               customer.companies.some(
                 (company) => company._id === router.query.company
               )
@@ -97,7 +101,7 @@ export default function Company() {
             (customer) =>
               customer.companies.some(
                 (company) =>
-                  company.status === "ARCHIVED" &&
+                  company.status === 'ARCHIVED' &&
                   company._id === router.query.company
               ) &&
               !allUpcomingOrders.data.some(
@@ -144,13 +148,13 @@ export default function Company() {
       updateCompanies(response.data, setCompanies);
 
       // Show success alert
-      showSuccessAlert("Status updated", setAlerts);
+      showSuccessAlert('Status updated', setAlerts);
     } catch (err) {
       // Log error
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader and close the modal
       setIsUpdatingCompanyStatus(false);
@@ -187,16 +191,16 @@ export default function Company() {
                 <span>Shift budget:</span> USD ${company.shiftBudget}
               </p>
               <p>
-                <span>Address:</span>{" "}
+                <span>Address:</span>{' '}
                 {company.address.addressLine2 ? (
                   <>
-                    {company.address.addressLine1},{" "}
-                    {company.address.addressLine2}, {company.address.city},{" "}
+                    {company.address.addressLine1},{' '}
+                    {company.address.addressLine2}, {company.address.city},{' '}
                     {company.address.state} {company.address.zip}
                   </>
                 ) : (
                   <>
-                    {company.address.addressLine1}, {company.address.city},{" "}
+                    {company.address.addressLine1}, {company.address.city},{' '}
                     {company.address.state} {company.address.zip}
                   </>
                 )}
@@ -207,9 +211,9 @@ export default function Company() {
             <div className={styles.buttons}>
               <Buttons
                 initiateStatusUpdate={initiateStatusUpdate}
-                linkText="Edit details"
+                linkText='Edit details'
                 buttonText={
-                  company.status === "ARCHIVED" ? "Activate" : "Archive"
+                  company.status === 'ARCHIVED' ? 'Activate' : 'Archive'
                 }
                 href={`/admin/companies/${router.query.company}/edit-company`}
               />
@@ -249,7 +253,7 @@ export default function Company() {
           {activeCustomers.length > 0 && (
             <section className={styles.section}>
               <h2>Active customers</h2>
-              <Customers status="active" customers={activeCustomers} />
+              <Customers status='active' customers={activeCustomers} />
             </section>
           )}
 
@@ -258,7 +262,7 @@ export default function Company() {
             <section className={styles.section}>
               <h2>Archived customers</h2>
 
-              <Customers status="archived" customers={archivedCustomers} />
+              <Customers status='archived' customers={archivedCustomers} />
             </section>
           )}
 

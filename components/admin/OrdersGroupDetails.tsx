@@ -1,16 +1,15 @@
-import { AxiosError } from "axios";
-import { useRouter } from "next/router";
-import { useData } from "@context/Data";
-import ActionModal from "./ActionModal";
-import { useAlert } from "@context/Alert";
-import { useEffect, useState } from "react";
+import { useRouter } from 'next/router';
+import { useData } from '@context/Data';
+import ActionModal from './ActionModal';
+import { useAlert } from '@context/Alert';
+import { useEffect, useState } from 'react';
 import {
   IOrder,
-  IAxiosError,
+  CustomAxiosError,
   IOrdersByRestaurant,
   IDeliverOrdersPayload,
   IOrdersGroupDetailsProps,
-} from "types";
+} from 'types';
 import {
   axiosInstance,
   convertDateToMS,
@@ -19,9 +18,9 @@ import {
   convertDateToText,
   formatCurrencyToUSD,
   groupIdenticalOrders,
-} from "@utils/index";
-import styles from "@styles/admin/OrdersGroupDetails.module.css";
-import ModalContainer from "@components/layout/ModalContainer";
+} from '@utils/index';
+import styles from '@styles/admin/OrdersGroupDetails.module.css';
+import ModalContainer from '@components/layout/ModalContainer';
 
 export default function OrdersGroupDetails({
   isLoading,
@@ -30,7 +29,7 @@ export default function OrdersGroupDetails({
   // Hooks
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const [orderId, setOrderId] = useState("");
+  const [orderId, setOrderId] = useState('');
   const [amount, setAmount] = useState({
     paid: 0,
     total: 0,
@@ -48,7 +47,7 @@ export default function OrdersGroupDetails({
   const [statusUpdatePayload, setStatusUpdatePayload] =
     useState<IDeliverOrdersPayload>({
       orders: [],
-      restaurantName: "",
+      restaurantName: '',
     });
   const [showDeliveryModal, setShowDeliveryModal] = useState(false);
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
@@ -145,13 +144,13 @@ export default function OrdersGroupDetails({
       setIsUpdatingOrdersStatus(true);
 
       // Make request to the backend
-      await axiosInstance.patch("/orders/change-orders-status", {
+      await axiosInstance.patch('/orders/change-orders-status', {
         orderIds,
       });
 
       // Remove the restaurant
-      setOrdersByRestaurants((currState) =>
-        currState.filter(
+      setOrdersByRestaurants((prevState) =>
+        prevState.filter(
           (ordersByRestaurant) =>
             ordersByRestaurant.restaurantName !==
             statusUpdatePayload.restaurantName
@@ -159,34 +158,34 @@ export default function OrdersGroupDetails({
       );
 
       // Remove the orders from the upcoming orders
-      setAllUpcomingOrders((currState) => ({
-        ...currState,
-        data: currState.data.filter((order) => !orderIds.includes(order._id)),
+      setAllUpcomingOrders((prevState) => ({
+        ...prevState,
+        data: prevState.data.filter((order) => !orderIds.includes(order._id)),
       }));
 
       // Add the orders to delivered orders
-      setAllDeliveredOrders((currState) => ({
-        ...currState,
+      setAllDeliveredOrders((prevState) => ({
+        ...prevState,
         data: [
-          ...currState.data,
+          ...prevState.data,
           ...statusUpdatePayload.orders.map((order) => ({
             ...order,
-            status: "DELIVERED",
+            status: 'DELIVERED',
           })),
         ],
       }));
 
       // Show success alert
-      showSuccessAlert("Orders delivered", setAlerts);
+      showSuccessAlert('Orders delivered', setAlerts);
 
       // Push to the dashboard when there are no restaurant
-      ordersByRestaurants.length === 1 && router.push("/admin");
+      ordersByRestaurants.length === 1 && router.push('/admin');
     } catch (err) {
       // Log error
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader and close modal
       setIsUpdatingOrdersStatus(false);
@@ -211,24 +210,24 @@ export default function OrdersGroupDetails({
       await axiosInstance.patch(`/orders/${orderId}/change-order-status`);
 
       // Remove the order
-      setAllUpcomingOrders((currState) => ({
-        ...currState,
-        data: currState.data.filter((order) => order._id !== orderId),
+      setAllUpcomingOrders((prevState) => ({
+        ...prevState,
+        data: prevState.data.filter((order) => order._id !== orderId),
       }));
 
       // Show success alert
-      showSuccessAlert("Order archived", setAlerts);
+      showSuccessAlert('Order archived', setAlerts);
 
       // Push to the admin page
       ordersByRestaurants
         .map((ordersByRestaurant) => ordersByRestaurant.orders)
-        .flat().length === 1 && router.push("/admin");
+        .flat().length === 1 && router.push('/admin');
     } catch (err) {
       // Log error
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader and close modal
       setIsUpdatingOrderStatus(false);
@@ -290,7 +289,7 @@ export default function OrdersGroupDetails({
                   </td>
                   <td>
                     {ordersByRestaurant.orders.every(
-                      (order) => order.status === "PROCESSING"
+                      (order) => order.status === 'PROCESSING'
                     ) ? (
                       <span
                         className={styles.send_email}
@@ -406,7 +405,7 @@ export default function OrdersGroupDetails({
               </table>
 
               <h2>
-                Customer information - {ordersByRestaurant.restaurantName} -{" "}
+                Customer information - {ordersByRestaurant.restaurantName} -{' '}
                 {date}
               </h2>
 
@@ -431,7 +430,7 @@ export default function OrdersGroupDetails({
                       </td>
                       <td>{order.item.name}</td>
                       <td>
-                        {order.status === "PROCESSING" ? (
+                        {order.status === 'PROCESSING' ? (
                           <span
                             className={styles.archive}
                             onClick={(e) => initiateStatusUpdate(order._id)}
@@ -477,8 +476,8 @@ export default function OrdersGroupDetails({
         setShowModalContainer={setShowStatusUpdateModal}
         component={
           <ActionModal
-            name="this order"
-            action="Archive"
+            name='this order'
+            action='Archive'
             performAction={updateStatus}
             isPerformingAction={isUpdatingOrderStatus}
             setShowActionModal={setShowStatusUpdateModal}
@@ -492,8 +491,8 @@ export default function OrdersGroupDetails({
         setShowModalContainer={setShowDeliveryModal}
         component={
           <ActionModal
-            name="delivery emails"
-            action="send"
+            name='delivery emails'
+            action='send'
             performAction={deliverOrders}
             isPerformingAction={isUpdatingOrdersStatus}
             setShowActionModal={setShowDeliveryModal}

@@ -1,17 +1,16 @@
-import Orders from "./Orders";
-import { useState } from "react";
-import { AxiosError } from "axios";
-import { IAxiosError } from "types";
-import { useUser } from "@context/User";
-import { useData } from "@context/Data";
-import { useAlert } from "@context/Alert";
-import styles from "@styles/generic/Dashboard.module.css";
-import ActionButton from "@components/layout/ActionButton";
+import Orders from './Orders';
+import { useState } from 'react';
+import { CustomAxiosError } from 'types';
+import { useUser } from '@context/User';
+import { useData } from '@context/Data';
+import { useAlert } from '@context/Alert';
+import styles from '@styles/generic/Dashboard.module.css';
+import ActionButton from '@components/layout/ActionButton';
 import {
   axiosInstance,
   formatCurrencyToUSD,
   showErrorAlert,
-} from "@utils/index";
+} from '@utils/index';
 
 export default function Dashboard() {
   // Hooks
@@ -40,7 +39,7 @@ export default function Dashboard() {
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);
@@ -85,7 +84,7 @@ export default function Dashboard() {
               {customerDeliveredOrders.data.length === 10 && (
                 <span className={styles.load_all}>
                   <ActionButton
-                    buttonText="Load all orders"
+                    buttonText='Load all orders'
                     isLoading={isLoading}
                     handleClick={handleLoadAllDeliveredOrders}
                   />

@@ -1,13 +1,12 @@
-import Image from "next/image";
-import { AxiosError } from "axios";
-import { useRouter } from "next/router";
-import { useData } from "@context/Data";
-import { useAlert } from "@context/Alert";
-import { AiFillStar } from "react-icons/ai";
-import { AiOutlineStar } from "react-icons/ai";
-import styles from "@styles/generic/Order.module.css";
-import SubmitButton from "@components/layout/SubmitButton";
-import { IAxiosError, ICustomerFavoriteItem, ICustomerOrder } from "types";
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useData } from '@context/Data';
+import { useAlert } from '@context/Alert';
+import { AiFillStar } from 'react-icons/ai';
+import { AiOutlineStar } from 'react-icons/ai';
+import styles from '@styles/generic/Order.module.css';
+import SubmitButton from '@components/layout/SubmitButton';
+import { CustomAxiosError, ICustomerFavoriteItem, ICustomerOrder } from 'types';
 import {
   axiosInstance,
   showErrorAlert,
@@ -15,14 +14,14 @@ import {
   convertDateToText,
   formatCurrencyToUSD,
   handleRemoveFromFavorite,
-} from "@utils/index";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+} from '@utils/index';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 export default function Order() {
   // Hooks
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const [comment, setComment] = useState<string>("");
+  const [comment, setComment] = useState<string>('');
   const [order, setOrder] = useState<ICustomerOrder>();
   const [rating, setRating] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -70,18 +69,18 @@ export default function Order() {
       });
 
       // Update state
-      setCustomerFavoriteItems((currState) => ({
-        ...currState,
-        data: [...currState.data, response.data],
+      setCustomerFavoriteItems((prevState) => ({
+        ...prevState,
+        data: [...prevState.data, response.data],
       }));
       // Show success alert
-      showSuccessAlert("Added to favorite", setAlerts);
+      showSuccessAlert('Added to favorite', setAlerts);
     } catch (err) {
       // Log error
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     }
   }
 
@@ -127,9 +126,9 @@ export default function Order() {
       const updatedCustomerDeliveredOrder = response.data;
 
       // Update customer delivered orders
-      setCustomerDeliveredOrders((currState) => ({
-        ...currState,
-        data: currState.data.map((customerDeliveredOrder) => {
+      setCustomerDeliveredOrders((prevState) => ({
+        ...prevState,
+        data: prevState.data.map((customerDeliveredOrder) => {
           if (
             customerDeliveredOrder._id === updatedCustomerDeliveredOrder._id
           ) {
@@ -144,13 +143,13 @@ export default function Order() {
       }));
 
       // Show success alert
-      showSuccessAlert("Review added", setAlerts);
+      showSuccessAlert('Review added', setAlerts);
     } catch (err) {
       // Log error
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Update state
       setIsLoading(false);
@@ -190,24 +189,24 @@ export default function Order() {
                 src={order.item.image}
                 width={16}
                 height={9}
-                layout="responsive"
-                objectFit="cover"
+                layout='responsive'
+                objectFit='cover'
               />
             </div>
 
             <div className={styles.details}>
-              {order.status === "PROCESSING" && (
+              {order.status === 'PROCESSING' && (
                 <>
                   <p>
-                    Your order for{" "}
+                    Your order for{' '}
                     <span>
-                      {order.item.quantity} {order.item.name} -{" "}
+                      {order.item.quantity} {order.item.name} -{' '}
                       {formatCurrencyToUSD(order.item.total)}
-                    </span>{" "}
-                    from <span>{order.restaurant.name}</span> is currently{" "}
+                    </span>{' '}
+                    from <span>{order.restaurant.name}</span> is currently{' '}
                     <span>{order.status.toLowerCase()}</span>. The order will be
-                    delivered on{" "}
-                    <span>{convertDateToText(order.delivery.date)}</span> -{" "}
+                    delivered on{' '}
+                    <span>{convertDateToText(order.delivery.date)}</span> -{' '}
                     <span>{order.company.shift}</span>.
                   </p>
 
@@ -238,20 +237,20 @@ export default function Order() {
                     </>
                   )}
 
-                  <a href="mailto:portland@sporkbytes.com">Contact support</a>
+                  <a href='mailto:portland@sporkbytes.com'>Contact support</a>
                 </>
               )}
 
-              {order.status === "DELIVERED" && (
+              {order.status === 'DELIVERED' && (
                 <>
                   <p>
-                    Your order for{" "}
+                    Your order for{' '}
                     <span>
                       {order.item.quantity} {order.item.name}
-                    </span>{" "}
-                    from <span>{order.restaurant.name}</span> was{" "}
-                    <span>{order.status.toLowerCase()}</span> on{" "}
-                    <span>{convertDateToText(order.delivery.date)}</span> -{" "}
+                    </span>{' '}
+                    from <span>{order.restaurant.name}</span> was{' '}
+                    <span>{order.status.toLowerCase()}</span> on{' '}
+                    <span>{convertDateToText(order.delivery.date)}</span> -{' '}
                     <span>{order.company.shift}</span>.
                   </p>
 
@@ -292,13 +291,13 @@ export default function Order() {
 
                       <form onSubmit={handleAddReview}>
                         <textarea
-                          id="comment"
+                          id='comment'
                           value={comment}
                           onChange={handleChange}
                         />
 
                         <SubmitButton
-                          text="Submit review"
+                          text='Submit review'
                           isLoading={isLoading}
                         />
                       </form>

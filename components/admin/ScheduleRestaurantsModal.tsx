@@ -1,18 +1,17 @@
-import { AxiosError } from "axios";
-import { useRouter } from "next/router";
-import { useData } from "@context/Data";
-import { useAlert } from "@context/Alert";
-import SubmitButton from "../layout/SubmitButton";
-import { IAxiosError, IFormData, IRestaurant } from "types";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import styles from "@styles/admin/ScheduleRestaurantsModal.module.css";
-import { axiosInstance, showErrorAlert, showSuccessAlert } from "@utils/index";
+import { useRouter } from 'next/router';
+import { useData } from '@context/Data';
+import { useAlert } from '@context/Alert';
+import SubmitButton from '../layout/SubmitButton';
+import { CustomAxiosError, IFormData, IRestaurant } from 'types';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import styles from '@styles/admin/ScheduleRestaurantsModal.module.css';
+import { axiosInstance, showErrorAlert, showSuccessAlert } from '@utils/index';
 
 export default function ScheduleRestaurantsModal() {
   // Initial state
   const initialState = {
-    date: "",
-    restaurantId: "",
+    date: '',
+    restaurantId: '',
   };
 
   // Hooks
@@ -34,7 +33,7 @@ export default function ScheduleRestaurantsModal() {
       // Filter approved restaurants
       setApprovedRestaurants(
         vendors.data
-          .filter((vendor) => vendor.status === "ACTIVE")
+          .filter((vendor) => vendor.status === 'ACTIVE')
           .map((vendor) => vendor.restaurant)
       );
     }
@@ -43,8 +42,8 @@ export default function ScheduleRestaurantsModal() {
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     // Update state
-    setFormData((currState) => ({
-      ...currState,
+    setFormData((prevState) => ({
+      ...prevState,
       [e.target.id]: e.target.value,
     }));
   }
@@ -67,22 +66,22 @@ export default function ScheduleRestaurantsModal() {
       );
 
       // Update scheduled restaurants state
-      setScheduledRestaurants((currState) => ({
-        ...currState,
-        data: [...currState.data, response.data],
+      setScheduledRestaurants((prevState) => ({
+        ...prevState,
+        data: [...prevState.data, response.data],
       }));
 
       // Clear form data
       setFormData(initialState);
 
       // Show success alert
-      showSuccessAlert("Restaurant scheduled", setAlerts);
+      showSuccessAlert('Restaurant scheduled', setAlerts);
     } catch (err) {
       // Log error
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader
       setIsLoading(false);
@@ -93,17 +92,17 @@ export default function ScheduleRestaurantsModal() {
   const today = new Date();
 
   // Format date like 2022-11-08
-  const minDate = today.toISOString().split("T")[0];
+  const minDate = today.toISOString().split('T')[0];
 
   return (
     <div className={styles.schedule_restaurants_modal}>
       <h2>Schedule restaurants</h2>
       <form onSubmit={scheduleRestaurant}>
         <div className={styles.item}>
-          <label htmlFor="date">Select a date</label>
+          <label htmlFor='date'>Select a date</label>
           <input
-            type="date"
-            id="date"
+            type='date'
+            id='date'
             value={date}
             min={minDate}
             onChange={handleChange}
@@ -112,11 +111,11 @@ export default function ScheduleRestaurantsModal() {
 
         <div className={styles.item}>
           <select
-            id="restaurantId"
+            id='restaurantId'
             value={restaurantId}
             onChange={handleChange}
           >
-            <option hidden aria-hidden value="Please select a restaurant">
+            <option hidden aria-hidden value='Please select a restaurant'>
               Please select a restaurant
             </option>
 
@@ -131,7 +130,7 @@ export default function ScheduleRestaurantsModal() {
           </select>
         </div>
 
-        <SubmitButton text="Schedule" isLoading={isLoading} />
+        <SubmitButton text='Schedule' isLoading={isLoading} />
       </form>
     </div>
   );

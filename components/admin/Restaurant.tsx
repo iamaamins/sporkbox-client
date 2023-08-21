@@ -1,30 +1,29 @@
-import Link from "next/link";
-import Image from "next/image";
-import ActionModal from "./ActionModal";
-import { useRouter } from "next/router";
-import { useData } from "@context/Data";
-import { IAxiosError, IVendor } from "types";
-import { HiBadgeCheck } from "react-icons/hi";
-import Buttons from "@components/layout/Buttons";
-import { RiDeleteBack2Fill } from "react-icons/ri";
-import { FormEvent, useEffect, useState } from "react";
-import styles from "@styles/admin/Restaurant.module.css";
+import Link from 'next/link';
+import Image from 'next/image';
+import ActionModal from './ActionModal';
+import { useRouter } from 'next/router';
+import { useData } from '@context/Data';
+import { HiBadgeCheck } from 'react-icons/hi';
+import Buttons from '@components/layout/Buttons';
+import { CustomAxiosError, IVendor } from 'types';
+import { RiDeleteBack2Fill } from 'react-icons/ri';
+import { FormEvent, useEffect, useState } from 'react';
+import styles from '@styles/admin/Restaurant.module.css';
 import {
   axiosInstance,
   updateVendors,
   showErrorAlert,
   showSuccessAlert,
   formatCurrencyToUSD,
-} from "@utils/index";
-import { AxiosError } from "axios";
-import { useAlert } from "@context/Alert";
-import ReorderAbleItems from "./ReorderAbleItems";
-import ModalContainer from "@components/layout/ModalContainer";
+} from '@utils/index';
+import { useAlert } from '@context/Alert';
+import ReorderAbleItems from './ReorderAbleItems';
+import ModalContainer from '@components/layout/ModalContainer';
 
 export default function Restaurant() {
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const [action, setAction] = useState("");
+  const [action, setAction] = useState('');
   const { vendors, setVendors } = useData();
   const [vendor, setVendor] = useState<IVendor>();
   const [reorderItems, setReorderItems] = useState(false);
@@ -77,13 +76,13 @@ export default function Restaurant() {
       updateVendors(response.data, setVendors);
 
       // Show success alert
-      showSuccessAlert("Status updated", setAlerts);
+      showSuccessAlert('Status updated', setAlerts);
     } catch (err) {
       // Log error
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove loader and close the modal
       setIsUpdatingVendorStatus(false);
@@ -119,7 +118,7 @@ export default function Restaurant() {
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     }
   }
 
@@ -145,20 +144,20 @@ export default function Restaurant() {
                 </p>
 
                 <p>
-                  <span>Address:</span>{" "}
+                  <span>Address:</span>{' '}
                   {vendor.restaurant.address.addressLine2 ? (
                     <>
-                      {vendor.restaurant.address.addressLine1},{" "}
-                      {vendor.restaurant.address.addressLine2},{" "}
-                      {vendor.restaurant.address.city},{" "}
-                      {vendor.restaurant.address.state}{" "}
+                      {vendor.restaurant.address.addressLine1},{' '}
+                      {vendor.restaurant.address.addressLine2},{' '}
+                      {vendor.restaurant.address.city},{' '}
+                      {vendor.restaurant.address.state}{' '}
                       {vendor.restaurant.address.zip}
                     </>
                   ) : (
                     <>
-                      {vendor.restaurant.address.addressLine1},{" "}
-                      {vendor.restaurant.address.city},{" "}
-                      {vendor.restaurant.address.state}{" "}
+                      {vendor.restaurant.address.addressLine1},{' '}
+                      {vendor.restaurant.address.city},{' '}
+                      {vendor.restaurant.address.state}{' '}
                       {vendor.restaurant.address.zip}
                     </>
                   )}
@@ -168,10 +167,10 @@ export default function Restaurant() {
               {/* Buttons */}
               <div className={styles.buttons}>
                 <Buttons
-                  linkText="Add item"
+                  linkText='Add item'
                   initiateStatusUpdate={initiateStatusUpdate}
                   buttonText={
-                    vendor.status === "ARCHIVED" ? "Activate" : "Archive"
+                    vendor.status === 'ARCHIVED' ? 'Activate' : 'Archive'
                   }
                   href={`/admin/restaurants/${vendor.restaurant._id}/add-item`}
                 />
@@ -224,7 +223,7 @@ export default function Restaurant() {
                             <div className={styles.item_details}>
                               <p className={styles.name}>
                                 {item.name}
-                                {item.status === "ACTIVE" ? (
+                                {item.status === 'ACTIVE' ? (
                                   <HiBadgeCheck />
                                 ) : (
                                   <RiDeleteBack2Fill
@@ -245,8 +244,8 @@ export default function Restaurant() {
                                 src={item.image || vendor.restaurant.logo}
                                 width={16}
                                 height={10}
-                                objectFit="cover"
-                                layout="responsive"
+                                objectFit='cover'
+                                layout='responsive'
                               />
                             </div>
                           </a>

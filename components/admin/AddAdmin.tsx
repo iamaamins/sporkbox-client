@@ -1,19 +1,18 @@
-import { AxiosError } from "axios";
-import { useAlert } from "@context/Alert";
-import { IAxiosError, IFormData } from "types";
-import styles from "@styles/admin/AddAdmin.module.css";
-import { ChangeEvent, FormEvent, useState } from "react";
-import SubmitButton from "@components/layout/SubmitButton";
-import { axiosInstance, showErrorAlert, showSuccessAlert } from "@utils/index";
+import { useAlert } from '@context/Alert';
+import { CustomAxiosError, IFormData } from 'types';
+import styles from '@styles/admin/AddAdmin.module.css';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import SubmitButton from '@components/layout/SubmitButton';
+import { axiosInstance, showErrorAlert, showSuccessAlert } from '@utils/index';
 
 export default function AddAdmin() {
   // Initial state
   const initialState = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
   };
 
   // Hooks
@@ -30,8 +29,8 @@ export default function AddAdmin() {
   // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     // Update state
-    setFormData((currState) => ({
-      ...currState,
+    setFormData((prevState) => ({
+      ...prevState,
       [e.target.id]: e.target.value,
     }));
   }
@@ -45,19 +44,19 @@ export default function AddAdmin() {
       setIsLoading(true);
 
       // Make request to the backend
-      await axiosInstance.post("/admins/add-admin", formData);
+      await axiosInstance.post('/admins/add-admin', formData);
 
       // Reset the form
       setFormData(initialState);
 
       // Show success alert
-      showSuccessAlert("Admin added", setAlerts);
+      showSuccessAlert('Admin added', setAlerts);
     } catch (err) {
       // Log error
       console.log(err);
 
       // Show error alert
-      showErrorAlert(err as AxiosError<IAxiosError>, setAlerts);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       // Remove the loader
       setIsLoading(false);
@@ -69,58 +68,58 @@ export default function AddAdmin() {
 
       <form onSubmit={handleSubmit}>
         <div className={styles.item}>
-          <label htmlFor="firstName">First name</label>
+          <label htmlFor='firstName'>First name</label>
           <input
-            type="text"
-            id="firstName"
+            type='text'
+            id='firstName'
             value={firstName}
             onChange={handleChange}
           />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="lastName">Last name</label>
+          <label htmlFor='lastName'>Last name</label>
           <input
-            type="text"
-            id="lastName"
+            type='text'
+            id='lastName'
             value={lastName}
             onChange={handleChange}
           />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="email">Email</label>
+          <label htmlFor='email'>Email</label>
           <input
-            type="email"
-            id="email"
+            type='email'
+            id='email'
             value={email}
             onChange={handleChange}
           />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="password">Password</label>
+          <label htmlFor='password'>Password</label>
           <input
-            type="password"
-            id="password"
+            type='password'
+            id='password'
             value={password}
             onChange={handleChange}
           />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor="confirmPassword">
+          <label htmlFor='confirmPassword'>
             Confirm password {!passwordsMatch && " - Passwords don't match"}
           </label>
           <input
-            type="password"
-            id="confirmPassword"
+            type='password'
+            id='confirmPassword'
             value={confirmPassword}
             onChange={handleChange}
           />
         </div>
 
-        <SubmitButton isLoading={isLoading} text="Add admin" />
+        <SubmitButton isLoading={isLoading} text='Add admin' />
       </form>
     </section>
   );

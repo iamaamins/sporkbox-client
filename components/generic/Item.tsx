@@ -1,10 +1,10 @@
-import Image from "next/image";
-import { useData } from "@context/Data";
-import { useCart } from "@context/Cart";
-import { useRouter } from "next/router";
-import { HiMinus, HiPlus } from "react-icons/hi";
-import styles from "@styles/generic/Item.module.css";
-import { ChangeEvent, useEffect, useState } from "react";
+import Image from 'next/image';
+import { useData } from '@context/Data';
+import { useCart } from '@context/Cart';
+import { useRouter } from 'next/router';
+import { HiMinus, HiPlus } from 'react-icons/hi';
+import styles from '@styles/generic/Item.module.css';
+import { ChangeEvent, useEffect, useState } from 'react';
 import {
   splitTags,
   formatAddons,
@@ -12,7 +12,7 @@ import {
   convertDateToText,
   formatCurrencyToUSD,
   showErrorAlert,
-} from "@utils/index";
+} from '@utils/index';
 import {
   IItem,
   IAddons,
@@ -21,22 +21,21 @@ import {
   IRemovableIngredients,
   SetAddonsOrRemovableIngredients,
   IAddonsOrRemovableIngredientsType,
-  IAxiosError,
-} from "types";
-import { useAlert } from "@context/Alert";
+} from 'types';
+import { useAlert } from '@context/Alert';
 
 export default function Item() {
   // Initial state
   const initialState = {
-    _id: "",
-    name: "",
+    _id: '',
+    name: '',
     price: 0,
-    image: "",
-    shift: "",
+    image: '',
+    shift: '',
     quantity: 1,
-    companyId: "",
+    companyId: '',
     addonPrice: 0,
-    restaurantId: "",
+    restaurantId: '',
     deliveryDate: 0,
     optionalAddons: [],
     requiredAddons: [],
@@ -162,7 +161,7 @@ export default function Item() {
           if (item.removableIngredients) {
             // Update removable ingredients state
             setRemovableIngredients(
-              item.removableIngredients.split(",").reduce((acc, curr) => {
+              item.removableIngredients.split(',').reduce((acc, curr) => {
                 // Trim ingredient
                 const ingredient = curr.trim();
 
@@ -189,9 +188,9 @@ export default function Item() {
 
   // Decrease quantity
   function decreaseQuantity() {
-    setInitialItem((currState) => ({
-      ...currState,
-      quantity: currState.quantity - 1,
+    setInitialItem((prevState) => ({
+      ...prevState,
+      quantity: prevState.quantity - 1,
     }));
   }
 
@@ -204,8 +203,8 @@ export default function Item() {
   ) {
     // Check optional and required addons' addable
     if (
-      (addonsOrRemovableIngredientsType === "optionalAddons" ||
-        addonsOrRemovableIngredientsType === "requiredAddons") &&
+      (addonsOrRemovableIngredientsType === 'optionalAddons' ||
+        addonsOrRemovableIngredientsType === 'requiredAddons') &&
       item &&
       item[addonsOrRemovableIngredientsType].addable ===
         initialItem[addonsOrRemovableIngredientsType].length &&
@@ -220,32 +219,32 @@ export default function Item() {
 
     // Update optional and required
     // addons, and removable ingredients state
-    setAddonsOrRemovableIngredients((currState) => ({
-      ...currState,
+    setAddonsOrRemovableIngredients((prevState) => ({
+      ...prevState,
       [e.target.name]: e.target.checked,
     }));
 
     // Add on price
     const getAddonPrice = (name: string) =>
       +name
-        .split("-")
+        .split('-')
         .map((el) => el.trim())[1]
         .slice(1);
 
     // Update initial item state
-    setInitialItem((currState) => ({
-      ...currState,
+    setInitialItem((prevState) => ({
+      ...prevState,
       addonPrice:
-        (addonsOrRemovableIngredientsType === "optionalAddons" ||
-          addonsOrRemovableIngredientsType === "requiredAddons") &&
-        e.target.name.split("-").length > 1
+        (addonsOrRemovableIngredientsType === 'optionalAddons' ||
+          addonsOrRemovableIngredientsType === 'requiredAddons') &&
+        e.target.name.split('-').length > 1
           ? e.target.checked
-            ? currState.addonPrice + getAddonPrice(e.target.name)
-            : currState.addonPrice - getAddonPrice(e.target.name)
-          : currState.addonPrice,
+            ? prevState.addonPrice + getAddonPrice(e.target.name)
+            : prevState.addonPrice - getAddonPrice(e.target.name)
+          : prevState.addonPrice,
       [addonsOrRemovableIngredientsType]: e.target.checked
-        ? [...currState[addonsOrRemovableIngredientsType], e.target.name]
-        : currState[addonsOrRemovableIngredientsType].filter(
+        ? [...prevState[addonsOrRemovableIngredientsType], e.target.name]
+        : prevState[addonsOrRemovableIngredientsType].filter(
             (ingredient) => ingredient !== e.target.name
           ),
     }));
@@ -262,7 +261,7 @@ export default function Item() {
         (addonsOrRemovableIngredient, index) => (
           <div key={index} className={styles.addons_and_removable_item}>
             <input
-              type="checkbox"
+              type='checkbox'
               name={addonsOrRemovableIngredient}
               id={addonsOrRemovableIngredient}
               checked={
@@ -291,7 +290,7 @@ export default function Item() {
     renderAddonsOrRemovableIngredients(
       optionalAddons,
       setOptionalAddons,
-      "optionalAddons"
+      'optionalAddons'
     );
 
   // Required addons
@@ -300,7 +299,7 @@ export default function Item() {
     renderAddonsOrRemovableIngredients(
       requiredAddons,
       setRequiredAddons,
-      "requiredAddons"
+      'requiredAddons'
     );
 
   // Removable ingredients
@@ -309,7 +308,7 @@ export default function Item() {
     renderAddonsOrRemovableIngredients(
       removableIngredients,
       setRemovableIngredients,
-      "removableIngredients"
+      'removableIngredients'
     );
 
   return (
@@ -325,8 +324,8 @@ export default function Item() {
               src={item.image || upcomingRestaurant.logo}
               width={16}
               height={10}
-              layout="responsive"
-              objectFit="cover"
+              layout='responsive'
+              objectFit='cover'
             />
           </div>
           <div className={styles.details_controller_and_button}>
@@ -342,7 +341,7 @@ export default function Item() {
               </p>
 
               <p className={styles.delivery_date}>
-                Delivery date -{" "}
+                Delivery date -{' '}
                 {convertDateToText(+(router.query.date as string))}
               </p>
 
@@ -391,7 +390,7 @@ export default function Item() {
               className={`${styles.button}`}
               onClick={() => addItemToCart(initialItem, item)}
             >
-              Add {quantity} to basket •{" "}
+              Add {quantity} to basket •{' '}
               {formatCurrencyToUSD(quantity * price + addonPrice)} USD
             </button>
           </div>
