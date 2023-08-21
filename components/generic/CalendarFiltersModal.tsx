@@ -54,12 +54,12 @@ export default function CalendarFiltersModal({
     let updatedRestaurants = restaurants;
 
     // All filters array
-    const converted = Object.entries(filtersData)
+    const allFilters = Object.entries(filtersData)
       .filter((data) => data[1] === true)
       .map((data) => data[0]);
 
     // Only keep tag filters
-    const tagsFilters = converted.filter(
+    const tagsFilters = allFilters.filter(
       (filter) =>
         !additionalFilters.some(
           (additionalFilter) => additionalFilter.toLowerCase() === filter
@@ -77,7 +77,7 @@ export default function CalendarFiltersModal({
     }
 
     // Filter items with price $20 and less
-    if (converted.includes('$20 and under')) {
+    if (allFilters.includes('$20 and under')) {
       updatedRestaurants = updatedRestaurants.map((updatedRestaurant) => ({
         ...updatedRestaurant,
         items: updatedRestaurant.items.filter((item) => item.price <= 20),
@@ -85,7 +85,7 @@ export default function CalendarFiltersModal({
     }
 
     // Filter items without pork
-    if (converted.includes('no pork')) {
+    if (allFilters.includes('no pork')) {
       updatedRestaurants = updatedRestaurants.map((updatedRestaurant) => ({
         ...updatedRestaurant,
         items: updatedRestaurant.items.filter(
