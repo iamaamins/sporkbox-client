@@ -1,9 +1,9 @@
-import { useUser } from "@context/User";
-import { useRouter } from "next/router";
-import { ICalendarFiltersProps } from "types";
-import { tags as tagsFilters } from "@utils/index";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import styles from "@styles/generic/CalendarFiltersModal.module.css";
+import { useUser } from '@context/User';
+import { useRouter } from 'next/router';
+import { ICalendarFiltersProps } from 'types';
+import { tags as tagsFilters } from '@utils/index';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import styles from '@styles/generic/CalendarFiltersModal.module.css';
 
 export default function CalendarFiltersModal({
   restaurants,
@@ -11,7 +11,7 @@ export default function CalendarFiltersModal({
   setShowCalendarFilters,
 }: ICalendarFiltersProps) {
   // All filters
-  const additionalFilters = ["$20 and under"];
+  const additionalFilters = ['No Pork', '$20 and under'];
   const allFilters = [...tagsFilters, ...additionalFilters];
 
   // Initial filters
@@ -54,13 +54,16 @@ export default function CalendarFiltersModal({
     let updatedRestaurants = restaurants;
 
     // All filters array
-    const allFilters = Object.entries(filtersData)
+    const converted = Object.entries(filtersData)
       .filter((data) => data[1] === true)
       .map((data) => data[0]);
 
     // Only keep tag filters
-    const tagsFilters = allFilters.filter(
-      (filter) => !additionalFilters.includes(filter)
+    const tagsFilters = converted.filter(
+      (filter) =>
+        !additionalFilters.some(
+          (additionalFilter) => additionalFilter.toLowerCase() === filter
+        )
     );
 
     // Filter items by dietary tags
@@ -74,10 +77,20 @@ export default function CalendarFiltersModal({
     }
 
     // Filter items with price $20 and less
-    if (allFilters.includes("$20 and under")) {
+    if (converted.includes('$20 and under')) {
       updatedRestaurants = updatedRestaurants.map((updatedRestaurant) => ({
         ...updatedRestaurant,
         items: updatedRestaurant.items.filter((item) => item.price <= 20),
+      }));
+    }
+
+    // Filter items without pork
+    if (converted.includes('no pork')) {
+      updatedRestaurants = updatedRestaurants.map((updatedRestaurant) => ({
+        ...updatedRestaurant,
+        items: updatedRestaurant.items.filter(
+          (item) => !item.tags.toLowerCase().includes('contains pork')
+        ),
       }));
     }
 
@@ -113,7 +126,7 @@ export default function CalendarFiltersModal({
         {allFilters.map((filter, index) => (
           <div key={index} className={styles.tag}>
             <input
-              type="checkbox"
+              type='checkbox'
               id={filter}
               onChange={handleFilterChange}
               checked={filtersData[filter.toLowerCase() as keyof object]}
@@ -122,7 +135,7 @@ export default function CalendarFiltersModal({
           </div>
         ))}
 
-        <input type="submit" value="Apply" />
+        <input type='submit' value='Apply' />
       </form>
     </div>
   );
