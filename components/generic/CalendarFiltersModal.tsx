@@ -11,7 +11,7 @@ export default function CalendarFiltersModal({
   setShowCalendarFilters,
 }: ICalendarFiltersProps) {
   // All filters
-  const additionalFilters = ['No Pork', '$20 and under'] as const;
+  const additionalFilters = ['Pork-Free', '$20 and under'] as const;
   const allInitialFilters = [...tagFilters, ...additionalFilters] as const;
 
   // Initial filters type
@@ -98,7 +98,7 @@ export default function CalendarFiltersModal({
     }
 
     // Filter items without pork
-    if (allFilters.includes('No Pork')) {
+    if (allFilters.includes('Pork-Free')) {
       updatedRestaurants = updatedRestaurants.map((updatedRestaurant) => ({
         ...updatedRestaurant,
         items: updatedRestaurant.items.filter(
