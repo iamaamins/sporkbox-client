@@ -142,7 +142,7 @@ export default function CalendarFiltersModal({
               type='checkbox'
               id={filter}
               onChange={handleFilterChange}
-              checked={filtersData[filter as keyof object]}
+              checked={filtersData[filter]}
             />
             <label htmlFor={filter}>{filter}</label>
           </div>
