@@ -1,23 +1,30 @@
-import { useState } from 'react';
 import { CustomAxiosError } from 'types';
 import { useAlert } from '@context/Alert';
 import { useData } from '@context/Data';
-import { showErrorAlert } from '@utils/index';
 import LinkButton from '@components/layout/LinkButton';
+import { axiosInstance, showErrorAlert } from '@utils/index';
 import styles from '@styles/admin/DiscountCodes.module.css';
 
 export default function DiscountCodes() {
   // Hooks
   const { setAlerts } = useAlert();
-  const [isLoading, setIsLoading] = useState(false);
   const { discountCodes, setDiscountCodes } = useData();
 
   // Handle delete discount code
-  async function handleDelete() {
+  async function handleDelete(id: string) {
     try {
       // Make request to the backend
+      const response = await axiosInstance.delete(
+        `/discount-code/delete/${id}`
+      );
+
       // Update state
-      // setDiscountCodes(prevState => prevState.data.filter(discountCode => discountCode.id !== request.data._id))
+      setDiscountCodes((prevState) => ({
+        ...prevState,
+        data: prevState.data.filter(
+          (discountCode) => discountCode._id !== response.data
+        ),
+      }));
     } catch (err) {
       // Log err
       console.log(err);
@@ -61,7 +68,7 @@ export default function DiscountCodes() {
                   <td className={styles.hide_on_mobile}>
                     {discountCode.totalRedeem}
                   </td>
-                  <td onClick={handleDelete}>
+                  <td onClick={() => handleDelete(discountCode._id)}>
                     <span>Delete</span>
                   </td>
                 </tr>
