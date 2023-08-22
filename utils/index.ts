@@ -368,6 +368,7 @@ export const tags = [
   'Contains Nuts',
   'Contains Soy',
   'Enjoy Later',
+  'Pork-Free',
 ] as const;
 
 // Tag types
