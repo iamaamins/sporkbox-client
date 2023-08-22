@@ -14,12 +14,20 @@ import {
 import { FormEvent, useState } from 'react';
 import { useAlert } from '@context/Alert';
 
-type DiscountDetails = {
+type AppliedDiscount = {
+  _id: string;
   code: string;
   value: number;
 };
 
 export default function Cart() {
+  // // Initial state
+  // const initialState = {
+  //   _id: '',
+  //   code: '',
+  //   value: 0,
+  // };
+
   // Hooks
   const {
     cartItems,
@@ -32,7 +40,7 @@ export default function Cart() {
   const { setAlerts } = useAlert();
   const [discountCode, setDiscountCode] = useState('');
   const [appliedDiscount, setAppliedDiscount] =
-    useState<DiscountDetails | null>(null);
+    useState<AppliedDiscount | null>(null);
   const [isApplyingDiscount, setIsApplyingDiscount] = useState(false);
 
   // Get shift budget
@@ -83,6 +91,7 @@ export default function Cart() {
                     width={3}
                     layout='responsive'
                     objectFit='cover'
+                    alt='Item image'
                   />
 
                   <div
@@ -117,7 +126,7 @@ export default function Cart() {
             ))}
           </div>
 
-          {shiftBudget && !appliedDiscount && totalCartPrice > shiftBudget && (
+          {!appliedDiscount && (
             <form
               onSubmit={applyDiscount}
               className={styles.apply_discount_form}
@@ -153,8 +162,8 @@ export default function Cart() {
 
           <button
             disabled={isLoading}
-            onClick={checkoutCart}
             className={styles.button}
+            onClick={() => checkoutCart(appliedDiscount?._id)}
           >
             {isLoading ? (
               <ButtonLoader />

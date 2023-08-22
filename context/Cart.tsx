@@ -138,10 +138,11 @@ export default function CartProvider({ children }: IContextProviderProps) {
   }
 
   // Checkout cart
-  async function checkoutCart() {
+  async function checkoutCart(discountCodeId?: string) {
     if (isCustomer) {
       // Create orders payload
       const ordersPayload = cartItems.map((cartItem) => ({
+        discountCodeId,
         itemId: cartItem._id,
         quantity: cartItem.quantity,
         companyId: cartItem.companyId,
@@ -159,6 +160,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
         // Make request to the backend
         const response = await axiosInstance.post(`/orders/create-orders`, {
           ordersPayload,
+          discountCodeId,
         });
 
         if (typeof response.data === 'string') {
