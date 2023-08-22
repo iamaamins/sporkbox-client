@@ -1,10 +1,23 @@
-import Image from "next/image";
-import Link from "next/link";
-import { useCart } from "@context/Cart";
-import { IoMdRemove } from "react-icons/io";
-import styles from "@styles/generic/Cart.module.css";
-import ButtonLoader from "@components/layout/ButtonLoader";
-import { convertDateToText, formatCurrencyToUSD } from "@utils/index";
+import Image from 'next/image';
+import Link from 'next/link';
+import { useCart } from '@context/Cart';
+import { useUser } from '@context/User';
+import { IoMdRemove } from 'react-icons/io';
+import styles from '@styles/generic/Cart.module.css';
+import ButtonLoader from '@components/layout/ButtonLoader';
+import {
+  axiosInstance,
+  convertDateToText,
+  formatCurrencyToUSD,
+  showErrorAlert,
+} from '@utils/index';
+import { FormEvent, useState } from 'react';
+import { useAlert } from '@context/Alert';
+
+type DiscountDetails = {
+  code: string;
+  value: number;
+};
 
 export default function Cart() {
   // Hooks
@@ -15,6 +28,43 @@ export default function Cart() {
     totalCartPrice,
     removeItemFromCart,
   } = useCart();
+  const { customer } = useUser();
+  const { setAlerts } = useAlert();
+  const [discountCode, setDiscountCode] = useState('');
+  const [appliedDiscount, setAppliedDiscount] =
+    useState<DiscountDetails | null>(null);
+  const [isApplyingDiscount, setIsApplyingDiscount] = useState(false);
+
+  // Get shift budget
+  const shiftBudget = customer?.companies.find(
+    (company) => company.status === 'ACTIVE'
+  )?.shiftBudget;
+
+  // Handle apply discount code
+  async function applyDiscount(e: FormEvent) {
+    e.preventDefault();
+
+    try {
+      // Show loader
+      setIsApplyingDiscount(true);
+
+      // Make request to the backend
+      const response = await axiosInstance.post(
+        `/discount-code/apply/${discountCode}`
+      );
+
+      // Update state
+      setAppliedDiscount(response.data);
+    } catch (err) {
+      // Log error
+      console.log(err);
+
+      showErrorAlert('Invalid discount code', setAlerts);
+    } finally {
+      // Remove loader
+      setIsApplyingDiscount(false);
+    }
+  }
 
   return (
     <section className={styles.cart}>
@@ -31,8 +81,8 @@ export default function Cart() {
                     src={cartItem.image}
                     height={2}
                     width={3}
-                    layout="responsive"
-                    objectFit="cover"
+                    layout='responsive'
+                    objectFit='cover'
                   />
 
                   <div
@@ -51,14 +101,14 @@ export default function Cart() {
                       <span>{cartItem.quantity}</span> {cartItem.name}
                     </p>
                     <p className={styles.price}>
-                      Total:{" "}
+                      Total:{' '}
                       {formatCurrencyToUSD(
                         cartItem.price * cartItem.quantity + cartItem.addonPrice
                       )}
                     </p>
                     <p className={styles.date}>
-                      Delivery date:{" "}
-                      <span>{convertDateToText(cartItem.deliveryDate)}</span> -{" "}
+                      Delivery date:{' '}
+                      <span>{convertDateToText(cartItem.deliveryDate)}</span> -{' '}
                       <span className={styles.shift}>{cartItem.shift}</span>
                     </p>
                   </a>
@@ -67,11 +117,51 @@ export default function Cart() {
             ))}
           </div>
 
-          <button onClick={checkoutCart} className={`${styles.button}`}>
+          {shiftBudget && !appliedDiscount && totalCartPrice > shiftBudget && (
+            <form
+              onSubmit={applyDiscount}
+              className={styles.apply_discount_form}
+            >
+              <label htmlFor='discountCode'>Discount code</label>
+              <div>
+                <input
+                  type='text'
+                  id='discountCode'
+                  value={discountCode}
+                  onChange={(e) => setDiscountCode(e.target.value)}
+                />
+
+                <input
+                  type='submit'
+                  value='Apply'
+                  onClick={applyDiscount}
+                  disabled={isApplyingDiscount || !discountCode}
+                />
+              </div>
+            </form>
+          )}
+
+          {appliedDiscount && (
+            <div className={styles.applied_discount}>
+              <p>
+                <span>{appliedDiscount.code}</span> applied
+              </p>
+
+              <p onClick={() => setAppliedDiscount(null)}>Remove</p>
+            </div>
+          )}
+
+          <button
+            disabled={isLoading}
+            onClick={checkoutCart}
+            className={styles.button}
+          >
             {isLoading ? (
               <ButtonLoader />
             ) : (
-              `Checkout • ${formatCurrencyToUSD(totalCartPrice)} USD`
+              `Checkout • ${formatCurrencyToUSD(
+                totalCartPrice - (appliedDiscount?.value || 0)
+              )} USD`
             )}
           </button>
         </>

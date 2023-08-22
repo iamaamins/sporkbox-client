@@ -9,13 +9,13 @@ import {
   CustomAxiosError,
   IContextProviderProps,
 } from 'types';
-import { useState, useEffect, useContext, createContext } from 'react';
 import {
   axiosInstance,
   formatNumberToUS,
   showErrorAlert,
   showSuccessAlert,
 } from '@utils/index';
+import { useState, useEffect, useContext, createContext } from 'react';
 
 // Create context
 const CartContext = createContext({} as ICartContext);

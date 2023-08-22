@@ -98,7 +98,6 @@ export interface ICompany {
   name: string;
   shift: string;
   code: string;
-  status: string;
   website: string;
   address: {
     city: string;
@@ -109,6 +108,7 @@ export interface ICompany {
   };
   createdAt: string;
   shiftBudget: number;
+  status: 'ACTIVE' | 'ARCHIVED';
 }
 
 export interface IDiscountCode {
