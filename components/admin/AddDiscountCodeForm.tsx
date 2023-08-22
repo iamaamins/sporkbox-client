@@ -1,13 +1,13 @@
-import { showErrorAlert } from '@utils/index';
+import { axiosInstance, showErrorAlert } from '@utils/index';
 import { CustomAxiosError } from 'types';
 import { useAlert } from '@context/Alert';
 import { useRouter } from 'next/router';
 import { useData } from '@context/Data';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import SubmitButton from '@components/layout/SubmitButton';
-import styles from '@styles/admin/AddDiscountForm.module.css';
+import styles from '@styles/admin/AddDiscountCodeForm.module.css';
 
-export default function AddDiscountForm() {
+export default function AddDiscountCodeForm() {
   const initialState = {
     code: '',
     value: '',
@@ -40,14 +40,16 @@ export default function AddDiscountForm() {
       setIsLoading(true);
 
       // Make request to the backend
+      const response = await axiosInstance.post('/discount-code/add', {
+        code,
+        value,
+        redeemability,
+      });
 
       // Update state
       setDiscountCodes((prevState) => ({
         ...prevState,
-        data: [
-          ...prevState.data,
-          // Add the new code
-        ],
+        data: [...prevState.data, response.data],
       }));
 
       // Push to discount codes page
@@ -65,7 +67,7 @@ export default function AddDiscountForm() {
   }
 
   return (
-    <section className={styles.add_discount_form}>
+    <section className={styles.add_discount_code_form}>
       <h2>Add discount code</h2>
 
       <form onSubmit={handleSubmit}>

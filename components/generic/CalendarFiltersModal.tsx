@@ -97,16 +97,6 @@ export default function CalendarFiltersModal({
       }));
     }
 
-    // // Filter items without pork
-    // if (allFilters.includes('Pork-Free')) {
-    //   updatedRestaurants = updatedRestaurants.map((updatedRestaurant) => ({
-    //     ...updatedRestaurant,
-    //     items: updatedRestaurant.items.filter(
-    //       (item) => !item.tags.toLowerCase().includes('contains pork')
-    //     ),
-    //   }));
-    // }
-
     // Update states
     setUpdatedRestaurants(
       updatedRestaurants.filter(
