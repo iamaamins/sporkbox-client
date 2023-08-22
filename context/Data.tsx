@@ -197,9 +197,8 @@ export default function DataProvider({ children }: IContextProviderProps) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
 
-      // Get all customers
       try {
-        // Make request to backend
+        // Get all customers
         const response = await axiosInstance.get('/customers');
 
         // Update state
@@ -218,19 +217,14 @@ export default function DataProvider({ children }: IContextProviderProps) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
 
-      // Get discount codes
       try {
+        // Get discount codes
+        const response = await axiosInstance.get('/discount-code');
+
+        // Update state
         setDiscountCodes({
           isLoading: false,
-          data: [
-            {
-              _id: '1',
-              value: 5,
-              totalRedeem: 1,
-              code: 'dkghaad',
-              redeemability: 'once',
-            },
-          ],
+          data: response.data,
         });
       } catch (err) {
         // Log error
