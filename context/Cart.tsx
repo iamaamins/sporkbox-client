@@ -169,17 +169,18 @@ export default function CartProvider({ children }: IContextProviderProps) {
 
         // Make request to the backend
         const response = await axiosInstance.post(`/orders/create-orders`, {
-          ordersPayload,
           discountCodeId,
+          items: ordersPayload,
         });
 
         if (typeof response.data === 'string') {
           // Open Stripe checkout page
           open(response.data);
         } else {
-          // Remove cart items
+          // Remove cart items and applied discount
           setCartItems([]);
           localStorage.removeItem(`cart-${customer?._id}`);
+          localStorage.removeItem(`discount-${customer?._id}`);
 
           // Update customer's active orders state
           setCustomerUpcomingOrders((prevState) => ({
