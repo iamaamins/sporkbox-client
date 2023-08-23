@@ -40,6 +40,7 @@ export default function Cart() {
   // Payable amount
   let payableAmount = 0;
 
+  // Update payable amount
   if (customer) {
     // Get company
     const company = customer.companies.find(
@@ -53,21 +54,18 @@ export default function Cart() {
       // Check if the customer has stipend
       const hasStipend = shiftBudget > upcomingOrdersTotal;
 
+      // Get the discount amount
+      const discountAmount = appliedDiscount?.value || 0;
+
+      // Get cart total without the discount amount
+      const cartTotalWithoutDiscount = totalCartPrice - discountAmount;
+
       if (hasStipend) {
         // Get stipend amount
         const stipend = shiftBudget - upcomingOrdersTotal;
-
-        if (appliedDiscount) {
-          payableAmount = totalCartPrice - stipend - appliedDiscount.value;
-        } else {
-          payableAmount = totalCartPrice - stipend;
-        }
+        payableAmount = cartTotalWithoutDiscount - stipend;
       } else {
-        if (appliedDiscount) {
-          payableAmount = totalCartPrice - appliedDiscount.value;
-        } else {
-          payableAmount = totalCartPrice;
-        }
+        payableAmount = cartTotalWithoutDiscount;
       }
     }
   }
