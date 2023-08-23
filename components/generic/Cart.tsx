@@ -11,8 +11,9 @@ import {
   formatCurrencyToUSD,
   showErrorAlert,
 } from '@utils/index';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
+import { useRouter } from 'next/router';
 
 type AppliedDiscount = {
   _id: string;
@@ -22,6 +23,7 @@ type AppliedDiscount = {
 
 export default function Cart() {
   // Hooks
+  const router = useRouter();
   const {
     cartItems,
     isLoading,
@@ -40,7 +42,7 @@ export default function Cart() {
   // Payable amount
   let payableAmount = 0;
 
-  // Update payable amount
+  // Get payable amount
   if (customer) {
     // Get company
     const company = customer.companies.find(
@@ -85,6 +87,12 @@ export default function Cart() {
 
       // Update state
       setAppliedDiscount(response.data);
+
+      // Save discount details to local storage
+      localStorage.setItem(
+        `discount-${customer?._id}`,
+        JSON.stringify(response.data)
+      );
     } catch (err) {
       // Log error
       console.log(err);
@@ -95,6 +103,28 @@ export default function Cart() {
       setIsApplyingDiscount(false);
     }
   }
+
+  // Handle remove discount
+  function removeDiscount() {
+    setAppliedDiscount(null);
+    localStorage.removeItem(`discount-${customer?._id}`);
+  }
+
+  // Auto remove discount code
+  useEffect(() => {
+    if (appliedDiscount && payableAmount <= 0) {
+      removeDiscount();
+    }
+  }, [cartItems]);
+
+  // Get saved discount
+  useEffect(() => {
+    // Get data from local storage
+    const localDiscount = localStorage.getItem(`discount-${customer?._id}`);
+
+    // Update state
+    setAppliedDiscount(localDiscount ? JSON.parse(localDiscount) : null);
+  }, [customer, router.isReady]);
 
   return (
     <section className={styles.cart}>
@@ -178,7 +208,7 @@ export default function Cart() {
                 <span>{appliedDiscount.code}</span> applied
               </p>
 
-              <p onClick={() => setAppliedDiscount(null)}>Remove</p>
+              <p onClick={removeDiscount}>Remove</p>
             </div>
           )}
 
