@@ -49,12 +49,19 @@ export default function Cart() {
       (company) => company.status === 'ACTIVE'
     );
 
+    // Get number of cart days
+    const cartDays = cartItems
+      .map((cartItem) => cartItem.deliveryDate)
+      .filter((date, index, dates) => dates.indexOf(date) === index).length;
+
     if (company) {
       // Get shift budget
       const shiftBudget = company.shiftBudget;
 
+      const allShiftBudget = shiftBudget * cartDays;
+
       // Check if the customer has stipend
-      const hasStipend = shiftBudget > upcomingOrdersTotal;
+      const hasStipend = allShiftBudget > upcomingOrdersTotal;
 
       // Get the discount amount
       const discountAmount = appliedDiscount?.value || 0;
@@ -64,8 +71,9 @@ export default function Cart() {
 
       if (hasStipend) {
         // Get stipend amount
-        const stipend = shiftBudget - upcomingOrdersTotal;
-        payableAmount = cartTotalWithoutDiscount - stipend;
+        const stipendAmount = allShiftBudget - upcomingOrdersTotal;
+
+        payableAmount = cartTotalWithoutDiscount - stipendAmount;
       } else {
         payableAmount = cartTotalWithoutDiscount;
       }
@@ -125,6 +133,8 @@ export default function Cart() {
     // Update state
     setAppliedDiscount(localDiscount ? JSON.parse(localDiscount) : null);
   }, [customer, router.isReady]);
+
+  // console.log(payableAmount, upcomingOrdersTotal);
 
   return (
     <section className={styles.cart}>
