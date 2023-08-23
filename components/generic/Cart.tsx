@@ -21,13 +21,6 @@ type AppliedDiscount = {
 };
 
 export default function Cart() {
-  // // Initial state
-  // const initialState = {
-  //   _id: '',
-  //   code: '',
-  //   value: 0,
-  // };
-
   // Hooks
   const {
     cartItems,
@@ -35,6 +28,7 @@ export default function Cart() {
     checkoutCart,
     totalCartPrice,
     removeItemFromCart,
+    upcomingOrdersTotal,
   } = useCart();
   const { customer } = useUser();
   const { setAlerts } = useAlert();
@@ -43,10 +37,40 @@ export default function Cart() {
     useState<AppliedDiscount | null>(null);
   const [isApplyingDiscount, setIsApplyingDiscount] = useState(false);
 
-  // Get shift budget
-  const shiftBudget = customer?.companies.find(
-    (company) => company.status === 'ACTIVE'
-  )?.shiftBudget;
+  // Payable amount
+  let payableAmount = 0;
+
+  if (customer) {
+    // Get company
+    const company = customer.companies.find(
+      (company) => company.status === 'ACTIVE'
+    );
+
+    if (company) {
+      // Get shift budget
+      const shiftBudget = company.shiftBudget;
+
+      // Check if the customer has stipend
+      const hasStipend = shiftBudget > upcomingOrdersTotal;
+
+      if (hasStipend) {
+        // Get stipend amount
+        const stipend = shiftBudget - upcomingOrdersTotal;
+
+        if (appliedDiscount) {
+          payableAmount = totalCartPrice - stipend - appliedDiscount.value;
+        } else {
+          payableAmount = totalCartPrice - stipend;
+        }
+      } else {
+        if (appliedDiscount) {
+          payableAmount = totalCartPrice - appliedDiscount.value;
+        } else {
+          payableAmount = totalCartPrice;
+        }
+      }
+    }
+  }
 
   // Handle apply discount code
   async function applyDiscount(e: FormEvent) {
@@ -126,7 +150,7 @@ export default function Cart() {
             ))}
           </div>
 
-          {!appliedDiscount && (
+          {!appliedDiscount && payableAmount > 0 && (
             <form
               onSubmit={applyDiscount}
               className={styles.apply_discount_form}
@@ -167,10 +191,10 @@ export default function Cart() {
           >
             {isLoading ? (
               <ButtonLoader />
+            ) : payableAmount > 0 ? (
+              `Checkout • ${formatCurrencyToUSD(payableAmount)} USD`
             ) : (
-              `Checkout • ${formatCurrencyToUSD(
-                totalCartPrice - (appliedDiscount?.value || 0)
-              )} USD`
+              'Place order'
             )}
           </button>
         </>

@@ -229,6 +229,7 @@ export interface ICartContext {
   isLoading: boolean;
   totalCartPrice: number;
   totalCartQuantity: number;
+  upcomingOrdersTotal: number;
   removeItemFromCart: (item: ICartItem) => void;
   setCartItems: Dispatch<SetStateAction<ICartItem[]>>;
   checkoutCart: (discountCodeId?: string) => Promise<void>;

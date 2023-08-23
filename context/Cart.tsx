@@ -11,6 +11,7 @@ import {
 } from 'types';
 import {
   axiosInstance,
+  convertDateToMS,
   formatNumberToUS,
   showErrorAlert,
   showSuccessAlert,
@@ -29,7 +30,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { customer, isCustomer } = useUser();
-  const { setCustomerUpcomingOrders } = useData();
+  const { customerUpcomingOrders, setCustomerUpcomingOrders } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<ICartItem[]>([]);
 
@@ -53,6 +54,15 @@ export default function CartProvider({ children }: IContextProviderProps) {
       formatNumberToUS(acc + item.addonPrice + item.price * item.quantity),
     0
   );
+
+  // Get upcoming orders total for cart dates
+  const upcomingOrdersTotal = customerUpcomingOrders.data
+    .filter((order) =>
+      cartItems
+        .map((cartItem) => cartItem.deliveryDate)
+        .some((cartDate) => cartDate === convertDateToMS(order.delivery.date))
+    )
+    .reduce((acc, curr) => acc + curr.item.total, 0);
 
   // Add item to cart
   function addItemToCart(initialItem: ICartItem, item: IItem) {
@@ -209,6 +219,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
         totalCartPrice,
         totalCartQuantity,
         removeItemFromCart,
+        upcomingOrdersTotal,
       }}
     >
       {children}
