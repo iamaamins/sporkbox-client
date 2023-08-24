@@ -48,6 +48,10 @@ export default function ShiftChangeModal({
 
       // Close the modal
       setShowShiftChangeModal(false);
+
+      // Remove cart items and discount
+      localStorage.removeItem(`discount-${customer?._id}`);
+      localStorage.removeItem(`cart-${customer?._id}`);
     } catch (err) {
       // Log error
       console.log(err);

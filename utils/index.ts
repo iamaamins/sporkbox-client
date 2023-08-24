@@ -385,7 +385,7 @@ export const getAddonsTotal = (addons: string[]) =>
     .map(([name, price]) => +price)
     .reduce((acc, curr) => acc + curr, 0);
 
-// Get total for each date
+// Get total amount for each date
 export function getDateTotal(details: DateTotal[]) {
   return details.reduce((acc, curr) => {
     if (!acc.some((detail) => detail.date === curr.date)) {
