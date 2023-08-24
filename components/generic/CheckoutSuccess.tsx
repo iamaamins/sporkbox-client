@@ -20,6 +20,7 @@ export default function CheckoutSuccess() {
   useEffect(() => {
     if (router.isReady) {
       getCheckoutSessionData();
+      localStorage.removeItem(`discount-${customer?._id}`);
     }
   }, [router.isReady]);
 
