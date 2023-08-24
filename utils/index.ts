@@ -381,8 +381,8 @@ export const splitTags = (tags: string) =>
 // Get addons total
 export const getAddonsTotal = (addons: string[]) =>
   addons
-    .map((addon) => addon.split('-'))
-    .map(([name, price]) => +price.trim())
+    .map((addon) => addon.replace(/[\s$]/g, '').split('-'))
+    .map(([name, price]) => +price)
     .reduce((acc, curr) => acc + curr, 0);
 
 // Get total for each date

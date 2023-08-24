@@ -67,6 +67,8 @@ export default function Cart() {
     // Get cart item date and total details
     const cartItemDetails = getDateTotal(cartDateTotalDetails);
 
+    console.log(cartItemDetails, upcomingOrderDetails);
+
     // Get company
     const company = customer.companies.find(
       (company) => company.status === 'ACTIVE'
@@ -92,7 +94,8 @@ export default function Cart() {
           } else {
             // Get upcoming order date and total detail
             const upcomingOrderDetail = upcomingOrderDetails.find(
-              (el) => el.date === cartItemDetail.date
+              (upcomingOrderDetail) =>
+                upcomingOrderDetail.date === cartItemDetail.date
             );
 
             // Get order total for the day
@@ -103,7 +106,8 @@ export default function Cart() {
               payable:
                 upcomingDayOrderTotal >= shiftBudget
                   ? cartItemDetail.total
-                  : cartItemDetail.total - upcomingDayOrderTotal,
+                  : cartItemDetail.total -
+                    (shiftBudget - upcomingDayOrderTotal),
             };
           }
         })
