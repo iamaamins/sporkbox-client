@@ -36,7 +36,6 @@ export default function CartProvider({ children }: IContextProviderProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<ICartItem[]>([]);
 
-  // Get cart items from local storage on app reload
   useEffect(() => {
     // Get cart items from local storage
     setCartItems(

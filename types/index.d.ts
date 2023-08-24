@@ -224,7 +224,7 @@ export interface IDataContext {
   setCustomerFavoriteItems: Dispatch<SetStateAction<ICustomerFavoriteItems>>;
 }
 
-interface DateTotal {
+export interface DateTotal {
   date: number;
   total: number;
 }

@@ -67,8 +67,6 @@ export default function Cart() {
     // Get cart item date and total details
     const cartItemDetails = getDateTotal(cartDateTotalDetails);
 
-    console.log(cartItemDetails, upcomingOrderDetails);
-
     // Get company
     const company = customer.companies.find(
       (company) => company.status === 'ACTIVE'
