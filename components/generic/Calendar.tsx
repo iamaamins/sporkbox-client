@@ -4,12 +4,7 @@ import { useRouter } from 'next/router';
 import { useData } from '@context/Data';
 import { useCart } from '@context/Cart';
 import { useEffect, useState } from 'react';
-import {
-  getDay,
-  getDate,
-  convertDateToMS,
-  formatCurrencyToUSD,
-} from '@utils/index';
+import { getDay, getDate, dateToMS, numberToUSD } from '@utils/index';
 import CalendarSort from './CalendarSort';
 import { IUpcomingRestaurant } from 'types';
 import { IoIosArrowUp } from 'react-icons/io';
@@ -48,7 +43,7 @@ export default function Calendar() {
         const upcomingRestaurantsOnDate = upcomingRestaurants.data
           .filter(
             (upcomingRestaurant) =>
-              convertDateToMS(upcomingRestaurant.date) === upcomingDate
+              dateToMS(upcomingRestaurant.date) === upcomingDate
           )
           .sort(
             (a, b) =>
@@ -177,7 +172,7 @@ export default function Calendar() {
                                 <div className={styles.item_details}>
                                   <p className={styles.name}>{item.name}</p>
                                   <p className={styles.price}>
-                                    {formatCurrencyToUSD(item.price)}
+                                    {numberToUSD(item.price)}
                                   </p>
                                   <p className={styles.description}>
                                     {item.description}

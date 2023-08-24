@@ -1,8 +1,8 @@
-import Link from "next/link";
-import { useData } from "@context/Data";
-import { convertDateToText } from "@utils/index";
-import LinkButton from "@components/layout/LinkButton";
-import styles from "@styles/admin/Restaurants.module.css";
+import Link from 'next/link';
+import { useData } from '@context/Data';
+import { dateToText } from '@utils/index';
+import LinkButton from '@components/layout/LinkButton';
+import styles from '@styles/admin/Restaurants.module.css';
 
 export default function Restaurants() {
   // Hooks
@@ -40,7 +40,7 @@ export default function Restaurants() {
                   </td>
                   <td className={styles.hide_on_mobile}>{vendor.email}</td>
                   <td className={styles.hide_on_mobile}>
-                    {convertDateToText(vendor.restaurant.createdAt)}
+                    {dateToText(vendor.restaurant.createdAt)}
                   </td>
                   <td>{vendor.status.toLowerCase()}</td>
                 </tr>
@@ -52,8 +52,8 @@ export default function Restaurants() {
 
       <div className={styles.buttons}>
         <LinkButton
-          linkText="Add a restaurant"
-          href="/admin/restaurants/add-restaurant"
+          linkText='Add a restaurant'
+          href='/admin/restaurants/add-restaurant'
         />
       </div>
     </section>

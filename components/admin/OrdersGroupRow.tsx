@@ -3,7 +3,7 @@ import { CSVLink } from 'react-csv';
 import { IOrdersGroupRowProps } from 'types';
 import { FiDownload } from 'react-icons/fi';
 import styles from '@styles/admin/OrdersGroupRow.module.css';
-import { convertDateToMS, convertDateToText } from '@utils/index';
+import { dateToMS, dateToText } from '@utils/index';
 import { orderData, orderFileName, orderHeaders } from '@utils/csv';
 
 export default function OrdersGroupRow({
@@ -14,11 +14,11 @@ export default function OrdersGroupRow({
     <tr className={styles.orders_group_row}>
       <td className={styles.important}>
         <Link
-          href={`/admin/${slug}/${ordersGroup.company._id}/${convertDateToMS(
+          href={`/admin/${slug}/${ordersGroup.company._id}/${dateToMS(
             ordersGroup.deliveryDate
           )}`}
         >
-          <a>{convertDateToText(ordersGroup.deliveryDate)} </a>
+          <a>{dateToText(ordersGroup.deliveryDate)} </a>
         </Link>
       </td>
       <td className={styles.hide_on_mobile}>{ordersGroup.company.name}</td>

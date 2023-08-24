@@ -19,7 +19,7 @@ import {
 } from 'types';
 import {
   axiosInstance,
-  convertDateToMS,
+  dateToMS,
   createOrdersGroups,
   showErrorAlert,
 } from '@utils/index';
@@ -81,7 +81,7 @@ export default function DataProvider({ children }: IContextProviderProps) {
   const upcomingDates =
     !upcomingRestaurants.isLoading && upcomingRestaurants.data.length > 0
       ? upcomingRestaurants.data
-          .map((upcomingRestaurant) => convertDateToMS(upcomingRestaurant.date))
+          .map((upcomingRestaurant) => dateToMS(upcomingRestaurant.date))
           .filter((date, index, dates) => dates.indexOf(date) === index)
       : [];
 

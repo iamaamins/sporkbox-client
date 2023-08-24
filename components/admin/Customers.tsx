@@ -6,7 +6,7 @@ import { useAlert } from '@context/Alert';
 import { FormEvent, useState } from 'react';
 import {
   axiosInstance,
-  convertDateToText,
+  dateToText,
   showErrorAlert,
   showSuccessAlert,
   updateCustomers,
@@ -101,7 +101,7 @@ export default function Customers({ status, customers }: ICustomersProps) {
               </td>
               <td className={styles.hide_on_mobile}>{customer.email}</td>
               <td className={styles.hide_on_mobile}>
-                {convertDateToText(customer.createdAt)}
+                {dateToText(customer.createdAt)}
               </td>
               <td>
                 <Link

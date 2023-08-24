@@ -12,11 +12,11 @@ import {
 } from 'types';
 import {
   axiosInstance,
-  convertDateToMS,
+  dateToMS,
   showErrorAlert,
   showSuccessAlert,
-  convertDateToText,
-  formatCurrencyToUSD,
+  dateToText,
+  numberToUSD,
   groupIdenticalOrders,
 } from '@utils/index';
 import styles from '@styles/admin/OrdersGroupDetails.module.css';
@@ -59,8 +59,7 @@ export default function OrdersGroupDetails({
       // Find the orders group
       const ordersGroup = ordersGroups.find(
         (ordersGroup) =>
-          convertDateToMS(ordersGroup.deliveryDate).toString() ===
-            router.query.date &&
+          dateToMS(ordersGroup.deliveryDate).toString() === router.query.date &&
           ordersGroup.company._id === router.query.company
       );
 
@@ -93,7 +92,7 @@ export default function OrdersGroupDetails({
     if (!allUpcomingOrders.isLoading && !allDeliveredOrders.isLoading) {
       // Filter condition
       const filterConditions = (order: IOrder) =>
-        convertDateToMS(order.delivery.date).toString() === router.query.date &&
+        dateToMS(order.delivery.date).toString() === router.query.date &&
         order.company._id === router.query.company;
 
       // Update state
@@ -236,7 +235,7 @@ export default function OrdersGroupDetails({
   }
 
   // Get date in text
-  const date = convertDateToText(+(router.query.date as string));
+  const date = dateToText(+(router.query.date as string));
 
   // Check optional addons
   const hasOptionalAddons = (ordersByRestaurant: IOrdersByRestaurant) =>
@@ -277,7 +276,7 @@ export default function OrdersGroupDetails({
               {ordersByRestaurants.map((ordersByRestaurant, index) => (
                 <tr key={index}>
                   <td className={styles.hide_on_mobile}>
-                    {convertDateToText(ordersByRestaurant.deliveryDate)}
+                    {dateToText(ordersByRestaurant.deliveryDate)}
                   </td>
                   <td>{ordersByRestaurant.company.name}</td>
                   <td className={`${styles.shift} ${styles.hide_on_mobile}`}>
@@ -367,7 +366,7 @@ export default function OrdersGroupDetails({
                             {order.item.removedIngredients}
                           </td>
                         )}
-                        <td>{formatCurrencyToUSD(order.item.total)}</td>
+                        <td>{numberToUSD(order.item.total)}</td>
 
                         <td>{order.item.quantity}</td>
                       </tr>
@@ -387,7 +386,7 @@ export default function OrdersGroupDetails({
                       <td className={styles.hide_on_mobile}></td>
                     )}
                     <td>
-                      {formatCurrencyToUSD(
+                      {numberToUSD(
                         ordersByRestaurant.orders.reduce(
                           (acc, curr) => acc + curr.item.total,
                           0
@@ -461,9 +460,9 @@ export default function OrdersGroupDetails({
 
             <tbody>
               <tr>
-                <td>{formatCurrencyToUSD(amount.total - amount.paid)}</td>
-                <td>{formatCurrencyToUSD(amount.paid)}</td>
-                <td>{formatCurrencyToUSD(amount.total)}</td>
+                <td>{numberToUSD(amount.total - amount.paid)}</td>
+                <td>{numberToUSD(amount.paid)}</td>
+                <td>{numberToUSD(amount.total)}</td>
               </tr>
             </tbody>
           </table>

@@ -11,8 +11,8 @@ import {
   axiosInstance,
   showErrorAlert,
   showSuccessAlert,
-  convertDateToText,
-  formatCurrencyToUSD,
+  dateToText,
+  numberToUSD,
   handleRemoveFromFavorite,
 } from '@utils/index';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
@@ -201,13 +201,12 @@ export default function Order() {
                     Your order for{' '}
                     <span>
                       {order.item.quantity} {order.item.name} -{' '}
-                      {formatCurrencyToUSD(order.item.total)}
+                      {numberToUSD(order.item.total)}
                     </span>{' '}
                     from <span>{order.restaurant.name}</span> is currently{' '}
                     <span>{order.status.toLowerCase()}</span>. The order will be
-                    delivered on{' '}
-                    <span>{convertDateToText(order.delivery.date)}</span> -{' '}
-                    <span>{order.company.shift}</span>.
+                    delivered on <span>{dateToText(order.delivery.date)}</span>{' '}
+                    - <span>{order.company.shift}</span>.
                   </p>
 
                   {order.item.optionalAddons && (
@@ -250,7 +249,7 @@ export default function Order() {
                     </span>{' '}
                     from <span>{order.restaurant.name}</span> was{' '}
                     <span>{order.status.toLowerCase()}</span> on{' '}
-                    <span>{convertDateToText(order.delivery.date)}</span> -{' '}
+                    <span>{dateToText(order.delivery.date)}</span> -{' '}
                     <span>{order.company.shift}</span>.
                   </p>
 

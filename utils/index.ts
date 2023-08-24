@@ -1,5 +1,5 @@
+import axios from 'axios';
 import { Dispatch } from 'react';
-import axios, { AxiosError } from 'axios';
 import { SetStateAction } from 'react';
 import { NextRouter } from 'next/router';
 import {
@@ -16,27 +16,27 @@ import {
   IOrdersGroup,
   CustomAxiosError,
   ICustomerFavoriteItems,
+  DateTotal,
 } from 'types';
 
 // Current year
 export const currentYear = new Date().getFullYear();
 
 // Convert number
-export const formatNumberToUS = (number: number) =>
-  +number.toLocaleString('en-US');
+export const toUSNumber = (number: number) => +number.toLocaleString('en-US');
 
 // Format currency
-export const formatCurrencyToUSD = (number: number) =>
+export const numberToUSD = (number: number) =>
   new Intl.NumberFormat('en-us', {
     style: 'currency',
     currency: 'USD',
   }).format(number);
 
 // Convert date to milliseconds
-export const convertDateToMS = (date: string) => new Date(date).getTime();
+export const dateToMS = (date: string) => new Date(date).getTime();
 
 // Convert date to string
-export const convertDateToText = (date: Date | string | number): string =>
+export const dateToText = (date: Date | string | number): string =>
   new Date(date).toUTCString().split(' ').slice(0, 3).join(' ');
 
 // Check if there is an admin
@@ -377,6 +377,33 @@ type Tags = (typeof tags)[number][];
 // Split tags
 export const splitTags = (tags: string) =>
   tags.split(',').map((tag) => tag.trim()) as Tags;
+
+// Get addons total
+export const getAddonsTotal = (addons: string[]) =>
+  addons
+    .map((addon) => addon.split('-'))
+    .map(([name, price]) => +price.trim())
+    .reduce((acc, curr) => acc + curr, 0);
+
+// Get total for each date
+export function getDateTotal(details: DateTotal[]) {
+  return details.reduce((acc, curr) => {
+    if (!acc.some((detail) => detail.date === curr.date)) {
+      return [...acc, curr];
+    } else {
+      return acc.map((detail) => {
+        if (detail.date === curr.date) {
+          return {
+            ...detail,
+            total: detail.total + curr.total,
+          };
+        } else {
+          return detail;
+        }
+      });
+    }
+  }, [] as DateTotal[]);
+}
 
 // https://api.sporkbox.app
 // https://api.sporkbox.octib.com

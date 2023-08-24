@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { useUser } from "@context/User";
-import ShiftChangeModal from "./ShiftChangeModal";
-import { formatCurrencyToUSD } from "@utils/index";
-import styles from "@styles/generic/Profile.module.css";
-import LinkButton from "@components/layout/LinkButton";
-import ModalContainer from "@components/layout/ModalContainer";
+import { useState } from 'react';
+import { useUser } from '@context/User';
+import ShiftChangeModal from './ShiftChangeModal';
+import { numberToUSD } from '@utils/index';
+import styles from '@styles/generic/Profile.module.css';
+import LinkButton from '@components/layout/LinkButton';
+import ModalContainer from '@components/layout/ModalContainer';
 
 export default function Profile() {
   // Hooks
@@ -21,28 +21,27 @@ export default function Profile() {
           </p>
 
           {customer.companies
-            .filter((company) => company.status === "ACTIVE")
+            .filter((company) => company.status === 'ACTIVE')
             .map((company, index) => (
               <div key={index}>
                 <p className={styles.shift}>
                   Shift: <span>{company.shift}</span>
                 </p>
                 <p>
-                  Budget:{" "}
-                  <span>{formatCurrencyToUSD(company.shiftBudget)}</span>
+                  Budget: <span>{numberToUSD(company.shiftBudget)}</span>
                 </p>
                 <p>
-                  Address:{" "}
+                  Address:{' '}
                   <span>
                     {company.address.addressLine2 ? (
                       <>
-                        {company.address.addressLine1},{" "}
-                        {company.address.addressLine2}, {company.address.city},{" "}
+                        {company.address.addressLine1},{' '}
+                        {company.address.addressLine2}, {company.address.city},{' '}
                         {company.address.state} {company.address.zip}
                       </>
                     ) : (
                       <>
-                        {company.address.addressLine1}, {company.address.city},{" "}
+                        {company.address.addressLine1}, {company.address.city},{' '}
                         {company.address.state} {company.address.zip}
                       </>
                     )}
@@ -144,28 +143,28 @@ export default function Profile() {
                 the menu will show all of your upcoming and delivered orders.
               </li>
               <li>
-                If you need to modify an order, contact{" "}
-                <a href="mailto: portland@sporkbytes.com">
+                If you need to modify an order, contact{' '}
+                <a href='mailto: portland@sporkbytes.com'>
                   portland@sporkbytes.com
-                </a>{" "}
+                </a>{' '}
                 as soon as possible.
               </li>
             </ul>
           </div>
 
           <a
-            target="_blank"
-            rel="noreferrer"
+            target='_blank'
+            rel='noreferrer'
             className={styles.video_link}
-            href="https://www.loom.com/share/f2074c4c42ba4e95a524485716ea5fe0"
+            href='https://www.loom.com/share/f2074c4c42ba4e95a524485716ea5fe0'
           >
-            Watch a video on how Spork Box works here!{" "}
+            Watch a video on how Spork Box works here!{' '}
           </a>
 
           <LinkButton
-            target="_blank"
-            linkText="Leave feedback"
-            href="https://form.typeform.com/to/Xzws3eDc"
+            target='_blank'
+            linkText='Leave feedback'
+            href='https://form.typeform.com/to/Xzws3eDc'
           />
         </div>
       </div>

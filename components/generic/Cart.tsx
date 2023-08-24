@@ -7,9 +7,11 @@ import styles from '@styles/generic/Cart.module.css';
 import ButtonLoader from '@components/layout/ButtonLoader';
 import {
   axiosInstance,
-  convertDateToText,
-  formatCurrencyToUSD,
+  dateToText,
+  numberToUSD,
+  getAddonsTotal,
   showErrorAlert,
+  getDateTotal,
 } from '@utils/index';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
@@ -30,7 +32,7 @@ export default function Cart() {
     checkoutCart,
     totalCartPrice,
     removeItemFromCart,
-    upcomingOrdersTotal,
+    upcomingOrderDetails,
   } = useCart();
   const { customer } = useUser();
   const { setAlerts } = useAlert();
@@ -44,37 +46,75 @@ export default function Cart() {
 
   // Get payable amount
   if (customer) {
-    // Get the discount amount
-    const discountAmount = appliedDiscount?.value || 0;
+    // Get everyday cart total
+    const cartDateTotalDetails = cartItems.map((cartItem) => {
+      // Get optional addons total
+      const optionalAddonsPrice = getAddonsTotal(cartItem.optionalAddons);
+
+      // Get required addons total
+      const requiredAddonsPrice = getAddonsTotal(cartItem.requiredAddons);
+
+      // Get total addons price
+      const totalAddonsPrice =
+        (optionalAddonsPrice || 0) + (requiredAddonsPrice || 0);
+
+      return {
+        date: cartItem.deliveryDate,
+        total: cartItem.price * cartItem.quantity + totalAddonsPrice,
+      };
+    });
+
+    // Get cart item date and total details
+    const cartItemDetails = getDateTotal(cartDateTotalDetails);
 
     // Get company
     const company = customer.companies.find(
       (company) => company.status === 'ACTIVE'
     );
 
-    // Get number of cart days
-    const cartDaysCount = cartItems
-      .map((cartItem) => cartItem.deliveryDate)
-      .filter((date, index, dates) => dates.indexOf(date) === index).length;
-
     if (company) {
       // Get shift budget
       const shiftBudget = company.shiftBudget;
 
-      // Get total shift budget
-      const totalShiftBudget = shiftBudget * cartDaysCount;
+      // Get total payable amount
+      const totalPayableAmount = cartItemDetails
+        .map((cartItemDetail) => {
+          if (
+            !upcomingOrderDetails.some(
+              (upcomingOrderDetail) =>
+                upcomingOrderDetail.date === cartItemDetail.date
+            )
+          ) {
+            return {
+              date: cartItemDetail.date,
+              payable: cartItemDetail.total - shiftBudget,
+            };
+          } else {
+            // Get upcoming order date and total detail
+            const upcomingOrderDetail = upcomingOrderDetails.find(
+              (el) => el.date === cartItemDetail.date
+            );
 
-      // Get cart total without the discount amount
-      const cartTotalWithoutDiscount = totalCartPrice - discountAmount;
+            // Get order total for the day
+            const upcomingDayOrderTotal = upcomingOrderDetail?.total || 0;
 
-      if (totalShiftBudget > upcomingOrdersTotal) {
-        // Get stipend amount
-        const stipendAmount = totalShiftBudget - upcomingOrdersTotal;
+            return {
+              date: cartItemDetail.date,
+              payable:
+                upcomingDayOrderTotal >= shiftBudget
+                  ? cartItemDetail.total
+                  : cartItemDetail.total - upcomingDayOrderTotal,
+            };
+          }
+        })
+        .filter((detail) => detail.payable > 0)
+        .reduce((acc, curr) => acc + curr.payable, 0);
 
-        payableAmount = cartTotalWithoutDiscount - stipendAmount;
-      } else {
-        payableAmount = cartTotalWithoutDiscount;
-      }
+      // Get the discount amount
+      const discountAmount = appliedDiscount?.value || 0;
+
+      // Update payable amount
+      payableAmount = totalPayableAmount - discountAmount;
     }
   }
 
@@ -132,8 +172,6 @@ export default function Cart() {
     setAppliedDiscount(localDiscount ? JSON.parse(localDiscount) : null);
   }, [customer, router.isReady]);
 
-  // console.log(payableAmount, upcomingOrdersTotal);
-
   return (
     <section className={styles.cart}>
       {cartItems.length === 0 && <h2>No items in basket</h2>}
@@ -171,13 +209,13 @@ export default function Cart() {
                     </p>
                     <p className={styles.price}>
                       Total:{' '}
-                      {formatCurrencyToUSD(
+                      {numberToUSD(
                         cartItem.price * cartItem.quantity + cartItem.addonPrice
                       )}
                     </p>
                     <p className={styles.date}>
                       Delivery date:{' '}
-                      <span>{convertDateToText(cartItem.deliveryDate)}</span> -{' '}
+                      <span>{dateToText(cartItem.deliveryDate)}</span> -{' '}
                       <span className={styles.shift}>{cartItem.shift}</span>
                     </p>
                   </a>
@@ -228,7 +266,7 @@ export default function Cart() {
             {isLoading ? (
               <ButtonLoader />
             ) : payableAmount > 0 ? (
-              `Checkout • ${formatCurrencyToUSD(payableAmount)} USD`
+              `Checkout • ${numberToUSD(payableAmount)} USD`
             ) : (
               'Place order'
             )}

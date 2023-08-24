@@ -8,13 +8,15 @@ import {
   ICartContext,
   CustomAxiosError,
   IContextProviderProps,
+  DateTotal,
 } from 'types';
 import {
   axiosInstance,
-  convertDateToMS,
-  formatNumberToUS,
+  dateToMS,
+  toUSNumber,
   showErrorAlert,
   showSuccessAlert,
+  getDateTotal,
 } from '@utils/index';
 import { useState, useEffect, useContext, createContext } from 'react';
 
@@ -42,6 +44,22 @@ export default function CartProvider({ children }: IContextProviderProps) {
     );
   }, [customer, router.isReady]);
 
+  // Get upcoming orders that matches cart item dates
+  const upcomingDateTotalDetails = customerUpcomingOrders.data
+    .filter((upcomingOrder) =>
+      cartItems.some(
+        (cartItem) =>
+          cartItem.deliveryDate === dateToMS(upcomingOrder.delivery.date)
+      )
+    )
+    .map((upcomingOrder) => ({
+      date: dateToMS(upcomingOrder.delivery.date),
+      total: upcomingOrder.item.total,
+    }));
+
+  // Get upcoming order date and total details
+  const upcomingOrderDetails = getDateTotal(upcomingDateTotalDetails);
+
   // Calculate total quantity
   const totalCartQuantity = cartItems.reduce(
     (acc, item) => acc + item.quantity,
@@ -51,18 +69,9 @@ export default function CartProvider({ children }: IContextProviderProps) {
   // Calculate total price
   const totalCartPrice = cartItems.reduce(
     (acc, item) =>
-      formatNumberToUS(acc + item.addonPrice + item.price * item.quantity),
+      toUSNumber(acc + item.addonPrice + item.price * item.quantity),
     0
   );
-
-  // Get upcoming orders total for cart dates
-  const upcomingOrdersTotal = customerUpcomingOrders.data
-    .filter((order) =>
-      cartItems
-        .map((cartItem) => cartItem.deliveryDate)
-        .some((cartDate) => cartDate === convertDateToMS(order.delivery.date))
-    )
-    .reduce((acc, curr) => acc + curr.item.total, 0);
 
   // Add item to cart
   function addItemToCart(initialItem: ICartItem, item: IItem) {
@@ -220,7 +229,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
         totalCartPrice,
         totalCartQuantity,
         removeItemFromCart,
-        upcomingOrdersTotal,
+        upcomingOrderDetails,
       }}
     >
       {children}

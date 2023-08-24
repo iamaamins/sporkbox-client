@@ -1,15 +1,15 @@
-import Link from "next/link";
-import Image from "next/image";
-import { useData } from "@context/Data";
-import { useAlert } from "@context/Alert";
-import { IoMdRemove } from "react-icons/io";
+import Link from 'next/link';
+import Image from 'next/image';
+import { useData } from '@context/Data';
+import { useAlert } from '@context/Alert';
+import { IoMdRemove } from 'react-icons/io';
 import {
   getDate,
   getDay,
-  convertDateToMS,
+  dateToMS,
   handleRemoveFromFavorite,
-} from "@utils/index";
-import styles from "@styles/generic/Favorite.module.css";
+} from '@utils/index';
+import styles from '@styles/generic/Favorite.module.css';
 
 export default function Favorite() {
   // Hooks
@@ -36,7 +36,7 @@ export default function Favorite() {
               <div key={customerFavoriteItem._id} className={styles.item}>
                 <div className={styles.details}>
                   <p className={styles.item_description}>
-                    {customerFavoriteItem.item.name} from{" "}
+                    {customerFavoriteItem.item.name} from{' '}
                     {customerFavoriteItem.restaurant.name}
                   </p>
 
@@ -54,7 +54,7 @@ export default function Favorite() {
                             customerFavoriteItem.restaurant._id && (
                             <span key={index}>
                               <Link
-                                href={`/place-order/${convertDateToMS(
+                                href={`/place-order/${dateToMS(
                                   upcomingRestaurant.date
                                 )}/${upcomingRestaurant.company.shift}/${
                                   customerFavoriteItem.restaurant._id
@@ -83,8 +83,8 @@ export default function Favorite() {
                     src={customerFavoriteItem.item.image}
                     height={2}
                     width={3}
-                    layout="responsive"
-                    objectFit="cover"
+                    layout='responsive'
+                    objectFit='cover'
                   />
 
                   <div

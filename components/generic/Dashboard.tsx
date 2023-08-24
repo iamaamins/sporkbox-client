@@ -6,11 +6,7 @@ import { useData } from '@context/Data';
 import { useAlert } from '@context/Alert';
 import styles from '@styles/generic/Dashboard.module.css';
 import ActionButton from '@components/layout/ActionButton';
-import {
-  axiosInstance,
-  formatCurrencyToUSD,
-  showErrorAlert,
-} from '@utils/index';
+import { axiosInstance, numberToUSD, showErrorAlert } from '@utils/index';
 
 export default function Dashboard() {
   // Hooks

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { IReorderAbleItemsProps } from 'types';
 import { HiBadgeCheck } from 'react-icons/hi';
-import { formatCurrencyToUSD } from '@utils/index';
+import { numberToUSD } from '@utils/index';
 import { RiDeleteBack2Fill } from 'react-icons/ri';
 import styles from '@styles/admin/ReorderAbleItems.module.css';
 import {
@@ -63,9 +63,7 @@ export default function ReorderAbleItems({
                     <RiDeleteBack2Fill className={styles.archive_icon} />
                   )}
                 </p>
-                <p className={styles.price}>
-                  {formatCurrencyToUSD(item.price)}
-                </p>
+                <p className={styles.price}>{numberToUSD(item.price)}</p>
                 <p className={styles.description}>{item.description}</p>
               </div>
 

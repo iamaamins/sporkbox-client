@@ -10,7 +10,7 @@ import {
 } from 'types';
 import {
   axiosInstance,
-  convertDateToText,
+  dateToText,
   showErrorAlert,
   showSuccessAlert,
 } from '@utils/index';
@@ -223,7 +223,7 @@ export default function ScheduledRestaurants({
                     <Link
                       href={`/admin/restaurants/${scheduledRestaurant._id}`}
                     >
-                      <a>{convertDateToText(scheduledRestaurant.date)}</a>
+                      <a>{dateToText(scheduledRestaurant.date)}</a>
                     </Link>
                   </td>
                   <td>{scheduledRestaurant.name}</td>

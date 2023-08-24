@@ -1,6 +1,6 @@
-import { ICustomerOrdersProps } from "types";
-import styles from "@styles/generic/CustomerOrders.module.css";
-import { convertDateToText, formatCurrencyToUSD } from "@utils/index";
+import { ICustomerOrdersProps } from 'types';
+import styles from '@styles/generic/CustomerOrders.module.css';
+import { dateToText, numberToUSD } from '@utils/index';
 
 export default function CustomerOrders({
   orders,
@@ -44,7 +44,7 @@ export default function CustomerOrders({
         <tbody>
           {orders.map((order, index) => (
             <tr key={index}>
-              <td>{convertDateToText(order.delivery.date)}</td>
+              <td>{dateToText(order.delivery.date)}</td>
               <td>{order.item.name}</td>
               {hasOptionalAddons && (
                 <td className={`${styles.hide_on_mobile} ${styles.addons}`}>
@@ -67,7 +67,7 @@ export default function CustomerOrders({
               )}
               <td>{order.item.quantity}</td>
               <td className={styles.hide_on_mobile}>{order.restaurant.name}</td>
-              <td>{formatCurrencyToUSD(order.item.total)}</td>
+              <td>{numberToUSD(order.item.total)}</td>
             </tr>
           ))}
         </tbody>

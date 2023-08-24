@@ -224,12 +224,17 @@ export interface IDataContext {
   setCustomerFavoriteItems: Dispatch<SetStateAction<ICustomerFavoriteItems>>;
 }
 
+interface DateTotal {
+  date: number;
+  total: number;
+}
+
 export interface ICartContext {
   cartItems: ICartItem[];
   isLoading: boolean;
   totalCartPrice: number;
   totalCartQuantity: number;
-  upcomingOrdersTotal: number;
+  upcomingOrderDetails: DateTotal[];
   removeItemFromCart: (item: ICartItem) => void;
   setCartItems: Dispatch<SetStateAction<ICartItem[]>>;
   checkoutCart: (discountCodeId?: string) => Promise<void>;

@@ -8,9 +8,9 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import {
   splitTags,
   formatAddons,
-  convertDateToMS,
-  convertDateToText,
-  formatCurrencyToUSD,
+  dateToMS,
+  dateToText,
+  numberToUSD,
   showErrorAlert,
 } from '@utils/index';
 import {
@@ -65,8 +65,7 @@ export default function Item() {
       // Find the restaurant
       const upcomingRestaurant = upcomingRestaurants.data.find(
         (upcomingRestaurant) =>
-          convertDateToMS(upcomingRestaurant.date).toString() ===
-            router.query.date &&
+          dateToMS(upcomingRestaurant.date).toString() === router.query.date &&
           upcomingRestaurant._id === router.query.restaurant &&
           upcomingRestaurant.company.shift === router.query.shift
       );
@@ -76,7 +75,7 @@ export default function Item() {
         setUpcomingRestaurant(upcomingRestaurant);
 
         // Get the date
-        const deliveryDate = convertDateToMS(upcomingRestaurant.date);
+        const deliveryDate = dateToMS(upcomingRestaurant.date);
 
         // Find the item
         const item = upcomingRestaurant.items.find(
@@ -331,7 +330,7 @@ export default function Item() {
           <div className={styles.details_controller_and_button}>
             <div className={styles.item_details}>
               <p className={styles.item_name}>
-                {item.name} - {formatCurrencyToUSD(item.price)}
+                {item.name} - {numberToUSD(item.price)}
               </p>
               <p className={styles.item_description}>{item.description}</p>
               <p className={styles.tags}>
@@ -341,8 +340,7 @@ export default function Item() {
               </p>
 
               <p className={styles.delivery_date}>
-                Delivery date -{' '}
-                {convertDateToText(+(router.query.date as string))}
+                Delivery date - {dateToText(+(router.query.date as string))}
               </p>
 
               {item.optionalAddons.addons && (
@@ -391,7 +389,7 @@ export default function Item() {
               onClick={() => addItemToCart(initialItem, item)}
             >
               Add {quantity} to basket •{' '}
-              {formatCurrencyToUSD(quantity * price + addonPrice)} USD
+              {numberToUSD(quantity * price + addonPrice)} USD
             </button>
           </div>
         </>

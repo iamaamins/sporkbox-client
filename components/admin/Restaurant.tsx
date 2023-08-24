@@ -14,7 +14,7 @@ import {
   updateVendors,
   showErrorAlert,
   showSuccessAlert,
-  formatCurrencyToUSD,
+  numberToUSD,
 } from '@utils/index';
 import { useAlert } from '@context/Alert';
 import ReorderAbleItems from './ReorderAbleItems';
@@ -232,7 +232,7 @@ export default function Restaurant() {
                                 )}
                               </p>
                               <p className={styles.price}>
-                                {formatCurrencyToUSD(item.price)}
+                                {numberToUSD(item.price)}
                               </p>
                               <p className={styles.description}>
                                 {item.description}

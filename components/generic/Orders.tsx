@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { ICustomerOrderProps } from "types";
-import { convertDateToText } from "@utils/index";
-import styles from "@styles/generic/Orders.module.css";
+import Link from 'next/link';
+import { ICustomerOrderProps } from 'types';
+import { dateToText } from '@utils/index';
+import styles from '@styles/generic/Orders.module.css';
 
 export default function Orders({ orders }: ICustomerOrderProps) {
   return (
@@ -21,7 +21,7 @@ export default function Orders({ orders }: ICustomerOrderProps) {
           <tr key={order._id}>
             <td className={styles.important}>
               <Link href={`/dashboard/${order._id}`}>
-                <a>{convertDateToText(order.delivery.date)}</a>
+                <a>{dateToText(order.delivery.date)}</a>
               </Link>
             </td>
             <td className={styles.shift}>{order.company.shift}</td>

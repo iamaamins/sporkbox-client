@@ -7,7 +7,7 @@ import { FormEvent, useEffect, useState } from 'react';
 import {
   axiosInstance,
   formatAddons,
-  formatCurrencyToUSD,
+  numberToUSD,
   showErrorAlert,
   showSuccessAlert,
   splitTags,
@@ -115,7 +115,7 @@ export default function Item() {
           <div className={styles.item_details}>
             <p className={styles.name}>{item.name}</p>
             <p className={styles.description}>{item.description}</p>
-            <p className={styles.price}>{formatCurrencyToUSD(item.price)}</p>
+            <p className={styles.price}>{numberToUSD(item.price)}</p>
             <p className={styles.tags}>
               {splitTags(item.tags).map((tag, index) => (
                 <span key={index}>{tag}</span>

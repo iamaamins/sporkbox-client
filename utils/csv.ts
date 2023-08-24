@@ -1,73 +1,73 @@
-import { IOrderData, ICompany, ICustomer, IOrdersGroup } from "types";
-import { convertDateToText, formatCurrencyToUSD } from "@utils/index";
+import { IOrderData, ICompany, ICustomer, IOrdersGroup } from 'types';
+import { dateToText, numberToUSD } from '@utils/index';
 
 // Order headers
 export const orderHeaders = [
   {
-    label: "Delivery date",
-    key: "deliveryDate",
+    label: 'Delivery date',
+    key: 'deliveryDate',
   },
   {
-    label: "Company",
-    key: "companyName",
+    label: 'Company',
+    key: 'companyName',
   },
   {
-    label: "Shift",
-    key: "shift",
+    label: 'Shift',
+    key: 'shift',
   },
   {
-    label: "First name",
-    key: "firstName",
+    label: 'First name',
+    key: 'firstName',
   },
   {
-    label: "Last name",
-    key: "lastName",
+    label: 'Last name',
+    key: 'lastName',
   },
   {
-    label: "Email",
-    key: "customerEmail",
+    label: 'Email',
+    key: 'customerEmail',
   },
   {
-    label: "Restaurant",
-    key: "restaurantName",
+    label: 'Restaurant',
+    key: 'restaurantName',
   },
   {
-    label: "Item",
-    key: "itemName",
+    label: 'Item',
+    key: 'itemName',
   },
   {
-    label: "Quantity",
-    key: "quantity",
+    label: 'Quantity',
+    key: 'quantity',
   },
   {
-    label: "Dietary Tags",
-    key: "tags",
+    label: 'Dietary Tags',
+    key: 'tags',
   },
   {
-    label: "Optional addons",
-    key: "optionalAddons",
+    label: 'Optional addons',
+    key: 'optionalAddons',
   },
   {
-    label: "Required addons",
-    key: "requiredAddons",
+    label: 'Required addons',
+    key: 'requiredAddons',
   },
   {
-    label: "Removed ingredients",
-    key: "removedIngredients",
+    label: 'Removed ingredients',
+    key: 'removedIngredients',
   },
   {
-    label: "Description",
-    key: "description",
+    label: 'Description',
+    key: 'description',
   },
   {
-    label: "Price",
-    key: "price",
+    label: 'Price',
+    key: 'price',
   },
 ];
 
 // Order file name
 export const orderFileName = (ordersGroup: IOrdersGroup) =>
-  `${ordersGroup.company.name} - ${ordersGroup.deliveryDate.split("T")[0]}.csv`;
+  `${ordersGroup.company.name} - ${ordersGroup.deliveryDate.split('T')[0]}.csv`;
 
 // Order data
 export const orderData = (ordersGroup: IOrdersGroup) =>
@@ -87,7 +87,7 @@ export const orderData = (ordersGroup: IOrdersGroup) =>
       optionalAddons: curr.item.optionalAddons,
       requiredAddons: curr.item.requiredAddons,
       removedIngredients: curr.item.removedIngredients,
-      deliveryDate: convertDateToText(curr.delivery.date),
+      deliveryDate: dateToText(curr.delivery.date),
       shift: `${curr.company.shift[0].toUpperCase()}${curr.company.shift.slice(
         1
       )}`,
@@ -95,7 +95,7 @@ export const orderData = (ordersGroup: IOrdersGroup) =>
 
     if (order.quantity === 1) {
       // Format price and add order to acc
-      return [...acc, { ...order, price: formatCurrencyToUSD(order.price) }];
+      return [...acc, { ...order, price: numberToUSD(order.price) }];
     } else {
       // Create orders array
       let orders = [];
@@ -106,7 +106,7 @@ export const orderData = (ordersGroup: IOrdersGroup) =>
         orders.push({
           ...order,
           quantity: 1,
-          price: formatCurrencyToUSD(order.price / order.quantity),
+          price: numberToUSD(order.price / order.quantity),
         });
       }
 
@@ -118,20 +118,20 @@ export const orderData = (ordersGroup: IOrdersGroup) =>
 // Customer header
 export const customerHeaders = [
   {
-    label: "First Name",
-    key: "firstName",
+    label: 'First Name',
+    key: 'firstName',
   },
   {
-    label: "Last Name",
-    key: "lastName",
+    label: 'Last Name',
+    key: 'lastName',
   },
   {
-    label: "Email",
-    key: "email",
+    label: 'Email',
+    key: 'email',
   },
   {
-    label: "Status",
-    key: "status",
+    label: 'Status',
+    key: 'status',
   },
 ];
 

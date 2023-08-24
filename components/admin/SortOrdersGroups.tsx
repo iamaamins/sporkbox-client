@@ -1,4 +1,4 @@
-import { convertDateToMS } from '@utils/index';
+import { dateToMS } from '@utils/index';
 import { useEffect, useState } from 'react';
 import { ISortOrdersGroupsProps } from 'types';
 import styles from '@styles/admin/SortOrdersGroups.module.css';
@@ -25,8 +25,7 @@ export default function SortOrdersGroups({
 
     if (category === 'deliveryDate') {
       ordersGroups.sort(
-        (a, b) =>
-          convertDateToMS(a.deliveryDate) - convertDateToMS(b.deliveryDate)
+        (a, b) => dateToMS(a.deliveryDate) - dateToMS(b.deliveryDate)
       );
 
       setSorted((prevState) => ({

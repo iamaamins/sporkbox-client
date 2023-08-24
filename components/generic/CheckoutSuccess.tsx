@@ -1,10 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import {
-  axiosInstance,
-  formatCurrencyToUSD,
-  showErrorAlert,
-} from '@utils/index';
+import { axiosInstance, numberToUSD, showErrorAlert } from '@utils/index';
 import { CustomAxiosError } from 'types';
 import { useUser } from '@context/User';
 import { useCart } from '@context/Cart';
@@ -70,7 +66,7 @@ export default function CheckoutSuccess() {
 
           <div className={styles.details}>
             <p>Total amount paid</p>
-            <p>{formatCurrencyToUSD(paidAmount / 100)}</p>
+            <p>{numberToUSD(paidAmount / 100)}</p>
           </div>
         </>
       )}
