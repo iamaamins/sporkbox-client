@@ -1,19 +1,68 @@
 import { useState } from 'react';
 import { useUser } from '@context/User';
 import ShiftChangeModal from './ShiftChangeModal';
-import { numberToUSD } from '@utils/index';
+import {
+  axiosInstance,
+  numberToUSD,
+  showErrorAlert,
+  showSuccessAlert,
+} from '@utils/index';
 import styles from '@styles/generic/Profile.module.css';
 import LinkButton from '@components/layout/LinkButton';
 import ModalContainer from '@components/layout/ModalContainer';
+import { CustomAxiosError } from 'types';
+import { useAlert } from '@context/Alert';
+import ButtonLoader from '@components/layout/ButtonLoader';
 
 export default function Profile() {
   // Hooks
-  const { customer } = useUser();
+  const { customer, setCustomer } = useUser();
+  const { setAlerts } = useAlert();
+  const [isLoading, setIsLoading] = useState(false);
   const [showShiftChangeModal, setShowShiftChangeModal] = useState(false);
+
+  // Check if customer is subscribed to at least one email
+  const isSubscribed =
+    customer && Object.values(customer.subscribedTo).includes(true);
 
   // Opt-in and opt-out automated emails
   async function handleEmailSubscriptions() {
-    console.log('Hello');
+    // Return if no customer
+    if (!customer) return;
+
+    try {
+      // Show loader
+      setIsLoading(true);
+
+      // Make request to backend
+      const response = await axiosInstance.patch(
+        `/customers/${customer._id}/update-email-subscriptions`,
+        {
+          isSubscribed,
+        }
+      );
+
+      // Update state
+      setCustomer(
+        (prevState) =>
+          prevState && {
+            ...prevState,
+            subscribedTo: response.data.subscribedTo,
+          }
+      );
+
+      // Show success alert
+      showSuccessAlert('Subscriptions updated', setAlerts);
+    } catch (err) {
+      // Log error
+      console.log(err);
+
+      // Show error alert
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      // Remove loader
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -62,7 +111,15 @@ export default function Profile() {
               </button>
             )}
 
-            <button onClick={handleEmailSubscriptions}>Opt-in emails</button>
+            <button onClick={handleEmailSubscriptions}>
+              {isLoading ? (
+                <ButtonLoader />
+              ) : isSubscribed ? (
+                'Opt-out emails'
+              ) : (
+                'Opt-in emails'
+              )}
+            </button>
           </div>
         </div>
       )}

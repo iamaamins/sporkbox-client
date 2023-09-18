@@ -17,6 +17,9 @@ export interface ICustomer extends IUser {
   shifts: string[];
   createdAt: string;
   companies: ICompany[];
+  subscribedTo: {
+    orderReminder: boolean;
+  };
 }
 
 export interface IVendor extends IUser {
