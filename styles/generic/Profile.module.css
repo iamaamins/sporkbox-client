@@ -24,7 +24,12 @@
   text-transform: capitalize;
 }
 
-.details button {
+.buttons {
+  display: flex;
+  align-items: center;
+}
+
+.buttons button {
   border: none;
   display: flex;
   cursor: pointer;
@@ -37,6 +42,12 @@
   padding: 0rem 1.15rem;
   border-radius: 0.25rem;
   justify-content: center;
+  background: var(--black);
+  color: var(--almost_white);
+}
+
+.buttons button:first-child {
+  margin-right: 1rem;
   background: var(--orange);
   color: var(--almost_white);
 }

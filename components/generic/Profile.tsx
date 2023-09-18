@@ -11,6 +11,11 @@ export default function Profile() {
   const { customer } = useUser();
   const [showShiftChangeModal, setShowShiftChangeModal] = useState(false);
 
+  // Opt-in and opt-out automated emails
+  async function handleEmailSubscriptions() {
+    console.log('Hello');
+  }
+
   return (
     <section className={styles.profile}>
       {customer && (
@@ -50,11 +55,15 @@ export default function Profile() {
               </div>
             ))}
 
-          {customer.shifts.length > 0 && (
-            <button onClick={() => setShowShiftChangeModal(true)}>
-              Select shift
-            </button>
-          )}
+          <div className={styles.buttons}>
+            {customer.shifts.length > 0 && (
+              <button onClick={() => setShowShiftChangeModal(true)}>
+                Select shift
+              </button>
+            )}
+
+            <button onClick={handleEmailSubscriptions}>Opt-in emails</button>
+          </div>
         </div>
       )}
 
