@@ -44,7 +44,7 @@ export default function Footer() {
           <address className={styles.items}>
             <a href="tel:503-821-7709">Call us</a>
             <a href="mailto:hellopdx@sporkbytes.com">Email us</a>
-            <p>901 SE Oak St Portland, OR 97214</p>
+            <p>777 NE 7th Ave Portland, OR 97232</p>
 
             <div className={styles.social}>
               <a
