@@ -230,7 +230,7 @@ export default function Profile() {
           <LinkButton
             target='_blank'
             linkText='Leave feedback'
-            href='https://form.typeform.com/to/Xzws3eDc'
+            href='https://docs.google.com/forms/d/e/1FAIpQLScEX27Y29aUk3af86VlHxUKTRFj9L00GSclzDn5wTqJUwnylw/viewform?usp=sf_link'
           />
         </div>
       </div>
