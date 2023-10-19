@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { IRestaurantFormProps } from 'types';
+import { RestaurantFormProps } from 'types';
 import { FiUpload } from 'react-icons/fi';
 import { formatImageName } from '@utils/index';
 import { RiDeleteBinLine } from 'react-icons/ri';
@@ -14,7 +14,7 @@ export default function RestaurantForm({
   buttonText,
   handleSubmit,
   showPasswordFields,
-}: IRestaurantFormProps) {
+}: RestaurantFormProps) {
   // Hooks
   const logoRef = useRef<HTMLDivElement>(null);
   const [logoHeight, setLogoHeight] = useState(0);

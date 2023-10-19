@@ -1,4 +1,4 @@
-import { IOrderData, ICompany, ICustomer, IOrdersGroup } from 'types';
+import { OrderData, Company, Customer, OrdersGroup } from 'types';
 import { dateToText, numberToUSD } from '@utils/index';
 
 // Order headers
@@ -66,11 +66,11 @@ export const orderHeaders = [
 ];
 
 // Order file name
-export const orderFileName = (ordersGroup: IOrdersGroup) =>
+export const orderFileName = (ordersGroup: OrdersGroup) =>
   `${ordersGroup.company.name} - ${ordersGroup.deliveryDate.split('T')[0]}.csv`;
 
 // Order data
-export const orderData = (ordersGroup: IOrdersGroup) =>
+export const orderData = (ordersGroup: OrdersGroup) =>
   ordersGroup.orders.reduce((acc, curr) => {
     // Create order
     const order = {
@@ -113,7 +113,7 @@ export const orderData = (ordersGroup: IOrdersGroup) =>
       // Return the acc with created orders
       return [...acc, ...orders];
     }
-  }, [] as IOrderData[]);
+  }, [] as OrderData[]);
 
 // Customer header
 export const customerHeaders = [
@@ -136,13 +136,13 @@ export const customerHeaders = [
 ];
 
 // Customer file name
-export const customerFileName = (company: ICompany) =>
+export const customerFileName = (company: Company) =>
   `Customer info - ${
     company.name
   } - ${company.shift[0].toUpperCase()}${company.shift.slice(1)} shift`;
 
 // Customer data
-export const customerData = (customers: ICustomer[]) =>
+export const customerData = (customers: Customer[]) =>
   customers.map((customer) => ({
     firstName: customer.firstName,
     lastName: customer.lastName,

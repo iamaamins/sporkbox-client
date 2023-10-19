@@ -1,12 +1,12 @@
 import { dateToMS } from '@utils/index';
 import { useEffect, useState } from 'react';
-import { ISortOrdersGroupsProps } from 'types';
+import { SortOrdersGroupsProps } from 'types';
 import styles from '@styles/admin/SortOrdersGroups.module.css';
 
 export default function SortOrdersGroups({
   setSorted,
   ordersGroups,
-}: ISortOrdersGroupsProps) {
+}: SortOrdersGroupsProps) {
   // Hooks
   const [category, setCategory] = useState('');
 

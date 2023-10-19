@@ -11,11 +11,11 @@ import {
   showSuccessAlert,
   updateCustomers,
 } from '@utils/index';
-import { CustomAxiosError, ICustomersProps } from 'types';
+import { CustomAxiosError, CustomersProps } from 'types';
 import styles from '@styles/admin/Customers.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
 
-export default function Customers({ status, customers }: ICustomersProps) {
+export default function Customers({ status, customers }: CustomersProps) {
   // Hooks
   const router = useRouter();
   const { setAlerts } = useAlert();

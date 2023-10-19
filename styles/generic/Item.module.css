@@ -48,18 +48,25 @@
   margin-bottom: 0.5rem;
 }
 
-.addons_and_removable_items {
+.addons,
+.removable_ingredients {
   display: flex;
   align-items: center;
 }
 
-.addons_and_removable_item {
+.addons {
+  margin-bottom: 1rem;
+}
+
+.addons_item,
+.removable_ingredients_item {
   display: flex;
   align-items: center;
   margin-right: 1rem;
 }
 
-.addons_and_removable_item label {
+.addons_item label,
+.removable_ingredients_item label {
   cursor: pointer;
   color: var(--gray);
   margin-left: 0.5rem;

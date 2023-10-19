@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { CSVLink } from 'react-csv';
-import { IOrdersGroupRowProps } from 'types';
+import { OrdersGroupRowProps } from 'types';
 import { FiDownload } from 'react-icons/fi';
 import styles from '@styles/admin/OrdersGroupRow.module.css';
 import { dateToMS, dateToText } from '@utils/index';
@@ -9,7 +9,7 @@ import { orderData, orderFileName, orderHeaders } from '@utils/csv';
 export default function OrdersGroupRow({
   slug,
   ordersGroup,
-}: IOrdersGroupRowProps) {
+}: OrdersGroupRowProps) {
   return (
     <tr className={styles.orders_group_row}>
       <td className={styles.important}>

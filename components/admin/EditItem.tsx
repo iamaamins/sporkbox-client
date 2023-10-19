@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
 import styles from '@styles/admin/EditItem.module.css';
 import { FormEvent, useEffect, useState } from 'react';
-import { IItem, CustomAxiosError, IItemFormData } from 'types';
+import { Item, CustomAxiosError, ItemFormData } from 'types';
 import {
   tags,
   splitTags,
@@ -24,14 +24,8 @@ export default function EditItem() {
     file: undefined,
     updatedTags: [],
     description: '',
-    optionalAddons: {
-      addons: '',
-      addable: 0,
-    },
-    requiredAddons: {
-      addons: '',
-      addable: 0,
-    },
+    optionalAddons: [],
+    requiredAddons: [],
     removableIngredients: '',
   };
 
@@ -39,9 +33,9 @@ export default function EditItem() {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { vendors, setVendors } = useData();
-  const [item, setItem] = useState<IItem>();
+  const [item, setItem] = useState<Item>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<IItemFormData>(initialState);
+  const [formData, setFormData] = useState<ItemFormData>(initialState);
 
   // Destructure form data
   const {
@@ -74,7 +68,10 @@ export default function EditItem() {
           currentTags: item.tags,
           description: item.description,
           optionalAddons: item.optionalAddons,
-          requiredAddons: item.requiredAddons,
+          requiredAddons:
+            item.requiredAddons.length === 2
+              ? item.requiredAddons
+              : [...item.requiredAddons, { addons: '', addable: 0 }],
           removableIngredients: item.removableIngredients,
           updatedTags: splitTags(item.tags).filter((currTag) =>
             tags.includes(currTag)

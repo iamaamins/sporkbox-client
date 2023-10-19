@@ -30,7 +30,6 @@ export default function Cart() {
     cartItems,
     isLoading,
     checkoutCart,
-    totalCartPrice,
     removeItemFromCart,
     upcomingOrderDetails,
   } = useCart();

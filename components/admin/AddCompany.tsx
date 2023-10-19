@@ -3,7 +3,7 @@ import { useData } from '@context/Data';
 import { useAlert } from '@context/Alert';
 import CompanyForm from './CompanyForm';
 import { FormEvent, useState } from 'react';
-import { CustomAxiosError, ICompanyFormData } from 'types';
+import { CustomAxiosError, CompanyFormData } from 'types';
 import {
   axiosInstance,
   showErrorAlert,
@@ -32,7 +32,7 @@ export default function AddCompany() {
   const { setAlerts } = useAlert();
   const { setCompanies } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<ICompanyFormData>(initialState);
+  const [formData, setFormData] = useState<CompanyFormData>(initialState);
 
   // Handle submit
   async function handleSubmit(e: FormEvent) {

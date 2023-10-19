@@ -5,8 +5,8 @@ import ActionModal from './ActionModal';
 import { FormEvent, useState } from 'react';
 import {
   CustomAxiosError,
-  IScheduledRestaurant,
-  IScheduledRestaurantProps,
+  ScheduledRestaurant,
+  ScheduledRestaurantProps,
 } from 'types';
 import {
   axiosInstance,
@@ -20,7 +20,7 @@ import styles from '@styles/admin/ScheduledRestaurants.module.css';
 export default function ScheduledRestaurants({
   isLoading,
   restaurants,
-}: IScheduledRestaurantProps) {
+}: ScheduledRestaurantProps) {
   // Hooks
   const { setAlerts } = useAlert();
   const { setAllUpcomingOrders, setScheduledRestaurants } = useData();
@@ -83,7 +83,7 @@ export default function ScheduledRestaurants({
 
       // Find the updated schedule
       const schedule = response.data.find(
-        (schedule: IScheduledRestaurant) =>
+        (schedule: ScheduledRestaurant) =>
           schedule.scheduleId === statusUpdatePayload.scheduleId
       );
 

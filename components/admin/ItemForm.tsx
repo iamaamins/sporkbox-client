@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { FiUpload } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
-import { IStaticTags, IItemFormProps } from 'types';
+import { StaticTags, ItemFormProps } from 'types';
 import styles from '@styles/admin/ItemForm.module.css';
 import SubmitButton from '@components/layout/SubmitButton';
 import { formatImageName, splitTags, tags } from '@utils/index';
@@ -13,7 +13,7 @@ export default function ItemForm({
   buttonText,
   setFormData,
   handleSubmit,
-}: IItemFormProps) {
+}: ItemFormProps) {
   // Initial dietary tags
   const initialStaticTags = tags.reduce(
     (acc, curr) => ({ ...acc, [curr]: false }),
@@ -23,7 +23,7 @@ export default function ItemForm({
   // Hooks
   const imageRef = useRef<HTMLDivElement>(null);
   const [imageHeight, setImageHeight] = useState(0);
-  const [staticTags, setStaticTags] = useState<IStaticTags>(initialStaticTags);
+  const [staticTags, setStaticTags] = useState<StaticTags>(initialStaticTags);
 
   // Destructure form data and check
   const {
@@ -71,7 +71,7 @@ export default function ItemForm({
               [curr]: false,
             };
           }
-        }, {} as IStaticTags)
+        }, {} as StaticTags)
       );
     }
   }, [currentTags]);
@@ -90,19 +90,22 @@ export default function ItemForm({
   // Handle change addons
   function handleChangeAddons(
     e: ChangeEvent<HTMLInputElement>,
+    addonIndex: number,
     addons: 'optionalAddons' | 'requiredAddons'
   ) {
-    // Name and value
-    const name = e.target.name;
-    const value = e.target.value;
-
     // Update state
     setFormData((prevState) => ({
       ...prevState,
-      [addons]: {
-        ...prevState[addons],
-        [name]: name === 'addable' ? +value : value,
-      },
+      [addons]: prevState[addons].map((addon, index) => {
+        if (index === addonIndex) {
+          return {
+            ...addon,
+            [e.target.name]: e.target.value,
+          };
+        } else {
+          return addon;
+        }
+      }),
     }));
   }
 
@@ -144,57 +147,69 @@ export default function ItemForm({
         />
       </div>
 
-      <div className={styles.addons}>
-        <div>
-          <label htmlFor='optionalAddons'>Optional addons</label>
-          <input
-            type='text'
-            id='optionalAddons'
-            name='addons'
-            value={optionalAddons.addons}
-            placeholder='E.g. Cheese - 2, Mayo - 0'
-            onChange={(e) => handleChangeAddons(e, 'optionalAddons')}
-          />
-        </div>
+      <>
+        <p className={styles.addons_title}>Optional addons</p>
 
-        <div>
-          <label htmlFor='optionalAddable'>Optional addable</label>
-          <input
-            type='number'
-            name='addable'
-            id='optionalAddable'
-            placeholder='E.g. 0'
-            value={optionalAddons.addable}
-            onChange={(e) => handleChangeAddons(e, 'optionalAddons')}
-          />
-        </div>
-      </div>
+        {optionalAddons.map((optionalAddon, index) => (
+          <div className={styles.addons} key={index}>
+            <div>
+              {/* <label htmlFor={`optional-addons-${index}`}>Addons</label> */}
+              <input
+                type='text'
+                // id={`optional-addons-${index}`}
+                name='addons'
+                value={optionalAddon.addons}
+                placeholder='E.g. Cheese - 2, Mayo - 0'
+                onChange={(e) => handleChangeAddons(e, index, 'optionalAddons')}
+              />
+            </div>
 
-      <div className={styles.addons}>
-        <div>
-          <label htmlFor='requiredAddons'>Required addons</label>
-          <input
-            type='text'
-            name='addons'
-            id='requiredAddons'
-            value={requiredAddons.addons}
-            placeholder='E.g. Cheese - 2, Mayo - 0'
-            onChange={(e) => handleChangeAddons(e, 'requiredAddons')}
-          />
-        </div>
+            <div>
+              {/* <label htmlFor={`optional-addable-${index}`}>Addable</label> */}
+              <input
+                type='number'
+                name='addable'
+                // id={`optional-addable-${index}`}
+                placeholder='E.g. 0'
+                value={optionalAddon.addable}
+                onChange={(e) => handleChangeAddons(e, index, 'optionalAddons')}
+              />
+            </div>
+          </div>
+        ))}
+      </>
 
-        <div>
-          <label htmlFor='requiredAddable'>Required addable</label>
-          <input
-            type='number'
-            name='addable'
-            id='requiredAddable'
-            placeholder='E.g. 0'
-            value={requiredAddons.addable}
-            onChange={(e) => handleChangeAddons(e, 'requiredAddons')}
-          />
-        </div>
-      </div>
+      <>
+        <p className={styles.addons_title}>Required addons</p>
+
+        {requiredAddons.map((requiredAddon, index) => (
+          <div className={styles.addons} key={index}>
+            <div>
+              {/* <label htmlFor={`required-addons-${index}`}>Addons</label> */}
+              <input
+                type='text'
+                name='addons'
+                // id={`required-addons-${index}`}
+                value={requiredAddon.addons}
+                placeholder='E.g. Cheese - 2, Mayo - 0'
+                onChange={(e) => handleChangeAddons(e, index, 'requiredAddons')}
+              />
+            </div>
+
+            <div>
+              {/* <label htmlFor={`required-addable-${index}`}>Addable</label> */}
+              <input
+                type='number'
+                name='addable'
+                // id={`required-addable-${index}`}
+                placeholder='E.g. 0'
+                value={requiredAddon.addable}
+                onChange={(e) => handleChangeAddons(e, index, 'requiredAddons')}
+              />
+            </div>
+          </div>
+        ))}
+      </>
 
       <div className={styles.item}>
         <label htmlFor='removableIngredients'>Removable ingredients</label>

@@ -3,25 +3,25 @@ import { useRouter } from 'next/router';
 import { axiosInstance, showErrorAlert } from '@utils/index';
 import { createContext, useContext, useEffect, useState } from 'react';
 import {
-  IAdmin,
-  ICustomer,
-  IUserContext,
+  Admin,
+  Customer,
+  UserContext,
   CustomAxiosError,
-  IContextProviderProps,
+  ContextProviderProps,
 } from 'types';
 
 // Create context
-const UserContext = createContext({} as IUserContext);
+const UserContext = createContext({} as UserContext);
 
 // Create hook
 export const useUser = () => useContext(UserContext);
 
 // Provider function
-export default function UserProvider({ children }: IContextProviderProps) {
+export default function UserProvider({ children }: ContextProviderProps) {
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const [admin, setAdmin] = useState<IAdmin | null>(null);
-  const [customer, setCustomer] = useState<ICustomer | null>(null);
+  const [admin, setAdmin] = useState<Admin | null>(null);
+  const [customer, setCustomer] = useState<Customer | null>(null);
   const [isUserLoading, setIsUserLoading] = useState<boolean>(true);
 
   // Get user

@@ -4,11 +4,11 @@ import ActionModal from './ActionModal';
 import { useAlert } from '@context/Alert';
 import { useEffect, useState } from 'react';
 import {
-  IOrder,
+  Order,
   CustomAxiosError,
-  IOrdersByRestaurant,
-  IDeliverOrdersPayload,
-  IOrdersGroupDetailsProps,
+  OrdersByRestaurant,
+  DeliverOrdersPayload,
+  OrdersGroupDetailsProps,
 } from 'types';
 import {
   axiosInstance,
@@ -25,7 +25,7 @@ import ModalContainer from '@components/layout/ModalContainer';
 export default function OrdersGroupDetails({
   isLoading,
   ordersGroups,
-}: IOrdersGroupDetailsProps) {
+}: OrdersGroupDetailsProps) {
   // Hooks
   const router = useRouter();
   const { setAlerts } = useAlert();
@@ -42,10 +42,10 @@ export default function OrdersGroupDetails({
   } = useData();
   const [isUpdatingOrdersStatus, setIsUpdatingOrdersStatus] = useState(false);
   const [ordersByRestaurants, setOrdersByRestaurants] = useState<
-    IOrdersByRestaurant[]
+    OrdersByRestaurant[]
   >([]);
   const [statusUpdatePayload, setStatusUpdatePayload] =
-    useState<IDeliverOrdersPayload>({
+    useState<DeliverOrdersPayload>({
       orders: [],
       restaurantName: '',
     });
@@ -66,7 +66,7 @@ export default function OrdersGroupDetails({
       // Separate orders for each restaurant
       if (ordersGroup) {
         setOrdersByRestaurants(
-          ordersGroup.restaurants.reduce((acc: IOrdersByRestaurant[], curr) => {
+          ordersGroup.restaurants.reduce((acc: OrdersByRestaurant[], curr) => {
             return [
               ...acc,
               {
@@ -91,7 +91,7 @@ export default function OrdersGroupDetails({
   useEffect(() => {
     if (!allUpcomingOrders.isLoading && !allDeliveredOrders.isLoading) {
       // Filter condition
-      const filterConditions = (order: IOrder) =>
+      const filterConditions = (order: Order) =>
         dateToMS(order.delivery.date).toString() === router.query.date &&
         order.company._id === router.query.company;
 
@@ -105,7 +105,7 @@ export default function OrdersGroupDetails({
       setAmount({
         paid: allOrders
           .filter((order) => order.payment)
-          .reduce((acc: IOrder[], curr) => {
+          .reduce((acc: Order[], curr) => {
             // Remove orders with duplicate payment intent
             if (
               !acc.some(
@@ -124,7 +124,7 @@ export default function OrdersGroupDetails({
   }, [allUpcomingOrders, allDeliveredOrders]);
 
   // Initiate orders delivery
-  function initiateOrdersDelivery(orders: IOrder[], restaurantName: string) {
+  function initiateOrdersDelivery(orders: Order[], restaurantName: string) {
     // Update states
     setShowDeliveryModal(true);
     setStatusUpdatePayload({
@@ -238,15 +238,15 @@ export default function OrdersGroupDetails({
   const date = dateToText(+(router.query.date as string));
 
   // Check optional addons
-  const hasOptionalAddons = (ordersByRestaurant: IOrdersByRestaurant) =>
+  const hasOptionalAddons = (ordersByRestaurant: OrdersByRestaurant) =>
     ordersByRestaurant.orders.some((order) => order.item.optionalAddons);
 
   // Check required addons
-  const hasRequiredAddons = (ordersByRestaurant: IOrdersByRestaurant) =>
+  const hasRequiredAddons = (ordersByRestaurant: OrdersByRestaurant) =>
     ordersByRestaurant.orders.some((order) => order.item.requiredAddons);
 
   // Check removed ingredients
-  const hasRemovedIngredients = (ordersByRestaurant: IOrdersByRestaurant) =>
+  const hasRemovedIngredients = (ordersByRestaurant: OrdersByRestaurant) =>
     ordersByRestaurant.orders.some((order) => order.item.removedIngredients);
 
   return (

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useData } from '@context/Data';
 import { useAlert } from '@context/Alert';
 import { FormEvent, useEffect, useState } from 'react';
-import { CustomAxiosError, IItemFormData } from 'types';
+import { CustomAxiosError, ItemFormData } from 'types';
 import {
   axiosInstance,
   showErrorAlert,
@@ -14,21 +14,20 @@ import styles from '@styles/admin/AddItem.module.css';
 
 export default function AddItem() {
   // Initial states
+  const addon = {
+    addons: '',
+    addable: 0,
+  };
+
   const initialState = {
     name: '',
     price: '',
     file: undefined,
     updatedTags: [],
     description: '',
-    optionalAddons: {
-      addons: '',
-      addable: 0,
-    },
-    requiredAddons: {
-      addons: '',
-      addable: 0,
-    },
     removableIngredients: '',
+    optionalAddons: Array.from({ length: 1 }, () => addon),
+    requiredAddons: Array.from({ length: 2 }, () => addon),
   };
 
   // Hooks
@@ -37,7 +36,7 @@ export default function AddItem() {
   const { setVendors, vendors } = useData();
   const [index, setIndex] = useState<string>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<IItemFormData>(initialState);
+  const [formData, setFormData] = useState<ItemFormData>(initialState);
 
   // Destructure form data
   const {

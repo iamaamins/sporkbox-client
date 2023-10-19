@@ -4,7 +4,13 @@ import { useCart } from '@context/Cart';
 import { useRouter } from 'next/router';
 import { HiMinus, HiPlus } from 'react-icons/hi';
 import styles from '@styles/generic/Item.module.css';
-import { ChangeEvent, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import {
   splitTags,
   formatAddons,
@@ -13,16 +19,15 @@ import {
   numberToUSD,
   showErrorAlert,
 } from '@utils/index';
-import {
-  IItem,
-  IAddons,
-  IInitialItem,
-  IUpcomingRestaurant,
-  IRemovableIngredients,
-  SetAddonsOrRemovableIngredients,
-  IAddonsOrRemovableIngredientsType,
-} from 'types';
 import { useAlert } from '@context/Alert';
+import { Item as IItem, InitialItem, UpcomingRestaurant } from 'types';
+
+interface Addon {
+  [key: string]: boolean;
+}
+type AddonsType = 'requiredAddons' | 'optionalAddons';
+interface RemovableIngredients extends Addon {}
+type SetAddons = Dispatch<SetStateAction<Addon[]>>;
 
 export default function Item() {
   // Initial state
@@ -49,12 +54,12 @@ export default function Item() {
   const { upcomingRestaurants } = useData();
   const { cartItems, addItemToCart } = useCart();
   const [upcomingRestaurant, setUpcomingRestaurant] =
-    useState<IUpcomingRestaurant>();
-  const [optionalAddons, setOptionalAddons] = useState<IAddons>();
-  const [requiredAddons, setRequiredAddons] = useState<IAddons>();
+    useState<UpcomingRestaurant>();
+  const [optionalAddons, setOptionalAddons] = useState<Addon[]>([]);
+  const [requiredAddons, setRequiredAddons] = useState<Addon[]>([]);
   const [removableIngredients, setRemovableIngredients] =
-    useState<IRemovableIngredients>();
-  const [initialItem, setInitialItem] = useState<IInitialItem>(initialState);
+    useState<RemovableIngredients>({});
+  const [initialItem, setInitialItem] = useState<InitialItem>(initialState);
 
   // Price and quantity
   const { price, quantity, addonPrice } = initialItem;
@@ -125,35 +130,53 @@ export default function Item() {
             setInitialItem(itemDetails);
           }
 
-          if (item.optionalAddons.addons) {
+          if (item.optionalAddons.length > 0) {
             // Update optional addons state
             setOptionalAddons(
-              formatAddons(item.optionalAddons.addons).reduce((acc, curr) => {
-                // Trim ingredients
-                const ingredient = curr.trim();
+              item.optionalAddons.map((optionalAddon) =>
+                formatAddons(optionalAddon.addons).reduce((acc, curr) => {
+                  // Trim ingredients
+                  const ingredient = curr.trim();
 
-                if (itemInCart?.optionalAddons.includes(ingredient)) {
-                  return { ...acc, [ingredient]: true };
-                } else {
-                  return { ...acc, [ingredient]: false };
-                }
-              }, {})
+                  if (
+                    itemInCart?.optionalAddons.some((el) =>
+                      el.addons.includes(ingredient)
+                    )
+                  ) {
+                    return { ...acc, [ingredient]: true };
+                  } else {
+                    return { ...acc, [ingredient]: false };
+                  }
+                }, {})
+              )
             );
           }
 
-          if (item.requiredAddons.addons) {
+          if (item.requiredAddons.length > 0) {
             // Update required addons state
             setRequiredAddons(
-              formatAddons(item.requiredAddons.addons).reduce((acc, curr) => {
-                // Trim ingredients
-                const ingredient = curr.trim();
+              item.requiredAddons.map((requiredAddon) =>
+                formatAddons(requiredAddon.addons).reduce((acc, curr) => {
+                  // Trim ingredients
+                  const ingredient = curr.trim();
 
-                if (itemInCart?.requiredAddons.includes(ingredient)) {
-                  return { ...acc, [ingredient]: true };
-                } else {
-                  return { ...acc, [ingredient]: false };
-                }
-              }, {})
+                  if (
+                    itemInCart?.requiredAddons.some((el) =>
+                      el.addons.includes(ingredient)
+                    )
+                  ) {
+                    return {
+                      ...acc,
+                      [ingredient]: true,
+                    };
+                  } else {
+                    return {
+                      ...acc,
+                      [ingredient]: false,
+                    };
+                  }
+                }, {})
+              )
             );
           }
 
@@ -193,35 +216,46 @@ export default function Item() {
     }));
   }
 
-  // Handle change optional and required
-  // addons, and removable ingredients
-  function changeAddonsOrRemovableIngredients(
+  // Handle change addon
+  function changeAddon(
     e: ChangeEvent<HTMLInputElement>,
-    setAddonsOrRemovableIngredients: SetAddonsOrRemovableIngredients,
-    addonsOrRemovableIngredientsType: IAddonsOrRemovableIngredientsType
+    addonsType: AddonsType,
+    addonIndex: number,
+    setAddons: SetAddons
   ) {
+    if (!item) return;
+
+    // Get item addon
+    const itemAddon = item[addonsType].find(
+      (el, index) => index === addonIndex
+    );
+
+    // Get added addon
+    const addedAddons = initialItem[addonsType].find(
+      (el) => el.index === addonIndex
+    )?.addons;
+
     // Check optional and required addons' addable
-    if (
-      (addonsOrRemovableIngredientsType === 'optionalAddons' ||
-        addonsOrRemovableIngredientsType === 'requiredAddons') &&
-      item &&
-      item[addonsOrRemovableIngredientsType].addable ===
-        initialItem[addonsOrRemovableIngredientsType].length &&
-      e.target.checked
-    ) {
-      // Show alert
+    if (itemAddon?.addable === addedAddons?.length && e.target.checked) {
       return showErrorAlert(
-        `Can't add more than ${item[addonsOrRemovableIngredientsType].addable} addons`,
+        `Can't add more than ${itemAddon?.addable} addons`,
         setAlerts
       );
     }
 
-    // Update optional and required
-    // addons, and removable ingredients state
-    setAddonsOrRemovableIngredients((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.checked,
-    }));
+    // Update state
+    setAddons((prevState) =>
+      prevState.map((el) => {
+        if (el.hasOwnProperty(e.target.id)) {
+          return {
+            ...el,
+            [e.target.id]: e.target.checked,
+          };
+        } else {
+          return el;
+        }
+      })
+    );
 
     // Add on price
     const getAddonPrice = (name: string) =>
@@ -234,81 +268,75 @@ export default function Item() {
     setInitialItem((prevState) => ({
       ...prevState,
       addonPrice:
-        (addonsOrRemovableIngredientsType === 'optionalAddons' ||
-          addonsOrRemovableIngredientsType === 'requiredAddons') &&
         e.target.name.split('-').length > 1
           ? e.target.checked
             ? prevState.addonPrice + getAddonPrice(e.target.name)
             : prevState.addonPrice - getAddonPrice(e.target.name)
           : prevState.addonPrice,
-      [addonsOrRemovableIngredientsType]: e.target.checked
-        ? [...prevState[addonsOrRemovableIngredientsType], e.target.name]
-        : prevState[addonsOrRemovableIngredientsType].filter(
-            (ingredient) => ingredient !== e.target.name
-          ),
+      [addonsType]: !prevState[addonsType].some((el) => el.index === addonIndex)
+        ? [
+            ...prevState[addonsType],
+            { addons: [e.target.name], index: addonIndex },
+          ]
+        : prevState[addonsType].map((addon) => {
+            if (addon.index === addonIndex) {
+              return {
+                ...addon,
+                addons: e.target.checked
+                  ? [...addon.addons, e.target.name]
+                  : addon.addons.filter((el) => el !== e.target.name),
+              };
+            } else {
+              return addon;
+            }
+          }),
     }));
   }
 
-  // Render addons and removable ingredients
-  const renderAddonsOrRemovableIngredients = (
-    addonsOrRemovableIngredients: IAddons | IRemovableIngredients,
-    setAddonsOrRemovableIngredients: SetAddonsOrRemovableIngredients,
-    addonsOrRemovableIngredientsType: IAddonsOrRemovableIngredientsType
-  ) => (
-    <div className={styles.addons_and_removable_items}>
-      {Object.keys(addonsOrRemovableIngredients).map(
-        (addonsOrRemovableIngredient, index) => (
-          <div key={index} className={styles.addons_and_removable_item}>
+  // Render addon
+  const renderAddon = (
+    addonIndex: number,
+    addons: Addon[],
+    addonsType: AddonsType,
+    setAddons: SetAddons
+  ) => {
+    // Get addon
+    const addon = addons.find((el, index) => index === addonIndex) as Addon;
+
+    return (
+      <div className={styles.addons}>
+        {Object.keys(addon).map((ingredient, index) => (
+          <div key={index} className={styles.addons_item}>
             <input
               type='checkbox'
-              name={addonsOrRemovableIngredient}
-              id={addonsOrRemovableIngredient}
-              checked={
-                addonsOrRemovableIngredients[addonsOrRemovableIngredient]
-              }
+              name={ingredient}
+              id={ingredient}
+              checked={addon[ingredient]}
               onChange={(e) =>
-                changeAddonsOrRemovableIngredients(
-                  e,
-                  setAddonsOrRemovableIngredients,
-                  addonsOrRemovableIngredientsType
-                )
+                changeAddon(e, addonsType, addonIndex, setAddons)
               }
             />
-            <label htmlFor={addonsOrRemovableIngredient}>
-              {addonsOrRemovableIngredient}
-            </label>
+            <label htmlFor={ingredient}>{ingredient}</label>
           </div>
-        )
-      )}
-    </div>
-  );
-
-  // Optional addons
-  const renderOptionalAddons =
-    optionalAddons &&
-    renderAddonsOrRemovableIngredients(
-      optionalAddons,
-      setOptionalAddons,
-      'optionalAddons'
+        ))}
+      </div>
     );
+  };
 
-  // Required addons
-  const renderRequiredAddons =
-    requiredAddons &&
-    renderAddonsOrRemovableIngredients(
-      requiredAddons,
-      setRequiredAddons,
-      'requiredAddons'
-    );
+  // Change removable ingredients
+  function changeRemovableIngredients(e: ChangeEvent<HTMLInputElement>) {
+    setRemovableIngredients((prevState) => ({
+      ...prevState,
+      [e.target.id]: e.target.checked,
+    }));
 
-  // Removable ingredients
-  const renderRemovableIngredients =
-    removableIngredients &&
-    renderAddonsOrRemovableIngredients(
-      removableIngredients,
-      setRemovableIngredients,
-      'removableIngredients'
-    );
+    setInitialItem((prevState) => ({
+      ...prevState,
+      removableIngredients: e.target.checked
+        ? [...prevState.removableIngredients, e.target.id]
+        : prevState.removableIngredients.filter((el) => el !== e.target.id),
+    }));
+  }
 
   return (
     <section className={styles.item}>
@@ -343,28 +371,64 @@ export default function Item() {
                 Delivery date - {dateToText(+(router.query.date as string))}
               </p>
 
-              {item.optionalAddons.addons && (
+              {item.optionalAddons.length > 0 && optionalAddons && (
                 <div className={styles.optional_addons}>
-                  <p>
-                    Optional add-ons - add up to {item.optionalAddons.addable}
-                  </p>
-                  {renderOptionalAddons}
+                  <p>Optional add-ons</p>
+
+                  {item.optionalAddons.map((optionalAddon, index) => (
+                    <div key={index}>
+                      <p>Add up to {optionalAddon.addable}</p>
+
+                      {renderAddon(
+                        index,
+                        optionalAddons,
+                        'optionalAddons',
+                        setOptionalAddons
+                      )}
+                    </div>
+                  ))}
                 </div>
               )}
 
-              {item.requiredAddons.addons && (
+              {item.requiredAddons.length > 0 && requiredAddons && (
                 <div className={styles.required_addons}>
-                  <p>
-                    Required add-ons - must choose {item.requiredAddons.addable}
-                  </p>
-                  {renderRequiredAddons}
+                  <p>Required add-ons</p>
+
+                  {item.requiredAddons.map((requiredAddon, index) => (
+                    <div key={index}>
+                      <p>Must choose {requiredAddon.addable}</p>
+
+                      {renderAddon(
+                        index,
+                        requiredAddons,
+                        'requiredAddons',
+                        setRequiredAddons
+                      )}
+                    </div>
+                  ))}
                 </div>
               )}
 
               {item.removableIngredients && (
                 <div className={styles.removable}>
                   <p>Remove ingredients</p>
-                  {renderRemovableIngredients}
+
+                  <div className={styles.removable_ingredients}>
+                    {Object.keys(removableIngredients).map((el, index) => (
+                      <div
+                        key={index}
+                        className={styles.removable_ingredients_item}
+                      >
+                        <input
+                          id={el}
+                          type='checkbox'
+                          checked={removableIngredients[el]}
+                          onChange={changeRemovableIngredients}
+                        />
+                        <label htmlFor={el}>{el}</label>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>

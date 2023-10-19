@@ -3,21 +3,27 @@ import { Dispatch } from 'react';
 import { SetStateAction } from 'react';
 import { NextRouter } from 'next/router';
 import {
-  IOrder,
-  IAlert,
+  Order,
+  Alert,
   Groups,
-  IVendor,
-  IVendors,
-  ICompany,
-  ICustomer,
-  ICustomers,
-  ICompanies,
-  IRestaurant,
-  IOrdersGroup,
+  Vendor,
+  Vendors,
+  Company,
+  Customer,
+  Customers,
+  Companies,
+  Restaurant,
+  OrdersGroup,
   CustomAxiosError,
-  ICustomerFavoriteItems,
+  CustomerFavoriteItems,
   DateTotal,
+  CartAddon,
 } from 'types';
+
+type Addon = {
+  addons: string;
+  addable: number;
+};
 
 // Current year
 export const currentYear = new Date().getFullYear();
@@ -52,8 +58,8 @@ export function checkUser(
 
 // Update restaurants items
 export function updateVendors(
-  updatedVendor: IVendor | IRestaurant,
-  setVendors: Dispatch<SetStateAction<IVendors>>
+  updatedVendor: Vendor | Restaurant,
+  setVendors: Dispatch<SetStateAction<Vendors>>
 ) {
   // Update vendors
   setVendors((prevState) => ({
@@ -132,9 +138,9 @@ export const getDay = (date: number | string) =>
 
 // Handle remove from favorite
 export async function handleRemoveFromFavorite(
-  setAlerts: Dispatch<SetStateAction<IAlert[]>>,
+  setAlerts: Dispatch<SetStateAction<Alert[]>>,
   itemId: string,
-  setCustomerFavoriteItems: Dispatch<SetStateAction<ICustomerFavoriteItems>>
+  setCustomerFavoriteItems: Dispatch<SetStateAction<CustomerFavoriteItems>>
 ) {
   try {
     // Make request to backend
@@ -164,8 +170,8 @@ export const createSlug = (text: string) =>
   text.toLowerCase().split(' ').join('-');
 
 // Group orders by company name and delivery date
-export const createOrdersGroups = (orders: IOrder[]) =>
-  orders.reduce((acc: IOrdersGroup[], curr): IOrdersGroup[] => {
+export const createOrdersGroups = (orders: Order[]) =>
+  orders.reduce((acc: OrdersGroup[], curr): OrdersGroup[] => {
     if (
       !acc.some(
         (ordersGroup) =>
@@ -211,13 +217,13 @@ export const createOrdersGroups = (orders: IOrder[]) =>
   }, []);
 
 // Sort users by last name
-export const sortByLastName = (a: ICustomer, b: ICustomer) =>
+export const sortByLastName = (a: Customer, b: Customer) =>
   a.lastName.toLowerCase().localeCompare(b.lastName.toLowerCase());
 
 // Update customers
 export function updateCustomers(
-  updatedCustomer: ICustomer,
-  setCustomers: Dispatch<SetStateAction<ICustomers>>
+  updatedCustomer: Customer,
+  setCustomers: Dispatch<SetStateAction<Customers>>
 ) {
   setCustomers((prevState) => ({
     ...prevState,
@@ -240,8 +246,8 @@ export function updateCustomers(
 
 // Update companies
 export function updateCompanies(
-  updatedCompany: ICompany,
-  setCompanies: Dispatch<SetStateAction<ICompanies>>
+  updatedCompany: Company,
+  setCompanies: Dispatch<SetStateAction<Companies>>
 ) {
   setCompanies((prevState) => ({
     ...prevState,
@@ -275,7 +281,7 @@ export const formatImageName = (name: string) =>
 // Success alert
 export function showSuccessAlert(
   message: string,
-  setAlerts: Dispatch<SetStateAction<IAlert[]>>
+  setAlerts: Dispatch<SetStateAction<Alert[]>>
 ) {
   // Update state
   setAlerts((prevState) => [...prevState, { message, type: 'success' }]);
@@ -284,7 +290,7 @@ export function showSuccessAlert(
 // Error alert
 export function showErrorAlert(
   err: CustomAxiosError | string,
-  setAlerts: Dispatch<SetStateAction<IAlert[]>>
+  setAlerts: Dispatch<SetStateAction<Alert[]>>
 ) {
   // Error type
   const type = 'failed';
@@ -300,8 +306,8 @@ export function showErrorAlert(
 }
 
 // Group identical orders
-export const groupIdenticalOrders = (orders: IOrder[]) =>
-  orders.reduce((acc: IOrder[], curr) => {
+export const groupIdenticalOrders = (orders: Order[]) =>
+  orders.reduce((acc: Order[], curr) => {
     if (
       !acc.some(
         (order) =>
@@ -337,9 +343,9 @@ export const groupIdenticalOrders = (orders: IOrder[]) =>
     }
   }, []);
 
-// Format addable ingredients
-export const formatAddons = (ingredients: string) =>
-  ingredients
+// Format addons
+export const formatAddons = (addons: string) =>
+  addons
     .split(',')
     .map((ingredient) => ingredient.trim())
     .map((ingredient) =>
@@ -380,8 +386,10 @@ export const splitTags = (tags: string) =>
   tags.split(',').map((tag) => tag.trim()) as Tags;
 
 // Get addons total
-export const getAddonsTotal = (addons: string[]) =>
+export const getAddonsTotal = (addons: CartAddon[]) =>
   addons
+    .flatMap((el) => el.addons)
+    .filter((el) => el.includes('$'))
     .map((addon) => addon.replace(/[\s$]/g, '').split('-'))
     .map(([name, price]) => +price)
     .reduce((acc, curr) => acc + curr, 0);

@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useData } from '@context/Data';
 import { HiBadgeCheck } from 'react-icons/hi';
 import Buttons from '@components/layout/Buttons';
-import { CustomAxiosError, IVendor } from 'types';
+import { CustomAxiosError, Vendor } from 'types';
 import { RiDeleteBack2Fill } from 'react-icons/ri';
 import { FormEvent, useEffect, useState } from 'react';
 import styles from '@styles/admin/Restaurant.module.css';
@@ -25,7 +25,7 @@ export default function Restaurant() {
   const { setAlerts } = useAlert();
   const [action, setAction] = useState('');
   const { vendors, setVendors } = useData();
-  const [vendor, setVendor] = useState<IVendor>();
+  const [vendor, setVendor] = useState<Vendor>();
   const [reorderItems, setReorderItems] = useState(false);
   const [isUpdatingVendorStatus, setIsUpdatingVendorStatus] = useState(false);
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);

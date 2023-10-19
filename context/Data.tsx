@@ -1,21 +1,21 @@
 import { useUser } from './User';
 import { useAlert } from './Alert';
 import {
-  IVendors,
-  ICompanies,
-  ICustomers,
-  IDataContext,
-  ICustomerOrder,
-  IDiscountCodes,
+  Vendors,
+  Companies,
+  Customers,
+  DataContext,
+  CustomerOrder,
+  DiscountCodes,
   CustomAxiosError,
-  IAllUpcomingOrders,
-  IAllDeliveredOrders,
-  IUpcomingRestaurants,
-  IScheduledRestaurants,
-  IContextProviderProps,
-  ICustomerFavoriteItems,
-  ICustomerUpcomingOrders,
-  ICustomerDeliveredOrders,
+  AllUpcomingOrders,
+  AllDeliveredOrders,
+  UpcomingRestaurants,
+  ScheduledRestaurants,
+  ContextProviderProps,
+  CustomerFavoriteItems,
+  CustomerUpcomingOrders,
+  CustomerDeliveredOrders,
 } from 'types';
 import {
   axiosInstance,
@@ -26,13 +26,13 @@ import {
 import { useState, createContext, useContext, useEffect } from 'react';
 
 // Create context
-const DataContext = createContext({} as IDataContext);
+const DataContext = createContext({} as DataContext);
 
 // Create hook
 export const useData = () => useContext(DataContext);
 
 // Provider function
-export default function DataProvider({ children }: IContextProviderProps) {
+export default function DataProvider({ children }: ContextProviderProps) {
   // Initial state
   const initialState = {
     data: [],
@@ -43,30 +43,30 @@ export default function DataProvider({ children }: IContextProviderProps) {
   const { setAlerts } = useAlert();
   const { isAdmin, isCustomer, customer } = useUser();
   const [allUpcomingOrders, setAllUpcomingOrders] =
-    useState<IAllUpcomingOrders>(initialState);
+    useState<AllUpcomingOrders>(initialState);
   const [scheduledRestaurants, setScheduledRestaurants] =
-    useState<IScheduledRestaurants>(initialState);
-  const [companies, setCompanies] = useState<ICompanies>(initialState);
-  const [vendors, setVendors] = useState<IVendors>(initialState);
+    useState<ScheduledRestaurants>(initialState);
+  const [companies, setCompanies] = useState<Companies>(initialState);
+  const [vendors, setVendors] = useState<Vendors>(initialState);
   const [allDeliveredOrders, setAllDeliveredOrders] =
-    useState<IAllDeliveredOrders>(initialState);
-  const [customers, setCustomers] = useState<ICustomers>(initialState);
+    useState<AllDeliveredOrders>(initialState);
+  const [customers, setCustomers] = useState<Customers>(initialState);
   const [customerUpcomingOrders, setCustomerUpcomingOrders] =
-    useState<ICustomerUpcomingOrders>(initialState);
+    useState<CustomerUpcomingOrders>(initialState);
   const [customerDeliveredOrders, setCustomerDeliveredOrders] =
-    useState<ICustomerDeliveredOrders>(initialState);
+    useState<CustomerDeliveredOrders>(initialState);
   const [upcomingRestaurants, setUpcomingRestaurants] =
-    useState<IUpcomingRestaurants>(initialState);
+    useState<UpcomingRestaurants>(initialState);
   const [customerFavoriteItems, setCustomerFavoriteItems] =
-    useState<ICustomerFavoriteItems>(initialState);
+    useState<CustomerFavoriteItems>(initialState);
   const [discountCodes, setDiscountCodes] =
-    useState<IDiscountCodes>(initialState);
+    useState<DiscountCodes>(initialState);
 
   // All admin orders
   const allOrders = [...allUpcomingOrders.data, ...allDeliveredOrders.data];
 
   // All customer orders
-  const customerAllOrders: ICustomerOrder[] = [
+  const customerAllOrders: CustomerOrder[] = [
     ...customerUpcomingOrders.data,
     ...customerDeliveredOrders.data,
   ];

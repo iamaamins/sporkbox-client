@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { ICustomerOrderProps } from 'types';
+import { CustomerOrderProps } from 'types';
 import { dateToText } from '@utils/index';
 import styles from '@styles/generic/Orders.module.css';
 
-export default function Orders({ orders }: ICustomerOrderProps) {
+export default function Orders({ orders }: CustomerOrderProps) {
   return (
     <table className={styles.orders}>
       <thead>

@@ -3,12 +3,12 @@ import { useAlert } from '@context/Alert';
 import { FormEvent, useEffect, useState } from 'react';
 import SubmitButton from '@components/layout/SubmitButton';
 import { axiosInstance, showErrorAlert } from '@utils/index';
-import { CustomAxiosError, IShiftChangeModalProps } from 'types';
+import { CustomAxiosError, ShiftChangeModalProps } from 'types';
 import styles from '@styles/generic/ShiftChangeModal.module.css';
 
 export default function ShiftChangeModal({
   setShowShiftChangeModal,
-}: IShiftChangeModalProps) {
+}: ShiftChangeModalProps) {
   // Hooks
   const { setAlerts } = useAlert();
   const { customer, setCustomer } = useUser();

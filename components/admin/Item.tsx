@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useData } from '@context/Data';
 import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
-import { CustomAxiosError, IItem, IVendor } from 'types';
+import { CustomAxiosError, Item as IItem, Vendor } from 'types';
 import { FormEvent, useEffect, useState } from 'react';
 import {
   axiosInstance,
@@ -23,7 +23,7 @@ export default function Item() {
   const { setAlerts } = useAlert();
   const { vendors, setVendors } = useData();
   const [item, setItem] = useState<IItem>();
-  const [vendor, setVendor] = useState<IVendor>();
+  const [vendor, setVendor] = useState<Vendor>();
   const [statusUpdatePayload, setStatusUpdatePayload] = useState({
     action: '',
     item: {
@@ -122,25 +122,33 @@ export default function Item() {
               ))}
             </p>
 
-            {item.optionalAddons.addons && (
+            {item.optionalAddons.length > 0 && (
               <>
-                <p className={styles.title}>
-                  Optional addons - {item.optionalAddons.addable} addable
-                </p>
-                <p className={styles.ingredients}>
-                  {formatAddons(item.optionalAddons.addons).join(', ')}
-                </p>
+                <p className={styles.title}>Optional addons</p>
+
+                {item.optionalAddons.map((optionalAddon, index) => (
+                  <div key={index}>
+                    <p>{optionalAddon.addable} addable</p>
+                    <p className={styles.ingredients}>
+                      {formatAddons(optionalAddon.addons).join(', ')}
+                    </p>
+                  </div>
+                ))}
               </>
             )}
 
-            {item.requiredAddons.addons && (
+            {item.requiredAddons.length > 0 && (
               <>
-                <p className={styles.title}>
-                  Required addons - {item.requiredAddons.addable} addable
-                </p>
-                <p className={styles.ingredients}>
-                  {formatAddons(item.requiredAddons.addons).join(', ')}
-                </p>
+                <p className={styles.title}>Required addons</p>
+
+                {item.requiredAddons.map((requiredAddon, index) => (
+                  <div key={index}>
+                    <p>{requiredAddon.addable} addable</p>
+                    <p className={styles.ingredients}>
+                      {formatAddons(requiredAddon.addons).join(', ')}
+                    </p>
+                  </div>
+                ))}
               </>
             )}
 

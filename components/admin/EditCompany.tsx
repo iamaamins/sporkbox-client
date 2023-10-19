@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import CompanyForm from './CompanyForm';
 import { useAlert } from '@context/Alert';
 import styles from '@styles/admin/EditCompany.module.css';
-import { CustomAxiosError, ICompany, ICompanyFormData } from 'types';
+import { CustomAxiosError, Company, CompanyFormData } from 'types';
 import React, { FormEvent, useEffect, useState } from 'react';
 import {
   axiosInstance,
@@ -29,9 +29,9 @@ export default function EditCompany() {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { companies, setCompanies } = useData();
-  const [company, setCompany] = useState<ICompany>();
+  const [company, setCompany] = useState<Company>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<ICompanyFormData>(initialState);
+  const [formData, setFormData] = useState<CompanyFormData>(initialState);
 
   // Get the company
   useEffect(() => {

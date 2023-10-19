@@ -1,15 +1,15 @@
 import Alert from '@components/layout/Alert';
-import { IAlert, IAlertContext, IContextProviderProps } from 'types';
+import { Alert as IAlert, AlertContext, ContextProviderProps } from 'types';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 // Create context
-const AlertContext = createContext({} as IAlertContext);
+const AlertContext = createContext({} as AlertContext);
 
 // Create hook
 export const useAlert = () => useContext(AlertContext);
 
 // Provider function
-export default function AlertProvider({ children }: IContextProviderProps) {
+export default function AlertProvider({ children }: ContextProviderProps) {
   // Hooks
   const [alerts, setAlerts] = useState<IAlert[]>([]);
 

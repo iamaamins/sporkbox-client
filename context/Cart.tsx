@@ -3,11 +3,11 @@ import { useData } from '@context/Data';
 import { useUser } from '@context/User';
 import { useRouter } from 'next/router';
 import {
-  IItem,
-  ICartItem,
-  ICartContext,
+  Item,
+  CartItem,
+  CartContext,
   CustomAxiosError,
-  IContextProviderProps,
+  ContextProviderProps,
   DateTotal,
 } from 'types';
 import {
@@ -21,20 +21,20 @@ import {
 import { useState, useEffect, useContext, createContext } from 'react';
 
 // Create context
-const CartContext = createContext({} as ICartContext);
+const CartContext = createContext({} as CartContext);
 
 // Create hook
 export const useCart = () => useContext(CartContext);
 
 // Provider function
-export default function CartProvider({ children }: IContextProviderProps) {
+export default function CartProvider({ children }: ContextProviderProps) {
   // Hooks
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { customer, isCustomer } = useUser();
   const { customerUpcomingOrders, setCustomerUpcomingOrders } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [cartItems, setCartItems] = useState<ICartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
     // Get cart items from local storage
@@ -73,17 +73,22 @@ export default function CartProvider({ children }: IContextProviderProps) {
   );
 
   // Add item to cart
-  function addItemToCart(initialItem: ICartItem, item: IItem) {
+  function addItemToCart(initialItem: CartItem, item: Item) {
     // Check if the required addons are added
-    if (initialItem.requiredAddons.length < item.requiredAddons.addable) {
-      return showErrorAlert(
-        `Please add ${item.requiredAddons.addable} required addons`,
-        setAlerts
-      );
+    if (
+      !item.requiredAddons.every((requiredAddon, index) =>
+        initialItem.requiredAddons.some(
+          (initialAddon) =>
+            initialAddon.index === index &&
+            initialAddon.addons.length === requiredAddon.addable
+        )
+      )
+    ) {
+      return showErrorAlert(`Please add all required addons`, setAlerts);
     }
 
     // Initiate updated items array
-    let updatedCartItems: ICartItem[] = [];
+    let updatedCartItems: CartItem[] = [];
 
     // Add item to cart if the
     // item ins't already in cart
@@ -134,7 +139,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
   }
 
   // Remove cart item
-  function removeItemFromCart(item: ICartItem) {
+  function removeItemFromCart(item: CartItem) {
     // Filter the items by item id
     const updatedCartItems = cartItems.filter(
       (cartItem) =>

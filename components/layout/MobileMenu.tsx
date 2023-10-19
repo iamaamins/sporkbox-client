@@ -14,14 +14,14 @@ import { useUser } from '@context/User';
 import { IoLogIn } from 'react-icons/io5';
 import { FaUserAlt } from 'react-icons/fa';
 import { CgProfile } from 'react-icons/cg';
-import { CustomAxiosError, IMobileMenuProps } from 'types';
+import { CustomAxiosError, MobileMenuProps } from 'types';
 import { BsFillCalendar2DateFill } from 'react-icons/bs';
 import styles from '@styles/layout/MobileMenu.module.css';
 import { AiTwotonePhone, AiTwotoneStar } from 'react-icons/ai';
 import { TbBuildingStore, TbBuildingSkyscraper } from 'react-icons/tb';
 import { currentYear, axiosInstance, showErrorAlert } from '@utils/index';
 
-export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
+export default function MobileMenu({ isOpen, setIsOpen }: MobileMenuProps) {
   // Hooks
   const { setAlerts } = useAlert();
   const { upcomingDates } = useData();

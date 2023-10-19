@@ -1,11 +1,11 @@
-import { ICustomerOrdersProps } from 'types';
+import { CustomerOrdersProps } from 'types';
 import styles from '@styles/generic/CustomerOrders.module.css';
 import { dateToText, numberToUSD } from '@utils/index';
 
 export default function CustomerOrders({
   orders,
   orderStatus,
-}: ICustomerOrdersProps) {
+}: CustomerOrdersProps) {
   // Check optional addons
   const hasOptionalAddons = orders.some((order) => order.item.optionalAddons);
 
