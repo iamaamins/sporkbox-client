@@ -6,7 +6,7 @@ import { useData } from '@context/Data';
 import { useAlert } from '@context/Alert';
 import styles from '@styles/generic/Dashboard.module.css';
 import ActionButton from '@components/layout/ActionButton';
-import { axiosInstance, numberToUSD, showErrorAlert } from '@utils/index';
+import { axiosInstance, showErrorAlert } from '@utils/index';
 
 export default function Dashboard() {
   // Hooks
@@ -26,10 +26,13 @@ export default function Dashboard() {
       setIsLoading(true);
 
       // Make request to backend
-      const response = await axiosInstance.get(`/orders/me/delivered/0`);
+      const response = await axiosInstance.get(`/orders/me/delivered-orders/0`);
 
       // Update state
-      setCustomerDeliveredOrders(response.data);
+      setCustomerDeliveredOrders((prevState) => ({
+        ...prevState,
+        data: response.data,
+      }));
     } catch (err) {
       // Log error
       console.log(err);
