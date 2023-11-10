@@ -211,7 +211,7 @@ export default function Item() {
     ) {
       // Show alert
       return showErrorAlert(
-        `Can't add more than ${item[addonsOrRemovableIngredientsType].addable} addons`,
+        `Can't add more than ${item[addonsOrRemovableIngredientsType].addable} add-on item`,
         setAlerts
       );
     }
