@@ -59,7 +59,7 @@ export default function Cart() {
 
       return {
         date: cartItem.deliveryDate,
-        total: cartItem.price * cartItem.quantity + totalAddonsPrice,
+        total: (cartItem.price + totalAddonsPrice) * cartItem.quantity,
       };
     });
 

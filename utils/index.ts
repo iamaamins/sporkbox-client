@@ -380,11 +380,13 @@ export const splitTags = (tags: string) =>
   tags.split(',').map((tag) => tag.trim()) as Tags;
 
 // Get addons total
-export const getAddonsTotal = (addons: string[]) =>
-  addons
+export const getAddonsTotal = (addons: string[]) => {
+  return addons
     .map((addon) => addon.replace(/[\s$]/g, '').split('-'))
     .map(([name, price]) => +price)
+    .filter((price) => !isNaN(price))
     .reduce((acc, curr) => acc + curr, 0);
+};
 
 // Get total amount for each date
 export function getDateTotal(details: DateTotal[]) {
