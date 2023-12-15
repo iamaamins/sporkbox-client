@@ -179,9 +179,11 @@ export default function Item() {
 
   // Increase quantity
   function increaseQuantity() {
-    setInitialItem((currItem) => ({
-      ...currItem,
-      quantity: currItem.quantity + 1,
+    setInitialItem((prevState) => ({
+      ...prevState,
+      quantity: prevState.quantity + 1,
+      addonPrice:
+        (prevState.addonPrice / prevState.quantity) * (prevState.quantity + 1),
     }));
   }
 
@@ -190,6 +192,8 @@ export default function Item() {
     setInitialItem((prevState) => ({
       ...prevState,
       quantity: prevState.quantity - 1,
+      addonPrice:
+        (prevState.addonPrice / prevState.quantity) * (prevState.quantity - 1),
     }));
   }
 
@@ -238,8 +242,10 @@ export default function Item() {
           addonsOrRemovableIngredientsType === 'requiredAddons') &&
         e.target.name.split('-').length > 1
           ? e.target.checked
-            ? prevState.addonPrice + getAddonPrice(e.target.name)
-            : prevState.addonPrice - getAddonPrice(e.target.name)
+            ? prevState.addonPrice +
+              getAddonPrice(e.target.name) * prevState.quantity
+            : prevState.addonPrice -
+              getAddonPrice(e.target.name) * prevState.quantity
           : prevState.addonPrice,
       [addonsOrRemovableIngredientsType]: e.target.checked
         ? [...prevState[addonsOrRemovableIngredientsType], e.target.name]
