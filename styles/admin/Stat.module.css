@@ -5,20 +5,23 @@
   padding: var(--section_padding);
 }
 
-.item {
+.section p,
+.section a {
   padding: 0.5rem 2rem;
   border-radius: 0.5rem;
   margin-right: 1rem;
-  background-color: var(--global);
+  font-weight: 500;
+  color: var(--black);
+  border: 1px solid var(--black);
 }
 
-.item a {
+.section a {
   display: flex;
   align-items: center;
-  font-weight: 500;
-  color: var(--almost_white);
+  color: var(--global);
+  border: 1px solid var(--global);
 }
 
-.item a svg {
+.section a svg {
   margin-left: 0.5rem;
 }

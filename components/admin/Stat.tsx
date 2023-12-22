@@ -11,23 +11,28 @@ import { FiDownload } from 'react-icons/fi';
 import styles from '@styles/admin/Stat.module.css';
 import { CustomAxiosError } from 'types';
 import { useAlert } from '@context/Alert';
+import { useRouter } from 'next/router';
 
 export default function Stat() {
   // Hook
+  const router = useRouter();
   const { setAlerts } = useAlert();
-  const [orderStat, setOrderStat] = useState([]);
-  const [itemStat, setItemStat] = useState([]);
+  const [orderStat, setOrderStat] = useState({ isLoading: true, data: [] });
+  const [itemStat, setItemStat] = useState({ isLoading: true, data: [] });
 
   // Download order stat
   async function downloadOrderStat() {
     try {
       // Get order stat and update state
       const response = await axiosInstance.get('/stats/order');
-      setOrderStat(response.data);
+      setOrderStat((prevState) => ({ ...prevState, data: response.data }));
     } catch (err) {
       // Log error
       console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      // Remove the loader
+      setOrderStat((prevState) => ({ ...prevState, isLoading: false }));
     }
   }
 
@@ -36,11 +41,14 @@ export default function Stat() {
     try {
       // Get item stat and update state
       const response = await axiosInstance.get('/stats/item');
-      setItemStat(response.data);
+      setItemStat((prevState) => ({ ...prevState, data: response.data }));
     } catch (err) {
       // Log error
       console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      // Remove the loader
+      setItemStat((prevState) => ({ ...prevState, isLoading: false }));
     }
   }
 
@@ -48,33 +56,33 @@ export default function Stat() {
   useEffect(() => {
     downloadOrderStat();
     downloadItemStat();
-  }, []);
+  }, [router.isReady]);
   return (
     <section className={styles.section}>
-      {orderStat.length > 0 ? (
-        <div className={styles.item}>
-          <CSVLink
-            data={formatOrderStatToCSV(orderStat)}
-            headers={orderStatCSVHeaders}
-            filename='Order Stat'
-          >
-            Order stat <FiDownload />
-          </CSVLink>
-        </div>
+      {orderStat.data.length > 0 ? (
+        <CSVLink
+          data={formatOrderStatToCSV(orderStat.data)}
+          headers={orderStatCSVHeaders}
+          filename='Order Stat'
+        >
+          Order stat <FiDownload />
+        </CSVLink>
+      ) : orderStat.isLoading ? (
+        <p>Order stat loading...</p>
       ) : (
         <p>No order stat found</p>
       )}
 
-      {itemStat.length > 0 ? (
-        <div className={styles.item}>
-          <CSVLink
-            data={formatItemStatToCSV(itemStat)}
-            headers={itemStatCSVHeaders}
-            filename='Item Stat'
-          >
-            Item stat <FiDownload />
-          </CSVLink>
-        </div>
+      {itemStat.data.length > 0 ? (
+        <CSVLink
+          data={formatItemStatToCSV(itemStat.data)}
+          headers={itemStatCSVHeaders}
+          filename='Item Stat'
+        >
+          Item stat <FiDownload />
+        </CSVLink>
+      ) : itemStat.isLoading ? (
+        <p>Item stat loading...</p>
       ) : (
         <p>No item stat found</p>
       )}
