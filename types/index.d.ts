@@ -622,3 +622,20 @@ interface IReorderAbleItemsProps {
   vendor: IVendor;
   setVendor: Dispatch<SetStateAction<IVendor | undefined>>;
 }
+
+export interface OrderStat {
+  restaurant: {
+    name: string;
+  };
+  quantity: number;
+}
+
+export interface ItemStat {
+  restaurant: {
+    name: string;
+  };
+  item: {
+    name: string;
+    quantity: number;
+  };
+}

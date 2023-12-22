@@ -12,6 +12,7 @@ import {
 import { useData } from '@context/Data';
 import { useUser } from '@context/User';
 import { IoLogIn } from 'react-icons/io5';
+import { IoIosStats } from 'react-icons/io';
 import { FaUserAlt } from 'react-icons/fa';
 import { CgProfile } from 'react-icons/cg';
 import { CustomAxiosError, IMobileMenuProps } from 'types';
@@ -180,6 +181,17 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
           <Link href='/admin/discount-codes'>
             <a>
               <MdDiscount /> Discount codes
+            </a>
+          </Link>
+        </li>
+
+        <li
+          className={!isAdmin ? styles.hide : ''}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href='/admin/stat'>
+            <a>
+              <IoIosStats /> Stat
             </a>
           </Link>
         </li>

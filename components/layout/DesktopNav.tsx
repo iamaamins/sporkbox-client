@@ -164,6 +164,14 @@ export default function DesktopNav() {
             </a>
           </Link>
         </li>
+
+        <li className={!isAdmin ? styles.hide : ''}>
+          <Link href='/admin/stat'>
+            <a className={pathName === '/admin/stat' ? styles.active : ''}>
+              Stat
+            </a>
+          </Link>
+        </li>
       </ul>
 
       {/* Call to actions */}

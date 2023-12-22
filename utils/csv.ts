@@ -1,8 +1,15 @@
-import { IOrderData, ICompany, ICustomer, IOrdersGroup } from 'types';
+import {
+  IOrderData,
+  ICompany,
+  ICustomer,
+  IOrdersGroup,
+  OrderStat,
+  ItemStat,
+} from 'types';
 import { dateToText, numberToUSD } from '@utils/index';
 
 // Order headers
-export const orderHeaders = [
+export const orderCSVHeaders = [
   {
     label: 'Delivery date',
     key: 'deliveryDate',
@@ -66,11 +73,11 @@ export const orderHeaders = [
 ];
 
 // Order file name
-export const orderFileName = (ordersGroup: IOrdersGroup) =>
+export const createOrderCSVFileName = (ordersGroup: IOrdersGroup) =>
   `${ordersGroup.company.name} - ${ordersGroup.deliveryDate.split('T')[0]}.csv`;
 
 // Order data
-export const orderData = (ordersGroup: IOrdersGroup) =>
+export const formatOrderDataToCSV = (ordersGroup: IOrdersGroup) =>
   ordersGroup.orders.reduce((acc, curr) => {
     // Create order
     const order = {
@@ -116,7 +123,7 @@ export const orderData = (ordersGroup: IOrdersGroup) =>
   }, [] as IOrderData[]);
 
 // Customer header
-export const customerHeaders = [
+export const customerCSVHeaders = [
   {
     label: 'First Name',
     key: 'firstName',
@@ -136,16 +143,57 @@ export const customerHeaders = [
 ];
 
 // Customer file name
-export const customerFileName = (company: ICompany) =>
+export const createCustomerCSVFileName = (company: ICompany) =>
   `Customer info - ${
     company.name
   } - ${company.shift[0].toUpperCase()}${company.shift.slice(1)} shift`;
 
 // Customer data
-export const customerData = (customers: ICustomer[]) =>
+export const formatCustomerDataToCSV = (customers: ICustomer[]) =>
   customers.map((customer) => ({
     firstName: customer.firstName,
     lastName: customer.lastName,
     email: customer.email,
     status: customer.status,
+  }));
+
+// Order stat headers
+export const orderStatCSVHeaders = [
+  {
+    label: 'Restaurant',
+    key: 'restaurant',
+  },
+  {
+    label: 'Total Orders',
+    key: 'totalOrders',
+  },
+];
+
+export const formatOrderStatToCSV = (orderStat: OrderStat[]) =>
+  orderStat.map((data) => ({
+    restaurant: data.restaurant.name,
+    totalOrders: data.quantity,
+  }));
+
+// Item stat headers
+export const itemStatCSVHeaders = [
+  {
+    label: 'Restaurant',
+    key: 'restaurant',
+  },
+  {
+    label: 'Item Name',
+    key: 'item',
+  },
+  {
+    label: 'Quantity Ordered',
+    key: 'quantity',
+  },
+];
+
+export const formatItemStatToCSV = (itemStat: ItemStat[]) =>
+  itemStat.map((data) => ({
+    restaurant: data.restaurant.name,
+    item: data.item.name,
+    quantity: data.item.quantity,
   }));

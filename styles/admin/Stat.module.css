@@ -1,0 +1,24 @@
+.section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--section_padding);
+}
+
+.item {
+  padding: 0.5rem 2rem;
+  border-radius: 0.5rem;
+  margin-right: 1rem;
+  background-color: var(--global);
+}
+
+.item a {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  color: var(--almost_white);
+}
+
+.item a svg {
+  margin-left: 0.5rem;
+}

@@ -4,7 +4,11 @@ import { IOrdersGroupRowProps } from 'types';
 import { FiDownload } from 'react-icons/fi';
 import styles from '@styles/admin/OrdersGroupRow.module.css';
 import { dateToMS, dateToText } from '@utils/index';
-import { orderData, orderFileName, orderHeaders } from '@utils/csv';
+import {
+  formatOrderDataToCSV,
+  createOrderCSVFileName,
+  orderCSVHeaders,
+} from '@utils/csv';
 
 export default function OrdersGroupRow({
   slug,
@@ -32,9 +36,9 @@ export default function OrdersGroupRow({
       <td>{ordersGroup.orders.length}</td>
       <td className={styles.action}>
         <CSVLink
-          headers={orderHeaders}
-          data={orderData(ordersGroup)}
-          filename={orderFileName(ordersGroup)}
+          headers={orderCSVHeaders}
+          data={formatOrderDataToCSV(ordersGroup)}
+          filename={createOrderCSVFileName(ordersGroup)}
         >
           CSV <FiDownload />
         </CSVLink>

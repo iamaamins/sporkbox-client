@@ -24,7 +24,11 @@ import {
   CustomAxiosError,
   IScheduledRestaurant,
 } from 'types';
-import { customerData, customerFileName, customerHeaders } from '@utils/csv';
+import {
+  formatCustomerDataToCSV,
+  createCustomerCSVFileName,
+  customerCSVHeaders,
+} from '@utils/csv';
 
 export default function Company() {
   // Hooks
@@ -226,13 +230,13 @@ export default function Company() {
               </button>
 
               <CSVLink
-                data={customerData([
+                data={formatCustomerDataToCSV([
                   ...activeCustomers,
                   ...archivedCustomers,
                   ...unenrolledCustomers,
                 ])}
-                headers={customerHeaders}
-                filename={customerFileName(company)}
+                headers={customerCSVHeaders}
+                filename={createCustomerCSVFileName(company)}
               >
                 <button className={styles.customer_info_download_button}>
                   Customer info <FiDownload />
