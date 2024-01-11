@@ -5,6 +5,7 @@ import {
   IOrdersGroup,
   OrderStat,
   ItemStat,
+  PeopleStat,
 } from 'types';
 import { dateToText, numberToUSD } from '@utils/index';
 
@@ -196,4 +197,22 @@ export const formatItemStatToCSV = (itemStat: ItemStat[]) =>
     restaurant: data.restaurant.name,
     item: data.item.name,
     quantity: data.item.quantity,
+  }));
+
+// People stat headers
+export const peopleStatCSVHeaders = [
+  {
+    label: 'Date',
+    key: 'date',
+  },
+  {
+    label: 'Served',
+    key: 'served',
+  },
+];
+
+export const formatPeopleStatToCSV = (peopleStat: PeopleStat[]) =>
+  peopleStat.map((data) => ({
+    date: dateToText(data.date),
+    served: data.customers.length,
   }));

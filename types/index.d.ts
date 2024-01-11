@@ -639,3 +639,8 @@ export interface ItemStat {
     quantity: number;
   };
 }
+
+export interface PeopleStat {
+  date: string;
+  customers: string[];
+}

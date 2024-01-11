@@ -1,8 +1,10 @@
 import {
   formatItemStatToCSV,
   formatOrderStatToCSV,
+  formatPeopleStatToCSV,
   itemStatCSVHeaders,
   orderStatCSVHeaders,
+  peopleStatCSVHeaders,
 } from '@utils/csv';
 import { axiosInstance, showErrorAlert } from '@utils/index';
 import { useEffect, useState } from 'react';
@@ -19,19 +21,17 @@ export default function Stat() {
   const { setAlerts } = useAlert();
   const [orderStat, setOrderStat] = useState({ isLoading: true, data: [] });
   const [itemStat, setItemStat] = useState({ isLoading: true, data: [] });
+  const [peopleStat, setPeopleStat] = useState({ isLoading: true, data: [] });
 
   // Download order stat
   async function downloadOrderStat() {
     try {
-      // Get order stat and update state
       const response = await axiosInstance.get('/stats/order');
       setOrderStat((prevState) => ({ ...prevState, data: response.data }));
     } catch (err) {
-      // Log error
       console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      // Remove the loader
       setOrderStat((prevState) => ({ ...prevState, isLoading: false }));
     }
   }
@@ -39,16 +39,26 @@ export default function Stat() {
   // Download item stat
   async function downloadItemStat() {
     try {
-      // Get item stat and update state
       const response = await axiosInstance.get('/stats/item');
       setItemStat((prevState) => ({ ...prevState, data: response.data }));
     } catch (err) {
-      // Log error
       console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      // Remove the loader
       setItemStat((prevState) => ({ ...prevState, isLoading: false }));
+    }
+  }
+
+  // Download people stat
+  async function downloadPeopleStat() {
+    try {
+      const response = await axiosInstance.get('/stats/people');
+      setPeopleStat((prevState) => ({ ...prevState, data: response.data }));
+    } catch (err) {
+      console.log(err);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      setPeopleStat((prevState) => ({ ...prevState, isLoading: false }));
     }
   }
 
@@ -56,7 +66,9 @@ export default function Stat() {
   useEffect(() => {
     downloadOrderStat();
     downloadItemStat();
+    downloadPeopleStat();
   }, [router.isReady]);
+
   return (
     <section className={styles.section}>
       {orderStat.data.length > 0 ? (
@@ -85,6 +97,20 @@ export default function Stat() {
         <p>Item stat loading...</p>
       ) : (
         <p>No item stat found</p>
+      )}
+
+      {peopleStat.data.length > 0 ? (
+        <CSVLink
+          data={formatPeopleStatToCSV(peopleStat.data)}
+          headers={peopleStatCSVHeaders}
+          filename='People Stat'
+        >
+          People stat <FiDownload />
+        </CSVLink>
+      ) : peopleStat.isLoading ? (
+        <p>People stat loading...</p>
+      ) : (
+        <p>No people stat found</p>
       )}
     </section>
   );
