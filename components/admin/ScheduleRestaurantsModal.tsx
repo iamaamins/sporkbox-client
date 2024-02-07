@@ -35,6 +35,7 @@ export default function ScheduleRestaurantsModal() {
         vendors.data
           .filter((vendor) => vendor.status === 'ACTIVE')
           .map((vendor) => vendor.restaurant)
+          .sort((a, b) => a.name.localeCompare(b.name))
       );
     }
   }, [vendors]);
