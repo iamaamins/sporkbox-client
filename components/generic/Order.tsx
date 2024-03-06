@@ -15,7 +15,7 @@ import {
   numberToUSD,
   handleRemoveFromFavorite,
 } from '@utils/index';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import ActionButton from '@components/layout/ActionButton';
 
 export default function Order() {
@@ -35,31 +35,17 @@ export default function Order() {
   } = useData();
   const [cancellingOrder, setCancellingOrder] = useState(false);
 
-  // Find the order
-  useEffect(() => {
-    if (customerAllOrders.length > 0 && router.isReady) {
-      const order = customerAllOrders.find(
-        (customerOrder) => customerOrder._id === router.query.order
-      );
-      if (order) {
-        setOrder(order);
-      }
-    }
-  }, [customerAllOrders, router.isReady]);
+  const stars = [];
+  for (let i = 0; i < 5; i++) {
+    stars.push(
+      <AiFillStar
+        key={i + 1}
+        onClick={() => setRating(i + 1)}
+        className={` ${styles.star} ${i < rating && styles.filled}`}
+      />
+    );
+  }
 
-  // Check if item is a favorite
-  useEffect(() => {
-    if (order) {
-      setFavoriteItem(
-        customerFavoriteItems.data.find(
-          (customerFavoriteItem) =>
-            customerFavoriteItem.item._id === order.item._id
-        )
-      );
-    }
-  }, [customerFavoriteItems, order]);
-
-  // Handle add to favorite
   async function handleAddToFavorite() {
     try {
       const response = await axiosInstance.post(`/favorites/add-to-favorite`, {
@@ -78,23 +64,6 @@ export default function Order() {
     }
   }
 
-  const stars = [];
-  for (let i = 0; i < 5; i++) {
-    stars.push(
-      <AiFillStar
-        key={i + 1}
-        onClick={() => setRating(i + 1)}
-        className={` ${styles.star} ${i < rating && styles.filled}`}
-      />
-    );
-  }
-
-  // Handle change comment
-  function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
-    setComment(e.target.value);
-  }
-
-  // Handle add review
   async function handleAddReview(e: FormEvent) {
     e.preventDefault();
 
@@ -136,7 +105,6 @@ export default function Order() {
 
   async function handleCancelOrder() {
     if (!order) return;
-
     try {
       setCancellingOrder(true);
       await axiosInstance.patch(`/orders/${order._id}/cancel`);
@@ -154,6 +122,30 @@ export default function Order() {
       setCancellingOrder(false);
     }
   }
+
+  // Find the order
+  useEffect(() => {
+    if (customerAllOrders.length > 0 && router.isReady) {
+      const order = customerAllOrders.find(
+        (customerOrder) => customerOrder._id === router.query.order
+      );
+      if (order) {
+        setOrder(order);
+      }
+    }
+  }, [customerAllOrders, router.isReady]);
+
+  // Check if item is a favorite
+  useEffect(() => {
+    if (order) {
+      setFavoriteItem(
+        customerFavoriteItems.data.find(
+          (customerFavoriteItem) =>
+            customerFavoriteItem.item._id === order.item._id
+        )
+      );
+    }
+  }, [customerFavoriteItems, order]);
 
   return (
     <section className={styles.order}>
@@ -299,7 +291,7 @@ export default function Order() {
                         <textarea
                           id='comment'
                           value={comment}
-                          onChange={handleChange}
+                          onChange={(e) => setComment(e.target.value)}
                         />
 
                         <SubmitButton
