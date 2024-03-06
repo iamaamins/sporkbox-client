@@ -16,9 +16,9 @@ import {
   handleRemoveFromFavorite,
 } from '@utils/index';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import ActionButton from '@components/layout/ActionButton';
 
 export default function Order() {
-  // Hooks
   const router = useRouter();
   const { setAlerts } = useAlert();
   const [comment, setComment] = useState<string>('');
@@ -30,8 +30,10 @@ export default function Order() {
     customerAllOrders,
     customerFavoriteItems,
     setCustomerFavoriteItems,
+    setCustomerUpcomingOrders,
     setCustomerDeliveredOrders,
   } = useData();
+  const [cancellingOrder, setCancellingOrder] = useState(false);
 
   // Find the order
   useEffect(() => {
@@ -39,8 +41,6 @@ export default function Order() {
       const order = customerAllOrders.find(
         (customerOrder) => customerOrder._id === router.query.order
       );
-
-      // Update state if the order is found
       if (order) {
         setOrder(order);
       }
@@ -62,32 +62,23 @@ export default function Order() {
   // Handle add to favorite
   async function handleAddToFavorite() {
     try {
-      // Make request to backend
       const response = await axiosInstance.post(`/favorites/add-to-favorite`, {
         itemId: order?.item._id,
         restaurantId: order?.restaurant._id,
       });
 
-      // Update state
       setCustomerFavoriteItems((prevState) => ({
         ...prevState,
         data: [...prevState.data, response.data],
       }));
-      // Show success alert
       showSuccessAlert('Added to favorite', setAlerts);
     } catch (err) {
-      // Log error
       console.log(err);
-
-      // Show error alert
       showErrorAlert(err as CustomAxiosError, setAlerts);
     }
   }
 
-  // Stars array
   const stars = [];
-
-  // Create stars array
   for (let i = 0; i < 5; i++) {
     stars.push(
       <AiFillStar
@@ -100,7 +91,6 @@ export default function Order() {
 
   // Handle change comment
   function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
-    // Update comment state
     setComment(e.target.value);
   }
 
@@ -109,10 +99,7 @@ export default function Order() {
     e.preventDefault();
 
     try {
-      // Show loader
       setIsLoading(true);
-
-      // Make request to the backend
       const response = await axiosInstance.post(
         `/restaurants/${order?.restaurant._id}/${order?.item._id}/add-a-review`,
         {
@@ -122,10 +109,7 @@ export default function Order() {
         }
       );
 
-      // Create updated order
       const updatedCustomerDeliveredOrder = response.data;
-
-      // Update customer delivered orders
       setCustomerDeliveredOrders((prevState) => ({
         ...prevState,
         data: prevState.data.map((customerDeliveredOrder) => {
@@ -141,18 +125,33 @@ export default function Order() {
           }
         }),
       }));
-
-      // Show success alert
       showSuccessAlert('Review added', setAlerts);
     } catch (err) {
-      // Log error
       console.log(err);
-
-      // Show error alert
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      // Update state
       setIsLoading(false);
+    }
+  }
+
+  async function handleCancelOrder() {
+    if (!order) return;
+
+    try {
+      setCancellingOrder(true);
+      await axiosInstance.patch(`/orders/${order._id}/cancel`);
+
+      setCustomerUpcomingOrders((prevState) => ({
+        ...prevState,
+        data: prevState.data.filter((el) => el._id !== order._id),
+      }));
+      router.push('/dashboard');
+      showSuccessAlert('Order cancelled', setAlerts);
+    } catch (err) {
+      console.log(err);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      setCancellingOrder(false);
     }
   }
 
@@ -236,7 +235,15 @@ export default function Order() {
                     </>
                   )}
 
-                  <a href='mailto:portland@sporkbytes.com'>Contact support</a>
+                  <div className={styles.buttons}>
+                    <a href='mailto:portland@sporkbytes.com'>Contact support</a>
+
+                    <ActionButton
+                      buttonText='Cancel order'
+                      isLoading={cancellingOrder}
+                      handleClick={handleCancelOrder}
+                    />
+                  </div>
                 </>
               )}
 

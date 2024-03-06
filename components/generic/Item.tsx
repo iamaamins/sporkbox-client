@@ -24,25 +24,23 @@ import {
 } from 'types';
 import { useAlert } from '@context/Alert';
 
-export default function Item() {
-  // Initial state
-  const initialState = {
-    _id: '',
-    name: '',
-    price: 0,
-    image: '',
-    shift: '',
-    quantity: 1,
-    companyId: '',
-    addonPrice: 0,
-    restaurantId: '',
-    deliveryDate: 0,
-    optionalAddons: [],
-    requiredAddons: [],
-    removableIngredients: [],
-  };
+const initialState = {
+  _id: '',
+  name: '',
+  price: 0,
+  image: '',
+  shift: '',
+  quantity: 1,
+  companyId: '',
+  addonPrice: 0,
+  restaurantId: '',
+  deliveryDate: 0,
+  optionalAddons: [],
+  requiredAddons: [],
+  removableIngredients: [],
+};
 
-  // Hooks
+export default function Item() {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const [item, setItem] = useState<IItem>();
@@ -56,13 +54,11 @@ export default function Item() {
     useState<IRemovableIngredients>();
   const [initialItem, setInitialItem] = useState<IInitialItem>(initialState);
 
-  // Price and quantity
   const { price, quantity, addonPrice } = initialItem;
 
   // Get item and date from schedules restaurants
   useEffect(() => {
     if (upcomingRestaurants.data.length > 0 && router.isReady) {
-      // Find the restaurant
       const upcomingRestaurant = upcomingRestaurants.data.find(
         (upcomingRestaurant) =>
           dateToMS(upcomingRestaurant.date).toString() === router.query.date &&
@@ -71,22 +67,14 @@ export default function Item() {
       );
 
       if (upcomingRestaurant) {
-        // Update state
         setUpcomingRestaurant(upcomingRestaurant);
-
-        // Get the date
         const deliveryDate = dateToMS(upcomingRestaurant.date);
-
-        // Find the item
         const item = upcomingRestaurant.items.find(
           (item) => item._id === router.query.item
         );
 
         if (item) {
-          // Update item
           setItem(item);
-
-          // Create generic item details
           const itemDetails = {
             addonPrice,
             quantity: 1,
@@ -103,14 +91,12 @@ export default function Item() {
             image: item.image || upcomingRestaurant.logo,
           };
 
-          // Find if the item exists in the cart
           const itemInCart = cartItems.find(
             (cartItem) =>
               cartItem._id === item._id &&
               cartItem.deliveryDate === deliveryDate &&
               cartItem.companyId === upcomingRestaurant.company._id
           );
-
           if (itemInCart) {
             setInitialItem({
               ...itemDetails,
@@ -121,17 +107,13 @@ export default function Item() {
               removableIngredients: itemInCart.removableIngredients,
             });
           } else {
-            // If item ins't in cart
             setInitialItem(itemDetails);
           }
 
           if (item.optionalAddons.addons) {
-            // Update optional addons state
             setOptionalAddons(
               formatAddons(item.optionalAddons.addons).reduce((acc, curr) => {
-                // Trim ingredients
                 const ingredient = curr.trim();
-
                 if (itemInCart?.optionalAddons.includes(ingredient)) {
                   return { ...acc, [ingredient]: true };
                 } else {
@@ -142,12 +124,9 @@ export default function Item() {
           }
 
           if (item.requiredAddons.addons) {
-            // Update required addons state
             setRequiredAddons(
               formatAddons(item.requiredAddons.addons).reduce((acc, curr) => {
-                // Trim ingredients
                 const ingredient = curr.trim();
-
                 if (itemInCart?.requiredAddons.includes(ingredient)) {
                   return { ...acc, [ingredient]: true };
                 } else {
@@ -158,12 +137,9 @@ export default function Item() {
           }
 
           if (item.removableIngredients) {
-            // Update removable ingredients state
             setRemovableIngredients(
               item.removableIngredients.split(',').reduce((acc, curr) => {
-                // Trim ingredient
                 const ingredient = curr.trim();
-
                 if (itemInCart?.removableIngredients.includes(ingredient)) {
                   return { ...acc, [ingredient]: true };
                 } else {
@@ -204,7 +180,6 @@ export default function Item() {
     setAddonsOrRemovableIngredients: SetAddonsOrRemovableIngredients,
     addonsOrRemovableIngredientsType: IAddonsOrRemovableIngredientsType
   ) {
-    // Check optional and required addons' addable
     if (
       (addonsOrRemovableIngredientsType === 'optionalAddons' ||
         addonsOrRemovableIngredientsType === 'requiredAddons') &&
