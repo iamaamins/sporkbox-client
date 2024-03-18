@@ -5,7 +5,7 @@ import {
   itemStatCSVHeaders,
   orderStatCSVHeaders,
   peopleStatCSVHeaders,
-} from 'lib/csv';
+} from '@lib/csv';
 import { axiosInstance, showErrorAlert } from '@lib/utils';
 import { useEffect, useState } from 'react';
 import { CSVLink } from 'react-csv';
@@ -16,14 +16,12 @@ import { useAlert } from '@context/Alert';
 import { useRouter } from 'next/router';
 
 export default function Stat() {
-  // Hook
   const router = useRouter();
   const { setAlerts } = useAlert();
   const [orderStat, setOrderStat] = useState({ isLoading: true, data: [] });
   const [itemStat, setItemStat] = useState({ isLoading: true, data: [] });
   const [peopleStat, setPeopleStat] = useState({ isLoading: true, data: [] });
 
-  // Download order stat
   async function downloadOrderStat() {
     try {
       const response = await axiosInstance.get('/stats/order');
@@ -36,7 +34,6 @@ export default function Stat() {
     }
   }
 
-  // Download item stat
   async function downloadItemStat() {
     try {
       const response = await axiosInstance.get('/stats/item');
@@ -49,7 +46,6 @@ export default function Stat() {
     }
   }
 
-  // Download people stat
   async function downloadPeopleStat() {
     try {
       const response = await axiosInstance.get('/stats/people');

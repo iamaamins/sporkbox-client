@@ -6,16 +6,13 @@ import RegistrationForm from '@components/customer/RegistrationForm';
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { isUserLoading, isAdmin, isCustomer } = useUser();
+  const { isUserLoading, isAdmin, isVendor, isCustomer } = useUser();
 
-  // Push to a page depending on user role
   useEffect(() => {
-    if (isAdmin) {
-      router.push('/admin');
-    } else if (isCustomer) {
-      router.push('/profile');
-    }
-  }, [isAdmin, isCustomer]);
+    if (isAdmin) router.push('/admin');
+    if (isVendor) router.push('/restaurant');
+    if (isCustomer) router.push('/dashboard');
+  }, [isAdmin, isVendor, isCustomer]);
 
   return (
     <main>

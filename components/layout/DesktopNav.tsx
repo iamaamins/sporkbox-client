@@ -41,7 +41,11 @@ export default function DesktopNav() {
   return (
     <nav className={styles.desktop_nav}>
       <div className={styles.logo}>
-        <Link href={`${isCustomer ? '/dashboard' : '/admin'}`}>
+        <Link
+          href={`${
+            isAdmin ? '/admin' : isVendor ? '/restaurant' : '/dashboard'
+          }`}
+        >
           <a>
             <Image src={logo} alt='Logo' priority />
           </a>

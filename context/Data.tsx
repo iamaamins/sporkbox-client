@@ -29,12 +29,12 @@ import { useState, createContext, useContext, useEffect } from 'react';
 const DataContext = createContext({} as IDataContext);
 export const useData = () => useContext(DataContext);
 
-export default function DataProvider({ children }: IContextProviderProps) {
-  const initialState = {
-    data: [],
-    isLoading: true,
-  };
+const initialState = {
+  data: [],
+  isLoading: true,
+};
 
+export default function DataProvider({ children }: IContextProviderProps) {
   const { setAlerts } = useAlert();
   const { isAdmin, isVendor, isCustomer, customer } = useUser();
   const [allUpcomingOrders, setAllUpcomingOrders] =

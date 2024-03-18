@@ -8,7 +8,7 @@ import {
   formatOrderDataToCSV,
   createOrderCSVFileName,
   orderCSVHeaders,
-} from 'lib/csv';
+} from '@lib/csv';
 
 export default function OrdersGroupRow({
   slug,

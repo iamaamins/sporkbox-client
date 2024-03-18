@@ -28,7 +28,7 @@ import {
   formatCustomerDataToCSV,
   createCustomerCSVFileName,
   customerCSVHeaders,
-} from 'lib/csv';
+} from '@lib/csv';
 
 export default function Company() {
   // Hooks
