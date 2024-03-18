@@ -1,6 +1,6 @@
 import { ChangeEvent } from 'react';
 import { ICompanyFormProps } from 'types';
-import styles from '@styles/admin/CompanyForm.module.css';
+import styles from './CompanyForm.module.css';
 import SubmitButton from '@components/layout/SubmitButton';
 
 export default function CompanyForm({

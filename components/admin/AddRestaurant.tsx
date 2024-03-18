@@ -4,8 +4,8 @@ import { useAlert } from '@context/Alert';
 import { FormEvent, useState } from 'react';
 import RestaurantForm from './RestaurantForm';
 import { CustomAxiosError, IRestaurantFormData } from 'types';
-import styles from '@styles/admin/AddRestaurant.module.css';
-import { axiosInstance, showErrorAlert, showSuccessAlert } from '@utils/index';
+import styles from './AddRestaurant.module.css';
+import { axiosInstance, showErrorAlert, showSuccessAlert } from '@lib/utils';
 
 export default function AddRestaurant() {
   // Initial state

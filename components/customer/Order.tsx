@@ -4,7 +4,7 @@ import { useData } from '@context/Data';
 import { useAlert } from '@context/Alert';
 import { AiFillStar } from 'react-icons/ai';
 import { AiOutlineStar } from 'react-icons/ai';
-import styles from '@styles/generic/Order.module.css';
+import styles from './Order.module.css';
 import SubmitButton from '@components/layout/SubmitButton';
 import { CustomAxiosError, ICustomerFavoriteItem, ICustomerOrder } from 'types';
 import {
@@ -14,7 +14,7 @@ import {
   dateToText,
   numberToUSD,
   handleRemoveFromFavorite,
-} from '@utils/index';
+} from '@lib/utils';
 import { FormEvent, useEffect, useState } from 'react';
 import ActionButton from '@components/layout/ActionButton';
 

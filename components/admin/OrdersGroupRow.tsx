@@ -2,13 +2,13 @@ import Link from 'next/link';
 import { CSVLink } from 'react-csv';
 import { IOrdersGroupRowProps } from 'types';
 import { FiDownload } from 'react-icons/fi';
-import styles from '@styles/admin/OrdersGroupRow.module.css';
-import { dateToMS, dateToText } from '@utils/index';
+import styles from './OrdersGroupRow.module.css';
+import { dateToMS, dateToText } from '@lib/utils';
 import {
   formatOrderDataToCSV,
   createOrderCSVFileName,
   orderCSVHeaders,
-} from '@utils/csv';
+} from 'lib/csv';
 
 export default function OrdersGroupRow({
   slug,

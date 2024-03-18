@@ -3,13 +3,13 @@ import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
 import { useEffect, useState } from 'react';
 import CustomerOrders from './CustomerOrders';
-import styles from '@styles/admin/Customer.module.css';
+import styles from './Customer.module.css';
 import { CustomAxiosError, ICompany, ICustomerWithOrders, IOrder } from 'types';
 import {
   axiosInstance,
   groupIdenticalOrders,
   showErrorAlert,
-} from '@utils/index';
+} from '@lib/utils';
 
 export default function Customer() {
   // Hooks

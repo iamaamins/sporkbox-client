@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { IButtons } from "types";
-import styles from "@styles/layout/Buttons.module.css";
+import Link from 'next/link';
+import { IButtons } from 'types';
+import styles from './Buttons.module.css';
 
 export default function Buttons({
   href,

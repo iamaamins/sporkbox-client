@@ -8,16 +8,16 @@ import { useData } from '@context/Data';
 import { useAlert } from '@context/Alert';
 import logo from '@public/layout/logo.png';
 import { useEffect, useState } from 'react';
-import { axiosInstance, showErrorAlert } from '@utils/index';
-import styles from '@styles/layout/DesktopNav.module.css';
+import { axiosInstance, showErrorAlert } from '@lib/utils';
+import styles from './DesktopNav.module.css';
 
 export default function DesktopNav() {
-  // Hooks
   const { setAlerts } = useAlert();
   const { upcomingDates } = useData();
   const pathName = useRouter().pathname;
   const [date, setDate] = useState<number>();
-  const { isAdmin, isCustomer, setAdmin, setCustomer } = useUser();
+  const { isAdmin, isVendor, isCustomer, setAdmin, setVendor, setCustomer } =
+    useUser();
 
   // Get first scheduled date of next week
   useEffect(() => {
@@ -26,23 +26,14 @@ export default function DesktopNav() {
     }
   }, [upcomingDates]);
 
-  // Handle sign out
   async function handleSignOut() {
     try {
-      // Make request to backend
       await axiosInstance.post(`/users/logout`, {});
-
-      // Update state
-      if (isAdmin) {
-        setAdmin(null);
-      } else {
-        setCustomer(null);
-      }
+      if (isAdmin) setAdmin(null);
+      if (isVendor) setVendor(null);
+      if (isCustomer) setCustomer(null);
     } catch (err) {
-      // Log error
       console.log(err);
-
-      // Show error alert
       showErrorAlert(err as CustomAxiosError, setAlerts);
     }
   }
@@ -176,24 +167,21 @@ export default function DesktopNav() {
 
       {/* Call to actions */}
       <div className={styles.ctas}>
-        {/* Only show cart icon if there a customer */}
         {isCustomer && <CartIcon />}
 
-        {/* Sign out button */}
         <button
           onClick={handleSignOut}
           className={`${styles.sign_out} ${
-            !isAdmin && !isCustomer && styles.hide
+            !isAdmin && !isVendor && !isCustomer && styles.hide
           }`}
         >
           Sign out
         </button>
 
-        {/* Login button */}
         <Link href='/login'>
           <a
             className={`${styles.sing_in} ${
-              (isAdmin || isCustomer) && styles.hide
+              (isAdmin || isVendor || isCustomer) && styles.hide
             }`}
           >
             Sign in

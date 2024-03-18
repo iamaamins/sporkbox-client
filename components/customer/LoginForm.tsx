@@ -3,64 +3,48 @@ import { useUser } from '@context/User';
 import { useAlert } from '@context/Alert';
 import { CustomAxiosError, IFormData } from 'types';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import styles from '@styles/generic/LoginForm.module.css';
+import styles from './LoginForm.module.css';
 import SubmitButton from '@components/layout/SubmitButton';
-import { axiosInstance, showErrorAlert } from '@utils/index';
+import { axiosInstance, showErrorAlert } from '@lib/utils';
+
+const initialSate = {
+  email: '',
+  password: '',
+};
 
 export default function LoginForm() {
-  const initialSate = {
-    email: '',
-    password: '',
-  };
-  // Hooks
   const { setAlerts } = useAlert();
-  const { setAdmin, setCustomer } = useUser();
+  const { setAdmin, setVendor, setCustomer } = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<IFormData>(initialSate);
 
-  // Destructure form data
   const { email, password } = formData;
 
-  // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    // Update state
     setFormData((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value,
     }));
   }
 
-  // Handle submit
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     try {
-      // Show the loader
       setIsLoading(true);
-
-      // Fetch data
       const response = await axiosInstance.post(`/users/login`, formData);
-
-      // Clear form data
       setFormData({
         email: '',
         password: '',
       });
 
-      // Update state
-      if (response.data.role === 'ADMIN') {
-        setAdmin(response.data);
-      } else {
-        setCustomer(response.data);
-      }
+      if (response.data.role === 'ADMIN') setAdmin(response.data);
+      if (response.data.role === 'VENDOR') setVendor(response.data);
+      if (response.data.role === 'CUSTOMER') setCustomer(response.data);
     } catch (err) {
-      // Log error
       console.log(err);
-
-      // Show error alert
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      // Remove loader
       setIsLoading(false);
     }
   }

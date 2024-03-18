@@ -1,22 +1,22 @@
-import Cart from '@components/customer/Cart';
 import PageLoader from '@components/layout/PageLoader';
+import Dashboard from '@components/restaurant/Dashboard';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-export default function CartPage() {
+export default function DashboardPage() {
   const router = useRouter();
-  const { isUserLoading, isCustomer } = useUser();
+  const { isUserLoading, isVendor } = useUser();
 
   useEffect(() => {
-    checkUser(isUserLoading, isCustomer, router);
-  }, [isUserLoading, isCustomer]);
+    checkUser(isUserLoading, isVendor, router);
+  }, [isUserLoading, isVendor]);
 
   return (
     <main>
       {isUserLoading && <PageLoader />}
-      {isCustomer && <Cart />}
+      {isVendor && <Dashboard />}
     </main>
   );
 }

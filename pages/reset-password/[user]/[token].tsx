@@ -1,8 +1,8 @@
-import { useEffect } from "react";
-import { useUser } from "@context/User";
-import { useRouter } from "next/router";
-import PageLoader from "@components/layout/PageLoader";
-import ResetPassword from "@components/generic/ResetPassword";
+import { useEffect } from 'react';
+import { useUser } from '@context/User';
+import { useRouter } from 'next/router';
+import PageLoader from '@components/layout/PageLoader';
+import ResetPassword from '@components/customer/ResetPassword';
 
 export default function PassWordResetPage() {
   // Hooks
@@ -12,9 +12,9 @@ export default function PassWordResetPage() {
   // Push to a page depending on user role
   useEffect(() => {
     if (isAdmin) {
-      router.push("/admin");
+      router.push('/admin');
     } else if (isCustomer) {
-      router.push("/dashboard");
+      router.push('/dashboard');
     }
   }, [isAdmin, isCustomer]);
 

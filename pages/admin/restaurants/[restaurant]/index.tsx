@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { useUser } from "@context/User";
-import { checkUser } from "@utils/index";
-import { useRouter } from "next/router";
-import Restaurant from "@components/admin/Restaurant";
-import PageLoader from "@components/layout/PageLoader";
+import { useEffect } from 'react';
+import { useUser } from '@context/User';
+import { checkUser } from '@lib/utils';
+import { useRouter } from 'next/router';
+import Restaurant from '@components/admin/Restaurant';
+import PageLoader from '@components/layout/PageLoader';
 
 export default function RestaurantPage() {
   const router = useRouter();

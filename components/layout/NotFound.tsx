@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { TbUnlink } from "react-icons/tb";
-import styles from "@styles/layout/NotFound.module.css";
+import Link from 'next/link';
+import { TbUnlink } from 'react-icons/tb';
+import styles from './NotFound.module.css';
 
 export default function NotFound() {
   return (
@@ -16,7 +16,7 @@ export default function NotFound() {
         to see the link you are trying to open is correct.
       </p>
 
-      <Link href="/">
+      <Link href='/'>
         <a className={styles.go_home_button}>Go home</a>
       </Link>
     </section>

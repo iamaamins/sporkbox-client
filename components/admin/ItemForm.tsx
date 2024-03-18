@@ -2,9 +2,9 @@ import Image from 'next/image';
 import { FiUpload } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import { IStaticTags, IItemFormProps } from 'types';
-import styles from '@styles/admin/ItemForm.module.css';
+import styles from './ItemForm.module.css';
 import SubmitButton from '@components/layout/SubmitButton';
-import { formatImageName, splitTags, tags } from '@utils/index';
+import { formatImageName, splitTags, tags } from '@lib/utils';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 export default function ItemForm({

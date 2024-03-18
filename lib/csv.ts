@@ -7,7 +7,7 @@ import {
   ItemStat,
   PeopleStat,
 } from 'types';
-import { dateToText, numberToUSD } from '@utils/index';
+import { dateToText, numberToUSD } from '@lib/utils';
 
 // Order headers
 export const orderCSVHeaders = [

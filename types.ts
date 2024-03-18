@@ -1,5 +1,4 @@
 import { AxiosError } from 'axios';
-import { DiscountCodes } from '@components/admin/DiscountCodes';
 import { Dispatch, SetStateAction, ReactNode, FormEvent } from 'react';
 
 interface IUser {
@@ -21,6 +20,8 @@ export interface ICustomer extends IUser {
     orderReminder: boolean;
   };
 }
+
+export interface IVendor extends IUser {}
 
 export interface IVendor extends IUser {
   status: string;
@@ -63,7 +64,7 @@ export interface IUpcomingRestaurant extends IScheduledRestaurant {
   scheduledAt: string;
 }
 
-interface IItem {
+export interface IItem {
   _id: string;
   tags: string;
   name: string;
@@ -129,9 +130,12 @@ export interface IContextProviderProps {
 export interface IUserContext {
   isAdmin: boolean;
   isCustomer: boolean;
+  isVendor: boolean;
   admin: IAdmin | null;
+  vendor: IVendor | null;
   isUserLoading: boolean;
   customer: ICustomer | null;
+  setVendor: Dispatch<SetStateAction<IVendor | null>>;
   setAdmin: Dispatch<SetStateAction<IAdmin | null>>;
   setCustomer: Dispatch<SetStateAction<ICustomer | null>>;
 }
@@ -141,6 +145,10 @@ interface IIsLoading {
 }
 
 export interface IAllUpcomingOrders extends IIsLoading {
+  data: IOrder[];
+}
+
+export interface IVendorUpcomingOrders extends IIsLoading {
   data: IOrder[];
 }
 
@@ -209,6 +217,7 @@ export interface IDataContext {
   allUpcomingOrders: IAllUpcomingOrders;
   allDeliveredOrders: IAllDeliveredOrders;
   upcomingRestaurants: IUpcomingRestaurants;
+  vendorUpcomingOrders: IVendorUpcomingOrders;
   scheduledRestaurants: IScheduledRestaurants;
   customerFavoriteItems: ICustomerFavoriteItems;
   setVendors: Dispatch<SetStateAction<IVendors>>;
@@ -216,6 +225,7 @@ export interface IDataContext {
   customerDeliveredOrders: ICustomerDeliveredOrders;
   setCompanies: Dispatch<SetStateAction<ICompanies>>;
   setCustomers: Dispatch<SetStateAction<ICustomers>>;
+  setVendorUpcomingOrders: Dispatch<SetStateAction<IVendorUpcomingOrders>>;
   setDiscountCodes: Dispatch<SetStateAction<IDiscountCodes>>;
   setAllUpcomingOrders: Dispatch<SetStateAction<IAllUpcomingOrders>>;
   setAllDeliveredOrders: Dispatch<SetStateAction<IAllDeliveredOrders>>;
@@ -618,7 +628,7 @@ export interface IOrderData {
   removedIngredients?: string;
 }
 
-interface IReorderAbleItemsProps {
+export interface IReorderAbleItemsProps {
   vendor: IVendor;
   setVendor: Dispatch<SetStateAction<IVendor | undefined>>;
 }

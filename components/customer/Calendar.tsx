@@ -4,12 +4,12 @@ import { useRouter } from 'next/router';
 import { useData } from '@context/Data';
 import { useCart } from '@context/Cart';
 import { useEffect, useState } from 'react';
-import { getDay, getDate, dateToMS, numberToUSD } from '@utils/index';
+import { getDay, getDate, dateToMS, numberToUSD } from '@lib/utils';
 import CalendarSort from './CalendarSort';
 import { IUpcomingRestaurant } from 'types';
 import { IoIosArrowUp } from 'react-icons/io';
 import CalendarFiltersModal from './CalendarFiltersModal';
-import styles from '@styles/generic/Calendar.module.css';
+import styles from './Calendar.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
 
 export default function Calendar() {

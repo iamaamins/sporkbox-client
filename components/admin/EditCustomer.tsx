@@ -2,7 +2,7 @@ import { useData } from '@context/Data';
 import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
 import { CustomAxiosError, IFormData, ICustomer } from 'types';
-import styles from '@styles/admin/EditCustomer.module.css';
+import styles from './EditCustomer.module.css';
 import SubmitButton from '@components/layout/SubmitButton';
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import {
@@ -10,7 +10,7 @@ import {
   showErrorAlert,
   showSuccessAlert,
   updateCustomers,
-} from '@utils/index';
+} from '@lib/utils';
 
 export default function EditCustomer() {
   // Initial state

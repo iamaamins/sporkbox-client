@@ -9,8 +9,8 @@ import {
   showErrorAlert,
   showSuccessAlert,
   updateCompanies,
-} from '@utils/index';
-import styles from '@styles/admin/AddCompany.module.css';
+} from '@lib/utils';
+import styles from './AddCompany.module.css';
 
 export default function AddCompany() {
   // Initial state

@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { useData } from "@context/Data";
-import styles from "@styles/admin/Companies.module.css";
-import LinkButton from "@components/layout/LinkButton";
+import Link from 'next/link';
+import { useData } from '@context/Data';
+import styles from './Companies.module.css';
+import LinkButton from '@components/layout/LinkButton';
 
 export default function Companies() {
   const { companies } = useData();
@@ -48,7 +48,7 @@ export default function Companies() {
         </>
       )}
 
-      <LinkButton linkText="Add company" href="/admin/companies/add-company" />
+      <LinkButton linkText='Add company' href='/admin/companies/add-company' />
     </section>
   );
 }

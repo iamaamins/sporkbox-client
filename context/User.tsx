@@ -1,25 +1,23 @@
 import { useAlert } from './Alert';
 import { useRouter } from 'next/router';
-import { axiosInstance, showErrorAlert } from '@utils/index';
+import { axiosInstance, showErrorAlert } from '@lib/utils';
 import { createContext, useContext, useEffect, useState } from 'react';
 import {
   IAdmin,
+  IVendor,
   ICustomer,
   IUserContext,
   CustomAxiosError,
   IContextProviderProps,
 } from 'types';
 
-// Create context
 const UserContext = createContext({} as IUserContext);
-
-// Create hook
 export const useUser = () => useContext(UserContext);
 
-// Provider function
 export default function UserProvider({ children }: IContextProviderProps) {
   const router = useRouter();
   const { setAlerts } = useAlert();
+  const [vendor, setVendor] = useState<IVendor | null>(null);
   const [admin, setAdmin] = useState<IAdmin | null>(null);
   const [customer, setCustomer] = useState<ICustomer | null>(null);
   const [isUserLoading, setIsUserLoading] = useState<boolean>(true);
@@ -28,49 +26,41 @@ export default function UserProvider({ children }: IContextProviderProps) {
   useEffect(() => {
     async function getUser() {
       try {
-        // Fetch the data
         const response = await axiosInstance.get(`/users/me`, {
           headers: {
             'Cache-Control': 'no-cache',
           },
         });
 
-        // Update state
-        if (response.data.role === 'ADMIN') {
-          setAdmin(response.data);
-        } else {
-          setCustomer(response.data);
-        }
+        if (response.data.role === 'ADMIN') setAdmin(response.data);
+        if (response.data.role === 'VENDOR') setVendor(response.data);
+        if (response.data.role === 'CUSTOMER') setCustomer(response.data);
       } catch (err) {
-        // Log error
         console.log(err);
-
-        // Show error alert
         showErrorAlert(err as CustomAxiosError, setAlerts);
       } finally {
-        // Remove loader
         setIsUserLoading(false);
       }
     }
 
-    // Always run get user function
     getUser();
   }, [router.isReady]);
 
-  // Check if the user is admin
   const isAdmin = admin?.role === 'ADMIN';
-
-  // Check if the user is customer
+  const isVendor = vendor?.role === 'VENDOR';
   const isCustomer = customer?.role === 'CUSTOMER';
 
   return (
     <UserContext.Provider
       value={{
         admin,
+        vendor,
         isAdmin,
+        isVendor,
         setAdmin,
         customer,
         isCustomer,
+        setVendor,
         setCustomer,
         isUserLoading,
       }}

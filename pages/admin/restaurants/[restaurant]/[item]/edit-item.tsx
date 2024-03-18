@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { useUser } from "@context/User";
-import { checkUser } from "@utils/index";
-import { useRouter } from "next/router";
-import EditItem from "@components/admin/EditItem";
-import PageLoader from "@components/layout/PageLoader";
+import { useEffect } from 'react';
+import { useUser } from '@context/User';
+import { checkUser } from '@lib/utils';
+import { useRouter } from 'next/router';
+import EditItem from '@components/admin/EditItem';
+import PageLoader from '@components/layout/PageLoader';
 
 export default function EditItemPage() {
   const router = useRouter();

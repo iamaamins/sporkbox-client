@@ -1,51 +1,31 @@
 import { useUser } from '@context/User';
 import { useRouter } from 'next/router';
 import { ICalendarFiltersProps } from 'types';
-import { tags as tagFilters } from '@utils/index';
+import { tags as tagFilters } from '@lib/utils';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import styles from '@styles/generic/CalendarFiltersModal.module.css';
+import styles from '@components/customer/CalendarFiltersModal.module.css';
 
 export default function CalendarFiltersModal({
   restaurants,
   setUpdatedRestaurants,
   setShowCalendarFilters,
 }: ICalendarFiltersProps) {
-  // All filters
   const additionalFilters = ['$20 and under'] as const;
   const allInitialFilters = [...tagFilters, ...additionalFilters] as const;
 
-  // Initial filters type
   type InitialFilters = {
     [key in (typeof allInitialFilters)[number]]: boolean;
   };
 
-  // Initial filters
   const initialFilters = allInitialFilters.reduce(
     (acc, curr) => ({ ...acc, [curr]: false }),
     {} as InitialFilters
   );
 
-  // Hooks
   const router = useRouter();
   const { customer } = useUser();
   const [filtersData, setFiltersData] = useState(initialFilters);
 
-  // Filter items
-  useEffect(() => {
-    filterItems();
-  }, [restaurants]);
-
-  useEffect(() => {
-    // Get filters data from local storage
-    const savedFilters = JSON.parse(
-      localStorage.getItem(`filters-${customer?._id}`) as string
-    );
-
-    // Update state
-    setFiltersData(savedFilters || initialFilters);
-  }, [customer, router.isReady]);
-
-  // Handle tags change
   function handleFilterChange(e: ChangeEvent<HTMLInputElement>) {
     setFiltersData((prevState) => ({
       ...prevState,
@@ -53,7 +33,6 @@ export default function CalendarFiltersModal({
     }));
   }
 
-  // Filter items by tags
   function filterItems() {
     // Create updated restaurants
     let updatedRestaurants = restaurants;
@@ -105,21 +84,26 @@ export default function CalendarFiltersModal({
     );
   }
 
-  // Filter items by tags
   function filterItemsOnSubmit(e: FormEvent) {
-    // Prevent default
     e.preventDefault();
-
-    // Filter items and remove modal
     filterItems();
     setShowCalendarFilters(false);
-
-    // Save filters data to local storage
     localStorage.setItem(
       `filters-${customer?._id}`,
       JSON.stringify(filtersData)
     );
   }
+
+  useEffect(() => {
+    filterItems();
+  }, [restaurants]);
+
+  useEffect(() => {
+    const savedFilters = JSON.parse(
+      localStorage.getItem(`filters-${customer?._id}`) as string
+    );
+    setFiltersData(savedFilters || initialFilters);
+  }, [customer, router.isReady]);
 
   return (
     <div className={styles.calendar_filters_modal}>

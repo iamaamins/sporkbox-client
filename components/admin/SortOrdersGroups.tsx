@@ -1,7 +1,7 @@
-import { dateToMS } from '@utils/index';
+import { dateToMS } from '@lib/utils';
 import { useEffect, useState } from 'react';
 import { ISortOrdersGroupsProps } from 'types';
-import styles from '@styles/admin/SortOrdersGroups.module.css';
+import styles from './SortOrdersGroups.module.css';
 
 export default function SortOrdersGroups({
   setSorted,

@@ -3,7 +3,7 @@ import { useData } from '@context/Data';
 import { useCart } from '@context/Cart';
 import { useRouter } from 'next/router';
 import { HiMinus, HiPlus } from 'react-icons/hi';
-import styles from '@styles/generic/Item.module.css';
+import styles from './Item.module.css';
 import { ChangeEvent, useEffect, useState } from 'react';
 import {
   splitTags,
@@ -12,7 +12,7 @@ import {
   dateToText,
   numberToUSD,
   showErrorAlert,
-} from '@utils/index';
+} from '@lib/utils';
 import {
   IItem,
   IAddons,

@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
 import OrdersGroupRow from './OrdersGroupRow';
 import SortOrdersGroups from './SortOrdersGroups';
-import styles from '@styles/admin/OrdersGroups.module.css';
+import styles from './OrdersGroups.module.css';
 import ActionButton from '@components/layout/ActionButton';
-import { axiosInstance, showErrorAlert } from '@utils/index';
+import { axiosInstance, showErrorAlert } from '@lib/utils';
 import {
   CustomAxiosError,
   IOrdersGroupsProps,

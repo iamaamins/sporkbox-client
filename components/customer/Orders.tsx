@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ICustomerOrderProps } from 'types';
-import { dateToText } from '@utils/index';
-import styles from '@styles/generic/Orders.module.css';
+import { dateToText } from '@lib/utils';
+import styles from './Orders.module.css';
 
 export default function Orders({ orders }: ICustomerOrderProps) {
   return (

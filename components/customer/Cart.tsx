@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useCart } from '@context/Cart';
 import { useUser } from '@context/User';
 import { IoMdRemove } from 'react-icons/io';
-import styles from '@styles/generic/Cart.module.css';
+import styles from './Cart.module.css';
 import ButtonLoader from '@components/layout/ButtonLoader';
 import {
   axiosInstance,
@@ -12,7 +12,7 @@ import {
   getAddonsTotal,
   showErrorAlert,
   getDateTotal,
-} from '@utils/index';
+} from '@lib/utils';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
 import { useRouter } from 'next/router';
@@ -24,7 +24,6 @@ type AppliedDiscount = {
 };
 
 export default function Cart() {
-  // Hooks
   const router = useRouter();
   const {
     cartItems,
@@ -40,42 +39,26 @@ export default function Cart() {
     useState<AppliedDiscount | null>(null);
   const [isApplyingDiscount, setIsApplyingDiscount] = useState(false);
 
-  // Payable amount
   let payableAmount = 0;
 
-  // Get payable amount
   if (customer) {
-    // Get everyday cart total
     const cartDateTotalDetails = cartItems.map((cartItem) => {
-      // Get optional addons total
       const optionalAddonsPrice = getAddonsTotal(cartItem.optionalAddons);
-
-      // Get required addons total
       const requiredAddonsPrice = getAddonsTotal(cartItem.requiredAddons);
-
-      // Get total addons price
       const totalAddonsPrice =
         (optionalAddonsPrice || 0) + (requiredAddonsPrice || 0);
-
       return {
         date: cartItem.deliveryDate,
         total: (cartItem.price + totalAddonsPrice) * cartItem.quantity,
       };
     });
 
-    // Get cart item date and total details
     const cartItemDetails = getDateTotal(cartDateTotalDetails);
-
-    // Get company
     const company = customer.companies.find(
       (company) => company.status === 'ACTIVE'
     );
-
     if (company) {
-      // Get shift budget
       const shiftBudget = company.shiftBudget;
-
-      // Get total payable amount
       const totalPayableAmount = cartItemDetails
         .map((cartItemDetail) => {
           if (
@@ -89,15 +72,11 @@ export default function Cart() {
               payable: cartItemDetail.total - shiftBudget,
             };
           } else {
-            // Get upcoming order date and total detail
             const upcomingOrderDetail = upcomingOrderDetails.find(
               (upcomingOrderDetail) =>
                 upcomingOrderDetail.date === cartItemDetail.date
             );
-
-            // Get order total for the day
             const upcomingDayOrderTotal = upcomingOrderDetail?.total || 0;
-
             return {
               date: cartItemDetail.date,
               payable:
@@ -111,53 +90,37 @@ export default function Cart() {
         .filter((detail) => detail.payable > 0)
         .reduce((acc, curr) => acc + curr.payable, 0);
 
-      // Get the discount amount
       const discountAmount = appliedDiscount?.value || 0;
-
-      // Update payable amount
       payableAmount = totalPayableAmount - discountAmount;
     }
   }
 
-  // Handle apply discount code
   async function applyDiscount(e: FormEvent) {
     e.preventDefault();
 
     try {
-      // Show loader
       setIsApplyingDiscount(true);
-
-      // Make request to the backend
       const response = await axiosInstance.post(
         `/discount-code/apply/${discountCode}`
       );
-
-      // Update state
       setAppliedDiscount(response.data);
-
-      // Save discount details to local storage
       localStorage.setItem(
         `discount-${customer?._id}`,
         JSON.stringify(response.data)
       );
     } catch (err) {
-      // Log error
       console.log(err);
-
       showErrorAlert('Invalid discount code', setAlerts);
     } finally {
-      // Remove loader
       setIsApplyingDiscount(false);
     }
   }
 
-  // Handle remove discount
   function removeDiscount() {
     setAppliedDiscount(null);
     localStorage.removeItem(`discount-${customer?._id}`);
   }
 
-  // Auto remove discount code
   useEffect(() => {
     if (appliedDiscount && payableAmount <= 0) {
       removeDiscount();
@@ -166,10 +129,7 @@ export default function Cart() {
 
   // Get saved discount
   useEffect(() => {
-    // Get data from local storage
     const localDiscount = localStorage.getItem(`discount-${customer?._id}`);
-
-    // Update state
     setAppliedDiscount(localDiscount ? JSON.parse(localDiscount) : null);
   }, [customer, router.isReady]);
 

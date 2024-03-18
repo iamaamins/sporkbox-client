@@ -13,9 +13,9 @@ import {
   dateToText,
   showErrorAlert,
   showSuccessAlert,
-} from '@utils/index';
+} from '@lib/utils';
 import ModalContainer from '@components/layout/ModalContainer';
-import styles from '@styles/admin/ScheduledRestaurants.module.css';
+import styles from './ScheduledRestaurants.module.css';
 
 export default function ScheduledRestaurants({
   isLoading,

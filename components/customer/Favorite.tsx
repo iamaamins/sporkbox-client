@@ -8,11 +8,10 @@ import {
   getDay,
   dateToMS,
   handleRemoveFromFavorite,
-} from '@utils/index';
-import styles from '@styles/generic/Favorite.module.css';
+} from '@lib/utils';
+import styles from './Favorite.module.css';
 
 export default function Favorite() {
-  // Hooks
   const { setAlerts } = useAlert();
   const {
     customerFavoriteItems,

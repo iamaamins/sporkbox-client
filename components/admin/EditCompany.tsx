@@ -2,7 +2,7 @@ import { useData } from '@context/Data';
 import { useRouter } from 'next/router';
 import CompanyForm from './CompanyForm';
 import { useAlert } from '@context/Alert';
-import styles from '@styles/admin/EditCompany.module.css';
+import styles from './EditCompany.module.css';
 import { CustomAxiosError, ICompany, ICompanyFormData } from 'types';
 import React, { FormEvent, useEffect, useState } from 'react';
 import {
@@ -10,7 +10,7 @@ import {
   showErrorAlert,
   showSuccessAlert,
   updateCompanies,
-} from '@utils/index';
+} from '@lib/utils';
 
 export default function EditCompany() {
   // Initial state

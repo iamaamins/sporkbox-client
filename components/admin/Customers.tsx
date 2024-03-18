@@ -10,9 +10,9 @@ import {
   showErrorAlert,
   showSuccessAlert,
   updateCustomers,
-} from '@utils/index';
+} from '@lib/utils';
 import { CustomAxiosError, ICustomersProps } from 'types';
-import styles from '@styles/admin/Customers.module.css';
+import styles from './Customers.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
 
 export default function Customers({ status, customers }: ICustomersProps) {

@@ -8,8 +8,8 @@ import {
   showErrorAlert,
   showSuccessAlert,
   updateVendors,
-} from '@utils/index';
-import styles from '@styles/admin/EditRestaurant.module.css';
+} from '@lib/utils';
+import styles from './EditRestaurant.module.css';
 import React, { FormEvent, useEffect, useState } from 'react';
 
 export default function EditRestaurant() {

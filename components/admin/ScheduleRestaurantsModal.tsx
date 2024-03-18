@@ -4,8 +4,8 @@ import { useAlert } from '@context/Alert';
 import SubmitButton from '../layout/SubmitButton';
 import { CustomAxiosError, IFormData, IRestaurant } from 'types';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import styles from '@styles/admin/ScheduleRestaurantsModal.module.css';
-import { axiosInstance, showErrorAlert, showSuccessAlert } from '@utils/index';
+import styles from './ScheduleRestaurantsModal.module.css';
+import { axiosInstance, showErrorAlert, showSuccessAlert } from '@lib/utils';
 
 export default function ScheduleRestaurantsModal() {
   // Initial state

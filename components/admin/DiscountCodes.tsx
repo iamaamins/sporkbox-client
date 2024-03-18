@@ -2,8 +2,8 @@ import { CustomAxiosError } from 'types';
 import { useAlert } from '@context/Alert';
 import { useData } from '@context/Data';
 import LinkButton from '@components/layout/LinkButton';
-import { axiosInstance, showErrorAlert } from '@utils/index';
-import styles from '@styles/admin/DiscountCodes.module.css';
+import { axiosInstance, showErrorAlert } from '@lib/utils';
+import styles from './DiscountCodes.module.css';
 
 export default function DiscountCodes() {
   // Hooks

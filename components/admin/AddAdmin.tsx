@@ -1,9 +1,9 @@
 import { useAlert } from '@context/Alert';
 import { CustomAxiosError, IFormData } from 'types';
-import styles from '@styles/admin/AddAdmin.module.css';
+import styles from './AddAdmin.module.css';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import SubmitButton from '@components/layout/SubmitButton';
-import { axiosInstance, showErrorAlert, showSuccessAlert } from '@utils/index';
+import { axiosInstance, showErrorAlert, showSuccessAlert } from '@lib/utils';
 
 export default function AddAdmin() {
   // Initial state

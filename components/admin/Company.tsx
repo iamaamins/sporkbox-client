@@ -6,7 +6,7 @@ import ActionModal from './ActionModal';
 import { useAlert } from '@context/Alert';
 import { FiDownload } from 'react-icons/fi';
 import Buttons from '@components/layout/Buttons';
-import styles from '@styles/admin/Company.module.css';
+import styles from './Company.module.css';
 import { FormEvent, useEffect, useState } from 'react';
 import ScheduledRestaurants from './ScheduledRestaurants';
 import ModalContainer from '@components/layout/ModalContainer';
@@ -17,7 +17,7 @@ import {
   showSuccessAlert,
   sortByLastName,
   updateCompanies,
-} from '@utils/index';
+} from '@lib/utils';
 import {
   ICompany,
   ICustomer,
@@ -28,7 +28,7 @@ import {
   formatCustomerDataToCSV,
   createCustomerCSVFileName,
   customerCSVHeaders,
-} from '@utils/csv';
+} from 'lib/csv';
 
 export default function Company() {
   // Hooks

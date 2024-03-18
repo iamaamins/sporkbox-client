@@ -19,10 +19,8 @@ import {
   DateTotal,
 } from 'types';
 
-// Current year
 export const currentYear = new Date().getFullYear();
 
-// Convert number
 export const toUSNumber = (number: number) => +number.toLocaleString('en-US');
 
 // Format currency
@@ -32,14 +30,11 @@ export const numberToUSD = (number: number) =>
     currency: 'USD',
   }).format(number);
 
-// Convert date to milliseconds
 export const dateToMS = (date: string) => new Date(date).getTime();
 
-// Convert date to string
 export const dateToText = (date: Date | string | number): string =>
   new Date(date).toUTCString().split(' ').slice(0, 3).join(' ');
 
-// Check if there is an admin
 export function checkUser(
   isUserLoading: boolean,
   user: boolean,
@@ -94,23 +89,14 @@ export function groupBy<
   items: Item[],
   itemsName: ItemsName
 ): Groups<Item, Key, ItemsName>[] {
-  // Crate groups with provided key
   const groupsObj = items.reduce<Record<string, Item[]>>((acc, curr) => {
-    // Property to create group with
     const property: string = curr[key];
-
-    // If property exists in acc then,
-    // add the current item to the property array
     if (property in acc) {
       return { ...acc, [property]: [...acc[property], curr] };
     }
-
-    // Else create a property and
-    // add the current item to an array
     return { ...acc, [property]: [curr] };
   }, {});
 
-  // Convert the object
   const groupsArr = Object.keys(groupsObj).map(
     (property) =>
       ({
@@ -122,44 +108,32 @@ export function groupBy<
   return groupsArr;
 }
 
-// Get the UTC date
 export const getDate = (date: number | string) =>
   new Date(date).getUTCDate().toString().padStart(2, '0');
 
-// Get the first letter of the UTC day
 export const getDay = (date: number | string) =>
   new Date(date).toUTCString().split('').slice(0, 2).join('').toUpperCase();
 
-// Handle remove from favorite
 export async function handleRemoveFromFavorite(
   setAlerts: Dispatch<SetStateAction<IAlert[]>>,
   itemId: string,
   setCustomerFavoriteItems: Dispatch<SetStateAction<ICustomerFavoriteItems>>
 ) {
   try {
-    // Make request to backend
     await axiosInstance.delete(`/favorites/${itemId}/remove-from-favorite`);
-
-    // Update state
     setCustomerFavoriteItems((prevState) => ({
       ...prevState,
       data: prevState.data.filter(
         (customerFavoriteItem) => customerFavoriteItem._id !== itemId
       ),
     }));
-
-    // Show success alert
     showSuccessAlert('Favorite removed', setAlerts);
   } catch (err) {
-    // Log error
     console.log(err);
-
-    // Show error alert
     showErrorAlert(err as CustomAxiosError, setAlerts);
   }
 }
 
-// Create text to slug
 export const createSlug = (text: string) =>
   text.toLowerCase().split(' ').join('-');
 
@@ -210,11 +184,9 @@ export const createOrdersGroups = (orders: IOrder[]) =>
     }
   }, []);
 
-// Sort users by last name
 export const sortByLastName = (a: ICustomer, b: ICustomer) =>
   a.lastName.toLowerCase().localeCompare(b.lastName.toLowerCase());
 
-// Update customers
 export function updateCustomers(
   updatedCustomer: ICustomer,
   setCustomers: Dispatch<SetStateAction<ICustomers>>
@@ -238,7 +210,6 @@ export function updateCustomers(
   }));
 }
 
-// Update companies
 export function updateCompanies(
   updatedCompany: ICompany,
   setCompanies: Dispatch<SetStateAction<ICompanies>>
@@ -266,30 +237,23 @@ export function updateCompanies(
   }));
 }
 
-// Format image name
 export const formatImageName = (name: string) =>
   name.length > 15
     ? `${name.slice(0, 10)}.${name.split('.')[name.split('.').length - 1]}`
     : name;
 
-// Success alert
 export function showSuccessAlert(
   message: string,
   setAlerts: Dispatch<SetStateAction<IAlert[]>>
 ) {
-  // Update state
   setAlerts((prevState) => [...prevState, { message, type: 'success' }]);
 }
 
-// Error alert
 export function showErrorAlert(
   err: CustomAxiosError | string,
   setAlerts: Dispatch<SetStateAction<IAlert[]>>
 ) {
-  // Error type
   const type = 'failed';
-
-  // Update state
   setAlerts((prevState) =>
     typeof err === 'string'
       ? [...prevState, { message: err, type }]
@@ -299,7 +263,6 @@ export function showErrorAlert(
   );
 }
 
-// Group identical orders
 export const groupIdenticalOrders = (orders: IOrder[]) =>
   orders.reduce((acc: IOrder[], curr) => {
     if (
@@ -351,7 +314,6 @@ export const formatAddons = (ingredients: string) =>
         : ingredient[0]
     );
 
-// Create axios instance
 export const axiosInstance = axios.create({
   withCredentials: true,
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -372,14 +334,11 @@ export const tags = [
   'Contains Shellfish',
 ] as const;
 
-// Tag types
 type Tags = (typeof tags)[number][];
 
-// Split tags
 export const splitTags = (tags: string) =>
   tags.split(',').map((tag) => tag.trim()) as Tags;
 
-// Get addons total
 export const getAddonsTotal = (addons: string[]) =>
   addons
     .map((addon) => addon.replace(/[\s$]/g, '').split('-'))

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useUser } from '@context/User';
-import { checkUser } from '@utils/index';
+import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
 import PageLoader from '@components/layout/PageLoader';
 import AddDiscountCodeForm from '@components/admin/AddDiscountCodeForm';

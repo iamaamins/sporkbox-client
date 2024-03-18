@@ -2,7 +2,7 @@ import ItemForm from './ItemForm';
 import { useData } from '@context/Data';
 import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
-import styles from '@styles/admin/EditItem.module.css';
+import styles from './EditItem.module.css';
 import { FormEvent, useEffect, useState } from 'react';
 import { IItem, CustomAxiosError, IItemFormData } from 'types';
 import {
@@ -12,7 +12,7 @@ import {
   showErrorAlert,
   updateVendors,
   showSuccessAlert,
-} from '@utils/index';
+} from '@lib/utils';
 
 export default function EditItem() {
   // Initial state

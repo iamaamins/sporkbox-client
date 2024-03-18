@@ -9,8 +9,8 @@ import {
   showErrorAlert,
   updateVendors,
   showSuccessAlert,
-} from '@utils/index';
-import styles from '@styles/admin/AddItem.module.css';
+} from '@lib/utils';
+import styles from './AddItem.module.css';
 
 export default function AddItem() {
   // Initial states

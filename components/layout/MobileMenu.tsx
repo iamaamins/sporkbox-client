@@ -17,19 +17,31 @@ import { FaUserAlt } from 'react-icons/fa';
 import { CgProfile } from 'react-icons/cg';
 import { CustomAxiosError, IMobileMenuProps } from 'types';
 import { BsFillCalendar2DateFill } from 'react-icons/bs';
-import styles from '@styles/layout/MobileMenu.module.css';
+import styles from './MobileMenu.module.css';
 import { AiTwotonePhone, AiTwotoneStar } from 'react-icons/ai';
 import { TbBuildingStore, TbBuildingSkyscraper } from 'react-icons/tb';
-import { currentYear, axiosInstance, showErrorAlert } from '@utils/index';
+import { currentYear, axiosInstance, showErrorAlert } from '@lib/utils';
 
 export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
-  // Hooks
   const { setAlerts } = useAlert();
   const { upcomingDates } = useData();
   const [date, setDate] = useState<number>();
-  const { isAdmin, isCustomer, setAdmin, setCustomer } = useUser();
+  const { isAdmin, isVendor, isCustomer, setAdmin, setVendor, setCustomer } =
+    useUser();
 
-  // Get first scheduled date of next week
+  async function handleSignOut() {
+    try {
+      await axiosInstance.post(`/users/logout`, {});
+      if (isAdmin) setAdmin(null);
+      if (isVendor) setVendor(null);
+      if (isCustomer) setCustomer(null);
+      setIsOpen(false);
+    } catch (err) {
+      console.log(err);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    }
+  }
+
   useEffect(() => {
     if (upcomingDates.length > 0) {
       setDate(upcomingDates[0]);
@@ -44,31 +56,6 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
       ? (body!.style.overflow = 'hidden')
       : (body!.style.overflow = 'auto');
   });
-
-  // Logout user
-  async function handleSignOut() {
-    // Sign a user out
-    try {
-      // Make request to backend
-      await axiosInstance.post(`/users/logout`, {});
-
-      // Update state
-      if (isAdmin) {
-        setAdmin(null);
-      } else {
-        setCustomer(null);
-      }
-
-      // Close the menu
-      setIsOpen(false);
-    } catch (err) {
-      // Log error
-      console.log(err);
-
-      // Show error alert
-      showErrorAlert(err as CustomAxiosError, setAlerts);
-    }
-  }
 
   return (
     <div className={`${styles.mobile_menu} ${isOpen && styles.open}`}>
@@ -198,7 +185,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
 
         {/* Generic nav items */}
         <li
-          className={isAdmin || isCustomer ? styles.hide : ''}
+          className={isAdmin || isVendor || isCustomer ? styles.hide : ''}
           onClick={() => setIsOpen(false)}
         >
           <Link href='/register'>
@@ -209,7 +196,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
         </li>
 
         <li
-          className={isAdmin || isCustomer ? styles.hide : ''}
+          className={isAdmin || isVendor || isCustomer ? styles.hide : ''}
           onClick={() => setIsOpen(false)}
         >
           <Link href='/login'>
@@ -239,7 +226,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
         </li>
 
         <li
-          className={!isAdmin && !isCustomer ? styles.hide : ''}
+          className={!isAdmin && !isVendor && !isCustomer ? styles.hide : ''}
           onClick={handleSignOut}
         >
           <span>

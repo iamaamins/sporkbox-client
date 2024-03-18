@@ -1,18 +1,15 @@
 import { ICustomerOrdersProps } from 'types';
-import styles from '@styles/generic/CustomerOrders.module.css';
-import { dateToText, numberToUSD } from '@utils/index';
+import styles from '@components/customer/CustomerOrders.module.css';
+import { dateToText, numberToUSD } from '@lib/utils';
 
 export default function CustomerOrders({
   orders,
   orderStatus,
 }: ICustomerOrdersProps) {
-  // Check optional addons
   const hasOptionalAddons = orders.some((order) => order.item.optionalAddons);
 
-  // Check optional addons
   const hasRequiredAddons = orders.some((order) => order.item.requiredAddons);
 
-  // Check removed ingredients
   const hasRemovedIngredients = orders.some(
     (order) => order.item.removedIngredients
   );

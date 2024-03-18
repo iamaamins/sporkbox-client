@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import { IReorderAbleItemsProps } from 'types';
 import { HiBadgeCheck } from 'react-icons/hi';
-import { numberToUSD } from '@utils/index';
+import { numberToUSD } from '@lib/utils';
 import { RiDeleteBack2Fill } from 'react-icons/ri';
-import styles from '@styles/admin/ReorderAbleItems.module.css';
+import styles from './ReorderAbleItems.module.css';
 import {
   swap,
   GridItem,

@@ -4,12 +4,11 @@ import { CustomAxiosError } from 'types';
 import { useUser } from '@context/User';
 import { useData } from '@context/Data';
 import { useAlert } from '@context/Alert';
-import styles from '@styles/generic/Dashboard.module.css';
+import styles from './Dashboard.module.css';
 import ActionButton from '@components/layout/ActionButton';
-import { axiosInstance, showErrorAlert } from '@utils/index';
+import { axiosInstance, showErrorAlert } from '@lib/utils';
 
 export default function Dashboard() {
-  // Hooks
   const { customer } = useUser();
   const { setAlerts } = useAlert();
   const [isLoading, setIsLoading] = useState(false);
@@ -19,28 +18,18 @@ export default function Dashboard() {
     setCustomerDeliveredOrders,
   } = useData();
 
-  // Handle load all delivered orders
   async function handleLoadAllDeliveredOrders() {
     try {
-      // Show loader
       setIsLoading(true);
-
-      // Make request to backend
       const response = await axiosInstance.get(`/orders/me/delivered-orders/0`);
-
-      // Update state
       setCustomerDeliveredOrders((prevState) => ({
         ...prevState,
         data: response.data,
       }));
     } catch (err) {
-      // Log error
       console.log(err);
-
-      // Show error alert
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      // Remove loader
       setIsLoading(false);
     }
   }

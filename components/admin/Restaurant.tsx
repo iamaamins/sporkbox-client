@@ -8,14 +8,14 @@ import Buttons from '@components/layout/Buttons';
 import { CustomAxiosError, IVendor } from 'types';
 import { RiDeleteBack2Fill } from 'react-icons/ri';
 import { FormEvent, useEffect, useState } from 'react';
-import styles from '@styles/admin/Restaurant.module.css';
+import styles from './Restaurant.module.css';
 import {
   axiosInstance,
   updateVendors,
   showErrorAlert,
   showSuccessAlert,
   numberToUSD,
-} from '@utils/index';
+} from '@lib/utils';
 import { useAlert } from '@context/Alert';
 import ReorderAbleItems from './ReorderAbleItems';
 import ModalContainer from '@components/layout/ModalContainer';

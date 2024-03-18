@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { useData } from '@context/Data';
-import { dateToText } from '@utils/index';
+import { dateToText } from '@lib/utils';
 import LinkButton from '@components/layout/LinkButton';
-import styles from '@styles/admin/Restaurants.module.css';
+import styles from './Restaurants.module.css';
 
 export default function Restaurants() {
   // Hooks

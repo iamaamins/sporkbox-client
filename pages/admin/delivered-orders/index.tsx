@@ -1,10 +1,10 @@
-import { useEffect } from "react";
-import { useUser } from "@context/User";
-import { checkUser } from "@utils/index";
-import { useRouter } from "next/router";
-import { useData } from "@context/Data";
-import OrdersGroups from "@components/admin/OrdersGroups";
-import PageLoader from "@components/layout/PageLoader";
+import { useEffect } from 'react';
+import { useUser } from '@context/User';
+import { checkUser } from '@lib/utils';
+import { useRouter } from 'next/router';
+import { useData } from '@context/Data';
+import OrdersGroups from '@components/admin/OrdersGroups';
+import PageLoader from '@components/layout/PageLoader';
 
 export default function DeliveredOrdersGroupsPage() {
   const router = useRouter();
@@ -20,8 +20,8 @@ export default function DeliveredOrdersGroupsPage() {
       {isUserLoading && <PageLoader />}
       {isAdmin && (
         <OrdersGroups
-          slug="delivered-orders"
-          title="Delivered orders"
+          slug='delivered-orders'
+          title='Delivered orders'
           ordersGroups={deliveredOrdersGroups}
         />
       )}

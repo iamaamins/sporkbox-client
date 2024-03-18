@@ -5,12 +5,12 @@ import {
   itemStatCSVHeaders,
   orderStatCSVHeaders,
   peopleStatCSVHeaders,
-} from '@utils/csv';
-import { axiosInstance, showErrorAlert } from '@utils/index';
+} from 'lib/csv';
+import { axiosInstance, showErrorAlert } from '@lib/utils';
 import { useEffect, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { FiDownload } from 'react-icons/fi';
-import styles from '@styles/admin/Stat.module.css';
+import styles from './Stat.module.css';
 import { CustomAxiosError } from 'types';
 import { useAlert } from '@context/Alert';
 import { useRouter } from 'next/router';

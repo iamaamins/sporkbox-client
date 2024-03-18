@@ -16,32 +16,27 @@ import {
   ICustomerFavoriteItems,
   ICustomerUpcomingOrders,
   ICustomerDeliveredOrders,
+  IVendorUpcomingOrders,
 } from 'types';
 import {
   axiosInstance,
   dateToMS,
   createOrdersGroups,
   showErrorAlert,
-} from '@utils/index';
+} from '@lib/utils';
 import { useState, createContext, useContext, useEffect } from 'react';
 
-// Create context
 const DataContext = createContext({} as IDataContext);
-
-// Create hook
 export const useData = () => useContext(DataContext);
 
-// Provider function
 export default function DataProvider({ children }: IContextProviderProps) {
-  // Initial state
   const initialState = {
     data: [],
     isLoading: true,
   };
 
-  // Hooks
   const { setAlerts } = useAlert();
-  const { isAdmin, isCustomer, customer } = useUser();
+  const { isAdmin, isVendor, isCustomer, customer } = useUser();
   const [allUpcomingOrders, setAllUpcomingOrders] =
     useState<IAllUpcomingOrders>(initialState);
   const [scheduledRestaurants, setScheduledRestaurants] =
@@ -61,6 +56,8 @@ export default function DataProvider({ children }: IContextProviderProps) {
     useState<ICustomerFavoriteItems>(initialState);
   const [discountCodes, setDiscountCodes] =
     useState<IDiscountCodes>(initialState);
+  const [vendorUpcomingOrders, setVendorUpcomingOrders] =
+    useState<IVendorUpcomingOrders>(initialState);
 
   // All admin orders
   const allOrders = [...allUpcomingOrders.data, ...allDeliveredOrders.data];
@@ -77,7 +74,6 @@ export default function DataProvider({ children }: IContextProviderProps) {
   // Group delivered orders by company and delivery date
   const deliveredOrdersGroups = createOrdersGroups(allDeliveredOrders.data);
 
-  // Upcoming dates
   const upcomingDates =
     !upcomingRestaurants.isLoading && upcomingRestaurants.data.length > 0
       ? upcomingRestaurants.data
@@ -88,163 +84,106 @@ export default function DataProvider({ children }: IContextProviderProps) {
   // Get admin data
   useEffect(() => {
     async function getAdminData() {
-      // Get all upcoming orders
+      // Get upcoming orders
       try {
-        // Make request to backend
         const response = await axiosInstance.get(`/orders/all-upcoming-orders`);
-
-        // Update state
         setAllUpcomingOrders({ isLoading: false, data: response.data });
       } catch (err) {
-        // Log error
         console.log(err);
-
-        // Remove loader
         setAllUpcomingOrders((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
-
-        // Show error alert
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
 
       // Get scheduled restaurants
       try {
-        // Make request to backend
         const response = await axiosInstance.get(
           `/restaurants/scheduled-restaurants`
         );
-
-        // Update state
         setScheduledRestaurants({ isLoading: false, data: response.data });
       } catch (err) {
-        // Log error
         console.log(err);
-
-        // Remove loader
         setScheduledRestaurants((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
-
-        // Show error alert
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
 
       // Get all companies
       try {
-        // Make request to backend
         const response = await axiosInstance.get(`/companies`);
-
-        // Update state
         setCompanies({ isLoading: false, data: response.data });
       } catch (err) {
-        // Log error
         console.log(err);
-
-        // Remove loader
         setCompanies((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
-
-        // Show error alert
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
 
       // Get 25 latest vendors
       try {
-        // Make request to backend
         const response = await axiosInstance.get(`/vendors/0`);
-
-        // Update state
         setVendors({ isLoading: false, data: response.data });
       } catch (err) {
-        // Log error
         console.log(err);
-
-        // Remove loader
         setVendors((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
-
-        // Show error alert
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
 
-      // Get 25 delivered orders
+      // Get 2500 delivered orders
       try {
-        // Make request to backend
         const response = await axiosInstance.get(
           `/orders/all-delivered-orders/2500`
         );
-
-        // Update state
         setAllDeliveredOrders({ isLoading: false, data: response.data });
       } catch (err) {
-        // Log error
         console.log(err);
-
-        // Remove loader
         setAllDeliveredOrders((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
-
-        // Show error alert
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
 
+      // Get all customers
       try {
-        // Get all customers
         const response = await axiosInstance.get('/customers');
-
-        // Update state
         setCustomers({ isLoading: false, data: response.data });
       } catch (err) {
-        // Log error
         console.log(err);
-
-        // Remove loader
         setCustomers((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
-
-        // Show error alert
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
 
+      // Get discount codes
       try {
-        // Get discount codes
         const response = await axiosInstance.get('/discount-code');
-
-        // Update state
         setDiscountCodes({
           isLoading: false,
           data: response.data,
         });
       } catch (err) {
-        // Log error
         console.log(err);
-
-        // Remove loader
         setDiscountCodes((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
-
-        // Show error alert
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
 
-    // Run the function if there is an admin
-    if (isAdmin) {
-      getAdminData();
-    }
+    if (isAdmin) getAdminData();
   }, [isAdmin]);
 
   // Get customer data
@@ -252,107 +191,89 @@ export default function DataProvider({ children }: IContextProviderProps) {
     async function getCustomerData() {
       // Get all upcoming orders
       try {
-        // Make request to backend
         const response = await axiosInstance.get(`/orders/me/upcoming-orders`);
-
-        // Update state
         setCustomerUpcomingOrders({ isLoading: false, data: response.data });
       } catch (err) {
-        // Log error
         console.log(err);
-
-        // Remove loader
         setCustomerUpcomingOrders((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
-
-        // Show error alert
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
 
       // Get 10 latest delivered orders
       try {
-        // Make request to backend
         const response = await axiosInstance.get(
           `/orders/me/delivered-orders/10`
         );
-
-        // Update state
         setCustomerDeliveredOrders({ isLoading: false, data: response.data });
       } catch (err) {
-        // Log error
         console.log(err);
-
-        // Remove loader
         setCustomerDeliveredOrders((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
-
-        // Show error alert
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
 
       // Get favorite items
       try {
-        // Make request to backend
         const response = await axiosInstance.get(`/favorites/me`);
-
-        // Update data
         setCustomerFavoriteItems({ isLoading: false, data: response.data });
       } catch (err) {
-        // Log error
         console.log(err);
-
-        // Remove loader
         setCustomerFavoriteItems((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
-
-        // Show error alert
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
 
-    // Only run this function if there is a customer
-    if (isCustomer) {
-      getCustomerData();
-    }
+    if (isCustomer) getCustomerData();
   }, [isCustomer]);
 
   // Get customer upcoming restaurants
   useEffect(() => {
     async function getUpcomingRestaurants() {
       try {
-        // Make request to backend
         const response = await axiosInstance.get(
           `/restaurants/upcoming-restaurants`
         );
-
-        // Update state
         setUpcomingRestaurants({ isLoading: false, data: response.data });
       } catch (err) {
-        // Log error
         console.log(err);
-
-        // Remove loader
         setUpcomingRestaurants((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
-
-        // Show error alert
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
-
-    // Only run this function if there is a customer
-    if (isCustomer) {
-      getUpcomingRestaurants();
-    }
+    if (isCustomer) getUpcomingRestaurants();
   }, [customer]);
+
+  // Get vendor's data
+  useEffect(() => {
+    async function getVendorData() {
+      // Get all upcoming orders
+      try {
+        const response = await axiosInstance.get(
+          `/orders/vendor/upcoming-orders`
+        );
+        setVendorUpcomingOrders({ isLoading: false, data: response.data });
+      } catch (err) {
+        console.log(err);
+        setVendorUpcomingOrders((prevState) => ({
+          ...prevState,
+          isLoading: false,
+        }));
+        showErrorAlert(err as CustomAxiosError, setAlerts);
+      }
+    }
+    if (isVendor) getVendorData();
+  }, [isVendor]);
 
   return (
     <DataContext.Provider
@@ -376,10 +297,12 @@ export default function DataProvider({ children }: IContextProviderProps) {
         customerFavoriteItems,
         upcomingOrdersGroups,
         deliveredOrdersGroups,
+        vendorUpcomingOrders,
         setAllDeliveredOrders,
         customerUpcomingOrders,
         customerDeliveredOrders,
         setScheduledRestaurants,
+        setVendorUpcomingOrders,
         setCustomerFavoriteItems,
         setCustomerUpcomingOrders,
         setCustomerDeliveredOrders,

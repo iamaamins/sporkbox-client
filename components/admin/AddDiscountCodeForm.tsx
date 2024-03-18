@@ -4,8 +4,8 @@ import { useRouter } from 'next/router';
 import { useData } from '@context/Data';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import SubmitButton from '@components/layout/SubmitButton';
-import { axiosInstance, showErrorAlert } from '@utils/index';
-import styles from '@styles/admin/AddDiscountCodeForm.module.css';
+import { axiosInstance, showErrorAlert } from '@lib/utils';
+import styles from './AddDiscountCodeForm.module.css';
 
 export default function AddDiscountCodeForm() {
   const initialState = {

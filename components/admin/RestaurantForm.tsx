@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import { IRestaurantFormProps } from 'types';
 import { FiUpload } from 'react-icons/fi';
-import { formatImageName } from '@utils/index';
+import { formatImageName } from '@lib/utils';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import SubmitButton from '@components/layout/SubmitButton';
-import styles from '@styles/admin/RestaurantForm.module.css';
+import styles from './RestaurantForm.module.css';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 export default function RestaurantForm({

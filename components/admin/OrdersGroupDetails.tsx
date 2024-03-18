@@ -18,8 +18,8 @@ import {
   dateToText,
   numberToUSD,
   groupIdenticalOrders,
-} from '@utils/index';
-import styles from '@styles/admin/OrdersGroupDetails.module.css';
+} from '@lib/utils';
+import styles from './OrdersGroupDetails.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
 
 export default function OrdersGroupDetails({

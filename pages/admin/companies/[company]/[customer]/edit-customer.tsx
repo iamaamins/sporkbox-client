@@ -1,9 +1,9 @@
-import EditCustomer from "@components/admin/EditCustomer";
-import PageLoader from "@components/layout/PageLoader";
-import { useUser } from "@context/User";
-import { checkUser } from "@utils/index";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import EditCustomer from '@components/admin/EditCustomer';
+import PageLoader from '@components/layout/PageLoader';
+import { useUser } from '@context/User';
+import { checkUser } from '@lib/utils';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 export default function EditCustomerPage() {
   const router = useRouter();

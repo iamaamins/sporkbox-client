@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { ILinkButtonProps } from "types";
-import styles from "@styles/layout/LinkButton.module.css";
+import Link from 'next/link';
+import { ILinkButtonProps } from 'types';
+import styles from './LinkButton.module.css';
 
 export default function LinkButton({
   href,

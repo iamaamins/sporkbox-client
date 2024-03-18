@@ -1,6 +1,6 @@
-import { MdEmail } from "react-icons/md";
-import { IoIosCall } from "react-icons/io";
-import styles from "@styles/admin/Contact.module.css";
+import { MdEmail } from 'react-icons/md';
+import { IoIosCall } from 'react-icons/io';
+import styles from './Contact.module.css';
 
 export default function Contact() {
   return (
@@ -11,12 +11,12 @@ export default function Contact() {
       </div>
 
       <div className={styles.details}>
-        <a href="mailto:portland@sporkbytes.com">
+        <a href='mailto:portland@sporkbytes.com'>
           <MdEmail />
           <span>portland@sporkbytes.com</span>
         </a>
-        <a href="tel:503-821-7709">
-          <IoIosCall /> <span>503-821-7709</span>{" "}
+        <a href='tel:503-821-7709'>
+          <IoIosCall /> <span>503-821-7709</span>{' '}
         </a>
       </div>
     </section>

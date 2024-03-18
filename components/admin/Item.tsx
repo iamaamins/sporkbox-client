@@ -12,10 +12,10 @@ import {
   showSuccessAlert,
   splitTags,
   updateVendors,
-} from '@utils/index';
+} from '@lib/utils';
 import ActionModal from './ActionModal';
 import Buttons from '@components/layout/Buttons';
-import styles from '@styles/admin/Item.module.css';
+import styles from './Item.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
 
 export default function Item() {

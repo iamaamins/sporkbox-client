@@ -17,7 +17,7 @@ import {
   showErrorAlert,
   showSuccessAlert,
   getDateTotal,
-} from '@utils/index';
+} from '@lib/utils';
 import { useState, useEffect, useContext, createContext } from 'react';
 
 // Create context
