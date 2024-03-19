@@ -21,8 +21,6 @@ export interface ICustomer extends IUser {
   };
 }
 
-export interface IVendor extends IUser {}
-
 export interface IVendor extends IUser {
   status: string;
   createdAt: string;
@@ -140,6 +138,18 @@ export interface IUserContext {
   setCustomer: Dispatch<SetStateAction<ICustomer | null>>;
 }
 
+export type VendorUpcomingOrder = {
+  _id: string;
+  delivery: { date: string };
+  item: {
+    name: string;
+    quantity: number;
+    optionalAddons: string;
+    requiredAddons: string;
+    removedIngredients: string;
+  };
+};
+
 interface IIsLoading {
   isLoading: boolean;
 }
@@ -149,7 +159,7 @@ export interface IAllUpcomingOrders extends IIsLoading {
 }
 
 export interface IVendorUpcomingOrders extends IIsLoading {
-  data: IOrder[];
+  data: VendorUpcomingOrder[];
 }
 
 export interface IScheduledRestaurants extends IIsLoading {

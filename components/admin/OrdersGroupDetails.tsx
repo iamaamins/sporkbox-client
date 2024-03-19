@@ -53,17 +53,100 @@ export default function OrdersGroupDetails({
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
   const [isUpdatingOrderStatus, setIsUpdatingOrderStatus] = useState(false);
 
+  function initiateOrdersDelivery(orders: IOrder[], restaurantName: string) {
+    setShowDeliveryModal(true);
+    setStatusUpdatePayload({
+      orders,
+      restaurantName,
+    });
+  }
+
+  async function deliverOrders() {
+    const orderIds = statusUpdatePayload.orders.map((order) => order._id);
+
+    try {
+      setIsUpdatingOrdersStatus(true);
+      await axiosInstance.patch('/orders/change-orders-status', {
+        orderIds,
+      });
+      setOrdersByRestaurants((prevState) =>
+        prevState.filter(
+          (ordersByRestaurant) =>
+            ordersByRestaurant.restaurantName !==
+            statusUpdatePayload.restaurantName
+        )
+      );
+      setAllUpcomingOrders((prevState) => ({
+        ...prevState,
+        data: prevState.data.filter((order) => !orderIds.includes(order._id)),
+      }));
+      setAllDeliveredOrders((prevState) => ({
+        ...prevState,
+        data: [
+          ...prevState.data,
+          ...statusUpdatePayload.orders.map((order) => ({
+            ...order,
+            status: 'DELIVERED',
+          })),
+        ],
+      }));
+      showSuccessAlert('Orders delivered', setAlerts);
+      ordersByRestaurants.length === 1 && router.push('/admin');
+    } catch (err) {
+      console.log(err);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      setIsUpdatingOrdersStatus(false);
+      setShowDeliveryModal(false);
+    }
+  }
+
+  function initiateStatusUpdate(orderId: string) {
+    setShowStatusUpdateModal(true);
+    setOrderId(orderId);
+  }
+
+  async function updateStatus() {
+    try {
+      setIsUpdatingOrderStatus(true);
+      await axiosInstance.patch(`/orders/${orderId}/change-order-status`);
+      setAllUpcomingOrders((prevState) => ({
+        ...prevState,
+        data: prevState.data.filter((order) => order._id !== orderId),
+      }));
+      showSuccessAlert('Order archived', setAlerts);
+      ordersByRestaurants
+        .map((ordersByRestaurant) => ordersByRestaurant.orders)
+        .flat().length === 1 && router.push('/admin');
+    } catch (err) {
+      console.log(err);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      setIsUpdatingOrderStatus(false);
+      setShowStatusUpdateModal(false);
+    }
+  }
+
+  const date = dateToText(+(router.query.date as string));
+
+  const hasOptionalAddons = (ordersByRestaurant: IOrdersByRestaurant) =>
+    ordersByRestaurant.orders.some((order) => order.item.optionalAddons);
+
+  const hasRequiredAddons = (ordersByRestaurant: IOrdersByRestaurant) =>
+    ordersByRestaurant.orders.some((order) => order.item.requiredAddons);
+
+  const hasRemovedIngredients = (ordersByRestaurant: IOrdersByRestaurant) =>
+    ordersByRestaurant.orders.some((order) => order.item.removedIngredients);
+
   // Separate order for each restaurant
   useEffect(() => {
     if (!isLoading && router.isReady) {
-      // Find the orders group
       const ordersGroup = ordersGroups.find(
         (ordersGroup) =>
           dateToMS(ordersGroup.deliveryDate).toString() === router.query.date &&
           ordersGroup.company._id === router.query.company
       );
 
-      // Separate orders for each restaurant
       if (ordersGroup) {
         setOrdersByRestaurants(
           ordersGroup.restaurants.reduce((acc: IOrdersByRestaurant[], curr) => {
@@ -90,18 +173,15 @@ export default function OrdersGroupDetails({
   // Get amounts
   useEffect(() => {
     if (!allUpcomingOrders.isLoading && !allDeliveredOrders.isLoading) {
-      // Filter condition
       const filterConditions = (order: IOrder) =>
         dateToMS(order.delivery.date).toString() === router.query.date &&
         order.company._id === router.query.company;
 
-      // Update state
       const allOrders = [
         ...allUpcomingOrders.data.filter((order) => filterConditions(order)),
         ...allDeliveredOrders.data.filter((order) => filterConditions(order)),
       ];
 
-      // Update state
       setAmount({
         paid: allOrders
           .filter((order) => order.payment)
@@ -122,132 +202,6 @@ export default function OrdersGroupDetails({
       });
     }
   }, [allUpcomingOrders, allDeliveredOrders]);
-
-  // Initiate orders delivery
-  function initiateOrdersDelivery(orders: IOrder[], restaurantName: string) {
-    // Update states
-    setShowDeliveryModal(true);
-    setStatusUpdatePayload({
-      orders,
-      restaurantName,
-    });
-  }
-
-  // Delivery orders and send emails
-  async function deliverOrders() {
-    // Get order ids
-    const orderIds = statusUpdatePayload.orders.map((order) => order._id);
-
-    try {
-      // Show the loader
-      setIsUpdatingOrdersStatus(true);
-
-      // Make request to the backend
-      await axiosInstance.patch('/orders/change-orders-status', {
-        orderIds,
-      });
-
-      // Remove the restaurant
-      setOrdersByRestaurants((prevState) =>
-        prevState.filter(
-          (ordersByRestaurant) =>
-            ordersByRestaurant.restaurantName !==
-            statusUpdatePayload.restaurantName
-        )
-      );
-
-      // Remove the orders from the upcoming orders
-      setAllUpcomingOrders((prevState) => ({
-        ...prevState,
-        data: prevState.data.filter((order) => !orderIds.includes(order._id)),
-      }));
-
-      // Add the orders to delivered orders
-      setAllDeliveredOrders((prevState) => ({
-        ...prevState,
-        data: [
-          ...prevState.data,
-          ...statusUpdatePayload.orders.map((order) => ({
-            ...order,
-            status: 'DELIVERED',
-          })),
-        ],
-      }));
-
-      // Show success alert
-      showSuccessAlert('Orders delivered', setAlerts);
-
-      // Push to the dashboard when there are no restaurant
-      ordersByRestaurants.length === 1 && router.push('/admin');
-    } catch (err) {
-      // Log error
-      console.log(err);
-
-      // Show error alert
-      showErrorAlert(err as CustomAxiosError, setAlerts);
-    } finally {
-      // Remove loader and close modal
-      setIsUpdatingOrdersStatus(false);
-      setShowDeliveryModal(false);
-    }
-  }
-
-  // Initiate order status update
-  function initiateStatusUpdate(orderId: string) {
-    // Update states
-    setShowStatusUpdateModal(true);
-    setOrderId(orderId);
-  }
-
-  // Archive order
-  async function updateStatus() {
-    try {
-      // Show loader
-      setIsUpdatingOrderStatus(true);
-
-      // Make request to the backend
-      await axiosInstance.patch(`/orders/${orderId}/change-order-status`);
-
-      // Remove the order
-      setAllUpcomingOrders((prevState) => ({
-        ...prevState,
-        data: prevState.data.filter((order) => order._id !== orderId),
-      }));
-
-      // Show success alert
-      showSuccessAlert('Order archived', setAlerts);
-
-      // Push to the admin page
-      ordersByRestaurants
-        .map((ordersByRestaurant) => ordersByRestaurant.orders)
-        .flat().length === 1 && router.push('/admin');
-    } catch (err) {
-      // Log error
-      console.log(err);
-
-      // Show error alert
-      showErrorAlert(err as CustomAxiosError, setAlerts);
-    } finally {
-      // Remove loader and close modal
-      setIsUpdatingOrderStatus(false);
-      setShowStatusUpdateModal(false);
-    }
-  }
-
-  // Get date in text
-  const date = dateToText(+(router.query.date as string));
-
-  // Check optional addons
-  const hasOptionalAddons = (ordersByRestaurant: IOrdersByRestaurant) =>
-    ordersByRestaurant.orders.some((order) => order.item.optionalAddons);
-
-  // Check required addons
-  const hasRequiredAddons = (ordersByRestaurant: IOrdersByRestaurant) =>
-    ordersByRestaurant.orders.some((order) => order.item.requiredAddons);
-
-  // Check removed ingredients
-  const hasRemovedIngredients = (ordersByRestaurant: IOrdersByRestaurant) =>
-    ordersByRestaurant.orders.some((order) => order.item.removedIngredients);
 
   return (
     <section className={styles.orders_group_details}>

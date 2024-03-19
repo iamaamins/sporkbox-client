@@ -7,9 +7,23 @@
   margin-bottom: 1rem;
 }
 
-.group h2 {
-  font-size: 16px;
+.group_header {
+  display: flex;
+  align-items: center;
   margin-bottom: 8px;
+}
+
+.group_header h2 {
+  font-size: 16px;
+  margin-right: 1rem;
+}
+
+.group_header button {
+  border-radius: 2rem;
+  padding: 4px 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border_color);
 }
 
 .group table {
@@ -43,6 +57,12 @@
 
 .group tbody td:last-child {
   text-align: right;
+}
+
+.group tbody tr:last-child td {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--black);
 }
 
 @media (min-width: 768px) {

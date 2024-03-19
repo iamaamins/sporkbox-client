@@ -50,14 +50,12 @@ export default function ScheduledRestaurants({
     useState(false);
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
 
-  // Initiate schedule update
   function initiateScheduleUpdate(
     e: FormEvent,
     restaurantId: string,
     restaurantName: string,
     scheduleId: string
   ) {
-    // update states
     setShowStatusUpdateModal(true);
     setStatusUpdatePayload({
       action: e.currentTarget.textContent!,
@@ -69,25 +67,17 @@ export default function ScheduledRestaurants({
     });
   }
 
-  // Update schedule status
   async function updateStatus() {
     try {
-      // Show loader
       setIsUpdatingScheduleStatus(true);
-
-      // Make request to the backend
       const response = await axiosInstance.patch(
         `/restaurants/${statusUpdatePayload.restaurant._id}/${statusUpdatePayload.scheduleId}/change-schedule-status`,
         { action: statusUpdatePayload.action }
       );
-
-      // Find the updated schedule
       const schedule = response.data.find(
         (schedule: IScheduledRestaurant) =>
           schedule.scheduleId === statusUpdatePayload.scheduleId
       );
-
-      // Update state
       setScheduledRestaurants((prevState) => ({
         ...prevState,
         data: prevState.data.map((scheduledRestaurant) => {
@@ -103,23 +93,16 @@ export default function ScheduledRestaurants({
           }
         }),
       }));
-
-      // Show success alert
       showSuccessAlert('Status updated', setAlerts);
     } catch (err) {
-      // Log error
       console.log(err);
-
-      // Show error alert
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      // Remove loader and close modal
       setIsUpdatingScheduleStatus(false);
       setShowStatusUpdateModal(false);
     }
   }
 
-  // Initiate schedule removal
   function initiateScheduleRemoval(
     restaurantId: string,
     restaurantName: string,
@@ -127,7 +110,6 @@ export default function ScheduledRestaurants({
     scheduleId: string,
     companyId: string
   ) {
-    // Update states
     setShowScheduleRemovalModal(true);
     setScheduleRemovalPayload({
       restaurant: {
@@ -142,18 +124,12 @@ export default function ScheduledRestaurants({
     });
   }
 
-  // Remove a schedule
   async function removeSchedule() {
     try {
-      // Show loader
       setIsRemovingSchedule(true);
-
-      // Make request to the backend
       await axiosInstance.patch(
         `/restaurants/${scheduleRemovalPayload.restaurant._id}/${scheduleRemovalPayload.schedule._id}/remove-schedule`
       );
-
-      // Remove the schedule
       setScheduledRestaurants((prevState) => ({
         ...prevState,
         data: prevState.data.filter(
@@ -162,8 +138,6 @@ export default function ScheduledRestaurants({
             scheduleRemovalPayload.schedule._id
         ),
       }));
-
-      // Remove upcoming orders
       setAllUpcomingOrders((prevState) => ({
         ...prevState,
         data: prevState.data.filter(
@@ -177,17 +151,11 @@ export default function ScheduledRestaurants({
             )
         ),
       }));
-
-      // Show success alert
       showSuccessAlert('Schedule removed', setAlerts);
     } catch (err) {
-      // Log error
       console.log(err);
-
-      // Show error alert
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      // Close modal and remove loader
       setIsRemovingSchedule(false);
       setShowScheduleRemovalModal(false);
     }

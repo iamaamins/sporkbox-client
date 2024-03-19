@@ -18,7 +18,6 @@ export default function OrdersGroups({
   title,
   ordersGroups,
 }: IOrdersGroupsProps) {
-  // Hooks
   const router = useRouter();
   const { setAlerts } = useAlert();
   const [isLoading, setIsLoading] = useState(false);
@@ -30,24 +29,14 @@ export default function OrdersGroups({
   });
 
   async function handleLoadAllDeliveredOrders() {
-    // Get all delivered orders
     try {
-      // Show loader
       setIsLoading(true);
-
-      // Make request to backend
       const response = await axiosInstance.get(`/orders/delivered/0`);
-
-      // Update state
       setAllDeliveredOrders(response.data);
     } catch (err) {
-      // Log error
       console.log(err);
-
-      // Show error alert
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      // Remove loader
       setIsLoading(false);
     }
   }

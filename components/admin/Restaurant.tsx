@@ -44,80 +44,51 @@ export default function Restaurant() {
 
   // Check if desktop
   useEffect(() => {
-    // Get window width
     const windowWidth = window.innerWidth;
-
-    // Update state
     setIsDesktop(windowWidth > 428);
   }, []);
 
-  // Handle update status
   function initiateStatusUpdate(e: FormEvent) {
-    // Update states
     setShowStatusUpdateModal(true);
     setAction(e.currentTarget.textContent!);
   }
 
-  // Update restaurant status
   async function updateStatus() {
     try {
-      // Show loader
       setIsUpdatingVendorStatus(true);
-
-      // Make request to the backend
       const response = await axiosInstance.patch(
         `/vendors/${vendor?._id}/change-vendor-status`,
         {
           action,
         }
       );
-
-      // Update vendors with updates status
       updateVendors(response.data, setVendors);
-
-      // Show success alert
       showSuccessAlert('Status updated', setAlerts);
     } catch (err) {
-      // Log error
       console.log(err);
-
-      // Show error alert
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      // Remove loader and close the modal
       setIsUpdatingVendorStatus(false);
       setShowStatusUpdateModal(false);
     }
   }
 
-  // Update items index
   async function updateItemsIndex() {
-    // Return if there is no vendor
     if (!vendor) return;
-
-    // Get reordered items' id and index
     const reorderedItems = vendor.restaurant.items.map((item, index) => ({
       _id: item._id,
       index,
     }));
 
     try {
-      // Update items' index
       const response = await axiosInstance.patch(
         `/restaurants/${vendor.restaurant._id}/update-items-index`,
         { reorderedItems }
       );
-
-      // Update state
       setReorderItems(false);
-
-      // Show success alert
       showSuccessAlert(response.data, setAlerts);
     } catch (err) {
-      // Log error
       console.log(err);
-
-      // Show error alert
       showErrorAlert(err as CustomAxiosError, setAlerts);
     }
   }
