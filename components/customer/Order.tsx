@@ -107,14 +107,14 @@ export default function Order() {
     if (!order) return;
     try {
       setCancellingOrder(true);
-      await axiosInstance.patch(`/orders/${order._id}/cancel`);
-
+      const response = await axiosInstance.patch(`/orders/${order._id}/cancel`);
       setCustomerUpcomingOrders((prevState) => ({
         ...prevState,
         data: prevState.data.filter((el) => el._id !== order._id),
       }));
+      console.log(response.data);
       router.push('/dashboard');
-      showSuccessAlert('Order cancelled', setAlerts);
+      showSuccessAlert(response.data.message, setAlerts);
     } catch (err) {
       console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
