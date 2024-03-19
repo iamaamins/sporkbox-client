@@ -33,12 +33,20 @@ type OrderGroup = {
   schedule: OrderGroupSchedule;
 };
 
+type VendorRestaurant = {
+  isLoading: boolean;
+  data: Omit<Restaurant, 'items' | 'createdAt'> | null;
+};
+
 export default function Dashboard() {
   const { setAlerts } = useAlert();
   const { vendor } = useUser();
   const { vendorUpcomingOrders } = useData();
   const [orderGroups, setOrderGroups] = useState<OrderGroup[]>([]);
-  const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
+  const [restaurant, setRestaurant] = useState<VendorRestaurant>({
+    isLoading: true,
+    data: null,
+  });
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
   const [statusUpdatePayload, setStatusUpdatePayload] = useState({
     date: '',
@@ -59,11 +67,11 @@ export default function Dashboard() {
   }
 
   async function updateStatus() {
-    if (!restaurant) return;
+    if (!restaurant.data) return;
     try {
       setIsUpdatingScheduleStatus(true);
       const response = await axiosInstance.patch(
-        `/restaurants/${restaurant._id}/${statusUpdatePayload.schedule._id}/change-schedule-status`,
+        `/restaurants/${restaurant.data._id}/${statusUpdatePayload.schedule._id}/change-schedule-status`,
         {
           action:
             statusUpdatePayload.schedule.status === 'ACTIVE'
@@ -75,17 +83,19 @@ export default function Dashboard() {
         (schedule: { scheduleId: string }) =>
           schedule.scheduleId === statusUpdatePayload.schedule._id
       );
-      setRestaurant(
-        (prevState) =>
-          prevState && {
-            ...prevState,
-            schedules: prevState.schedules.map((prevSchedule) =>
-              prevSchedule._id === schedule.scheduleId
-                ? { ...prevSchedule, status: schedule.status }
-                : prevSchedule
-            ),
-          }
-      );
+      setRestaurant((prevState) => ({
+        ...prevState,
+        data: prevState.data
+          ? {
+              ...prevState.data,
+              schedules: prevState.data?.schedules.map((prevSchedule) =>
+                prevSchedule._id === schedule.scheduleId
+                  ? { ...prevSchedule, status: schedule.status }
+                  : prevSchedule
+              ),
+            }
+          : null,
+      }));
       showSuccessAlert('Status updated', setAlerts);
     } catch (err) {
       console.log(err);
@@ -104,9 +114,10 @@ export default function Dashboard() {
         const response = await axiosInstance.get(
           `/restaurants/${vendor.restaurant}`
         );
-        setRestaurant(response.data);
+        setRestaurant({ isLoading: false, data: response.data });
       } catch (err) {
         console.log(err);
+        setRestaurant((prevState) => ({ ...prevState, isLoading: false }));
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
@@ -115,7 +126,7 @@ export default function Dashboard() {
 
   // Create order groups
   useEffect(() => {
-    if (restaurant) {
+    if (restaurant.data && vendorUpcomingOrders.data.length) {
       const orderMap: OrderMap = {};
       for (const order of vendorUpcomingOrders.data) {
         const deliveryDate = dateToMS(order.delivery.date);
@@ -128,7 +139,7 @@ export default function Dashboard() {
 
       const orderGroups: OrderGroup[] = [];
       for (const deliveryDate in orderMap) {
-        const schedule = restaurant.schedules.find(
+        const schedule = restaurant.data.schedules.find(
           (schedule) => dateToMS(schedule.date) === +deliveryDate
         );
         if (schedule) {
@@ -145,7 +156,7 @@ export default function Dashboard() {
       }
       setOrderGroups(orderGroups);
     }
-  }, [restaurant, vendorUpcomingOrders]);
+  }, [restaurant.data, vendorUpcomingOrders]);
 
   return (
     <section className={styles.container}>
@@ -159,7 +170,9 @@ export default function Dashboard() {
         </div>
       )}
 
-      {orderGroups.length ? (
+      {vendorUpcomingOrders.isLoading || restaurant.isLoading ? (
+        <h2>Loading...</h2>
+      ) : orderGroups.length ? (
         <>
           {orderGroups.map(({ date, orders, quantity, schedule }) => (
             <div className={styles.group} key={date}>
@@ -195,7 +208,7 @@ export default function Dashboard() {
                     </tr>
                   ))}
                   <tr>
-                    <td>Total quantity</td>
+                    <td>Total</td>
                     <td>{quantity}</td>
                     <td></td>
                     <td></td>
