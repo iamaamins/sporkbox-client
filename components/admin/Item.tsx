@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useData } from '@context/Data';
 import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
-import { CustomAxiosError, IItem, IVendor } from 'types';
+import { CustomAxiosError, Item as ItemType, Vendor } from 'types';
 import { FormEvent, useEffect, useState } from 'react';
 import {
   axiosInstance,
@@ -22,8 +22,8 @@ export default function Item() {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { vendors, setVendors } = useData();
-  const [item, setItem] = useState<IItem>();
-  const [vendor, setVendor] = useState<IVendor>();
+  const [item, setItem] = useState<ItemType>();
+  const [vendor, setVendor] = useState<Vendor>();
   const [statusUpdatePayload, setStatusUpdatePayload] = useState({
     action: '',
     item: {

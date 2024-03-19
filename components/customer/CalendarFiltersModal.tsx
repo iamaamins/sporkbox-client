@@ -1,15 +1,28 @@
 import { useUser } from '@context/User';
 import { useRouter } from 'next/router';
-import { ICalendarFiltersProps } from 'types';
+import { UpcomingRestaurant } from 'types';
 import { tags as tagFilters } from '@lib/utils';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import styles from '@components/customer/CalendarFiltersModal.module.css';
+
+type Props = {
+  restaurants: UpcomingRestaurant[];
+  setShowCalendarFilters: Dispatch<SetStateAction<boolean>>;
+  setUpdatedRestaurants: Dispatch<SetStateAction<UpcomingRestaurant[]>>;
+};
 
 export default function CalendarFiltersModal({
   restaurants,
   setUpdatedRestaurants,
   setShowCalendarFilters,
-}: ICalendarFiltersProps) {
+}: Props) {
   const additionalFilters = ['$20 and under'] as const;
   const allInitialFilters = [...tagFilters, ...additionalFilters] as const;
 

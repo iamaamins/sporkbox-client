@@ -19,10 +19,10 @@ import {
   updateCompanies,
 } from '@lib/utils';
 import {
-  ICompany,
-  ICustomer,
+  Company as CompanyType,
+  Customer,
   CustomAxiosError,
-  IScheduledRestaurant,
+  ScheduledRestaurant,
 } from 'types';
 import {
   formatCustomerDataToCSV,
@@ -35,7 +35,7 @@ export default function Company() {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const [action, setAction] = useState('');
-  const [company, setCompany] = useState<ICompany>();
+  const [company, setCompany] = useState<CompanyType>();
   const [showModal, setShowModal] = useState(false);
   const {
     companies,
@@ -45,11 +45,11 @@ export default function Company() {
     scheduledRestaurants,
   } = useData();
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
-  const [restaurants, setRestaurants] = useState<IScheduledRestaurant[]>([]);
-  const [activeCustomers, setActiveCustomers] = useState<ICustomer[]>([]);
-  const [archivedCustomers, setArchivedCustomers] = useState<ICustomer[]>([]);
+  const [restaurants, setRestaurants] = useState<ScheduledRestaurant[]>([]);
+  const [activeCustomers, setActiveCustomers] = useState<Customer[]>([]);
+  const [archivedCustomers, setArchivedCustomers] = useState<Customer[]>([]);
   const [isUpdatingCompanyStatus, setIsUpdatingCompanyStatus] = useState(false);
-  const [unenrolledCustomers, setUnenrolledCustomers] = useState<ICustomer[]>(
+  const [unenrolledCustomers, setUnenrolledCustomers] = useState<Customer[]>(
     []
   );
 

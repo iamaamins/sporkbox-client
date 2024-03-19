@@ -3,19 +3,19 @@ import { Dispatch } from 'react';
 import { SetStateAction } from 'react';
 import { NextRouter } from 'next/router';
 import {
-  IOrder,
-  IAlert,
+  Order,
+  Alert,
   Groups,
-  IVendor,
-  IVendors,
-  ICompany,
-  ICustomer,
-  ICustomers,
-  ICompanies,
-  IRestaurant,
-  IOrdersGroup,
+  Vendor,
+  Vendors,
+  Company,
+  Customer,
+  Customers,
+  Companies,
+  Restaurant,
+  OrderGroup,
   CustomAxiosError,
-  ICustomerFavoriteItems,
+  CustomerFavoriteItems,
   DateTotal,
 } from 'types';
 
@@ -47,8 +47,8 @@ export function checkUser(
 
 // Update restaurants items
 export function updateVendors(
-  updatedVendor: IVendor | IRestaurant,
-  setVendors: Dispatch<SetStateAction<IVendors>>
+  updatedVendor: Vendor | Restaurant,
+  setVendors: Dispatch<SetStateAction<Vendors>>
 ) {
   // Update vendors
   setVendors((prevState) => ({
@@ -115,9 +115,9 @@ export const getDay = (date: number | string) =>
   new Date(date).toUTCString().split('').slice(0, 2).join('').toUpperCase();
 
 export async function handleRemoveFromFavorite(
-  setAlerts: Dispatch<SetStateAction<IAlert[]>>,
+  setAlerts: Dispatch<SetStateAction<Alert[]>>,
   itemId: string,
-  setCustomerFavoriteItems: Dispatch<SetStateAction<ICustomerFavoriteItems>>
+  setCustomerFavoriteItems: Dispatch<SetStateAction<CustomerFavoriteItems>>
 ) {
   try {
     await axiosInstance.delete(`/favorites/${itemId}/remove-from-favorite`);
@@ -138,8 +138,8 @@ export const createSlug = (text: string) =>
   text.toLowerCase().split(' ').join('-');
 
 // Group orders by company name and delivery date
-export const createOrdersGroups = (orders: IOrder[]) =>
-  orders.reduce((acc: IOrdersGroup[], curr): IOrdersGroup[] => {
+export const createOrderGroups = (orders: Order[]) =>
+  orders.reduce((acc: OrderGroup[], curr): OrderGroup[] => {
     if (
       !acc.some(
         (ordersGroup) =>
@@ -184,12 +184,12 @@ export const createOrdersGroups = (orders: IOrder[]) =>
     }
   }, []);
 
-export const sortByLastName = (a: ICustomer, b: ICustomer) =>
+export const sortByLastName = (a: Customer, b: Customer) =>
   a.lastName.toLowerCase().localeCompare(b.lastName.toLowerCase());
 
 export function updateCustomers(
-  updatedCustomer: ICustomer,
-  setCustomers: Dispatch<SetStateAction<ICustomers>>
+  updatedCustomer: Customer,
+  setCustomers: Dispatch<SetStateAction<Customers>>
 ) {
   setCustomers((prevState) => ({
     ...prevState,
@@ -211,8 +211,8 @@ export function updateCustomers(
 }
 
 export function updateCompanies(
-  updatedCompany: ICompany,
-  setCompanies: Dispatch<SetStateAction<ICompanies>>
+  updatedCompany: Company,
+  setCompanies: Dispatch<SetStateAction<Companies>>
 ) {
   setCompanies((prevState) => ({
     ...prevState,
@@ -244,14 +244,14 @@ export const formatImageName = (name: string) =>
 
 export function showSuccessAlert(
   message: string,
-  setAlerts: Dispatch<SetStateAction<IAlert[]>>
+  setAlerts: Dispatch<SetStateAction<Alert[]>>
 ) {
   setAlerts((prevState) => [...prevState, { message, type: 'success' }]);
 }
 
 export function showErrorAlert(
   err: CustomAxiosError | string,
-  setAlerts: Dispatch<SetStateAction<IAlert[]>>
+  setAlerts: Dispatch<SetStateAction<Alert[]>>
 ) {
   const type = 'failed';
   setAlerts((prevState) =>
@@ -263,8 +263,8 @@ export function showErrorAlert(
   );
 }
 
-export const groupIdenticalOrders = (orders: IOrder[]) =>
-  orders.reduce((acc: IOrder[], curr) => {
+export const groupIdenticalOrders = (orders: Order[]) =>
+  orders.reduce((acc: Order[], curr) => {
     if (
       !acc.some(
         (order) =>

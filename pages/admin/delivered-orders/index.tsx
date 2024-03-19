@@ -8,7 +8,7 @@ import PageLoader from '@components/layout/PageLoader';
 
 export default function DeliveredOrdersGroupsPage() {
   const router = useRouter();
-  const { deliveredOrdersGroups } = useData();
+  const { deliveredOrderGroups } = useData();
   const { isUserLoading, isAdmin } = useUser();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function DeliveredOrdersGroupsPage() {
         <OrdersGroups
           slug='delivered-orders'
           title='Delivered orders'
-          ordersGroups={deliveredOrdersGroups}
+          orderGroups={deliveredOrderGroups}
         />
       )}
     </main>

@@ -1,6 +1,14 @@
-import { IActionModalProps } from 'types';
 import styles from './ActionModal.module.css';
 import ButtonLoader from '@components/layout/ButtonLoader';
+import { Dispatch, SetStateAction } from 'react';
+
+type Props = {
+  name: string;
+  action: string;
+  isPerformingAction: boolean;
+  performAction: () => Promise<void>;
+  setShowActionModal: Dispatch<SetStateAction<boolean>>;
+};
 
 export default function ActionModal({
   name,
@@ -8,7 +16,7 @@ export default function ActionModal({
   performAction,
   isPerformingAction,
   setShowActionModal,
-}: IActionModalProps) {
+}: Props) {
   return (
     <div className={styles.action_modal}>
       <p>

@@ -1,15 +1,12 @@
-import { ICustomerOrdersProps } from 'types';
+import { Order } from 'types';
 import styles from '@components/customer/CustomerOrders.module.css';
 import { dateToText, numberToUSD } from '@lib/utils';
 
-export default function CustomerOrders({
-  orders,
-  orderStatus,
-}: ICustomerOrdersProps) {
+type Props = { orders: Order[]; orderStatus: string };
+
+export default function CustomerOrders({ orders, orderStatus }: Props) {
   const hasOptionalAddons = orders.some((order) => order.item.optionalAddons);
-
   const hasRequiredAddons = orders.some((order) => order.item.requiredAddons);
-
   const hasRemovedIngredients = orders.some(
     (order) => order.item.removedIngredients
   );

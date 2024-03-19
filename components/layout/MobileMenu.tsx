@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useAlert } from '@context/Alert';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
   MdGroups,
   MdLogout,
@@ -15,14 +15,19 @@ import { IoLogIn } from 'react-icons/io5';
 import { IoIosStats } from 'react-icons/io';
 import { FaUserAlt } from 'react-icons/fa';
 import { CgProfile } from 'react-icons/cg';
-import { CustomAxiosError, IMobileMenuProps } from 'types';
+import { CustomAxiosError } from 'types';
 import { BsFillCalendar2DateFill } from 'react-icons/bs';
 import styles from './MobileMenu.module.css';
 import { AiTwotonePhone, AiTwotoneStar } from 'react-icons/ai';
 import { TbBuildingStore, TbBuildingSkyscraper } from 'react-icons/tb';
 import { currentYear, axiosInstance, showErrorAlert } from '@lib/utils';
 
-export default function MobileMenu({ isOpen, setIsOpen }: IMobileMenuProps) {
+type Props = {
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+};
+
+export default function MobileMenu({ isOpen, setIsOpen }: Props) {
   const { setAlerts } = useAlert();
   const { upcomingDates } = useData();
   const [date, setDate] = useState<number>();

@@ -14,13 +14,13 @@ import {
   showErrorAlert,
 } from '@lib/utils';
 import {
-  IItem,
-  IAddons,
-  IInitialItem,
-  IUpcomingRestaurant,
-  IRemovableIngredients,
+  Item as ItemType,
+  Addons,
+  InitialItem,
+  UpcomingRestaurant,
+  RemovableIngredients,
   SetAddonsOrRemovableIngredients,
-  IAddonsOrRemovableIngredientsType,
+  AddonsOrRemovableIngredientsType,
 } from 'types';
 import { useAlert } from '@context/Alert';
 
@@ -43,16 +43,16 @@ const initialState = {
 export default function Item() {
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const [item, setItem] = useState<IItem>();
+  const [item, setItem] = useState<ItemType>();
   const { upcomingRestaurants } = useData();
   const { cartItems, addItemToCart } = useCart();
   const [upcomingRestaurant, setUpcomingRestaurant] =
-    useState<IUpcomingRestaurant>();
-  const [optionalAddons, setOptionalAddons] = useState<IAddons>();
-  const [requiredAddons, setRequiredAddons] = useState<IAddons>();
+    useState<UpcomingRestaurant>();
+  const [optionalAddons, setOptionalAddons] = useState<Addons>();
+  const [requiredAddons, setRequiredAddons] = useState<Addons>();
   const [removableIngredients, setRemovableIngredients] =
-    useState<IRemovableIngredients>();
-  const [initialItem, setInitialItem] = useState<IInitialItem>(initialState);
+    useState<RemovableIngredients>();
+  const [initialItem, setInitialItem] = useState<InitialItem>(initialState);
 
   const { price, quantity, addonPrice } = initialItem;
 
@@ -178,7 +178,7 @@ export default function Item() {
   function changeAddonsOrRemovableIngredients(
     e: ChangeEvent<HTMLInputElement>,
     setAddonsOrRemovableIngredients: SetAddonsOrRemovableIngredients,
-    addonsOrRemovableIngredientsType: IAddonsOrRemovableIngredientsType
+    addonsOrRemovableIngredientsType: AddonsOrRemovableIngredientsType
   ) {
     if (
       (addonsOrRemovableIngredientsType === 'optionalAddons' ||
@@ -232,9 +232,9 @@ export default function Item() {
 
   // Render addons and removable ingredients
   const renderAddonsOrRemovableIngredients = (
-    addonsOrRemovableIngredients: IAddons | IRemovableIngredients,
+    addonsOrRemovableIngredients: Addons | RemovableIngredients,
     setAddonsOrRemovableIngredients: SetAddonsOrRemovableIngredients,
-    addonsOrRemovableIngredientsType: IAddonsOrRemovableIngredientsType
+    addonsOrRemovableIngredientsType: AddonsOrRemovableIngredientsType
   ) => (
     <div className={styles.addons_and_removable_items}>
       {Object.keys(addonsOrRemovableIngredients).map(

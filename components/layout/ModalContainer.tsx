@@ -1,13 +1,19 @@
-import { CSSProperties } from 'react';
-import { IModalContainerProps } from 'types';
+import { CSSProperties, Dispatch, SetStateAction } from 'react';
 import styles from './ModalContainer.module.css';
+
+type Props = {
+  width?: string;
+  component: JSX.Element;
+  showModalContainer: boolean;
+  setShowModalContainer: Dispatch<SetStateAction<boolean>>;
+};
 
 export default function ModalContainer({
   width,
   component,
   showModalContainer,
   setShowModalContainer,
-}: IModalContainerProps) {
+}: Props) {
   return (
     <>
       <div

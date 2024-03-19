@@ -1,8 +1,9 @@
 import ButtonLoader from './ButtonLoader';
-import { ISubmitButtonProps } from 'types';
 import styles from './SubmitButton.module.css';
 
-export default function SubmitButton({ text, isLoading }: ISubmitButtonProps) {
+type Props = { text: string; isLoading: boolean };
+
+export default function SubmitButton({ text, isLoading }: Props) {
   return (
     <button
       type='submit'

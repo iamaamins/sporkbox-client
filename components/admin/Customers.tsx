@@ -11,12 +11,13 @@ import {
   showSuccessAlert,
   updateCustomers,
 } from '@lib/utils';
-import { CustomAxiosError, ICustomersProps } from 'types';
+import { CustomAxiosError, Customer } from 'types';
 import styles from './Customers.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
 
-export default function Customers({ status, customers }: ICustomersProps) {
-  // Hooks
+type Props = { status?: string; customers: Customer[] };
+
+export default function Customers({ status, customers }: Props) {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { setCustomers } = useData();
@@ -31,9 +32,7 @@ export default function Customers({ status, customers }: ICustomersProps) {
   const [isUpdatingCustomerStatus, setIsUpdatingCustomerStatus] =
     useState(false);
 
-  // Handle update status
   function initiateStatusUpdate(e: FormEvent, customerId: string) {
-    // Update states
     setShowStatusUpdateModal(true);
     setStatusUpdatePayload({
       action: e.currentTarget.textContent!,
@@ -45,31 +44,19 @@ export default function Customers({ status, customers }: ICustomersProps) {
     });
   }
 
-  // Update customer status
   async function updateStatus() {
     try {
-      // Show loader
       setIsUpdatingCustomerStatus(true);
-
-      // Make request to the backend
       const response = await axiosInstance.patch(
         `/customers/${statusUpdatePayload.data.customerId}/change-customer-status`,
         { action: statusUpdatePayload.action }
       );
-
-      // Update customers
       updateCustomers(response.data, setCustomers);
-
-      // Show success alert
       showSuccessAlert('Status updated', setAlerts);
     } catch (err) {
-      // Log error
       console.log(err);
-
-      // Show error alert
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      // Remove loader and close modal
       setIsUpdatingCustomerStatus(false);
       setShowStatusUpdateModal(false);
     }

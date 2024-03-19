@@ -3,13 +3,7 @@ import { useData } from '@context/Data';
 import ActionModal from './ActionModal';
 import { useAlert } from '@context/Alert';
 import { useEffect, useState } from 'react';
-import {
-  IOrder,
-  CustomAxiosError,
-  IOrdersByRestaurant,
-  IDeliverOrdersPayload,
-  IOrdersGroupDetailsProps,
-} from 'types';
+import { Order, CustomAxiosError, OrdersByRestaurant, OrderGroup } from 'types';
 import {
   axiosInstance,
   dateToMS,
@@ -22,11 +16,10 @@ import {
 import styles from './OrdersGroupDetails.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
 
-export default function OrdersGroupDetails({
-  isLoading,
-  ordersGroups,
-}: IOrdersGroupDetailsProps) {
-  // Hooks
+type Props = { isLoading: boolean; orderGroups: OrderGroup[] };
+type DeliverOrdersPayload = { orders: Order[]; restaurantName: string };
+
+export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const [orderId, setOrderId] = useState('');
@@ -42,10 +35,10 @@ export default function OrdersGroupDetails({
   } = useData();
   const [isUpdatingOrdersStatus, setIsUpdatingOrdersStatus] = useState(false);
   const [ordersByRestaurants, setOrdersByRestaurants] = useState<
-    IOrdersByRestaurant[]
+    OrdersByRestaurant[]
   >([]);
   const [statusUpdatePayload, setStatusUpdatePayload] =
-    useState<IDeliverOrdersPayload>({
+    useState<DeliverOrdersPayload>({
       orders: [],
       restaurantName: '',
     });
@@ -53,7 +46,7 @@ export default function OrdersGroupDetails({
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
   const [isUpdatingOrderStatus, setIsUpdatingOrderStatus] = useState(false);
 
-  function initiateOrdersDelivery(orders: IOrder[], restaurantName: string) {
+  function initiateOrdersDelivery(orders: Order[], restaurantName: string) {
     setShowDeliveryModal(true);
     setStatusUpdatePayload({
       orders,
@@ -129,19 +122,19 @@ export default function OrdersGroupDetails({
 
   const date = dateToText(+(router.query.date as string));
 
-  const hasOptionalAddons = (ordersByRestaurant: IOrdersByRestaurant) =>
+  const hasOptionalAddons = (ordersByRestaurant: OrdersByRestaurant) =>
     ordersByRestaurant.orders.some((order) => order.item.optionalAddons);
 
-  const hasRequiredAddons = (ordersByRestaurant: IOrdersByRestaurant) =>
+  const hasRequiredAddons = (ordersByRestaurant: OrdersByRestaurant) =>
     ordersByRestaurant.orders.some((order) => order.item.requiredAddons);
 
-  const hasRemovedIngredients = (ordersByRestaurant: IOrdersByRestaurant) =>
+  const hasRemovedIngredients = (ordersByRestaurant: OrdersByRestaurant) =>
     ordersByRestaurant.orders.some((order) => order.item.removedIngredients);
 
   // Separate order for each restaurant
   useEffect(() => {
     if (!isLoading && router.isReady) {
-      const ordersGroup = ordersGroups.find(
+      const ordersGroup = orderGroups.find(
         (ordersGroup) =>
           dateToMS(ordersGroup.deliveryDate).toString() === router.query.date &&
           ordersGroup.company._id === router.query.company
@@ -149,7 +142,7 @@ export default function OrdersGroupDetails({
 
       if (ordersGroup) {
         setOrdersByRestaurants(
-          ordersGroup.restaurants.reduce((acc: IOrdersByRestaurant[], curr) => {
+          ordersGroup.restaurants.reduce((acc: OrdersByRestaurant[], curr) => {
             return [
               ...acc,
               {
@@ -168,12 +161,12 @@ export default function OrdersGroupDetails({
         );
       }
     }
-  }, [router.isReady, isLoading, ordersGroups]);
+  }, [router.isReady, isLoading, orderGroups]);
 
   // Get amounts
   useEffect(() => {
     if (!allUpcomingOrders.isLoading && !allDeliveredOrders.isLoading) {
-      const filterConditions = (order: IOrder) =>
+      const filterConditions = (order: Order) =>
         dateToMS(order.delivery.date).toString() === router.query.date &&
         order.company._id === router.query.company;
 
@@ -185,7 +178,7 @@ export default function OrdersGroupDetails({
       setAmount({
         paid: allOrders
           .filter((order) => order.payment)
-          .reduce((acc: IOrder[], curr) => {
+          .reduce((acc: Order[], curr) => {
             // Remove orders with duplicate payment intent
             if (
               !acc.some(

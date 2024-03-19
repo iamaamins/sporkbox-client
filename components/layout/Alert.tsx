@@ -1,9 +1,11 @@
-import { IAlertProps } from 'types';
+import { Alert as AlertType } from 'types';
 import { MdErrorOutline } from 'react-icons/md';
 import styles from './Alert.module.css';
 import { IoMdCheckmarkCircleOutline } from 'react-icons/io';
 
-export default function Alert({ alerts }: IAlertProps) {
+type Props = { alerts: AlertType[] };
+
+export default function Alert({ alerts }: Props) {
   return (
     <>
       {alerts.length > 0 && (

@@ -3,7 +3,7 @@ import { useData } from '@context/Data';
 import { useAlert } from '@context/Alert';
 import { FormEvent, useState } from 'react';
 import RestaurantForm from './RestaurantForm';
-import { CustomAxiosError, IRestaurantFormData } from 'types';
+import { CustomAxiosError, RestaurantFormData } from 'types';
 import styles from './AddRestaurant.module.css';
 import { axiosInstance, showErrorAlert, showSuccessAlert } from '@lib/utils';
 
@@ -29,7 +29,7 @@ export default function AddRestaurant() {
   const { setAlerts } = useAlert();
   const { setVendors } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<IRestaurantFormData>(initialState);
+  const [formData, setFormData] = useState<RestaurantFormData>(initialState);
 
   // Destructure form data
   const {

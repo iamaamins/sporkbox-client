@@ -3,11 +3,7 @@ import { useData } from '@context/Data';
 import { useAlert } from '@context/Alert';
 import ActionModal from './ActionModal';
 import { FormEvent, useState } from 'react';
-import {
-  CustomAxiosError,
-  IScheduledRestaurant,
-  IScheduledRestaurantProps,
-} from 'types';
+import { CustomAxiosError, ScheduledRestaurant } from 'types';
 import {
   axiosInstance,
   dateToText,
@@ -17,11 +13,12 @@ import {
 import ModalContainer from '@components/layout/ModalContainer';
 import styles from './ScheduledRestaurants.module.css';
 
+type Props = { isLoading: boolean; restaurants: ScheduledRestaurant[] };
+
 export default function ScheduledRestaurants({
   isLoading,
   restaurants,
-}: IScheduledRestaurantProps) {
-  // Hooks
+}: Props) {
   const { setAlerts } = useAlert();
   const { setAllUpcomingOrders, setScheduledRestaurants } = useData();
   const [isUpdatingScheduleStatus, setIsUpdatingScheduleStatus] =
@@ -75,7 +72,7 @@ export default function ScheduledRestaurants({
         { action: statusUpdatePayload.action }
       );
       const schedule = response.data.find(
-        (schedule: IScheduledRestaurant) =>
+        (schedule: ScheduledRestaurant) =>
           schedule.scheduleId === statusUpdatePayload.scheduleId
       );
       setScheduledRestaurants((prevState) => ({

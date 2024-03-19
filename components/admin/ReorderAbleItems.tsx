@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { IReorderAbleItemsProps } from 'types';
+import { Vendor } from 'types';
 import { HiBadgeCheck } from 'react-icons/hi';
 import { numberToUSD } from '@lib/utils';
 import { RiDeleteBack2Fill } from 'react-icons/ri';
@@ -10,25 +10,24 @@ import {
   GridDropZone,
   GridContextProvider,
 } from 'react-grid-dnd';
+import { Dispatch, SetStateAction } from 'react';
 
-export default function ReorderAbleItems({
-  vendor,
-  setVendor,
-}: IReorderAbleItemsProps) {
-  // Handle reorder
+type Props = {
+  vendor: Vendor;
+  setVendor: Dispatch<SetStateAction<Vendor | undefined>>;
+};
+
+export default function ReorderAbleItems({ vendor, setVendor }: Props) {
   function handleReorder(
     sourceId: string,
     sourceIndex: number,
     targetIndex: number
   ) {
-    // Updated items
     const updatedItems = swap(
       vendor.restaurant.items,
       sourceIndex,
       targetIndex
     );
-
-    // Update vendor
     setVendor(
       (prevState) =>
         prevState && {

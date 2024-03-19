@@ -3,11 +3,10 @@ import { useData } from '@context/Data';
 import { useUser } from '@context/User';
 import { useRouter } from 'next/router';
 import {
-  IItem,
-  ICartItem,
-  ICartContext,
+  Item,
+  CartItem,
   CustomAxiosError,
-  IContextProviderProps,
+  ContextProviderProps,
   DateTotal,
 } from 'types';
 import {
@@ -18,32 +17,44 @@ import {
   showSuccessAlert,
   getDateTotal,
 } from '@lib/utils';
-import { useState, useEffect, useContext, createContext } from 'react';
+import {
+  useState,
+  useEffect,
+  useContext,
+  createContext,
+  SetStateAction,
+  Dispatch,
+} from 'react';
 
-// Create context
-const CartContext = createContext({} as ICartContext);
+type CartContext = {
+  cartItems: CartItem[];
+  isLoading: boolean;
+  totalCartPrice: number;
+  totalCartQuantity: number;
+  upcomingOrderDetails: DateTotal[];
+  removeItemFromCart: (item: CartItem) => void;
+  setCartItems: Dispatch<SetStateAction<CartItem[]>>;
+  checkoutCart: (discountCodeId?: string) => Promise<void>;
+  addItemToCart: (initialItem: CartItem, item: Item) => void;
+};
 
-// Create hook
+const CartContext = createContext({} as CartContext);
 export const useCart = () => useContext(CartContext);
 
-// Provider function
-export default function CartProvider({ children }: IContextProviderProps) {
-  // Hooks
+export default function CartProvider({ children }: ContextProviderProps) {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { customer, isCustomer } = useUser();
   const { customerUpcomingOrders, setCustomerUpcomingOrders } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [cartItems, setCartItems] = useState<ICartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
-    // Get cart items from local storage
     setCartItems(
       JSON.parse(localStorage.getItem(`cart-${customer?._id}`) || '[]')
     );
   }, [customer, router.isReady]);
 
-  // Get upcoming orders that matches cart item dates
   const upcomingDateTotalDetails = customerUpcomingOrders.data
     .filter((upcomingOrder) =>
       cartItems.some(
@@ -56,25 +67,18 @@ export default function CartProvider({ children }: IContextProviderProps) {
       total: upcomingOrder.item.total,
     }));
 
-  // Get upcoming order date and total details
   const upcomingOrderDetails = getDateTotal(upcomingDateTotalDetails);
-
-  // Calculate total quantity
   const totalCartQuantity = cartItems.reduce(
     (acc, item) => acc + item.quantity,
     0
   );
-
-  // Calculate total price
   const totalCartPrice = cartItems.reduce(
     (acc, item) =>
       toUSNumber(acc + item.addonPrice + item.price * item.quantity),
     0
   );
 
-  // Add item to cart
-  function addItemToCart(initialItem: ICartItem, item: IItem) {
-    // Check if the required addons are added
+  function addItemToCart(initialItem: CartItem, item: Item) {
     if (initialItem.requiredAddons.length < item.requiredAddons.addable) {
       return showErrorAlert(
         `Please add ${item.requiredAddons.addable} required addons`,
@@ -82,11 +86,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
       );
     }
 
-    // Initiate updated items array
-    let updatedCartItems: ICartItem[] = [];
-
-    // Add item to cart if the
-    // item ins't already in cart
+    let updatedCartItems: CartItem[] = [];
     if (
       !cartItems.some(
         (cartItem) =>
@@ -97,8 +97,6 @@ export default function CartProvider({ children }: IContextProviderProps) {
     ) {
       updatedCartItems = [...cartItems, initialItem];
     } else {
-      // If the item is already
-      // in cart update the quantity
       updatedCartItems = cartItems.map((cartItem) => {
         if (
           cartItem._id === initialItem._id &&
@@ -114,28 +112,19 @@ export default function CartProvider({ children }: IContextProviderProps) {
             removableIngredients: initialItem.removableIngredients,
           };
         } else {
-          // Return other cart items
           return cartItem;
         }
       });
     }
-
-    // Update state
     setCartItems(updatedCartItems);
-
-    // Save cart to local storage
     localStorage.setItem(
       `cart-${customer?._id}`,
       JSON.stringify(updatedCartItems)
     );
-
-    // Back to calendar page
     router.back();
   }
 
-  // Remove cart item
-  function removeItemFromCart(item: ICartItem) {
-    // Filter the items by item id
+  function removeItemFromCart(item: CartItem) {
     const updatedCartItems = cartItems.filter(
       (cartItem) =>
         !(
@@ -144,11 +133,7 @@ export default function CartProvider({ children }: IContextProviderProps) {
           cartItem.deliveryDate === item.deliveryDate
         )
     );
-
-    // Set updated items to cart
     setCartItems(updatedCartItems);
-
-    // Set updated items to local storage
     localStorage.setItem(
       `cart-${customer?._id}`,
       JSON.stringify(updatedCartItems)
@@ -158,7 +143,6 @@ export default function CartProvider({ children }: IContextProviderProps) {
   // Checkout cart
   async function checkoutCart(discountCodeId?: string) {
     if (isCustomer) {
-      // Create orders payload
       const orderItems = cartItems.map((cartItem) => ({
         discountCodeId,
         itemId: cartItem._id,
@@ -172,44 +156,29 @@ export default function CartProvider({ children }: IContextProviderProps) {
       }));
 
       try {
-        // Show loader
         setIsLoading(true);
-
-        // Make request to the backend
         const response = await axiosInstance.post(`/orders/create-orders`, {
           orderItems,
           discountCodeId,
         });
 
         if (typeof response.data === 'string') {
-          // Open Stripe checkout page
           open(response.data);
         } else {
-          // Remove cart items and applied discount
           setCartItems([]);
           localStorage.removeItem(`cart-${customer?._id}`);
           localStorage.removeItem(`discount-${customer?._id}`);
-
-          // Update customer's active orders state
           setCustomerUpcomingOrders((prevState) => ({
             ...prevState,
             data: [...prevState.data, ...response.data],
           }));
-
-          // Show success alert
           showSuccessAlert('Orders placed', setAlerts);
-
-          // Push to the dashboard page
           router.push('/dashboard');
         }
       } catch (err) {
-        // Log error
         console.log(err);
-
-        // Show error alert
         showErrorAlert(err as CustomAxiosError, setAlerts);
       } finally {
-        // Remove loader
         setIsLoading(false);
       }
     } else {

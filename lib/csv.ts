@@ -1,15 +1,46 @@
-import {
-  IOrderData,
-  ICompany,
-  ICustomer,
-  IOrdersGroup,
-  OrderStat,
-  ItemStat,
-  PeopleStat,
-} from 'types';
+import { Company, Customer, OrderGroup } from 'types';
 import { dateToText, numberToUSD } from '@lib/utils';
 
-// Order headers
+type OrderData = {
+  tags: string;
+  price: string;
+  shift: string;
+  itemName: string;
+  quantity: number;
+  companyName: string;
+  lastName: string;
+  customerEmail: string;
+  description: string;
+  firstName: string;
+  deliveryDate: string;
+  restaurantName: string;
+  optionalAddons?: string;
+  requiredAddons?: string;
+  removedIngredients?: string;
+};
+
+type OrderStat = {
+  restaurant: {
+    name: string;
+  };
+  quantity: number;
+};
+
+type ItemStat = {
+  restaurant: {
+    name: string;
+  };
+  item: {
+    name: string;
+    quantity: number;
+  };
+};
+
+type PeopleStat = {
+  date: string;
+  customers: string[];
+};
+
 export const orderCSVHeaders = [
   {
     label: 'Delivery date',
@@ -73,14 +104,11 @@ export const orderCSVHeaders = [
   },
 ];
 
-// Order file name
-export const createOrderCSVFileName = (ordersGroup: IOrdersGroup) =>
+export const createOrderCSVFileName = (ordersGroup: OrderGroup) =>
   `${ordersGroup.company.name} - ${ordersGroup.deliveryDate.split('T')[0]}.csv`;
 
-// Order data
-export const formatOrderDataToCSV = (ordersGroup: IOrdersGroup) =>
+export const formatOrderDataToCSV = (ordersGroup: OrderGroup) =>
   ordersGroup.orders.reduce((acc, curr) => {
-    // Create order
     const order = {
       tags: curr.item.tags,
       price: curr.item.total,
@@ -102,14 +130,9 @@ export const formatOrderDataToCSV = (ordersGroup: IOrdersGroup) =>
     };
 
     if (order.quantity === 1) {
-      // Format price and add order to acc
       return [...acc, { ...order, price: numberToUSD(order.price) }];
     } else {
-      // Create orders array
       let orders = [];
-
-      // Loop through quantity, create an order
-      // for each quantity and add the item to the orders array
       for (let i = 0; i < order.quantity; i++) {
         orders.push({
           ...order,
@@ -117,13 +140,10 @@ export const formatOrderDataToCSV = (ordersGroup: IOrdersGroup) =>
           price: numberToUSD(order.price / order.quantity),
         });
       }
-
-      // Return the acc with created orders
       return [...acc, ...orders];
     }
-  }, [] as IOrderData[]);
+  }, [] as OrderData[]);
 
-// Customer header
 export const customerCSVHeaders = [
   {
     label: 'First Name',
@@ -143,14 +163,12 @@ export const customerCSVHeaders = [
   },
 ];
 
-// Customer file name
-export const createCustomerCSVFileName = (company: ICompany) =>
+export const createCustomerCSVFileName = (company: Company) =>
   `Customer info - ${
     company.name
   } - ${company.shift[0].toUpperCase()}${company.shift.slice(1)} shift`;
 
-// Customer data
-export const formatCustomerDataToCSV = (customers: ICustomer[]) =>
+export const formatCustomerDataToCSV = (customers: Customer[]) =>
   customers.map((customer) => ({
     firstName: customer.firstName,
     lastName: customer.lastName,
@@ -158,7 +176,6 @@ export const formatCustomerDataToCSV = (customers: ICustomer[]) =>
     status: customer.status,
   }));
 
-// Order stat headers
 export const orderStatCSVHeaders = [
   {
     label: 'Restaurant',
@@ -176,7 +193,6 @@ export const formatOrderStatToCSV = (orderStat: OrderStat[]) =>
     totalOrders: data.quantity,
   }));
 
-// Item stat headers
 export const itemStatCSVHeaders = [
   {
     label: 'Restaurant',
@@ -199,7 +215,6 @@ export const formatItemStatToCSV = (itemStat: ItemStat[]) =>
     quantity: data.item.quantity,
   }));
 
-// People stat headers
 export const peopleStatCSVHeaders = [
   {
     label: 'Date',

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
 import styles from './EditItem.module.css';
 import { FormEvent, useEffect, useState } from 'react';
-import { IItem, CustomAxiosError, IItemFormData } from 'types';
+import { Item, CustomAxiosError, ItemFormData } from 'types';
 import {
   tags,
   splitTags,
@@ -39,9 +39,9 @@ export default function EditItem() {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { vendors, setVendors } = useData();
-  const [item, setItem] = useState<IItem>();
+  const [item, setItem] = useState<Item>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<IItemFormData>(initialState);
+  const [formData, setFormData] = useState<ItemFormData>(initialState);
 
   // Destructure form data
   const {

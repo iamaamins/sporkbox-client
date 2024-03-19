@@ -1,7 +1,14 @@
-import { ChangeEvent } from 'react';
-import { ICompanyFormProps } from 'types';
+import { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
+import { CompanyFormData, FormProps } from 'types';
 import styles from './CompanyForm.module.css';
 import SubmitButton from '@components/layout/SubmitButton';
+
+interface Props extends FormProps {
+  formData: CompanyFormData;
+  showShiftAndCodeField: boolean;
+  handleSubmit: (e: FormEvent) => Promise<void>;
+  setFormData: Dispatch<SetStateAction<CompanyFormData>>;
+}
 
 export default function CompanyForm({
   isLoading,
@@ -10,8 +17,7 @@ export default function CompanyForm({
   buttonText,
   handleSubmit,
   showShiftAndCodeField,
-}: ICompanyFormProps) {
-  // Destructure form data
+}: Props) {
   const {
     name,
     code,
@@ -26,11 +32,8 @@ export default function CompanyForm({
   } = formData;
 
   function handleChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-    // Id and value
     const id = e.target.id;
     const value = e.target.value;
-
-    // Update state
     setFormData((prevState) => ({
       ...prevState,
       [id]: id === 'shiftBudget' ? +value : value,

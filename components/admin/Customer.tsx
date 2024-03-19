@@ -4,19 +4,25 @@ import { useAlert } from '@context/Alert';
 import { useEffect, useState } from 'react';
 import CustomerOrders from './CustomerOrders';
 import styles from './Customer.module.css';
-import { CustomAxiosError, ICompany, ICustomerWithOrders, IOrder } from 'types';
+import { CustomAxiosError, Company, Order, CustomerWithCompany } from 'types';
 import {
   axiosInstance,
   groupIdenticalOrders,
   showErrorAlert,
 } from '@lib/utils';
 
+type CustomerWithOrders = {
+  upcomingOrders: Order[];
+  deliveredOrders: Order[];
+  data: CustomerWithCompany | null;
+};
+
 export default function Customer() {
   // Hooks
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { customers, allUpcomingOrders } = useData();
-  const [customer, setCustomer] = useState<ICustomerWithOrders>({
+  const [customer, setCustomer] = useState<CustomerWithOrders>({
     data: null,
     upcomingOrders: [],
     deliveredOrders: [],
@@ -39,7 +45,7 @@ export default function Customer() {
           ...rest,
           company: companies.find(
             (company) => company._id === router.query.company
-          ) as ICompany,
+          ) as Company,
         };
 
         // Update state
@@ -65,7 +71,7 @@ export default function Customer() {
   async function getDeliveredOrders() {
     try {
       // Make request to the backend
-      const response = await axiosInstance.get<IOrder[]>(
+      const response = await axiosInstance.get<Order[]>(
         `/orders/${router.query.customer}/all-delivered-orders`
       );
 

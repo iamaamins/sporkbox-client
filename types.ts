@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { Dispatch, SetStateAction, ReactNode, FormEvent } from 'react';
 
-interface IUser {
+interface User {
   _id: string;
   email: string;
   role: string;
@@ -9,29 +9,29 @@ interface IUser {
   firstName: string;
 }
 
-export interface IAdmin extends IUser {}
+export interface Admin extends User {}
 
-export interface ICustomer extends IUser {
+export interface Customer extends User {
   status: string;
   shifts: string[];
   createdAt: string;
-  companies: ICompany[];
+  companies: Company[];
   subscribedTo: {
     orderReminder: boolean;
   };
 }
 
-export interface IVendor extends IUser {
+export interface Vendor extends User {
   status: string;
   createdAt: string;
-  restaurant: IRestaurant;
+  restaurant: Restaurant;
 }
 
-export interface IRestaurant {
+export type Restaurant = {
   _id: string;
   name: string;
   logo: string;
-  items: IItem[];
+  items: Item[];
   address: {
     city: string;
     state: string;
@@ -40,10 +40,14 @@ export interface IRestaurant {
     addressLine2?: string;
   };
   createdAt: string;
-  schedules: string[];
-}
+  schedules: {
+    _id: string;
+    date: string;
+    status: 'ACTIVE' | 'INACTIVE';
+  }[];
+};
 
-export interface IScheduledRestaurant {
+export interface ScheduledRestaurant {
   _id: string;
   name: string;
   date: string;
@@ -56,13 +60,13 @@ export interface IScheduledRestaurant {
   scheduleId: string;
 }
 
-export interface IUpcomingRestaurant extends IScheduledRestaurant {
+export interface UpcomingRestaurant extends ScheduledRestaurant {
   logo: string;
-  items: IItem[];
+  items: Item[];
   scheduledAt: string;
 }
 
-export interface IItem {
+export type Item = {
   _id: string;
   tags: string;
   name: string;
@@ -79,9 +83,9 @@ export interface IItem {
     addable: number;
   };
   removableIngredients?: string;
-}
+};
 
-export interface ICustomerFavoriteItem {
+export type CustomerFavoriteItem = {
   _id: string;
   item: {
     _id: string;
@@ -93,9 +97,9 @@ export interface ICustomerFavoriteItem {
     _id: string;
     name: string;
   };
-}
+};
 
-export interface ICompany {
+export type Company = {
   _id: string;
   name: string;
   shift: string;
@@ -111,32 +115,19 @@ export interface ICompany {
   createdAt: string;
   shiftBudget: number;
   status: 'ACTIVE' | 'ARCHIVED';
-}
+};
 
-export interface IDiscountCode {
+export type DiscountCode = {
   _id: string;
   code: string;
   value: number;
   totalRedeem: number;
   redeemability: string;
-}
+};
 
-export interface IContextProviderProps {
+export type ContextProviderProps = {
   children: ReactNode;
-}
-
-export interface IUserContext {
-  isAdmin: boolean;
-  isCustomer: boolean;
-  isVendor: boolean;
-  admin: IAdmin | null;
-  vendor: IVendor | null;
-  isUserLoading: boolean;
-  customer: ICustomer | null;
-  setVendor: Dispatch<SetStateAction<IVendor | null>>;
-  setAdmin: Dispatch<SetStateAction<IAdmin | null>>;
-  setCustomer: Dispatch<SetStateAction<ICustomer | null>>;
-}
+};
 
 export type VendorUpcomingOrder = {
   _id: string;
@@ -150,60 +141,60 @@ export type VendorUpcomingOrder = {
   };
 };
 
-interface IIsLoading {
+interface IsLoading {
   isLoading: boolean;
 }
 
-export interface IAllUpcomingOrders extends IIsLoading {
-  data: IOrder[];
+export interface AllUpcomingOrders extends IsLoading {
+  data: Order[];
 }
 
-export interface IVendorUpcomingOrders extends IIsLoading {
+export interface VendorUpcomingOrders extends IsLoading {
   data: VendorUpcomingOrder[];
 }
 
-export interface IScheduledRestaurants extends IIsLoading {
-  data: IScheduledRestaurant[];
+export interface ScheduledRestaurants extends IsLoading {
+  data: ScheduledRestaurant[];
 }
 
-export interface ICompanies extends IIsLoading {
-  data: ICompany[];
+export interface Companies extends IsLoading {
+  data: Company[];
 }
 
-export interface IVendors extends IIsLoading {
-  data: IVendor[];
+export interface Vendors extends IsLoading {
+  data: Vendor[];
 }
 
-export interface IAllDeliveredOrders extends IIsLoading {
-  data: IOrder[];
+export interface AllDeliveredOrders extends IsLoading {
+  data: Order[];
 }
 
-export interface ICustomerUpcomingOrders extends IIsLoading {
-  data: ICustomerOrder[];
+export interface CustomerUpcomingOrders extends IsLoading {
+  data: CustomerOrder[];
 }
 
-export interface ICustomerDeliveredOrders extends IIsLoading {
-  data: ICustomerOrder[];
+export interface CustomerDeliveredOrders extends IsLoading {
+  data: CustomerOrder[];
 }
 
-export interface IUpcomingRestaurants extends IIsLoading {
-  data: IUpcomingRestaurant[];
+export interface UpcomingRestaurants extends IsLoading {
+  data: UpcomingRestaurant[];
 }
 
-export interface ICustomerFavoriteItems extends IIsLoading {
-  data: ICustomerFavoriteItem[];
+export interface CustomerFavoriteItems extends IsLoading {
+  data: CustomerFavoriteItem[];
 }
 
-export interface ICustomers extends IIsLoading {
-  data: ICustomer[];
+export interface Customers extends IsLoading {
+  data: Customer[];
 }
 
-export interface IDiscountCodes extends IIsLoading {
-  data: IDiscountCode[];
+export interface DiscountCodes extends IsLoading {
+  data: DiscountCode[];
 }
 
-export interface IOrdersGroup {
-  orders: IOrder[];
+export type OrderGroup = {
+  orders: Order[];
   company: {
     _id: string;
     name: string;
@@ -212,59 +203,14 @@ export interface IOrdersGroup {
   customers: string[];
   deliveryDate: string;
   restaurants: string[];
-}
+};
 
-export interface IDataContext {
-  vendors: IVendors;
-  allOrders: IOrder[];
-  companies: ICompanies;
-  customers: ICustomers;
-  upcomingDates: number[];
-  discountCodes: IDiscountCodes;
-  customerAllOrders: ICustomerOrder[];
-  upcomingOrdersGroups: IOrdersGroup[];
-  deliveredOrdersGroups: IOrdersGroup[];
-  allUpcomingOrders: IAllUpcomingOrders;
-  allDeliveredOrders: IAllDeliveredOrders;
-  upcomingRestaurants: IUpcomingRestaurants;
-  vendorUpcomingOrders: IVendorUpcomingOrders;
-  scheduledRestaurants: IScheduledRestaurants;
-  customerFavoriteItems: ICustomerFavoriteItems;
-  setVendors: Dispatch<SetStateAction<IVendors>>;
-  customerUpcomingOrders: ICustomerUpcomingOrders;
-  customerDeliveredOrders: ICustomerDeliveredOrders;
-  setCompanies: Dispatch<SetStateAction<ICompanies>>;
-  setCustomers: Dispatch<SetStateAction<ICustomers>>;
-  setVendorUpcomingOrders: Dispatch<SetStateAction<IVendorUpcomingOrders>>;
-  setDiscountCodes: Dispatch<SetStateAction<IDiscountCodes>>;
-  setAllUpcomingOrders: Dispatch<SetStateAction<IAllUpcomingOrders>>;
-  setAllDeliveredOrders: Dispatch<SetStateAction<IAllDeliveredOrders>>;
-  setCustomerUpcomingOrders: Dispatch<SetStateAction<ICustomerUpcomingOrders>>;
-  setCustomerDeliveredOrders: Dispatch<
-    SetStateAction<ICustomerDeliveredOrders>
-  >;
-  setScheduledRestaurants: Dispatch<SetStateAction<IScheduledRestaurants>>;
-  setCustomerFavoriteItems: Dispatch<SetStateAction<ICustomerFavoriteItems>>;
-}
-
-export interface DateTotal {
+export type DateTotal = {
   date: number;
   total: number;
-}
+};
 
-export interface ICartContext {
-  cartItems: ICartItem[];
-  isLoading: boolean;
-  totalCartPrice: number;
-  totalCartQuantity: number;
-  upcomingOrderDetails: DateTotal[];
-  removeItemFromCart: (item: ICartItem) => void;
-  setCartItems: Dispatch<SetStateAction<ICartItem[]>>;
-  checkoutCart: (discountCodeId?: string) => Promise<void>;
-  addItemToCart: (initialItem: ICartItem, item: IItem) => void;
-}
-
-export interface ICartItem {
+export interface CartItem {
   _id: string;
   name: string;
   price: number;
@@ -280,9 +226,9 @@ export interface ICartItem {
   removableIngredients: string[];
 }
 
-export interface IInitialItem extends ICartItem {}
+export interface InitialItem extends CartItem {}
 
-export interface IOrder {
+export type Order = {
   _id: string;
   customer: {
     _id: string;
@@ -322,9 +268,9 @@ export interface IOrder {
     requiredAddons?: string;
     removedIngredients?: string;
   };
-}
+};
 
-export interface ICustomerOrder {
+export interface CustomerOrder {
   _id: string;
   item: {
     _id: string;
@@ -351,66 +297,10 @@ export interface ICustomerOrder {
   hasReviewed: boolean;
 }
 
-export interface ICustomerOrderProps {
-  orders: ICustomerOrder[];
-}
-
-export interface IFiltersData {
-  category: string;
-  subCategory: string;
-}
-
-export interface IOrdersGroupRowProps {
-  slug: string;
-  ordersGroup: IOrdersGroup;
-}
-
-export interface IOrdersGroupsProps {
-  slug: string;
-  title: string;
-  ordersGroups: IOrdersGroup[];
-}
-
-export interface ISortedOrdersGroups {
+export interface SortedOrderGroups {
   byCompany: boolean;
   byDeliveryDate: boolean;
 }
-
-export interface ISortOrdersGroupsProps {
-  ordersGroups: IOrdersGroup[];
-  setSorted: Dispatch<SetStateAction<ISortedOrdersGroups>>;
-}
-
-export interface IButtons {
-  href: string;
-  linkText: string;
-  buttonText: string;
-  initiateStatusUpdate: (e: FormEvent) => void;
-}
-
-export interface IActionButton {
-  isLoading: boolean;
-  buttonText: string;
-  handleClick: () => Promise<void>;
-}
-
-export interface ISubmitButtonProps {
-  text: string;
-  isLoading: boolean;
-}
-
-export interface ILinkButtonProps {
-  href: string;
-  target?: string;
-  linkText: string;
-}
-
-export interface IMobileMenuProps {
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
-}
-
-export interface IMobileNavProps extends IMobileMenuProps {}
 
 export type Groups<
   Item extends object,
@@ -420,40 +310,26 @@ export type Groups<
   [key in Key]: Item[Key];
 } & { [itemsName in ItemsName]: Item[] };
 
-export interface IFormData {
+export type FormData = {
   [key: string]: string | number; // Index type
-}
+};
 
-export interface IOrdersByRestaurant {
+export type OrdersByRestaurant = {
   company: {
     name: string;
     shift: string;
   };
-  orders: IOrder[];
+  orders: Order[];
   deliveryDate: string;
   restaurantName: string;
-}
+};
 
-export interface IOrdersGroupDetailsProps {
-  isLoading: boolean;
-  ordersGroups: IOrdersGroup[];
-}
-
-export interface IModalProps {
-  showModal: boolean;
-  setShowModal: Dispatch<SetStateAction<boolean>>;
-}
-
-export interface IStaticTags {
-  [key: string]: boolean;
-}
-
-interface IFormProps {
+export interface FormProps {
   isLoading: boolean;
   buttonText: string;
 }
 
-export interface ICompanyFormData {
+export type CompanyFormData = {
   zip: string;
   name: string;
   city: string;
@@ -464,16 +340,9 @@ export interface ICompanyFormData {
   shiftBudget: number;
   addressLine1: string;
   addressLine2?: string;
-}
+};
 
-export interface ICompanyFormProps extends IFormProps {
-  formData: ICompanyFormData;
-  showShiftAndCodeField: boolean;
-  handleSubmit: (e: FormEvent) => Promise<void>;
-  setFormData: Dispatch<SetStateAction<ICompanyFormData>>;
-}
-
-export interface IItemFormData {
+export interface ItemFormData {
   name: string;
   image?: string;
   description: string;
@@ -492,13 +361,7 @@ export interface IItemFormData {
   removableIngredients?: string;
 }
 
-export interface IItemFormProps extends IFormProps {
-  formData: IItemFormData;
-  handleSubmit: (e: FormEvent) => Promise<void>;
-  setFormData: Dispatch<SetStateAction<IItemFormData>>;
-}
-
-export interface IRestaurantFormData {
+export type RestaurantFormData = {
   zip: string;
   city: string;
   logo?: string;
@@ -512,155 +375,32 @@ export interface IRestaurantFormData {
   restaurantName: string;
   file?: File | undefined;
   confirmPassword?: string;
+};
+
+export interface CustomerWithCompany extends Omit<Customer, 'companies'> {
+  company: Company;
 }
 
-export interface IRestaurantFormProps extends IFormProps {
-  showPasswordFields: boolean;
-  formData: IRestaurantFormData;
-  handleSubmit: (e: FormEvent) => Promise<void>;
-  setFormData: Dispatch<SetStateAction<IRestaurantFormData>>;
-}
-
-export interface IModalContainerProps {
-  width?: string;
-  component: JSX.Element;
-  showModalContainer: boolean;
-  setShowModalContainer: Dispatch<SetStateAction<boolean>>;
-}
-
-export interface ICustomersProps {
-  status?: string;
-  customers: ICustomer[];
-}
-
-export interface IActionModalProps {
-  name: string;
-  action: string;
-  isPerformingAction: boolean;
-  performAction: () => Promise<void>;
-  setShowActionModal: Dispatch<SetStateAction<boolean>>;
-}
-
-export interface IDeliverOrdersPayload {
-  orders: IOrder[];
-  restaurantName: string;
-}
-
-export interface ICustomerOrdersProps {
-  orders: IOrder[];
-  orderStatus: string;
-}
-
-interface ICustomerWithCompany extends Omit<ICustomer, 'companies'> {
-  company: ICompany;
-}
-
-export interface ICustomerWithOrders {
-  upcomingOrders: IOrder[];
-  deliveredOrders: IOrder[];
-  data: ICustomerWithCompany | null;
-}
-
-export interface IAddons {
+export interface Addons {
   [key: string]: boolean;
 }
 
-export interface IRemovableIngredients extends IAddons {}
+export interface RemovableIngredients extends Addons {}
 
-export type IAddonsOrRemovableIngredientsType =
+export type AddonsOrRemovableIngredientsType =
   | 'requiredAddons'
   | 'optionalAddons'
   | 'removableIngredients';
 
 export type SetAddonsOrRemovableIngredients = Dispatch<
-  SetStateAction<IAddons | IRemovableIngredients | undefined>
+  SetStateAction<Addons | RemovableIngredients | undefined>
 >;
 
-export interface IAlert {
+export interface Alert {
   type: string;
   message: string;
-}
-
-export interface IAlertProps {
-  alerts: IAlert[];
-}
-
-export interface IAlertContext {
-  setAlerts: Dispatch<SetStateAction<IAlert[]>>;
 }
 
 export type CustomAxiosError = AxiosError<{
   message: string;
 }>;
-
-export interface IScheduledRestaurantProps {
-  isLoading: boolean;
-  restaurants: IScheduledRestaurant[];
-}
-
-export interface IShiftChangeModalProps {
-  setShowShiftChangeModal: Dispatch<SetStateAction<boolean>>;
-}
-
-export interface IFilterRestaurantsProps {
-  shifts: string[];
-  setRestaurants: Dispatch<SetStateAction<IUpcomingRestaurant[]>>;
-}
-
-export interface ICalendarFiltersProps {
-  restaurants: IUpcomingRestaurant[];
-  setShowCalendarFilters: Dispatch<SetStateAction<boolean>>;
-  setUpdatedRestaurants: Dispatch<SetStateAction<IUpcomingRestaurant[]>>;
-}
-
-export interface ICalendarSortProps {
-  updatedRestaurants: IUpcomingRestaurant[];
-  setSorted: Dispatch<
-    SetStateAction<{ byLowToHigh: boolean; byHighToLow: boolean }>
-  >;
-}
-
-export interface IOrderData {
-  tags: string;
-  price: string;
-  shift: string;
-  itemName: string;
-  quantity: number;
-  companyName: string;
-  lastName: string;
-  customerEmail: string;
-  description: string;
-  firstName: string;
-  deliveryDate: string;
-  restaurantName: string;
-  optionalAddons?: string;
-  requiredAddons?: string;
-  removedIngredients?: string;
-}
-
-export interface IReorderAbleItemsProps {
-  vendor: IVendor;
-  setVendor: Dispatch<SetStateAction<IVendor | undefined>>;
-}
-
-export interface OrderStat {
-  restaurant: {
-    name: string;
-  };
-  quantity: number;
-}
-
-export interface ItemStat {
-  restaurant: {
-    name: string;
-  };
-  item: {
-    name: string;
-    quantity: number;
-  };
-}
-
-export interface PeopleStat {
-  date: string;
-  customers: string[];
-}

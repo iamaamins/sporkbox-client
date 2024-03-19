@@ -1,5 +1,5 @@
 import { useAlert } from '@context/Alert';
-import { CustomAxiosError, IFormData } from 'types';
+import { CustomAxiosError, FormData } from 'types';
 import styles from './AddAdmin.module.css';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import SubmitButton from '@components/layout/SubmitButton';
@@ -18,7 +18,7 @@ export default function AddAdmin() {
   // Hooks
   const { setAlerts } = useAlert();
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState<IFormData>(initialState);
+  const [formData, setFormData] = useState<FormData>(initialState);
 
   // Destructure form data
   const { firstName, lastName, email, password, confirmPassword } = formData;

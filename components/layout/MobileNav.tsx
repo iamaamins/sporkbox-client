@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import CartIcon from './CartIcon';
-import { IMobileNavProps } from 'types';
 import { useUser } from '@context/User';
 import logo from '@public/layout/logo.png';
 import styles from './MobileNav.module.css';
+import { Dispatch, SetStateAction } from 'react';
 
-export default function MobileNav({ isOpen, setIsOpen }: IMobileNavProps) {
+type Props = { isOpen: boolean; setIsOpen: Dispatch<SetStateAction<boolean>> };
+
+export default function MobileNav({ isOpen, setIsOpen }: Props) {
   const { isAdmin, isVendor, isCustomer } = useUser();
 
   return (

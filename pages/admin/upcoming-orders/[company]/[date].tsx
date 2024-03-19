@@ -9,7 +9,7 @@ import OrdersGroupDetails from '@components/admin/OrdersGroupDetails';
 export default function UpcomingOrdersGroupDetailsPage() {
   const router = useRouter();
   const { isUserLoading, isAdmin } = useUser();
-  const { upcomingOrdersGroups, allUpcomingOrders } = useData();
+  const { upcomingOrderGroups, allUpcomingOrders } = useData();
 
   useEffect(() => {
     checkUser(isUserLoading, isAdmin, router);
@@ -20,7 +20,7 @@ export default function UpcomingOrdersGroupDetailsPage() {
       {isUserLoading && <PageLoader />}
       {isAdmin && (
         <OrdersGroupDetails
-          ordersGroups={upcomingOrdersGroups}
+          orderGroups={upcomingOrderGroups}
           isLoading={allUpcomingOrders.isLoading}
         />
       )}

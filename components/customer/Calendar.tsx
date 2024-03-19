@@ -6,7 +6,7 @@ import { useCart } from '@context/Cart';
 import { useEffect, useState } from 'react';
 import { getDay, getDate, dateToMS, numberToUSD } from '@lib/utils';
 import CalendarSort from './CalendarSort';
-import { IUpcomingRestaurant } from 'types';
+import { UpcomingRestaurant } from 'types';
 import { IoIosArrowUp } from 'react-icons/io';
 import CalendarFiltersModal from './CalendarFiltersModal';
 import styles from './Calendar.module.css';
@@ -25,9 +25,9 @@ export default function Calendar() {
   >([]);
   const { upcomingDates, upcomingRestaurants } = useData();
   const [showCalendarFilters, setShowCalendarFilters] = useState(false);
-  const [restaurants, setRestaurants] = useState<IUpcomingRestaurant[]>([]);
+  const [restaurants, setRestaurants] = useState<UpcomingRestaurant[]>([]);
   const [updatedRestaurants, setUpdatedRestaurants] = useState<
-    IUpcomingRestaurant[]
+    UpcomingRestaurant[]
   >([]);
 
   // Get restaurants for a date
@@ -68,7 +68,7 @@ export default function Calendar() {
   }, [upcomingDates, router]);
 
   // Update active restaurants
-  function updateActiveRestaurants(restaurant: IUpcomingRestaurant) {
+  function updateActiveRestaurants(restaurant: UpcomingRestaurant) {
     setActiveRestaurants((prevState) =>
       prevState.map((activeRestaurant) => {
         if (activeRestaurant.id === restaurant._id) {

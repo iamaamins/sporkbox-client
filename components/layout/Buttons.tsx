@@ -1,13 +1,20 @@
 import Link from 'next/link';
-import { IButtons } from 'types';
 import styles from './Buttons.module.css';
+import { FormEvent } from 'react';
+
+type Props = {
+  href: string;
+  linkText: string;
+  buttonText: string;
+  initiateStatusUpdate: (e: FormEvent) => void;
+};
 
 export default function Buttons({
   href,
   linkText,
   buttonText,
   initiateStatusUpdate,
-}: IButtons) {
+}: Props) {
   return (
     <div className={styles.buttons}>
       <Link href={href}>

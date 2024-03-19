@@ -1,7 +1,7 @@
 import { useUser } from '@context/User';
 import styles from './Dashboard.module.css';
 import { useData } from '@context/Data';
-import { CustomAxiosError, VendorUpcomingOrder } from 'types';
+import { CustomAxiosError, Restaurant, VendorUpcomingOrder } from 'types';
 import {
   axiosInstance,
   dateToMS,
@@ -13,17 +13,6 @@ import { useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
 import ModalContainer from '@components/layout/ModalContainer';
 import StatusUpdateModal from './StatusUpdateModal';
-
-type RestaurantSchedule = {
-  _id: string;
-  date: string;
-  status: 'ACTIVE' | 'INACTIVE';
-};
-
-type Restaurant = {
-  _id: string;
-  schedules: RestaurantSchedule[];
-};
 
 type OrderMap = {
   [key: string]: {

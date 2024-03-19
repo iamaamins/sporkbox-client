@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useUser } from '@context/User';
 import { useAlert } from '@context/Alert';
-import { CustomAxiosError, IFormData } from 'types';
+import { CustomAxiosError, FormData } from 'types';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import styles from './LoginForm.module.css';
 import SubmitButton from '@components/layout/SubmitButton';
@@ -16,7 +16,7 @@ export default function LoginForm() {
   const { setAlerts } = useAlert();
   const { setAdmin, setVendor, setCustomer } = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<IFormData>(initialSate);
+  const [formData, setFormData] = useState<FormData>(initialSate);
 
   const { email, password } = formData;
 

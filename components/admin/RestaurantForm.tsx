@@ -1,11 +1,26 @@
 import Image from 'next/image';
-import { IRestaurantFormProps } from 'types';
+import { FormProps, RestaurantFormData } from 'types';
 import { FiUpload } from 'react-icons/fi';
 import { formatImageName } from '@lib/utils';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import SubmitButton from '@components/layout/SubmitButton';
 import styles from './RestaurantForm.module.css';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
+interface Props extends FormProps {
+  showPasswordFields: boolean;
+  formData: RestaurantFormData;
+  handleSubmit: (e: FormEvent) => Promise<void>;
+  setFormData: Dispatch<SetStateAction<RestaurantFormData>>;
+}
 
 export default function RestaurantForm({
   isLoading,
@@ -14,12 +29,10 @@ export default function RestaurantForm({
   buttonText,
   handleSubmit,
   showPasswordFields,
-}: IRestaurantFormProps) {
-  // Hooks
+}: Props) {
   const logoRef = useRef<HTMLDivElement>(null);
   const [logoHeight, setLogoHeight] = useState(0);
 
-  // Destructure form data
   const {
     zip,
     logo,
@@ -36,27 +49,21 @@ export default function RestaurantForm({
     confirmPassword,
   } = formData;
 
-  // Get image height
   useEffect(() => {
     setLogoHeight(logoRef.current?.offsetHeight || 144);
 
     function handleResize() {
       setLogoHeight(logoRef.current?.offsetHeight || 144);
     }
-
-    // Add resize event to window
     window.addEventListener('resize', handleResize);
 
-    // Remove resize event from window
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
 
-  // Check if passwords match
   const passwordsMatch = password === confirmPassword;
 
-  // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     setFormData((prevState) => ({
       ...prevState,

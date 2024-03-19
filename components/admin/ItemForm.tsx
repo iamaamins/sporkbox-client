@@ -1,11 +1,27 @@
 import Image from 'next/image';
 import { FiUpload } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
-import { IStaticTags, IItemFormProps } from 'types';
+import { FormProps, ItemFormData } from 'types';
 import styles from './ItemForm.module.css';
 import SubmitButton from '@components/layout/SubmitButton';
 import { formatImageName, splitTags, tags } from '@lib/utils';
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, {
+  ChangeEvent,
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
+type StaticTags = Record<string, boolean>;
+
+interface Props extends FormProps {
+  formData: ItemFormData;
+  handleSubmit: (e: FormEvent) => Promise<void>;
+  setFormData: Dispatch<SetStateAction<ItemFormData>>;
+}
 
 export default function ItemForm({
   formData,
@@ -13,19 +29,16 @@ export default function ItemForm({
   buttonText,
   setFormData,
   handleSubmit,
-}: IItemFormProps) {
-  // Initial dietary tags
+}: Props) {
   const initialStaticTags = tags.reduce(
     (acc, curr) => ({ ...acc, [curr]: false }),
     {}
   );
 
-  // Hooks
   const imageRef = useRef<HTMLDivElement>(null);
   const [imageHeight, setImageHeight] = useState(0);
-  const [staticTags, setStaticTags] = useState<IStaticTags>(initialStaticTags);
+  const [staticTags, setStaticTags] = useState<StaticTags>(initialStaticTags);
 
-  // Destructure form data and check
   const {
     name,
     file,
@@ -45,11 +58,8 @@ export default function ItemForm({
     function handleResize() {
       setImageHeight(imageRef.current?.offsetHeight || 144);
     }
-
-    // Add resize event to window
     window.addEventListener('resize', handleResize);
 
-    // Remove resize event from window
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -71,32 +81,26 @@ export default function ItemForm({
               [curr]: false,
             };
           }
-        }, {} as IStaticTags)
+        }, {} as StaticTags)
       );
     }
   }, [currentTags]);
 
-  // Handle change form data
   function handleChangeFormData(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
-    // Update state
     setFormData((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value,
     }));
   }
 
-  // Handle change addons
   function handleChangeAddons(
     e: ChangeEvent<HTMLInputElement>,
     addons: 'optionalAddons' | 'requiredAddons'
   ) {
-    // Name and value
     const name = e.target.name;
     const value = e.target.value;
-
-    // Update state
     setFormData((prevState) => ({
       ...prevState,
       [addons]: {
@@ -106,15 +110,11 @@ export default function ItemForm({
     }));
   }
 
-  // Handle change tags
   function handleChangeTags(e: ChangeEvent<HTMLInputElement>) {
-    // Update tags
     setStaticTags((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.checked,
     }));
-
-    // Update form data
     setFormData((prevState) => ({
       ...prevState,
       updatedTags: e.target.checked

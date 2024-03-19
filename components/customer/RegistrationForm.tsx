@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useUser } from '@context/User';
 import { useAlert } from '@context/Alert';
-import { CustomAxiosError, IFormData } from 'types';
+import { CustomAxiosError, FormData } from 'types';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import SubmitButton from '@components/layout/SubmitButton';
 import { axiosInstance, showErrorAlert } from '@lib/utils';
@@ -20,7 +20,7 @@ export default function RegistrationForm() {
   const { setAlerts } = useAlert();
   const { setCustomer } = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<IFormData>(initialSate);
+  const [formData, setFormData] = useState<FormData>(initialSate);
 
   const { firstName, lastName, email, password, companyCode, confirmPassword } =
     formData;

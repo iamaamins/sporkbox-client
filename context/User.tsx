@@ -1,25 +1,44 @@
 import { useAlert } from './Alert';
 import { useRouter } from 'next/router';
 import { axiosInstance, showErrorAlert } from '@lib/utils';
-import { createContext, useContext, useEffect, useState } from 'react';
 import {
-  IAdmin,
-  IVendor,
-  ICustomer,
-  IUserContext,
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import {
+  Admin,
+  Vendor,
+  Customer,
   CustomAxiosError,
-  IContextProviderProps,
+  ContextProviderProps,
 } from 'types';
 
-const UserContext = createContext({} as IUserContext);
+type UserContext = {
+  isAdmin: boolean;
+  isCustomer: boolean;
+  isVendor: boolean;
+  admin: Admin | null;
+  vendor: Vendor | null;
+  isUserLoading: boolean;
+  customer: Customer | null;
+  setVendor: Dispatch<SetStateAction<Vendor | null>>;
+  setAdmin: Dispatch<SetStateAction<Admin | null>>;
+  setCustomer: Dispatch<SetStateAction<Customer | null>>;
+};
+
+const UserContext = createContext({} as UserContext);
 export const useUser = () => useContext(UserContext);
 
-export default function UserProvider({ children }: IContextProviderProps) {
+export default function UserProvider({ children }: ContextProviderProps) {
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const [vendor, setVendor] = useState<IVendor | null>(null);
-  const [admin, setAdmin] = useState<IAdmin | null>(null);
-  const [customer, setCustomer] = useState<ICustomer | null>(null);
+  const [vendor, setVendor] = useState<Vendor | null>(null);
+  const [admin, setAdmin] = useState<Admin | null>(null);
+  const [customer, setCustomer] = useState<Customer | null>(null);
   const [isUserLoading, setIsUserLoading] = useState<boolean>(true);
 
   // Get user

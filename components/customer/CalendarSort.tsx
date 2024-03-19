@@ -1,11 +1,15 @@
-import { useEffect, useState } from 'react';
-import { ICalendarSortProps } from 'types';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { UpcomingRestaurant } from 'types';
 import styles from './CalendarSort.module.css';
 
-export default function CalendarSort({
-  setSorted,
-  updatedRestaurants,
-}: ICalendarSortProps) {
+type Props = {
+  updatedRestaurants: UpcomingRestaurant[];
+  setSorted: Dispatch<
+    SetStateAction<{ byLowToHigh: boolean; byHighToLow: boolean }>
+  >;
+};
+
+export default function CalendarSort({ setSorted, updatedRestaurants }: Props) {
   const [sortBy, setSortBy] = useState('');
 
   useEffect(() => {

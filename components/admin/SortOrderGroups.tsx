@@ -1,18 +1,20 @@
 import { dateToMS } from '@lib/utils';
-import { useEffect, useState } from 'react';
-import { ISortOrdersGroupsProps } from 'types';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { OrderGroup, SortedOrderGroups } from 'types';
 import styles from './SortOrdersGroups.module.css';
 
-export default function SortOrdersGroups({
-  setSorted,
-  ordersGroups,
-}: ISortOrdersGroupsProps) {
+type Props = {
+  orderGroups: OrderGroup[];
+  setSorted: Dispatch<SetStateAction<SortedOrderGroups>>;
+};
+
+export default function SortOrderGroups({ setSorted, orderGroups }: Props) {
   // Hooks
   const [category, setCategory] = useState('');
 
   useEffect(() => {
     if (category === 'company') {
-      ordersGroups.sort((a, b) =>
+      orderGroups.sort((a, b) =>
         a.company.name.toLowerCase().localeCompare(b.company.name.toLowerCase())
       );
 
@@ -24,7 +26,7 @@ export default function SortOrdersGroups({
     }
 
     if (category === 'deliveryDate') {
-      ordersGroups.sort(
+      orderGroups.sort(
         (a, b) => dateToMS(a.deliveryDate) - dateToMS(b.deliveryDate)
       );
 

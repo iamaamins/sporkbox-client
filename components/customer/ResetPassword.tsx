@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
-import { CustomAxiosError, IFormData } from 'types';
+import { CustomAxiosError, FormData } from 'types';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import SubmitButton from '@components/layout/SubmitButton';
 import styles from './ResetPassword.module.css';
@@ -16,7 +16,7 @@ export default function ResetPassword() {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState<IFormData>(initialState);
+  const [formData, setFormData] = useState<FormData>(initialState);
 
   const { password, confirmPassword } = formData;
   const passwordsMatch = password === confirmPassword;

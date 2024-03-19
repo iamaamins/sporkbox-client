@@ -1,28 +1,29 @@
 import Alert from '@components/layout/Alert';
-import { IAlert, IAlertContext, IContextProviderProps } from 'types';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { Alert as AlertType, ContextProviderProps } from 'types';
+import {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
-// Create context
-const AlertContext = createContext({} as IAlertContext);
+type AlertContext = { setAlerts: Dispatch<SetStateAction<AlertType[]>> };
 
-// Create hook
+const AlertContext = createContext({} as AlertContext);
 export const useAlert = () => useContext(AlertContext);
 
-// Provider function
-export default function AlertProvider({ children }: IContextProviderProps) {
-  // Hooks
-  const [alerts, setAlerts] = useState<IAlert[]>([]);
+export default function AlertProvider({ children }: ContextProviderProps) {
+  const [alerts, setAlerts] = useState<AlertType[]>([]);
 
   useEffect(() => {
     if (alerts.length > 0) {
-      // Remove alert after 3 seconds
       const removeAlert = setTimeout(() => {
         setAlerts((prevState) =>
           prevState.filter((alert, index) => index !== 0)
         );
       }, 3000);
-
-      // Clear time out
       return () => clearTimeout(removeAlert);
     }
   }, [alerts]);

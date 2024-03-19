@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useData } from '@context/Data';
 import { useAlert } from '@context/Alert';
 import RestaurantForm from './RestaurantForm';
-import { CustomAxiosError, IRestaurantFormData, IVendor } from 'types';
+import { CustomAxiosError, RestaurantFormData, Vendor } from 'types';
 import {
   axiosInstance,
   showErrorAlert,
@@ -32,9 +32,9 @@ export default function EditRestaurant() {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { vendors, setVendors } = useData();
-  const [vendor, setVendor] = useState<IVendor>();
+  const [vendor, setVendor] = useState<Vendor>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<IRestaurantFormData>(initialState);
+  const [formData, setFormData] = useState<RestaurantFormData>(initialState);
 
   // Destructure form data
   const {

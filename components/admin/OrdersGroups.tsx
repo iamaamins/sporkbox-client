@@ -2,28 +2,26 @@ import { useState } from 'react';
 import { useData } from '@context/Data';
 import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
-import OrdersGroupRow from './OrdersGroupRow';
-import SortOrdersGroups from './SortOrdersGroups';
+import OrdersGroupRow from './OrderGroupRow';
+import SortOrdersGroups from './SortOrderGroups';
 import styles from './OrdersGroups.module.css';
 import ActionButton from '@components/layout/ActionButton';
 import { axiosInstance, showErrorAlert } from '@lib/utils';
-import {
-  CustomAxiosError,
-  IOrdersGroupsProps,
-  ISortedOrdersGroups,
-} from 'types';
+import { CustomAxiosError, OrderGroup, SortedOrderGroups } from 'types';
 
-export default function OrdersGroups({
-  slug,
-  title,
-  ordersGroups,
-}: IOrdersGroupsProps) {
+type Props = {
+  slug: string;
+  title: string;
+  orderGroups: OrderGroup[];
+};
+
+export default function OrdersGroups({ slug, title, orderGroups }: Props) {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const [isLoading, setIsLoading] = useState(false);
   const { allUpcomingOrders, allDeliveredOrders, setAllDeliveredOrders } =
     useData();
-  const [sorted, setSorted] = useState<ISortedOrdersGroups>({
+  const [sorted, setSorted] = useState<SortedOrderGroups>({
     byCompany: false,
     byDeliveryDate: false,
   });
@@ -56,20 +54,17 @@ export default function OrdersGroups({
       {/* If there are no orders groups */}
       {!allUpcomingOrders.isLoading &&
         !allDeliveredOrders.isLoading &&
-        ordersGroups.length === 0 && <h2>No {title.toLowerCase()}</h2>}
+        orderGroups.length === 0 && <h2>No {title.toLowerCase()}</h2>}
 
       {/* If there are active orders */}
-      {ordersGroups.length > 0 && (
+      {orderGroups.length > 0 && (
         <>
           {/* Title and filter icon */}
           <div className={styles.orders_top}>
             <h2>{title}</h2>
 
             {/* Sort orders groups by company and delivery date */}
-            <SortOrdersGroups
-              setSorted={setSorted}
-              ordersGroups={ordersGroups}
-            />
+            <SortOrdersGroups setSorted={setSorted} orderGroups={orderGroups} />
           </div>
 
           {/* Orders groups */}
@@ -87,27 +82,26 @@ export default function OrdersGroups({
             </thead>
 
             <tbody>
-              {ordersGroups.map((ordersGroup, index) => (
+              {orderGroups.map((ordersGroup, index) => (
                 <OrdersGroupRow
                   key={index}
                   slug={slug}
-                  ordersGroup={ordersGroup}
+                  orderGroup={ordersGroup}
                 />
               ))}
             </tbody>
           </table>
 
           {/* Load all orders button */}
-          {router.pathname === '/admin/orders' &&
-            ordersGroups.length === 25 && (
-              <span className={styles.load_all}>
-                <ActionButton
-                  buttonText='Load all orders'
-                  isLoading={isLoading}
-                  handleClick={handleLoadAllDeliveredOrders}
-                />
-              </span>
-            )}
+          {router.pathname === '/admin/orders' && orderGroups.length === 25 && (
+            <span className={styles.load_all}>
+              <ActionButton
+                buttonText='Load all orders'
+                isLoading={isLoading}
+                handleClick={handleLoadAllDeliveredOrders}
+              />
+            </span>
+          )}
         </>
       )}
     </section>

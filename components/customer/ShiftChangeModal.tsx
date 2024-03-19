@@ -1,14 +1,22 @@
 import { useUser } from '@context/User';
 import { useAlert } from '@context/Alert';
-import { FormEvent, useEffect, useState } from 'react';
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import SubmitButton from '@components/layout/SubmitButton';
 import { axiosInstance, showErrorAlert } from '@lib/utils';
-import { CustomAxiosError, IShiftChangeModalProps } from 'types';
+import { CustomAxiosError } from 'types';
 import styles from './ShiftChangeModal.module.css';
 
-export default function ShiftChangeModal({
-  setShowShiftChangeModal,
-}: IShiftChangeModalProps) {
+type Props = {
+  setShowShiftChangeModal: Dispatch<SetStateAction<boolean>>;
+};
+
+export default function ShiftChangeModal({ setShowShiftChangeModal }: Props) {
   const { setAlerts } = useAlert();
   const { customer, setCustomer } = useUser();
   const [selectedShift, setSelectedShift] = useState('');

@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useData } from '@context/Data';
 import { useAlert } from '@context/Alert';
 import SubmitButton from '../layout/SubmitButton';
-import { CustomAxiosError, IFormData, IRestaurant } from 'types';
+import { CustomAxiosError, FormData, Restaurant } from 'types';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import styles from './ScheduleRestaurantsModal.module.css';
 import { axiosInstance, showErrorAlert, showSuccessAlert } from '@lib/utils';
@@ -19,10 +19,10 @@ export default function ScheduleRestaurantsModal() {
   const { setAlerts } = useAlert();
   const { vendors, setScheduledRestaurants } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [approvedRestaurants, setApprovedRestaurants] = useState<IRestaurant[]>(
+  const [approvedRestaurants, setApprovedRestaurants] = useState<Restaurant[]>(
     []
   );
-  const [formData, setFormData] = useState<IFormData>(initialState);
+  const [formData, setFormData] = useState<FormData>(initialState);
 
   // Destructure form data
   const { date, restaurantId } = formData;

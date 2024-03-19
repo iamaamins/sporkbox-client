@@ -6,7 +6,7 @@ import { AiFillStar } from 'react-icons/ai';
 import { AiOutlineStar } from 'react-icons/ai';
 import styles from './Order.module.css';
 import SubmitButton from '@components/layout/SubmitButton';
-import { CustomAxiosError, ICustomerFavoriteItem, ICustomerOrder } from 'types';
+import { CustomAxiosError, CustomerFavoriteItem, CustomerOrder } from 'types';
 import {
   axiosInstance,
   showErrorAlert,
@@ -22,10 +22,10 @@ export default function Order() {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const [comment, setComment] = useState<string>('');
-  const [order, setOrder] = useState<ICustomerOrder>();
+  const [order, setOrder] = useState<CustomerOrder>();
   const [rating, setRating] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [favoriteItem, setFavoriteItem] = useState<ICustomerFavoriteItem>();
+  const [favoriteItem, setFavoriteItem] = useState<CustomerFavoriteItem>();
   const {
     customerAllOrders,
     customerFavoriteItems,
