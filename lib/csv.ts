@@ -104,11 +104,11 @@ export const orderCSVHeaders = [
   },
 ];
 
-export const createOrderCSVFileName = (ordersGroup: OrderGroup) =>
-  `${ordersGroup.company.name} - ${ordersGroup.deliveryDate.split('T')[0]}.csv`;
+export const createOrderCSVFileName = (orderGroup: OrderGroup) =>
+  `${orderGroup.company.name} - ${orderGroup.deliveryDate.split('T')[0]}.csv`;
 
-export const formatOrderDataToCSV = (ordersGroup: OrderGroup) =>
-  ordersGroup.orders.reduce((acc, curr) => {
+export const formatOrderDataToCSV = (orderGroup: OrderGroup) =>
+  orderGroup.orders.reduce((acc, curr) => {
     const order = {
       tags: curr.item.tags,
       price: curr.item.total,
