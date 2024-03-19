@@ -56,7 +56,6 @@ export default function MobileMenu({ isOpen, setIsOpen }: Props) {
   // Disable body scroll if MobileMenu is open
   useEffect(() => {
     const body = document.querySelector('body');
-
     isOpen
       ? (body!.style.overflow = 'hidden')
       : (body!.style.overflow = 'auto');

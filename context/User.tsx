@@ -61,7 +61,6 @@ export default function UserProvider({ children }: ContextProviderProps) {
         setIsUserLoading(false);
       }
     }
-
     getUser();
   }, [router.isReady]);
 

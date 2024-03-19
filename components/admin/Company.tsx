@@ -31,7 +31,6 @@ import {
 } from '@lib/csv';
 
 export default function Company() {
-  // Hooks
   const router = useRouter();
   const { setAlerts } = useAlert();
   const [action, setAction] = useState('');
@@ -53,6 +52,31 @@ export default function Company() {
     []
   );
 
+  function initiateStatusUpdate(e: FormEvent) {
+    setShowStatusUpdateModal(true);
+    setAction(e.currentTarget.textContent!);
+  }
+
+  async function updateStatus() {
+    try {
+      setIsUpdatingCompanyStatus(true);
+      const response = await axiosInstance.patch(
+        `/companies/${company?._id}/change-company-status`,
+        {
+          action,
+        }
+      );
+      updateCompanies(response.data, setCompanies);
+      showSuccessAlert('Status updated', setAlerts);
+    } catch (err) {
+      console.log(err);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      setIsUpdatingCompanyStatus(false);
+      setShowStatusUpdateModal(false);
+    }
+  }
+
   // Get the company
   useEffect(() => {
     if (companies.data.length > 0 && router.isReady) {
@@ -65,7 +89,6 @@ export default function Company() {
   // Get customers and scheduled restaurants
   useEffect(() => {
     if (customers.data.length > 0 && router.isReady) {
-      // Update active customers
       setActiveCustomers(
         customers.data
           .filter(
@@ -84,8 +107,6 @@ export default function Company() {
           )
           .sort(sortByLastName)
       );
-
-      // Update archived customers
       setArchivedCustomers(
         customers.data
           .filter(
@@ -97,8 +118,6 @@ export default function Company() {
           )
           .sort(sortByLastName)
       );
-
-      // Update unenrolled customers
       setUnenrolledCustomers(
         customers.data
           .filter(
@@ -117,8 +136,6 @@ export default function Company() {
           .sort(sortByLastName)
       );
     }
-
-    // Update scheduled restaurants
     setRestaurants(
       scheduledRestaurants.data.filter(
         (scheduledRestaurant) =>
@@ -126,45 +143,6 @@ export default function Company() {
       )
     );
   }, [customers, scheduledRestaurants, router.isReady]);
-
-  // Initiate status update
-  function initiateStatusUpdate(e: FormEvent) {
-    // Update states
-    setShowStatusUpdateModal(true);
-    setAction(e.currentTarget.textContent!);
-  }
-
-  // Update company status
-  async function updateStatus() {
-    try {
-      // Show loader
-      setIsUpdatingCompanyStatus(true);
-
-      // Make request to the backend
-      const response = await axiosInstance.patch(
-        `/companies/${company?._id}/change-company-status`,
-        {
-          action,
-        }
-      );
-
-      // Update companies
-      updateCompanies(response.data, setCompanies);
-
-      // Show success alert
-      showSuccessAlert('Status updated', setAlerts);
-    } catch (err) {
-      // Log error
-      console.log(err);
-
-      // Show error alert
-      showErrorAlert(err as CustomAxiosError, setAlerts);
-    } finally {
-      // Remove loader and close the modal
-      setIsUpdatingCompanyStatus(false);
-      setShowStatusUpdateModal(false);
-    }
-  }
 
   return (
     <>

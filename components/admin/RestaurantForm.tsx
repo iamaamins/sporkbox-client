@@ -32,7 +32,6 @@ export default function RestaurantForm({
 }: Props) {
   const logoRef = useRef<HTMLDivElement>(null);
   const [logoHeight, setLogoHeight] = useState(0);
-
   const {
     zip,
     logo,
@@ -48,20 +47,6 @@ export default function RestaurantForm({
     restaurantName,
     confirmPassword,
   } = formData;
-
-  useEffect(() => {
-    setLogoHeight(logoRef.current?.offsetHeight || 144);
-
-    function handleResize() {
-      setLogoHeight(logoRef.current?.offsetHeight || 144);
-    }
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   const passwordsMatch = password === confirmPassword;
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -70,6 +55,17 @@ export default function RestaurantForm({
       [e.target.id]: e.target.value,
     }));
   }
+
+  useEffect(() => {
+    setLogoHeight(logoRef.current?.offsetHeight || 144);
+    function handleResize() {
+      setLogoHeight(logoRef.current?.offsetHeight || 144);
+    }
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <form

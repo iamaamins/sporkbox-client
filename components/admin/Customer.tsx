@@ -18,7 +18,6 @@ type CustomerWithOrders = {
 };
 
 export default function Customer() {
-  // Hooks
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { customers, allUpcomingOrders } = useData();
@@ -28,27 +27,40 @@ export default function Customer() {
     deliveredOrders: [],
   });
 
+  // Get all delivered orders of a customer
+  async function getDeliveredOrders() {
+    try {
+      const response = await axiosInstance.get<Order[]>(
+        `/orders/${router.query.customer}/all-delivered-orders`
+      );
+      setCustomer((prevState) => ({
+        ...prevState,
+        deliveredOrders: response.data.filter(
+          (deliveredOrder) =>
+            deliveredOrder.company._id === router.query.company
+        ),
+      }));
+    } catch (err) {
+      console.log(err);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    }
+  }
+
+  // Get customer data and upcoming orders
   useEffect(() => {
-    // Get customer data and upcoming orders
     if (router.isReady && customers.data.length > 0) {
-      // Find the customer
       const customer = customers.data.find(
         (customer) => customer._id === router.query.customer
       );
 
       if (customer) {
-        // Destructure customer
         const { companies, ...rest } = customer;
-
-        // Customer with shift
         const customerWithCompany = {
           ...rest,
           company: companies.find(
             (company) => company._id === router.query.company
           ) as Company,
         };
-
-        // Update state
         setCustomer((prevState) => ({
           ...prevState,
           data: customerWithCompany,
@@ -60,37 +72,8 @@ export default function Customer() {
         }));
       }
     }
-
-    // Get delivered orders when router is ready
-    if (customer) {
-      getDeliveredOrders();
-    }
+    if (customer) getDeliveredOrders();
   }, [router.isReady, customers, allUpcomingOrders]);
-
-  // Get all delivered orders of a customer
-  async function getDeliveredOrders() {
-    try {
-      // Make request to the backend
-      const response = await axiosInstance.get<Order[]>(
-        `/orders/${router.query.customer}/all-delivered-orders`
-      );
-
-      // Update state
-      setCustomer((prevState) => ({
-        ...prevState,
-        deliveredOrders: response.data.filter(
-          (deliveredOrder) =>
-            deliveredOrder.company._id === router.query.company
-        ),
-      }));
-    } catch (err) {
-      // Log error
-      console.log(err);
-
-      // Show error alert
-      showErrorAlert(err as CustomAxiosError, setAlerts);
-    }
-  }
 
   return (
     <section className={styles.customer}>

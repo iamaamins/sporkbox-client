@@ -51,41 +51,6 @@ export default function ItemForm({
     removableIngredients,
   } = formData;
 
-  // Get image height
-  useEffect(() => {
-    setImageHeight(imageRef.current?.offsetHeight || 144);
-
-    function handleResize() {
-      setImageHeight(imageRef.current?.offsetHeight || 144);
-    }
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  // Update dietary tags
-  useEffect(() => {
-    if (currentTags) {
-      setStaticTags(
-        tags.reduce((acc, curr) => {
-          if (splitTags(currentTags).includes(curr)) {
-            return {
-              ...acc,
-              [curr]: true,
-            };
-          } else {
-            return {
-              ...acc,
-              [curr]: false,
-            };
-          }
-        }, {} as StaticTags)
-      );
-    }
-  }, [currentTags]);
-
   function handleChangeFormData(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
@@ -124,6 +89,39 @@ export default function ItemForm({
           ),
     }));
   }
+
+  // Get image height
+  useEffect(() => {
+    setImageHeight(imageRef.current?.offsetHeight || 144);
+    function handleResize() {
+      setImageHeight(imageRef.current?.offsetHeight || 144);
+    }
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  // Update dietary tags
+  useEffect(() => {
+    if (currentTags) {
+      setStaticTags(
+        tags.reduce((acc, curr) => {
+          if (splitTags(currentTags).includes(curr)) {
+            return {
+              ...acc,
+              [curr]: true,
+            };
+          } else {
+            return {
+              ...acc,
+              [curr]: false,
+            };
+          }
+        }, {} as StaticTags)
+      );
+    }
+  }, [currentTags]);
 
   return (
     <form
