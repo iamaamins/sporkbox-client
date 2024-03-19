@@ -83,6 +83,11 @@ export type Item = {
     addable: number;
   };
   removableIngredients?: string;
+  reviews: {
+    _id: string;
+    rating: number;
+    comment: string;
+  }[];
 };
 
 export type CustomerFavoriteItem = {

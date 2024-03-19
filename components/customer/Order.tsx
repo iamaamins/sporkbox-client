@@ -112,7 +112,6 @@ export default function Order() {
         ...prevState,
         data: prevState.data.filter((el) => el._id !== order._id),
       }));
-      console.log(response.data);
       router.push('/dashboard');
       showSuccessAlert(response.data.message, setAlerts);
     } catch (err) {

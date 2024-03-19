@@ -17,6 +17,8 @@ import ActionModal from './ActionModal';
 import Buttons from '@components/layout/Buttons';
 import styles from './Item.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
+import Stars from './Stars';
+import { AiFillStar } from 'react-icons/ai';
 
 export default function Item() {
   const router = useRouter();
@@ -33,28 +35,7 @@ export default function Item() {
   const [isUpdatingItemStatus, setIsUpdatingItemStatus] = useState(false);
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
 
-  // Get the item
-  useEffect(() => {
-    if (vendors.data.length > 0 && router.isReady) {
-      // Find the vendor
-      const vendor = vendors.data.find(
-        (vendor) => vendor.restaurant._id === router.query.restaurant
-      );
-
-      if (vendor) {
-        // Update states
-        setVendor(vendor);
-
-        setItem(
-          vendor.restaurant.items.find((item) => item._id === router.query.item)
-        );
-      }
-    }
-  }, [vendors, router.isReady]);
-
-  // Initiate status update
   function initiateStatusUpdate(e: FormEvent, itemName: string) {
-    // Update states
     setShowStatusUpdateModal(true);
     setStatusUpdatePayload({
       action: e.currentTarget.textContent!,
@@ -64,103 +45,130 @@ export default function Item() {
     });
   }
 
-  // Update item status
   async function updateStatus() {
     try {
-      // Show loader
       setIsUpdatingItemStatus(true);
-
-      // Make request to the backend
       const response = await axiosInstance.patch(
         `/restaurants/${router.query.restaurant}/${router.query.item}/change-item-status`,
         { action: statusUpdatePayload.action }
       );
-
-      // Updated vendors
       updateVendors(response.data, setVendors);
-
-      // Show success alert
       showSuccessAlert('Status updated', setAlerts);
     } catch (err) {
-      // Log error
       console.log(err);
-
-      // Show error alert
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      // Remove loader and close modal
       setIsUpdatingItemStatus(false);
       setShowStatusUpdateModal(false);
     }
   }
 
+  // Get the item
+  useEffect(() => {
+    if (vendors.data.length > 0 && router.isReady) {
+      const vendor = vendors.data.find(
+        (vendor) => vendor.restaurant._id === router.query.restaurant
+      );
+      if (vendor) {
+        setVendor(vendor);
+        const item = vendor.restaurant.items.find(
+          (item) => item._id === router.query.item
+        );
+        setItem(item);
+      }
+    }
+  }, [vendors, router.isReady]);
+
   return (
-    <section className={styles.item}>
+    <section className={styles.container}>
       {vendors.isLoading && <h2>Loading...</h2>}
 
       {!vendors.isLoading && !item && <h2>No item found</h2>}
 
       {vendor && item && (
         <>
-          <div className={styles.cover_image}>
-            <Image
-              src={item.image || vendor.restaurant.logo}
-              width={16}
-              height={10}
-              objectFit='cover'
-              layout='responsive'
-            />
+          <div className={styles.image_and_details}>
+            <div className={styles.cover_image}>
+              <Image
+                src={item.image || vendor.restaurant.logo}
+                width={16}
+                height={10}
+                objectFit='cover'
+                layout='responsive'
+              />
+            </div>
+
+            <div className={styles.details}>
+              <p className={styles.name}>{item.name}</p>
+              <p className={styles.description}>{item.description}</p>
+              <p className={styles.price}>{numberToUSD(item.price)}</p>
+              <p className={styles.tags}>
+                {splitTags(item.tags).map((tag, index) => (
+                  <span key={index}>{tag}</span>
+                ))}
+              </p>
+
+              {item.optionalAddons.addons && (
+                <>
+                  <p className={styles.title}>
+                    Optional addons - {item.optionalAddons.addable} addable
+                  </p>
+                  <p className={styles.ingredients}>
+                    {formatAddons(item.optionalAddons.addons).join(', ')}
+                  </p>
+                </>
+              )}
+
+              {item.requiredAddons.addons && (
+                <>
+                  <p className={styles.title}>
+                    Required addons - {item.requiredAddons.addable} addable
+                  </p>
+                  <p className={styles.ingredients}>
+                    {formatAddons(item.requiredAddons.addons).join(', ')}
+                  </p>
+                </>
+              )}
+
+              {item.removableIngredients && (
+                <div>
+                  <p className={styles.title}>Removable ingredients</p>
+                  <p className={styles.ingredients}>
+                    {item.removableIngredients}
+                  </p>
+                </div>
+              )}
+
+              {/* Buttons */}
+              <Buttons
+                initiateStatusUpdate={(e) => initiateStatusUpdate(e, item.name)}
+                linkText='Edit details'
+                buttonText={item.status === 'ARCHIVED' ? 'Activate' : 'Archive'}
+                href={`/admin/restaurants/${router.query.restaurant}/${router.query.item}/edit-item`}
+              />
+            </div>
           </div>
 
-          <div className={styles.item_details}>
-            <p className={styles.name}>{item.name}</p>
-            <p className={styles.description}>{item.description}</p>
-            <p className={styles.price}>{numberToUSD(item.price)}</p>
-            <p className={styles.tags}>
-              {splitTags(item.tags).map((tag, index) => (
-                <span key={index}>{tag}</span>
+          <>
+            <div className={styles.reviews_title}>
+              <p>Reviews</p>
+              <span>
+                {(
+                  item.reviews.reduce((acc, curr) => acc + curr.rating, 0) /
+                  item.reviews.length
+                ).toFixed(1)}{' '}
+                <AiFillStar />
+              </span>
+            </div>
+            <div className={styles.reviews}>
+              {item.reviews.map((review) => (
+                <div className={styles.review} key={review._id}>
+                  <p>{review.comment}</p>
+                  <Stars rating={review.rating} />
+                </div>
               ))}
-            </p>
-
-            {item.optionalAddons.addons && (
-              <>
-                <p className={styles.title}>
-                  Optional addons - {item.optionalAddons.addable} addable
-                </p>
-                <p className={styles.ingredients}>
-                  {formatAddons(item.optionalAddons.addons).join(', ')}
-                </p>
-              </>
-            )}
-
-            {item.requiredAddons.addons && (
-              <>
-                <p className={styles.title}>
-                  Required addons - {item.requiredAddons.addable} addable
-                </p>
-                <p className={styles.ingredients}>
-                  {formatAddons(item.requiredAddons.addons).join(', ')}
-                </p>
-              </>
-            )}
-
-            {item.removableIngredients && (
-              <div>
-                <p className={styles.title}>Removable ingredients</p>
-                <p className={styles.ingredients}>
-                  {item.removableIngredients}
-                </p>
-              </div>
-            )}
-
-            {/* Buttons */}
-            <Buttons
-              initiateStatusUpdate={(e) => initiateStatusUpdate(e, item.name)}
-              linkText='Edit details'
-              buttonText={item.status === 'ARCHIVED' ? 'Activate' : 'Archive'}
-              href={`/admin/restaurants/${router.query.restaurant}/${router.query.item}/edit-item`}
-            />
-          </div>
+            </div>
+          </>
         </>
       )}
       <ModalContainer
