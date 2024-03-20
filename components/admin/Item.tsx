@@ -149,26 +149,28 @@ export default function Item() {
             </div>
           </div>
 
-          <>
-            <div className={styles.reviews_title}>
-              <p>Reviews</p>
-              <span>
-                {(
-                  item.reviews.reduce((acc, curr) => acc + curr.rating, 0) /
-                  item.reviews.length
-                ).toFixed(1)}{' '}
-                <AiFillStar />
-              </span>
-            </div>
-            <div className={styles.reviews}>
-              {item.reviews.map((review) => (
-                <div className={styles.review} key={review._id}>
-                  <p>{review.comment}</p>
-                  <Stars rating={review.rating} />
-                </div>
-              ))}
-            </div>
-          </>
+          {item.reviews.length > 0 && (
+            <>
+              <div className={styles.reviews_title}>
+                <p>Reviews</p>
+                <span>
+                  {(
+                    item.reviews.reduce((acc, curr) => acc + curr.rating, 0) /
+                    item.reviews.length
+                  ).toFixed(1)}{' '}
+                  <AiFillStar />
+                </span>
+              </div>
+              <div className={styles.reviews}>
+                {item.reviews.map((review) => (
+                  <div className={styles.review} key={review._id}>
+                    <p>{review.comment}</p>
+                    <Stars rating={review.rating} />
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </>
       )}
       <ModalContainer
