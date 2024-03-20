@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useData } from '@context/Data';
 import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
-import { CustomAxiosError, Item as ItemType, Vendor } from 'types';
+import { CustomAxiosError, Item as ItemType, Review, Vendor } from 'types';
 import { FormEvent, useEffect, useState } from 'react';
 import {
   axiosInstance,
@@ -61,6 +61,12 @@ export default function Item() {
       setIsUpdatingItemStatus(false);
       setShowStatusUpdateModal(false);
     }
+  }
+
+  function getAverageRating(reviews: Review[]) {
+    const total = reviews.reduce((acc, curr) => acc + curr.rating, 0);
+    const average = total / reviews.length;
+    return average.toFixed(1);
   }
 
   // Get the item
@@ -154,11 +160,7 @@ export default function Item() {
               <div className={styles.reviews_title}>
                 <p>Reviews</p>
                 <span>
-                  {(
-                    item.reviews.reduce((acc, curr) => acc + curr.rating, 0) /
-                    item.reviews.length
-                  ).toFixed(1)}{' '}
-                  <AiFillStar />
+                  {getAverageRating(item.reviews)} <AiFillStar />
                 </span>
               </div>
               <div className={styles.reviews}>

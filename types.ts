@@ -66,6 +66,12 @@ export interface UpcomingRestaurant extends ScheduledRestaurant {
   scheduledAt: string;
 }
 
+export type Review = {
+  _id: string;
+  rating: number;
+  comment: string;
+};
+
 export type Item = {
   _id: string;
   tags: string;
@@ -82,12 +88,8 @@ export type Item = {
     addons: string;
     addable: number;
   };
+  reviews: Review[];
   removableIngredients?: string;
-  reviews: {
-    _id: string;
-    rating: number;
-    comment: string;
-  }[];
 };
 
 export type CustomerFavoriteItem = {
