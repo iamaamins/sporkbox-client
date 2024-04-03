@@ -104,9 +104,26 @@
 }
 
 .name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-weight: 600;
   font-size: 15px;
   margin-bottom: 0.5rem;
+}
+
+.name span {
+  display: flex;
+  align-items: center;
+  margin-left: 0.5rem;
+  color: var(--white);
+  border-radius: 2rem;
+  padding: 02px 10px;
+  background-color: var(--orange);
+}
+
+.name span svg {
+  margin-right: 0.25rem;
 }
 
 .price {

@@ -58,14 +58,14 @@
 }
 
 .reviews_title span {
-  width: fit-content;
-  margin-left: 0.5rem;
   display: flex;
   align-items: center;
-  padding: 4px 12px;
+  margin-left: 0.5rem;
+  padding: 0px 12px;
   border-radius: 2rem;
   font-size: 1rem;
-  border: 1px solid var(--border_color);
+  color: var(--white);
+  background-color: var(--orange);
 }
 
 .reviews_title span svg {

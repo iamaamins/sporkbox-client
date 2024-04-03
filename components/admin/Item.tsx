@@ -63,12 +63,6 @@ export default function Item() {
     }
   }
 
-  function getAverageRating(reviews: Review[]) {
-    const total = reviews.reduce((acc, curr) => acc + curr.rating, 0);
-    const average = total / reviews.length;
-    return average.toFixed(1);
-  }
-
   // Get the item
   useEffect(() => {
     if (vendors.data.length > 0 && router.isReady) {
@@ -157,12 +151,12 @@ export default function Item() {
 
           {item.reviews.length > 0 && (
             <>
-              <div className={styles.reviews_title}>
-                <p>Reviews</p>
+              <p className={styles.reviews_title}>
+                Reviews{' '}
                 <span>
-                  {getAverageRating(item.reviews)} <AiFillStar />
+                  {item.averageRating} <AiFillStar />
                 </span>
-              </div>
+              </p>
               <div className={styles.reviews}>
                 {item.reviews.map((review) => (
                   <div className={styles.review} key={review._id}>

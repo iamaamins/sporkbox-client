@@ -11,9 +11,9 @@ import { IoIosArrowUp } from 'react-icons/io';
 import CalendarFiltersModal from './CalendarFiltersModal';
 import styles from './Calendar.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
+import { AiFillStar } from 'react-icons/ai';
 
 export default function Calendar() {
-  // Hooks
   const router = useRouter();
   const { cartItems } = useCart();
   const [sorted, setSorted] = useState({
@@ -30,44 +30,6 @@ export default function Calendar() {
     UpcomingRestaurant[]
   >([]);
 
-  // Get restaurants for a date
-  useEffect(() => {
-    if (upcomingDates.length > 0 && router.isReady) {
-      // Upcoming dates and shifts
-      const upcomingDate = upcomingDates.find(
-        (upcomingDate) => upcomingDate.toString() === router.query.date
-      );
-
-      if (upcomingDate) {
-        // Get upcoming restaurants on a date and sort
-        const upcomingRestaurantsOnDate = upcomingRestaurants.data
-          .filter(
-            (upcomingRestaurant) =>
-              dateToMS(upcomingRestaurant.date) === upcomingDate
-          )
-          .sort(
-            (a, b) =>
-              new Date(a.scheduledAt).getTime() -
-              new Date(b.scheduledAt).getTime()
-          );
-
-        // Active restaurants
-        const activeRestaurants = upcomingRestaurantsOnDate.map(
-          (upcomingRestaurant) => ({
-            id: upcomingRestaurant._id,
-            show: true,
-          })
-        );
-
-        // Update states
-        setActiveRestaurants(activeRestaurants);
-        setRestaurants(upcomingRestaurantsOnDate);
-        setUpdatedRestaurants(upcomingRestaurantsOnDate);
-      }
-    }
-  }, [upcomingDates, router]);
-
-  // Update active restaurants
   function updateActiveRestaurants(restaurant: UpcomingRestaurant) {
     setActiveRestaurants((prevState) =>
       prevState.map((activeRestaurant) => {
@@ -83,19 +45,48 @@ export default function Calendar() {
     );
   }
 
+  // Get restaurants for a date
+  useEffect(() => {
+    if (upcomingDates.length > 0 && router.isReady) {
+      const upcomingDate = upcomingDates.find(
+        (upcomingDate) => upcomingDate.toString() === router.query.date
+      );
+
+      if (upcomingDate) {
+        const upcomingRestaurantsOnDate = upcomingRestaurants.data
+          .filter(
+            (upcomingRestaurant) =>
+              dateToMS(upcomingRestaurant.date) === upcomingDate
+          )
+          .sort(
+            (a, b) =>
+              new Date(a.scheduledAt).getTime() -
+              new Date(b.scheduledAt).getTime()
+          );
+        const activeRestaurants = upcomingRestaurantsOnDate.map(
+          (upcomingRestaurant) => ({
+            id: upcomingRestaurant._id,
+            show: true,
+          })
+        );
+
+        setActiveRestaurants(activeRestaurants);
+        setRestaurants(upcomingRestaurantsOnDate);
+        setUpdatedRestaurants(upcomingRestaurantsOnDate);
+      }
+    }
+  }, [upcomingDates, router]);
+
   return (
     <>
       <section className={styles.calendar}>
         {upcomingRestaurants.isLoading && <h2>Loading...</h2>}
 
-        {/* If there are no restaurant groups */}
         {!upcomingRestaurants.isLoading &&
           upcomingRestaurants.data.length === 0 && <h2>No restaurants</h2>}
 
-        {/* If there are restaurant groups */}
         {upcomingDates.length > 0 && (
           <>
-            {/* Show next week's and scheduled date */}
             <div className={styles.header_and_controller}>
               <div className={styles.header}>
                 <h2>Upcoming week</h2>
@@ -138,7 +129,6 @@ export default function Calendar() {
 
             {updatedRestaurants.length > 0 ? (
               <>
-                {/* Show the scheduled restaurants */}
                 {updatedRestaurants.map((restaurant, index) => (
                   <div key={index} className={styles.restaurant}>
                     <h2
@@ -170,7 +160,15 @@ export default function Calendar() {
                             >
                               <a className={styles.item}>
                                 <div className={styles.item_details}>
-                                  <p className={styles.name}>{item.name}</p>
+                                  <p className={styles.name}>
+                                    {item.name}
+                                    {item.averageRating && (
+                                      <span>
+                                        <AiFillStar />
+                                        {item.averageRating}
+                                      </span>
+                                    )}
+                                  </p>
                                   <p className={styles.price}>
                                     {numberToUSD(item.price)}
                                   </p>

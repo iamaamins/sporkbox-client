@@ -89,6 +89,7 @@ export type Item = {
     addable: number;
   };
   reviews: Review[];
+  averageRating?: number;
   removableIngredients?: string;
 };
 
