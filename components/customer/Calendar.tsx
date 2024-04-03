@@ -81,7 +81,6 @@ export default function Calendar() {
     <>
       <section className={styles.calendar}>
         {upcomingRestaurants.isLoading && <h2>Loading...</h2>}
-
         {!upcomingRestaurants.isLoading &&
           upcomingRestaurants.data.length === 0 && <h2>No restaurants</h2>}
 
@@ -90,12 +89,10 @@ export default function Calendar() {
             <div className={styles.header_and_controller}>
               <div className={styles.header}>
                 <h2>Upcoming week</h2>
-
                 <CalendarSort
                   setSorted={setSorted}
                   updatedRestaurants={updatedRestaurants}
                 />
-
                 <p
                   onClick={() => setShowCalendarFilters(true)}
                   className={`${styles.filter} ${
@@ -135,7 +132,7 @@ export default function Calendar() {
                       className={styles.restaurant_name}
                       onClick={() => updateActiveRestaurants(restaurant)}
                     >
-                      {restaurant.name}{' '}
+                      {restaurant.name}
                       <IoIosArrowUp
                         className={`${styles.restaurant_name_arrow} ${
                           activeRestaurants.some(

@@ -82,7 +82,6 @@ export default function Item() {
   return (
     <section className={styles.container}>
       {vendors.isLoading && <h2>Loading...</h2>}
-
       {!vendors.isLoading && !item && <h2>No item found</h2>}
 
       {vendor && item && (
@@ -148,11 +147,10 @@ export default function Item() {
               />
             </div>
           </div>
-
           {item.reviews.length > 0 && (
             <>
               <p className={styles.reviews_title}>
-                Reviews{' '}
+                Reviews
                 <span>
                   {item.averageRating} <AiFillStar />
                 </span>
