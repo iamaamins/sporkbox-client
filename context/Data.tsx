@@ -225,7 +225,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
     if (isAdmin) getAdminData();
   }, [isAdmin]);
 
-  // Get customer data
+  // Get customer's data
   useEffect(() => {
     async function getCustomerData() {
       // Get all upcoming orders
@@ -244,7 +244,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
       // Get 10 latest delivered orders
       try {
         const response = await axiosInstance.get(
-          `/orders/me/delivered-orders/10`
+          `/orders/me/delivered-orders/25`
         );
         setCustomerDeliveredOrders({ isLoading: false, data: response.data });
       } catch (err) {
@@ -273,7 +273,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
     if (isCustomer) getCustomerData();
   }, [isCustomer]);
 
-  // Get customer upcoming restaurants
+  // Get customer's upcoming restaurants
   useEffect(() => {
     async function getUpcomingRestaurants() {
       try {

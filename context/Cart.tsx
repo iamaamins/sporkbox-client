@@ -45,17 +45,11 @@ export default function CartProvider({ children }: ContextProviderProps) {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { customer, isCustomer } = useUser();
-  const { customerUpcomingOrders, setCustomerUpcomingOrders } = useData();
+  const { customerAllOrders, setCustomerUpcomingOrders } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  useEffect(() => {
-    setCartItems(
-      JSON.parse(localStorage.getItem(`cart-${customer?._id}`) || '[]')
-    );
-  }, [customer, router.isReady]);
-
-  const upcomingDateTotalDetails = customerUpcomingOrders.data
+  const upcomingDateTotalDetails = customerAllOrders
     .filter((upcomingOrder) =>
       cartItems.some(
         (cartItem) =>
@@ -185,6 +179,13 @@ export default function CartProvider({ children }: ContextProviderProps) {
       router.push('/login');
     }
   }
+
+  // Get cart items from local storage
+  useEffect(() => {
+    setCartItems(
+      JSON.parse(localStorage.getItem(`cart-${customer?._id}`) || '[]')
+    );
+  }, [customer, router.isReady]);
 
   return (
     <CartContext.Provider
