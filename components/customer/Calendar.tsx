@@ -159,12 +159,12 @@ export default function Calendar() {
                                 <div className={styles.item_details}>
                                   <p className={styles.name}>
                                     {item.name}
-                                    {item.averageRating && (
+                                    {/* {item.averageRating && (
                                       <span>
                                         <AiFillStar />
                                         {item.averageRating}
                                       </span>
-                                    )}
+                                    )} */}
                                   </p>
                                   <p className={styles.price}>
                                     {numberToUSD(item.price)}
