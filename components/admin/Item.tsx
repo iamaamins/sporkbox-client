@@ -151,9 +151,11 @@ export default function Item() {
             <>
               <p className={styles.reviews_title}>
                 Reviews
-                <span>
-                  {item.averageRating} <AiFillStar />
-                </span>
+                {item.averageRating && (
+                  <span>
+                    {item.averageRating} <AiFillStar />
+                  </span>
+                )}
               </p>
               <div className={styles.reviews}>
                 {item.reviews.map((review) => (
