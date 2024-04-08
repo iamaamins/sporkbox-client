@@ -23,6 +23,7 @@ import {
   AddonsOrRemovableIngredientsType,
 } from 'types';
 import { useAlert } from '@context/Alert';
+import Stars from '@components/layout/Stars';
 
 const initialState = {
   _id: '',
@@ -299,80 +300,93 @@ export default function Item() {
 
       {upcomingRestaurant && item && (
         <>
-          <div className={styles.cover_image}>
-            <Image
-              src={item.image || upcomingRestaurant.logo}
-              width={16}
-              height={10}
-              layout='responsive'
-              objectFit='cover'
-            />
-          </div>
-          <div className={styles.details_controller_and_button}>
-            <div className={styles.item_details}>
-              <p className={styles.item_name}>
-                {item.name} - {numberToUSD(item.price)}
-              </p>
-              <p className={styles.item_description}>{item.description}</p>
-              <p className={styles.tags}>
-                {splitTags(item.tags).map((tag, index) => (
-                  <span key={index}>{tag}</span>
-                ))}
-              </p>
-
-              <p className={styles.delivery_date}>
-                Delivery date - {dateToText(+(router.query.date as string))}
-              </p>
-
-              {item.optionalAddons.addons && (
-                <div className={styles.optional_addons}>
-                  <p>
-                    Optional add-ons - add up to {item.optionalAddons.addable}
-                  </p>
-                  {renderOptionalAddons}
-                </div>
-              )}
-
-              {item.requiredAddons.addons && (
-                <div className={styles.required_addons}>
-                  <p>
-                    Required add-ons - must choose {item.requiredAddons.addable}
-                  </p>
-                  {renderRequiredAddons}
-                </div>
-              )}
-
-              {item.removableIngredients && (
-                <div className={styles.removable}>
-                  <p>Remove ingredients</p>
-                  {renderRemovableIngredients}
-                </div>
-              )}
+          <div className={styles.image_and_details}>
+            <div className={styles.cover_image}>
+              <Image
+                src={item.image || upcomingRestaurant.logo}
+                width={16}
+                height={10}
+                layout='responsive'
+                objectFit='cover'
+              />
             </div>
+            <div className={styles.details_controller_and_button}>
+              <div className={styles.item_details}>
+                <p className={styles.item_name}>
+                  {item.name} - {numberToUSD(item.price)}
+                </p>
+                <p className={styles.item_description}>{item.description}</p>
+                <p className={styles.tags}>
+                  {splitTags(item.tags).map((tag, index) => (
+                    <span key={index}>{tag}</span>
+                  ))}
+                </p>
 
-            <div className={styles.controller}>
-              <div
-                onClick={decreaseQuantity}
-                className={`${styles.icon} ${
-                  quantity === 1 && styles.disabled
-                }`}
+                <p className={styles.delivery_date}>
+                  Delivery date - {dateToText(+(router.query.date as string))}
+                </p>
+
+                {item.optionalAddons.addons && (
+                  <div className={styles.optional_addons}>
+                    <p>
+                      Optional add-ons - add up to {item.optionalAddons.addable}
+                    </p>
+                    {renderOptionalAddons}
+                  </div>
+                )}
+
+                {item.requiredAddons.addons && (
+                  <div className={styles.required_addons}>
+                    <p>
+                      Required add-ons - must choose{' '}
+                      {item.requiredAddons.addable}
+                    </p>
+                    {renderRequiredAddons}
+                  </div>
+                )}
+
+                {item.removableIngredients && (
+                  <div className={styles.removable}>
+                    <p>Remove ingredients</p>
+                    {renderRemovableIngredients}
+                  </div>
+                )}
+              </div>
+
+              <div className={styles.controller}>
+                <div
+                  onClick={decreaseQuantity}
+                  className={`${styles.icon} ${
+                    quantity === 1 && styles.disabled
+                  }`}
+                >
+                  <HiMinus />
+                </div>
+                <p className={styles.item_quantity}>{quantity}</p>
+                <div onClick={increaseQuantity} className={`${styles.icon} `}>
+                  <HiPlus />
+                </div>
+              </div>
+
+              <button
+                className={`${styles.button}`}
+                onClick={() => addItemToCart(initialItem, item)}
               >
-                <HiMinus />
-              </div>
-              <p className={styles.item_quantity}>{quantity}</p>
-              <div onClick={increaseQuantity} className={`${styles.icon} `}>
-                <HiPlus />
-              </div>
+                Add {quantity} to basket •{' '}
+                {numberToUSD(quantity * price + addonPrice)} USD
+              </button>
             </div>
-
-            <button
-              className={`${styles.button}`}
-              onClick={() => addItemToCart(initialItem, item)}
-            >
-              Add {quantity} to basket •{' '}
-              {numberToUSD(quantity * price + addonPrice)} USD
-            </button>
           </div>
+          {item.reviews.length > 0 && (
+            <div className={styles.reviews}>
+              {item.reviews.map((review) => (
+                <div className={styles.review} key={review._id}>
+                  <p>{review.comment}</p>
+                  <Stars rating={review.rating} />
+                </div>
+              ))}
+            </div>
+          )}
         </>
       )}
     </section>

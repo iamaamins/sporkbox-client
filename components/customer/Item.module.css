@@ -1,7 +1,15 @@
+.item {
+  padding: var(--section_padding);
+}
+
+.image_and_details,
+.cover_image {
+  margin-bottom: 1rem;
+}
+
 .details_controller_and_button {
   display: flex;
   flex-direction: column;
-  padding: var(--section_padding);
 }
 
 .item_name {
@@ -122,10 +130,19 @@
   background: var(--border_color);
 }
 
+.reviews {
+  display: grid;
+  gap: 1rem;
+}
+
+.review p {
+  margin-bottom: 0.5rem;
+}
+
 @media (min-width: 768px) {
-  .item {
+  .image_and_details {
     display: flex;
-    padding: var(--section_padding);
+    margin-bottom: 2rem;
   }
 
   .cover_image {
@@ -145,6 +162,10 @@
 
   .controller {
     margin: 3rem 0rem;
+  }
+
+  .reviews {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 }
 
