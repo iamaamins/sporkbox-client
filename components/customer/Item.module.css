@@ -13,9 +13,26 @@
 }
 
 .item_name {
+  display: flex;
+  align-items: center;
   font-size: 20px;
   font-weight: 600;
   margin-bottom: 0.5rem;
+}
+
+.item_name span {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  margin-left: 0.5rem;
+  color: var(--white);
+  border-radius: 2rem;
+  padding: 02px 10px;
+  background-color: var(--orange);
+}
+
+.item_name span svg {
+  margin-right: 0.25rem;
 }
 
 .item_description {

@@ -24,6 +24,7 @@ import {
 } from 'types';
 import { useAlert } from '@context/Alert';
 import Stars from '@components/layout/Stars';
+import { AiFillStar } from 'react-icons/ai';
 
 const initialState = {
   _id: '',
@@ -314,6 +315,12 @@ export default function Item() {
               <div className={styles.item_details}>
                 <p className={styles.item_name}>
                   {item.name} - {numberToUSD(item.price)}
+                  {item.averageRating && (
+                    <span>
+                      <AiFillStar />
+                      {item.averageRating}
+                    </span>
+                  )}
                 </p>
                 <p className={styles.item_description}>{item.description}</p>
                 <p className={styles.tags}>
