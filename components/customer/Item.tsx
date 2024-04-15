@@ -384,7 +384,7 @@ export default function Item() {
               </button>
             </div>
           </div>
-          {item.reviews.length > 0 && (
+          {/* {item.reviews.length > 0 && (
             <div className={styles.reviews}>
               {item.reviews.map((review) => (
                 <div className={styles.review} key={review._id}>
@@ -393,7 +393,7 @@ export default function Item() {
                 </div>
               ))}
             </div>
-          )}
+          )} */}
         </>
       )}
     </section>
