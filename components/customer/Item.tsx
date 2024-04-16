@@ -370,7 +370,7 @@ export default function Item() {
                   <HiMinus />
                 </div>
                 <p className={styles.item_quantity}>{quantity}</p>
-                <div onClick={increaseQuantity} className={`${styles.icon} `}>
+                <div onClick={increaseQuantity} className={`${styles.icon}`}>
                   <HiPlus />
                 </div>
               </div>
