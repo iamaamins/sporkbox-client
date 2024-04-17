@@ -137,16 +137,19 @@ export type ContextProviderProps = {
   children: ReactNode;
 };
 
+export type VendorUpcomingOrderItem = {
+  _id: string;
+  name: string;
+  quantity: number;
+  optionalAddons: string;
+  requiredAddons: string;
+  removedIngredients: string;
+};
+
 export type VendorUpcomingOrder = {
   _id: string;
   delivery: { date: string };
-  item: {
-    name: string;
-    quantity: number;
-    optionalAddons: string;
-    requiredAddons: string;
-    removedIngredients: string;
-  };
+  item: VendorUpcomingOrderItem;
 };
 
 interface IsLoading {

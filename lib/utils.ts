@@ -17,6 +17,7 @@ import {
   CustomAxiosError,
   CustomerFavoriteItems,
   DateTotal,
+  VendorUpcomingOrder,
 } from 'types';
 
 export const currentYear = new Date().getFullYear();
@@ -291,6 +292,42 @@ export const groupIdenticalOrders = (orders: Order[]) =>
               ...order.item,
               quantity: order.item.quantity + curr.item.quantity,
               total: order.item.total + curr.item.total,
+            },
+          };
+        } else {
+          return order;
+        }
+      });
+    }
+  }, []);
+
+export const groupVendorIdenticalOrders = (orders: VendorUpcomingOrder[]) =>
+  orders.reduce((acc: VendorUpcomingOrder[], curr) => {
+    if (
+      !acc.some(
+        (order) =>
+          order.item._id === curr.item._id &&
+          order.delivery.date === curr.delivery.date &&
+          order.item.optionalAddons === curr.item.optionalAddons &&
+          order.item.requiredAddons === curr.item.requiredAddons &&
+          order.item.removedIngredients === curr.item.removedIngredients
+      )
+    ) {
+      return [...acc, curr];
+    } else {
+      return acc.map((order) => {
+        if (
+          order.item._id === curr.item._id &&
+          order.delivery.date === curr.delivery.date &&
+          order.item.optionalAddons === curr.item.optionalAddons &&
+          order.item.requiredAddons === curr.item.requiredAddons &&
+          order.item.removedIngredients === curr.item.removedIngredients
+        ) {
+          return {
+            ...order,
+            item: {
+              ...order.item,
+              quantity: order.item.quantity + curr.item.quantity,
             },
           };
         } else {

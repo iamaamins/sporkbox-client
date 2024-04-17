@@ -55,6 +55,11 @@
   font-size: 0.9rem;
 }
 
+.group tbody td:nth-child(3),
+.group tbody td:last-child {
+  text-transform: capitalize;
+}
+
 .group tbody td:last-child {
   text-align: right;
 }

@@ -1,13 +1,14 @@
 import { useUser } from '@context/User';
 import styles from './Dashboard.module.css';
 import { useData } from '@context/Data';
-import { CustomAxiosError, Restaurant, VendorUpcomingOrder } from 'types';
+import { CustomAxiosError, Restaurant, VendorUpcomingOrderItem } from 'types';
 import {
   axiosInstance,
   dateToMS,
   dateToText,
   showErrorAlert,
   showSuccessAlert,
+  groupVendorIdenticalOrders,
 } from '@lib/utils';
 import { useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
@@ -16,8 +17,8 @@ import StatusUpdateModal from './StatusUpdateModal';
 
 type OrderMap = {
   [key: string]: {
-    orders: VendorUpcomingOrder[];
     quantity: number;
+    items: VendorUpcomingOrderItem[];
   };
 };
 
@@ -29,8 +30,8 @@ type OrderGroupSchedule = {
 type OrderGroup = {
   date: string;
   quantity: number;
-  orders: VendorUpcomingOrder[];
   schedule: OrderGroupSchedule;
+  items: VendorUpcomingOrderItem[];
 };
 
 type VendorRestaurant = {
@@ -106,6 +107,14 @@ export default function Dashboard() {
     }
   }
 
+  function combineAddons(optional: string, required: string) {
+    let combined = '';
+    if (optional) combined = optional;
+    if (required) combined = required;
+    if (optional && required) combined = `${optional}, ${required}`;
+    return combined;
+  }
+
   // Get the restaurant
   useEffect(() => {
     async function getRestaurant() {
@@ -127,13 +136,15 @@ export default function Dashboard() {
   // Create order groups
   useEffect(() => {
     if (restaurant.data && vendorUpcomingOrders.data.length) {
+      const orders = groupVendorIdenticalOrders(vendorUpcomingOrders.data);
+
       const orderMap: OrderMap = {};
-      for (const order of vendorUpcomingOrders.data) {
+      for (const order of orders) {
         const deliveryDate = dateToMS(order.delivery.date);
         if (!orderMap[deliveryDate]) {
-          orderMap[deliveryDate] = { orders: [], quantity: 0 };
+          orderMap[deliveryDate] = { items: [], quantity: 0 };
         }
-        orderMap[deliveryDate].orders.push(order);
+        orderMap[deliveryDate].items.push(order.item);
         orderMap[deliveryDate].quantity += order.item.quantity;
       }
 
@@ -145,7 +156,7 @@ export default function Dashboard() {
         if (schedule) {
           orderGroups.push({
             date: deliveryDate,
-            orders: orderMap[deliveryDate].orders,
+            items: orderMap[deliveryDate].items,
             quantity: orderMap[deliveryDate].quantity,
             schedule: {
               _id: schedule._id,
@@ -174,7 +185,7 @@ export default function Dashboard() {
         <h2>Loading...</h2>
       ) : orderGroups.length ? (
         <>
-          {orderGroups.map(({ date, orders, quantity, schedule }) => (
+          {orderGroups.map(({ date, items, quantity, schedule }) => (
             <div className={styles.group} key={date}>
               <div className={styles.group_header}>
                 <h2>{dateToText(+date)}</h2>
@@ -196,14 +207,16 @@ export default function Dashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {orders.map((order) => (
-                    <tr key={order._id}>
-                      <td>{order.item.name}</td>
-                      <td>{order.item.quantity}</td>
-                      <td>{order.item.removedIngredients}</td>
+                  {items.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.name}</td>
+                      <td>{item.quantity}</td>
+                      <td>{item.removedIngredients}</td>
                       <td>
-                        {order.item.optionalAddons}
-                        {order.item.requiredAddons}
+                        {combineAddons(
+                          item.optionalAddons,
+                          item.requiredAddons
+                        )}
                       </td>
                     </tr>
                   ))}

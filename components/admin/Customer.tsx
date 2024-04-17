@@ -27,7 +27,6 @@ export default function Customer() {
     deliveredOrders: [],
   });
 
-  // Get all delivered orders of a customer
   async function getDeliveredOrders() {
     try {
       const response = await axiosInstance.get<Order[]>(
@@ -123,16 +122,12 @@ export default function Customer() {
           </table>
         </>
       )}
-
-      {/* Upcoming orders */}
       {customer.upcomingOrders.length > 0 && (
         <CustomerOrders
           orderStatus='Upcoming'
           orders={groupIdenticalOrders(customer.upcomingOrders)}
         />
       )}
-
-      {/* Delivered orders */}
       {customer.deliveredOrders.length > 0 && (
         <CustomerOrders
           orderStatus='Delivered'
