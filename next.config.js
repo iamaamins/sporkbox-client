@@ -4,9 +4,9 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: [
-      "cdn.sporkbox.app",
-      "cdn-dev.sporkbox.app",
-      "d1nsp5ljvyq4nc.cloudfront.net",
+      'cdn.sporkbox.app',
+      'cdn-dev.sporkbox.app',
+      'd1nsp5ljvyq4nc.cloudfront.net',
     ],
   },
 };
@@ -14,7 +14,7 @@ const nextConfig = {
 module.exports = nextConfig;
 
 // Injected Content via Sentry Wizard Below
-const { withSentryConfig } = require("@sentry/nextjs");
+const { withSentryConfig } = require('@sentry/nextjs');
 
 module.exports = withSentryConfig(
   module.exports,
@@ -32,7 +32,7 @@ module.exports = withSentryConfig(
     transpileClientSDK: true,
 
     // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
-    tunnelRoute: "/monitoring",
+    tunnelRoute: '/monitoring',
 
     // Hides source maps from generated client bundles
     hideSourceMaps: true,

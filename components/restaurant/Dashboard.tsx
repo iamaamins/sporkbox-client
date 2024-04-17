@@ -8,19 +8,11 @@ import {
   dateToText,
   showErrorAlert,
   showSuccessAlert,
-  groupVendorIdenticalOrders,
 } from '@lib/utils';
 import { useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
 import ModalContainer from '@components/layout/ModalContainer';
 import StatusUpdateModal from './StatusUpdateModal';
-
-type OrderMap = {
-  [key: string]: {
-    quantity: number;
-    items: VendorUpcomingOrderItem[];
-  };
-};
 
 type OrderGroupSchedule = {
   _id: string;
@@ -28,7 +20,7 @@ type OrderGroupSchedule = {
 };
 
 type OrderGroup = {
-  date: string;
+  date: number;
   quantity: number;
   schedule: OrderGroupSchedule;
   items: VendorUpcomingOrderItem[];
@@ -136,38 +128,46 @@ export default function Dashboard() {
   // Create order groups
   useEffect(() => {
     if (restaurant.data && vendorUpcomingOrders.data.length) {
-      const orders = groupVendorIdenticalOrders(vendorUpcomingOrders.data);
+      const orderMap: Record<string, OrderGroup> = {};
+      for (const order of vendorUpcomingOrders.data) {
+        const date = dateToMS(order.delivery.date);
+        const schedule = restaurant.data.schedules.find(
+          (schedule) => dateToMS(schedule.date) === date
+        );
 
-      const orderMap: OrderMap = {};
-      for (const order of orders) {
-        const deliveryDate = dateToMS(order.delivery.date);
-        if (!orderMap[deliveryDate]) {
-          orderMap[deliveryDate] = { items: [], quantity: 0 };
+        if (!schedule) break;
+        if (!orderMap[date]) {
+          orderMap[date] = {
+            date,
+            items: [],
+            quantity: 0,
+            schedule: { _id: schedule._id, status: schedule.status },
+          };
         }
-        orderMap[deliveryDate].items.push(order.item);
-        orderMap[deliveryDate].quantity += order.item.quantity;
+
+        const existingItem = orderMap[date].items.find(
+          (item) =>
+            item._id === order.item._id &&
+            item.optionalAddons === order.item.optionalAddons &&
+            item.requiredAddons === order.item.requiredAddons &&
+            item.removedIngredients === order.item.removedIngredients
+        );
+
+        if (existingItem) {
+          existingItem.quantity += order.item.quantity;
+        } else {
+          orderMap[date].items.push({ ...order.item });
+        }
+        orderMap[date].quantity += order.item.quantity;
       }
 
       const orderGroups: OrderGroup[] = [];
-      for (const deliveryDate in orderMap) {
-        const schedule = restaurant.data.schedules.find(
-          (schedule) => dateToMS(schedule.date) === +deliveryDate
-        );
-        if (schedule) {
-          orderGroups.push({
-            date: deliveryDate,
-            items: orderMap[deliveryDate].items,
-            quantity: orderMap[deliveryDate].quantity,
-            schedule: {
-              _id: schedule._id,
-              status: schedule.status,
-            },
-          });
-        }
+      for (const date in orderMap) {
+        orderGroups.push(orderMap[date]);
       }
       setOrderGroups(orderGroups);
     }
-  }, [restaurant.data, vendorUpcomingOrders]);
+  }, [restaurant, vendorUpcomingOrders]);
 
   return (
     <section className={styles.container}>

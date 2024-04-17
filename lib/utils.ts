@@ -301,42 +301,6 @@ export const groupIdenticalOrders = (orders: Order[]) =>
     }
   }, []);
 
-export const groupVendorIdenticalOrders = (orders: VendorUpcomingOrder[]) =>
-  orders.reduce((acc: VendorUpcomingOrder[], curr) => {
-    if (
-      !acc.some(
-        (order) =>
-          order.item._id === curr.item._id &&
-          order.delivery.date === curr.delivery.date &&
-          order.item.optionalAddons === curr.item.optionalAddons &&
-          order.item.requiredAddons === curr.item.requiredAddons &&
-          order.item.removedIngredients === curr.item.removedIngredients
-      )
-    ) {
-      return [...acc, curr];
-    } else {
-      return acc.map((order) => {
-        if (
-          order.item._id === curr.item._id &&
-          order.delivery.date === curr.delivery.date &&
-          order.item.optionalAddons === curr.item.optionalAddons &&
-          order.item.requiredAddons === curr.item.requiredAddons &&
-          order.item.removedIngredients === curr.item.removedIngredients
-        ) {
-          return {
-            ...order,
-            item: {
-              ...order.item,
-              quantity: order.item.quantity + curr.item.quantity,
-            },
-          };
-        } else {
-          return order;
-        }
-      });
-    }
-  }, []);
-
 // Format addable ingredients
 export const formatAddons = (ingredients: string) =>
   ingredients
