@@ -2,9 +2,11 @@ import {
   formatItemStatToCSV,
   formatOrderStatToCSV,
   formatPeopleStatToCSV,
+  formatRestaurantItemsStat,
   itemStatCSVHeaders,
   orderStatCSVHeaders,
   peopleStatCSVHeaders,
+  restaurantItemsCSVHeaders,
 } from '@lib/csv';
 import { axiosInstance, showErrorAlert } from '@lib/utils';
 import { useEffect, useState } from 'react';
@@ -21,6 +23,10 @@ export default function Stat() {
   const [orderStat, setOrderStat] = useState({ isLoading: true, data: [] });
   const [itemStat, setItemStat] = useState({ isLoading: true, data: [] });
   const [peopleStat, setPeopleStat] = useState({ isLoading: true, data: [] });
+  const [restaurantItemsStat, setRestaurantItemsStat] = useState({
+    isLoading: true,
+    data: [],
+  });
 
   async function downloadOrderStat() {
     try {
@@ -58,11 +64,31 @@ export default function Stat() {
     }
   }
 
+  async function downloadRestaurantItemsStat() {
+    try {
+      const response = await axiosInstance.get('/stats/restaurant-items');
+      setRestaurantItemsStat((prevState) => ({
+        ...prevState,
+        data: response.data,
+      }));
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      setRestaurantItemsStat((prevState) => ({
+        ...prevState,
+        isLoading: false,
+      }));
+    }
+  }
+
   // Download the stats
   useEffect(() => {
     downloadOrderStat();
     downloadItemStat();
     downloadPeopleStat();
+    downloadRestaurantItemsStat();
   }, [router.isReady]);
 
   return (
@@ -107,6 +133,20 @@ export default function Stat() {
         <p>People stat loading...</p>
       ) : (
         <p>No people stat found</p>
+      )}
+
+      {restaurantItemsStat.data.length > 0 ? (
+        <CSVLink
+          data={formatRestaurantItemsStat(restaurantItemsStat.data)}
+          headers={restaurantItemsCSVHeaders}
+          filename='Restaurant Items Stat'
+        >
+          Restaurant items stat <FiDownload />
+        </CSVLink>
+      ) : restaurantItemsStat.isLoading ? (
+        <p>Restaurant items stat loading...</p>
+      ) : (
+        <p>No restaurant items stat found</p>
       )}
     </section>
   );

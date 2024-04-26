@@ -1,5 +1,7 @@
 .section {
   display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   padding: var(--section_padding);
@@ -9,7 +11,6 @@
 .section a {
   padding: 0.5rem 2rem;
   border-radius: 0.5rem;
-  margin-right: 1rem;
   font-weight: 500;
   color: var(--black);
   border: 1px solid var(--black);

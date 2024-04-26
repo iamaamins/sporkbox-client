@@ -41,6 +41,12 @@ type PeopleStat = {
   customers: string[];
 };
 
+type RestaurantItemsStat = {
+  restaurant: string;
+  name: string;
+  price: number;
+};
+
 export const orderCSVHeaders = [
   {
     label: 'Delivery date',
@@ -230,4 +236,19 @@ export const formatPeopleStatToCSV = (peopleStat: PeopleStat[]) =>
   peopleStat.map((data) => ({
     date: dateToText(data.date),
     served: data.customers.length,
+  }));
+
+export const restaurantItemsCSVHeaders = [
+  { label: 'Restaurant', key: 'restaurant' },
+  { label: 'Item', key: 'item' },
+  { label: 'Price', key: 'price' },
+];
+
+export const formatRestaurantItemsStat = (
+  restaurantItemsStat: RestaurantItemsStat[]
+) =>
+  restaurantItemsStat.map((item) => ({
+    restaurant: item.restaurant,
+    item: item.name,
+    price: item.price,
   }));
