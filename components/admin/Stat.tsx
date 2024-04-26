@@ -71,7 +71,6 @@ export default function Stat() {
         ...prevState,
         data: response.data,
       }));
-      console.log(response);
     } catch (err) {
       console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
