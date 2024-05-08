@@ -1,7 +1,12 @@
 import { useUser } from '@context/User';
 import styles from './Dashboard.module.css';
 import { useData } from '@context/Data';
-import { CustomAxiosError, Restaurant, VendorUpcomingOrderItem } from 'types';
+import {
+  CustomAxiosError,
+  Restaurant,
+  Schedule,
+  VendorUpcomingOrderItem,
+} from 'types';
 import {
   axiosInstance,
   dateToMS,
@@ -73,8 +78,8 @@ export default function Dashboard() {
         }
       );
       const schedule = response.data.find(
-        (schedule: { scheduleId: string }) =>
-          schedule.scheduleId === statusUpdatePayload.schedule._id
+        (schedule: Schedule) =>
+          schedule._id === statusUpdatePayload.schedule._id
       );
       setRestaurant((prevState) => ({
         ...prevState,
@@ -82,7 +87,7 @@ export default function Dashboard() {
           ? {
               ...prevState.data,
               schedules: prevState.data?.schedules.map((prevSchedule) =>
-                prevSchedule._id === schedule.scheduleId
+                prevSchedule._id === schedule._id
                   ? { ...prevSchedule, status: schedule.status }
                   : prevSchedule
               ),
@@ -135,30 +140,31 @@ export default function Dashboard() {
           (schedule) => dateToMS(schedule.date) === date
         );
 
-        if (!schedule) break;
-        if (!orderMap[date]) {
-          orderMap[date] = {
-            date,
-            items: [],
-            quantity: 0,
-            schedule: { _id: schedule._id, status: schedule.status },
-          };
-        }
+        if (schedule) {
+          if (!orderMap[date]) {
+            orderMap[date] = {
+              date,
+              items: [],
+              quantity: 0,
+              schedule: { _id: schedule._id, status: schedule.status },
+            };
+          }
 
-        const existingItem = orderMap[date].items.find(
-          (item) =>
-            item._id === order.item._id &&
-            item.optionalAddons === order.item.optionalAddons &&
-            item.requiredAddons === order.item.requiredAddons &&
-            item.removedIngredients === order.item.removedIngredients
-        );
+          const existingItem = orderMap[date].items.find(
+            (item) =>
+              item._id === order.item._id &&
+              item.optionalAddons === order.item.optionalAddons &&
+              item.requiredAddons === order.item.requiredAddons &&
+              item.removedIngredients === order.item.removedIngredients
+          );
 
-        if (existingItem) {
-          existingItem.quantity += order.item.quantity;
-        } else {
-          orderMap[date].items.push({ ...order.item });
+          if (existingItem) {
+            existingItem.quantity += order.item.quantity;
+          } else {
+            orderMap[date].items.push({ ...order.item });
+          }
+          orderMap[date].quantity += order.item.quantity;
         }
-        orderMap[date].quantity += order.item.quantity;
       }
 
       const orderGroups: OrderGroup[] = [];
