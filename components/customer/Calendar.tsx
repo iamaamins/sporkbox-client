@@ -56,12 +56,12 @@ export default function Calendar() {
         const upcomingRestaurantsOnDate = upcomingRestaurants.data
           .filter(
             (upcomingRestaurant) =>
-              dateToMS(upcomingRestaurant.date) === upcomingDate
+              dateToMS(upcomingRestaurant.schedule.date) === upcomingDate
           )
           .sort(
             (a, b) =>
-              new Date(a.scheduledAt).getTime() -
-              new Date(b.scheduledAt).getTime()
+              new Date(a.schedule.date).getTime() -
+              new Date(b.schedule.date).getTime()
           );
         const activeRestaurants = upcomingRestaurantsOnDate.map(
           (upcomingRestaurant) => ({
@@ -131,7 +131,7 @@ export default function Calendar() {
                   <div
                     key={index}
                     className={`${styles.restaurant} ${
-                      restaurant.scheduleStatus === 'INACTIVE' &&
+                      restaurant.schedule.status === 'INACTIVE' &&
                       styles.sold_out
                     }`}
                   >
@@ -140,7 +140,8 @@ export default function Calendar() {
                       onClick={() => updateActiveRestaurants(restaurant)}
                     >
                       {restaurant.name}{' '}
-                      {restaurant.scheduleStatus === 'INACTIVE' && '- sold out'}
+                      {restaurant.schedule.status === 'INACTIVE' &&
+                        '- sold out'}
                       <IoIosArrowUp
                         className={`${styles.restaurant_name_arrow} ${
                           activeRestaurants.some(
@@ -162,7 +163,7 @@ export default function Calendar() {
                           <Link
                             key={item._id}
                             href={
-                              restaurant.scheduleStatus === 'ACTIVE'
+                              restaurant.schedule.status === 'ACTIVE'
                                 ? `/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`
                                 : '#'
                             }

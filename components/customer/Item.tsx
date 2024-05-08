@@ -23,7 +23,6 @@ import {
   AddonsOrRemovableIngredientsType,
 } from 'types';
 import { useAlert } from '@context/Alert';
-import Stars from '@components/layout/Stars';
 import { AiFillStar } from 'react-icons/ai';
 
 const initialState = {
@@ -63,14 +62,15 @@ export default function Item() {
     if (upcomingRestaurants.data.length > 0 && router.isReady) {
       const upcomingRestaurant = upcomingRestaurants.data.find(
         (upcomingRestaurant) =>
-          dateToMS(upcomingRestaurant.date).toString() === router.query.date &&
+          dateToMS(upcomingRestaurant.schedule.date).toString() ===
+            router.query.date &&
           upcomingRestaurant._id === router.query.restaurant &&
           upcomingRestaurant.company.shift === router.query.shift
       );
 
       if (upcomingRestaurant) {
         setUpcomingRestaurant(upcomingRestaurant);
-        const deliveryDate = dateToMS(upcomingRestaurant.date);
+        const deliveryDate = dateToMS(upcomingRestaurant.schedule.date);
         const item = upcomingRestaurant.items.find(
           (item) => item._id === router.query.item
         );

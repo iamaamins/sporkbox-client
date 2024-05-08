@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { Dispatch, SetStateAction, ReactNode, FormEvent } from 'react';
+import { Dispatch, SetStateAction, ReactNode } from 'react';
 
 interface User {
   _id: string;
@@ -50,21 +50,21 @@ export type Restaurant = {
 export interface ScheduledRestaurant {
   _id: string;
   name: string;
-  date: string;
   company: {
     _id: string;
     name: string;
     shift: string;
   };
-  status: string;
-  scheduleId: string;
+  schedule: {
+    _id: string;
+    date: string;
+    status: string;
+  };
 }
 
 export interface UpcomingRestaurant extends ScheduledRestaurant {
   logo: string;
   items: Item[];
-  scheduledAt: string;
-  scheduleStatus: string;
 }
 
 export type Review = {

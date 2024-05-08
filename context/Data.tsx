@@ -118,9 +118,11 @@ export default function DataProvider({ children }: ContextProviderProps) {
       ? upcomingRestaurants.data
           .filter(
             (upcomingRestaurant) =>
-              upcomingRestaurant.scheduleStatus === 'ACTIVE'
+              upcomingRestaurant.schedule.status === 'ACTIVE'
           )
-          .map((upcomingRestaurant) => dateToMS(upcomingRestaurant.date))
+          .map((upcomingRestaurant) =>
+            dateToMS(upcomingRestaurant.schedule.date)
+          )
           .filter((date, index, dates) => dates.indexOf(date) === index)
       : [];
 

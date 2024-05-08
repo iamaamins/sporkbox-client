@@ -73,20 +73,18 @@ export default function ScheduledRestaurants({
       );
       const schedule = response.data.find(
         (schedule: ScheduledRestaurant) =>
-          schedule.scheduleId === statusUpdatePayload.scheduleId
+          schedule.schedule._id === statusUpdatePayload.scheduleId
       );
       setScheduledRestaurants((prevState) => ({
         ...prevState,
-        data: prevState.data.map((scheduledRestaurant) => {
-          if (
-            scheduledRestaurant.scheduleId === statusUpdatePayload.scheduleId
-          ) {
+        data: prevState.data.map((restaurant) => {
+          if (restaurant.schedule._id === statusUpdatePayload.scheduleId) {
             return {
-              ...scheduledRestaurant,
+              ...restaurant,
               status: schedule.status,
             };
           } else {
-            return scheduledRestaurant;
+            return restaurant;
           }
         }),
       }));
@@ -130,9 +128,8 @@ export default function ScheduledRestaurants({
       setScheduledRestaurants((prevState) => ({
         ...prevState,
         data: prevState.data.filter(
-          (scheduledRestaurant) =>
-            scheduledRestaurant.scheduleId !==
-            scheduleRemovalPayload.schedule._id
+          (restaurant) =>
+            restaurant.schedule._id !== scheduleRemovalPayload.schedule._id
         ),
       }));
       setAllUpcomingOrders((prevState) => ({
@@ -182,33 +179,29 @@ export default function ScheduledRestaurants({
             </thead>
 
             <tbody>
-              {restaurants.map((scheduledRestaurant, index) => (
+              {restaurants.map((restaurant, index) => (
                 <tr key={index}>
                   <td className={styles.important}>
-                    <Link
-                      href={`/admin/restaurants/${scheduledRestaurant._id}`}
-                    >
-                      <a>{dateToText(scheduledRestaurant.date)}</a>
+                    <Link href={`/admin/restaurants/${restaurant._id}`}>
+                      <a>{dateToText(restaurant.schedule.date)}</a>
                     </Link>
                   </td>
-                  <td>{scheduledRestaurant.name}</td>
-                  <td>{scheduledRestaurant.company.name}</td>
-                  <td className={styles.shift}>
-                    {scheduledRestaurant.company.shift}
-                  </td>
+                  <td>{restaurant.name}</td>
+                  <td>{restaurant.company.name}</td>
+                  <td className={styles.shift}>{restaurant.company.shift}</td>
                   <td className={`${styles.actions} ${styles.hide_on_mobile}`}>
                     <span
                       className={styles.deactivate}
                       onClick={(e) =>
                         initiateScheduleUpdate(
                           e,
-                          scheduledRestaurant._id,
-                          scheduledRestaurant.name,
-                          scheduledRestaurant.scheduleId
+                          restaurant._id,
+                          restaurant.name,
+                          restaurant.schedule._id
                         )
                       }
                     >
-                      {scheduledRestaurant.status === 'ACTIVE'
+                      {restaurant.schedule.status === 'ACTIVE'
                         ? 'Deactivate'
                         : 'Activate'}
                     </span>
@@ -216,11 +209,11 @@ export default function ScheduledRestaurants({
                       className={styles.remove}
                       onClick={() =>
                         initiateScheduleRemoval(
-                          scheduledRestaurant._id,
-                          scheduledRestaurant.name,
-                          scheduledRestaurant.date,
-                          scheduledRestaurant.scheduleId,
-                          scheduledRestaurant.company._id
+                          restaurant._id,
+                          restaurant.name,
+                          restaurant.schedule._id,
+                          restaurant.company._id,
+                          restaurant.schedule.date
                         )
                       }
                     >
