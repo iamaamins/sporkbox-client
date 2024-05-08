@@ -27,6 +27,12 @@ export interface Vendor extends User {
   restaurant: Restaurant;
 }
 
+export type Schedule = {
+  _id: string;
+  date: string;
+  status: 'ACTIVE' | 'INACTIVE';
+};
+
 export type Restaurant = {
   _id: string;
   name: string;
@@ -40,11 +46,7 @@ export type Restaurant = {
     addressLine2?: string;
   };
   createdAt: string;
-  schedules: {
-    _id: string;
-    date: string;
-    status: 'ACTIVE' | 'INACTIVE';
-  }[];
+  schedules: Schedule[];
 };
 
 export interface ScheduledRestaurant {
@@ -55,11 +57,7 @@ export interface ScheduledRestaurant {
     name: string;
     shift: string;
   };
-  schedule: {
-    _id: string;
-    date: string;
-    status: string;
-  };
+  schedule: Schedule;
 }
 
 export interface UpcomingRestaurant extends ScheduledRestaurant {

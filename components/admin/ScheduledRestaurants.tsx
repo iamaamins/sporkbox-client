@@ -3,7 +3,7 @@ import { useData } from '@context/Data';
 import { useAlert } from '@context/Alert';
 import ActionModal from './ActionModal';
 import { FormEvent, useState } from 'react';
-import { CustomAxiosError, ScheduledRestaurant } from 'types';
+import { CustomAxiosError, Schedule, ScheduledRestaurant } from 'types';
 import {
   axiosInstance,
   dateToText,
@@ -72,8 +72,7 @@ export default function ScheduledRestaurants({
         { action: statusUpdatePayload.action }
       );
       const schedule = response.data.find(
-        (schedule: ScheduledRestaurant) =>
-          schedule.schedule._id === statusUpdatePayload.scheduleId
+        (schedule: Schedule) => schedule._id === statusUpdatePayload.scheduleId
       );
       setScheduledRestaurants((prevState) => ({
         ...prevState,
@@ -81,7 +80,10 @@ export default function ScheduledRestaurants({
           if (restaurant.schedule._id === statusUpdatePayload.scheduleId) {
             return {
               ...restaurant,
-              status: schedule.status,
+              schedule: {
+                ...restaurant.schedule,
+                status: schedule.status,
+              },
             };
           } else {
             return restaurant;
