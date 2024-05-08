@@ -64,6 +64,7 @@ export interface UpcomingRestaurant extends ScheduledRestaurant {
   logo: string;
   items: Item[];
   scheduledAt: string;
+  scheduleStatus: string;
 }
 
 export type Review = {

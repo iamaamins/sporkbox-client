@@ -76,6 +76,25 @@
   color: var(--almost_white);
 }
 
+.restaurant.sold_out .restaurant_name,
+.restaurant.sold_out .item_name span {
+  background: var(--disabled);
+}
+
+.restaurant.sold_out .item_name,
+.restaurant.sold_out .item_price,
+.restaurant.sold_out .item_description {
+  color: var(--disabled);
+}
+
+.restaurant.sold_out .item_image_overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.75;
+  background: var(--disabled);
+}
+
 .restaurant_name_arrow {
   margin-left: 0.5rem;
   font-size: 18px;
@@ -99,11 +118,15 @@
   justify-content: space-between;
 }
 
+.restaurant.sold_out .item {
+  cursor: not-allowed;
+}
+
 .item_details {
   width: 65%;
 }
 
-.name {
+.item_name {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -112,7 +135,7 @@
   margin-bottom: 0.5rem;
 }
 
-.name span {
+.item_name span {
   display: flex;
   align-items: center;
   margin-left: 0.5rem;
@@ -122,17 +145,17 @@
   background-color: var(--orange);
 }
 
-.name span svg {
+.item_name span svg {
   margin-right: 0.25rem;
 }
 
-.price {
+.item_price {
   font-weight: 500;
   font-size: 13px;
   margin-bottom: 0.5rem;
 }
 
-.description {
+.item_description {
   color: var(--gray);
   overflow: hidden;
   display: -webkit-box;
@@ -141,6 +164,7 @@
 }
 
 .item_image {
+  position: relative;
   width: 30%;
   position: relative;
   border-radius: 0.25rem;

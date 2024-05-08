@@ -1,36 +1,36 @@
 @font-face {
-  font-family: "Raleway";
+  font-family: 'Raleway';
   font-style: normal;
   font-weight: 400;
-  src: local(""), url("/fonts/raleway-v28-latin-regular.woff2") format("woff2"),
-    url("/fonts/raleway-v28-latin-regular.woff") format("woff");
+  src: local(''), url('/fonts/raleway-v28-latin-regular.woff2') format('woff2'),
+    url('/fonts/raleway-v28-latin-regular.woff') format('woff');
   font-display: fallback;
 }
 
 @font-face {
-  font-family: "Raleway";
+  font-family: 'Raleway';
   font-style: normal;
   font-weight: 500;
-  src: local(""), url("/fonts/raleway-v28-latin-500.woff2") format("woff2"),
-    url("/fonts/raleway-v28-latin-500.woff") format("woff");
+  src: local(''), url('/fonts/raleway-v28-latin-500.woff2') format('woff2'),
+    url('/fonts/raleway-v28-latin-500.woff') format('woff');
   font-display: fallback;
 }
 
 @font-face {
-  font-family: "Raleway";
+  font-family: 'Raleway';
   font-style: normal;
   font-weight: 600;
-  src: local(""), url("/fonts/raleway-v28-latin-600.woff2") format("woff2"),
-    url("/fonts/raleway-v28-latin-600.woff") format("woff");
+  src: local(''), url('/fonts/raleway-v28-latin-600.woff2') format('woff2'),
+    url('/fonts/raleway-v28-latin-600.woff') format('woff');
   font-display: fallback;
 }
 
 @font-face {
-  font-family: "Raleway";
+  font-family: 'Raleway';
   font-style: normal;
   font-weight: 700;
-  src: local(""), url("/fonts/raleway-v28-latin-700.woff2") format("woff2"),
-    url("/fonts/raleway-v28-latin-700.woff") format("woff");
+  src: local(''), url('/fonts/raleway-v28-latin-700.woff2') format('woff2'),
+    url('/fonts/raleway-v28-latin-700.woff') format('woff');
   font-display: fallback;
 }
 
@@ -44,7 +44,7 @@
   --orange: #f78f1e;
   --green: #c0cb32;
   --brown: #583b3b;
-  --disabled_font: #ccc;
+  --disabled: #ccc;
   --almost_white: #fafafa;
   --border_color: #eaeaea;
   --section_padding: 1.25rem;
@@ -69,7 +69,7 @@ body {
   font-size: 14px;
   font-weight: 400;
   color: var(--black);
-  font-family: "Raleway", sans-serif;
+  font-family: 'Raleway', sans-serif;
   text-rendering: optimizeLegibility;
 }
 
@@ -101,7 +101,7 @@ textarea {
 
 textarea {
   resize: none;
-  font-family: "Raleway", sans-serif;
+  font-family: 'Raleway', sans-serif;
 }
 
 @media (min-width: 1256px) {

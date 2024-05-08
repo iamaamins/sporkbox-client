@@ -82,7 +82,8 @@ export default function Calendar() {
       <section className={styles.calendar}>
         {upcomingRestaurants.isLoading && <h2>Loading...</h2>}
         {!upcomingRestaurants.isLoading &&
-          upcomingRestaurants.data.length === 0 && <h2>No restaurants</h2>}
+          (upcomingRestaurants.data.length === 0 ||
+            updatedRestaurants.length === 0) && <h2>No restaurants</h2>}
 
         {upcomingDates.length > 0 && (
           <>
@@ -127,12 +128,19 @@ export default function Calendar() {
             {updatedRestaurants.length > 0 ? (
               <>
                 {updatedRestaurants.map((restaurant, index) => (
-                  <div key={index} className={styles.restaurant}>
+                  <div
+                    key={index}
+                    className={`${styles.restaurant} ${
+                      restaurant.scheduleStatus === 'INACTIVE' &&
+                      styles.sold_out
+                    }`}
+                  >
                     <h2
                       className={styles.restaurant_name}
                       onClick={() => updateActiveRestaurants(restaurant)}
                     >
-                      {restaurant.name}
+                      {restaurant.name}{' '}
+                      {restaurant.scheduleStatus === 'INACTIVE' && '- sold out'}
                       <IoIosArrowUp
                         className={`${styles.restaurant_name_arrow} ${
                           activeRestaurants.some(
@@ -151,57 +159,62 @@ export default function Calendar() {
                     ) ? (
                       <div className={styles.items}>
                         {restaurant.items.map((item) => (
-                          <div key={item._id}>
-                            <Link
-                              href={`/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`}
-                            >
-                              <a className={styles.item}>
-                                <div className={styles.item_details}>
-                                  <p className={styles.name}>
-                                    {item.name}
-                                    {item.averageRating && (
-                                      <span>
-                                        <AiFillStar />
-                                        {item.averageRating}
-                                      </span>
-                                    )}
-                                  </p>
-                                  <p className={styles.price}>
-                                    {numberToUSD(item.price)}
-                                  </p>
-                                  <p className={styles.description}>
-                                    {item.description}
-                                  </p>
-                                </div>
-
-                                <div className={styles.item_image}>
-                                  <Image
-                                    src={item.image || restaurant.logo}
-                                    width={16}
-                                    height={10}
-                                    objectFit='cover'
-                                    layout='responsive'
-                                  />
-
-                                  {cartItems.map(
-                                    (cartItem) =>
-                                      cartItem.deliveryDate.toString() ===
-                                        router.query.date &&
-                                      cartItem._id === item._id &&
-                                      cartItem.companyId ===
-                                        restaurant.company._id && (
-                                        <span
-                                          key={item._id}
-                                          className={styles.quantity}
-                                        >
-                                          {cartItem.quantity}
-                                        </span>
-                                      )
+                          <Link
+                            key={item._id}
+                            href={
+                              restaurant.scheduleStatus === 'ACTIVE'
+                                ? `/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`
+                                : '#'
+                            }
+                          >
+                            <a className={styles.item}>
+                              <div className={styles.item_details}>
+                                <p className={styles.item_name}>
+                                  {item.name}
+                                  {item.averageRating && (
+                                    <span>
+                                      <AiFillStar />
+                                      {item.averageRating}
+                                    </span>
                                   )}
-                                </div>
-                              </a>
-                            </Link>
-                          </div>
+                                </p>
+                                <p className={styles.item_price}>
+                                  {numberToUSD(item.price)}
+                                </p>
+                                <p className={styles.item_description}>
+                                  {item.description}
+                                </p>
+                              </div>
+
+                              <div className={styles.item_image}>
+                                <div
+                                  className={styles.item_image_overlay}
+                                ></div>
+                                <Image
+                                  src={item.image || restaurant.logo}
+                                  width={16}
+                                  height={10}
+                                  objectFit='cover'
+                                  layout='responsive'
+                                />
+                                {cartItems.map(
+                                  (cartItem) =>
+                                    cartItem.deliveryDate.toString() ===
+                                      router.query.date &&
+                                    cartItem._id === item._id &&
+                                    cartItem.companyId ===
+                                      restaurant.company._id && (
+                                      <span
+                                        key={item._id}
+                                        className={styles.quantity}
+                                      >
+                                        {cartItem.quantity}
+                                      </span>
+                                    )
+                                )}
+                              </div>
+                            </a>
+                          </Link>
                         ))}
                       </div>
                     ) : (

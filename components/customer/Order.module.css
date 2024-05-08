@@ -84,7 +84,7 @@
 .star {
   font-size: 1.5rem;
   margin-right: 1rem;
-  color: var(--disabled_font);
+  color: var(--disabled);
 }
 
 .star:last-child {
