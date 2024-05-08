@@ -103,9 +103,9 @@ export default function ScheduledRestaurants({
   function initiateScheduleRemoval(
     restaurantId: string,
     restaurantName: string,
-    scheduledDate: string,
     scheduleId: string,
-    companyId: string
+    companyId: string,
+    scheduledDate: string
   ) {
     setShowScheduleRemovalModal(true);
     setScheduleRemovalPayload({
