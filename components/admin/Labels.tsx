@@ -27,7 +27,7 @@ Font.register({
 const styles = StyleSheet.create({
   page: {
     fontFamily: 'Raleway',
-    fontSize: 12,
+    fontSize: 10,
     padding: 20,
     flexDirection: 'row',
     flexWrap: 'wrap',
