@@ -69,7 +69,7 @@ export default function Labels({ orders }: Props) {
     <Document>
       <Page size='A4' style={styles.page}>
         {orders.map((order) => (
-          <View key={order._id} style={styles.label}>
+          <View key={order._id} style={styles.label} wrap={false}>
             <Image src='/label-icon.png' style={styles.logo} />
             <View>
               <View style={[styles.name_shift, styles.line]}>
