@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
   label: {
     margin: 10,
-    maxWidth: 170,
+    width: 170,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   line: {
-    maxWidth: 130,
+    width: 130,
     marginBottom: 5,
   },
   bold: {
