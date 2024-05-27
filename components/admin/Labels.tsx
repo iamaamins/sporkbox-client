@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   line: {
-    maxWidth: 120,
+    width: 100,
     marginBottom: 5,
   },
   bold: {
