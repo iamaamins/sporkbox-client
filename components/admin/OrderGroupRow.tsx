@@ -2,13 +2,15 @@ import Link from 'next/link';
 import { CSVLink } from 'react-csv';
 import { OrderGroup } from 'types';
 import { FiDownload } from 'react-icons/fi';
-import styles from './OrdersGroupRow.module.css';
+import styles from './OrderGroupRow.module.css';
 import { dateToMS, dateToText } from '@lib/utils';
 import {
   formatOrderDataToCSV,
   createOrderCSVFileName,
   orderCSVHeaders,
 } from '@lib/csv';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import Labels from './Labels';
 
 type Props = {
   slug: string;
@@ -36,7 +38,21 @@ export default function OrderGroupRow({ slug, orderGroup }: Props) {
       </td>
       <td>{orderGroup.customers.length}</td>
       <td>{orderGroup.orders.length}</td>
-      <td className={styles.action}>
+      <td className={styles.actions}>
+        <PDFDownloadLink
+          document={<Labels orders={orderGroup.orders} />}
+          fileName={`Labels-${dateToText(orderGroup.deliveryDate)}.pdf`}
+        >
+          {({ loading }) =>
+            loading ? (
+              'Loading...'
+            ) : (
+              <>
+                Labels <FiDownload />
+              </>
+            )
+          }
+        </PDFDownloadLink>
         <CSVLink
           headers={orderCSVHeaders}
           data={formatOrderDataToCSV(orderGroup)}

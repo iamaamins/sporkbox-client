@@ -17,7 +17,7 @@
 
 .orders_group_row td:last-child svg {
   font-size: 18px;
-  margin-left: 0.5rem;
+  margin-left: 0.25rem;
 }
 
 .important a {
@@ -38,7 +38,13 @@
   padding: 2px 0px;
 }
 
-.action a {
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.actions a {
   display: flex;
   color: var(--orange);
 }

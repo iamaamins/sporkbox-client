@@ -17,7 +17,6 @@ import {
   CustomAxiosError,
   CustomerFavoriteItems,
   DateTotal,
-  VendorUpcomingOrder,
 } from 'types';
 
 export const currentYear = new Date().getFullYear();
@@ -367,5 +366,10 @@ export function getDateTotal(details: DateTotal[]) {
   }, [] as DateTotal[]);
 }
 
-// https://api.sporkbox.app
-// https://api.sporkbox.octib.com
+export function categorizeLastName(lastName: string) {
+  const initial = lastName[0].toLowerCase();
+  if (initial >= 'a' && initial <= 'f') return 'A-F';
+  if (initial >= 'g' && initial <= 'l') return 'G-L';
+  if (initial >= 'm' && initial <= 'r') return 'M-R';
+  if (initial >= 's' && initial <= 'z') return 'S-Z';
+}

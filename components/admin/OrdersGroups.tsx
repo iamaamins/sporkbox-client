@@ -77,7 +77,7 @@ export default function OrdersGroups({ slug, title, orderGroups }: Props) {
                 <th className={styles.hide_on_mobile}>Restaurant</th>
                 <th>Headcount</th>
                 <th>Orders</th>
-                <th>Action</th>
+                <th>Actions</th>
               </tr>
             </thead>
 
