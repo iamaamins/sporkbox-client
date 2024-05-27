@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   label: {
-    margin: 5,
+    marginVertical: 10,
+    marginHorizontal: 5,
     width: '30%',
     flexDirection: 'row',
     alignItems: 'center',
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 35,
     height: 35,
-    marginRight: 10,
+    marginRight: 5,
   },
   name_shift: {
     flexDirection: 'row',
