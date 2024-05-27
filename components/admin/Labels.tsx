@@ -75,7 +75,7 @@ export default function Labels({ orders }: Props) {
               <View style={[styles.name_shift, styles.line]}>
                 <Text style={styles.bold}>{order.customer.firstName} </Text>
                 <Text>{order.customer.lastName} - </Text>
-                <Text style={styles.capitalize}>
+                <Text style={[styles.capitalize, styles.bold]}>
                   {order.company.shift === 'night'
                     ? order.company.shift
                     : categorizeLastName(order.customer.lastName)}
