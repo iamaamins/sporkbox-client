@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   page: {
     fontFamily: 'Raleway',
     fontSize: 10,
-    padding: 20,
+    padding: 10,
     flexDirection: 'row',
     flexWrap: 'wrap',
     backgroundColor: '#ffffff',

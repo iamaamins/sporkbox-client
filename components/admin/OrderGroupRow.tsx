@@ -41,7 +41,7 @@ export default function OrderGroupRow({ slug, orderGroup }: Props) {
       <td className={styles.actions}>
         <PDFDownloadLink
           document={<Labels orders={orderGroup.orders} />}
-          fileName={`Labels-${dateToText(orderGroup.deliveryDate)}.pdf`}
+          fileName={`Labels - ${dateToText(orderGroup.deliveryDate)}.pdf`}
         >
           {({ loading }) =>
             loading ? (
