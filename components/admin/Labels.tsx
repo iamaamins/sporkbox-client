@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     marginRight: 10,
   },
   name_shift: {
