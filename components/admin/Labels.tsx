@@ -72,7 +72,7 @@ export default function Labels({ orders }: Props) {
           <View key={order._id} style={styles.label} wrap={false}>
             <Image src='/label-icon.png' style={styles.logo} />
             <View>
-              <View style={[styles.name_shift, styles.line]}>
+              <Text style={[styles.name_shift, styles.line]}>
                 <Text style={styles.bold}>{order.customer.firstName} </Text>
                 <Text>{order.customer.lastName} - </Text>
                 <Text style={[styles.capitalize, styles.bold]}>
@@ -80,7 +80,7 @@ export default function Labels({ orders }: Props) {
                     ? order.company.shift
                     : categorizeLastName(order.customer.lastName)}
                 </Text>
-              </View>
+              </Text>
               <Text style={styles.line}>{order.restaurant.name}</Text>
               <Text style={[styles.line, styles.bold]}>{order.item.name}</Text>
               {order.item.optionalAddons ||

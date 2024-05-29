@@ -57,20 +57,22 @@ export default function OrderGroupRow({
       <td>{orderGroup.customers.length}</td>
       <td>{orderGroup.orders.length}</td>
       <td className={styles.actions}>
-        <PDFDownloadLink
-          document={<Labels orders={todaysOrders} />}
-          fileName={`Labels - ${dateToText(orderGroup.deliveryDate)}.pdf`}
-        >
-          {({ loading }) =>
-            loading ? (
-              'Loading...'
-            ) : (
-              <>
-                Labels <FiDownload />
-              </>
-            )
-          }
-        </PDFDownloadLink>
+        {slug === 'upcoming-orders' && (
+          <PDFDownloadLink
+            document={<Labels orders={todaysOrders} />}
+            fileName={`Labels - ${dateToText(orderGroup.deliveryDate)}.pdf`}
+          >
+            {({ loading }) =>
+              loading ? (
+                'Loading...'
+              ) : (
+                <>
+                  Labels <FiDownload />
+                </>
+              )
+            }
+          </PDFDownloadLink>
+        )}
         <CSVLink
           headers={orderCSVHeaders}
           data={formatOrderDataToCSV(orderGroup)}
