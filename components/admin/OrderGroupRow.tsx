@@ -11,6 +11,7 @@ import {
 } from '@lib/csv';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import Labels from './Labels';
+import { useData } from '@context/Data';
 
 type Props = {
   slug: string;
@@ -18,6 +19,15 @@ type Props = {
 };
 
 export default function OrderGroupRow({ slug, orderGroup }: Props) {
+  const { upcomingOrderGroups } = useData();
+
+  const todaysOrders = [];
+  for (const upcomingOrderGroup of upcomingOrderGroups) {
+    if (upcomingOrderGroup.deliveryDate === orderGroup.deliveryDate) {
+      todaysOrders.push(...upcomingOrderGroup.orders);
+    }
+  }
+
   return (
     <tr className={styles.orders_group_row}>
       <td className={styles.important}>
@@ -40,7 +50,7 @@ export default function OrderGroupRow({ slug, orderGroup }: Props) {
       <td>{orderGroup.orders.length}</td>
       <td className={styles.actions}>
         <PDFDownloadLink
-          document={<Labels orders={orderGroup.orders} />}
+          document={<Labels orders={todaysOrders} />}
           fileName={`Labels - ${dateToText(orderGroup.deliveryDate)}.pdf`}
         >
           {({ loading }) =>
