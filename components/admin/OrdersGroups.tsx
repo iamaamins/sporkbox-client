@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useData } from '@context/Data';
 import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
-import OrdersGroupRow from './OrderGroupRow';
+import OrderGroupRow from './OrderGroupRow';
 import SortOrdersGroups from './SortOrderGroups';
 import styles from './OrdersGroups.module.css';
 import ActionButton from '@components/layout/ActionButton';
@@ -83,10 +83,11 @@ export default function OrdersGroups({ slug, title, orderGroups }: Props) {
 
             <tbody>
               {orderGroups.map((ordersGroup, index) => (
-                <OrdersGroupRow
+                <OrderGroupRow
                   key={index}
                   slug={slug}
                   orderGroup={ordersGroup}
+                  orderGroups={orderGroups}
                 />
               ))}
             </tbody>

@@ -16,17 +16,25 @@ import { useData } from '@context/Data';
 type Props = {
   slug: string;
   orderGroup: OrderGroup;
+  orderGroups: OrderGroup[];
 };
 
-export default function OrderGroupRow({ slug, orderGroup }: Props) {
-  const { upcomingOrderGroups } = useData();
-
+export default function OrderGroupRow({
+  slug,
+  orderGroup,
+  orderGroups,
+}: Props) {
   const todaysOrders = [];
-  for (const upcomingOrderGroup of upcomingOrderGroups) {
-    if (upcomingOrderGroup.deliveryDate === orderGroup.deliveryDate) {
-      todaysOrders.push(...upcomingOrderGroup.orders);
+  for (const group of orderGroups) {
+    if (group.deliveryDate === orderGroup.deliveryDate) {
+      todaysOrders.push(...group.orders);
     }
   }
+  todaysOrders.sort((a, b) => {
+    const restaurantComp = a.restaurant.name.localeCompare(b.restaurant.name);
+    if (restaurantComp !== 0) return restaurantComp;
+    return a.item.name.localeCompare(b.item.name);
+  });
 
   return (
     <tr className={styles.orders_group_row}>
