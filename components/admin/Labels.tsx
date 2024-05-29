@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   label: {
-    margin: 10,
-    width: 170,
+    margin: 15,
+    width: 160,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   line: {
-    width: 130,
+    width: 120,
     marginBottom: 5,
   },
   bold: {
