@@ -9,7 +9,7 @@ import {
   createOrderCSVFileName,
   orderCSVHeaders,
 } from '@lib/csv';
-import { PDFDownloadLink } from '@react-pdf/renderer';
+import { pdf } from '@react-pdf/renderer';
 import Labels from './Labels';
 
 type Props = {
@@ -23,17 +23,26 @@ export default function OrderGroupRow({
   orderGroup,
   orderGroups,
 }: Props) {
-  const todaysOrders = [];
-  for (const group of orderGroups) {
-    if (group.deliveryDate === orderGroup.deliveryDate) {
-      todaysOrders.push(...group.orders);
+  async function generateAndDownloadLabels(deliveryDate: string) {
+    const orders = [];
+    for (const orderGroup of orderGroups) {
+      if (orderGroup.deliveryDate === deliveryDate) {
+        orders.push(...orderGroup.orders);
+      }
     }
+    orders.sort((a, b) => {
+      const restaurantComp = a.restaurant.name.localeCompare(b.restaurant.name);
+      if (restaurantComp !== 0) return restaurantComp;
+      return a.item.name.localeCompare(b.item.name);
+    });
+
+    const blob = await pdf(<Labels orders={orders} />).toBlob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Labels - ${dateToText(deliveryDate)}.pdf`;
+    a.click();
   }
-  todaysOrders.sort((a, b) => {
-    const restaurantComp = a.restaurant.name.localeCompare(b.restaurant.name);
-    if (restaurantComp !== 0) return restaurantComp;
-    return a.item.name.localeCompare(b.item.name);
-  });
 
   return (
     <tr className={styles.orders_group_row}>
@@ -57,20 +66,11 @@ export default function OrderGroupRow({
       <td>{orderGroup.orders.length}</td>
       <td className={styles.actions}>
         {slug === 'upcoming-orders' && (
-          <PDFDownloadLink
-            document={<Labels orders={todaysOrders} />}
-            fileName={`Labels - ${dateToText(orderGroup.deliveryDate)}.pdf`}
+          <span
+            onClick={() => generateAndDownloadLabels(orderGroup.deliveryDate)}
           >
-            {({ loading }) =>
-              loading ? (
-                'Loading...'
-              ) : (
-                <>
-                  Labels <FiDownload />
-                </>
-              )
-            }
-          </PDFDownloadLink>
+            Labels <FiDownload />
+          </span>
         )}
         <CSVLink
           headers={orderCSVHeaders}

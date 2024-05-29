@@ -44,9 +44,12 @@
   align-items: center;
 }
 
-.actions a {
+.actions a,
+.actions span {
   display: flex;
+  align-items: center;
   color: var(--orange);
+  cursor: pointer;
 }
 
 @media (min-width: 768px) {
