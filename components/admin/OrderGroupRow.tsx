@@ -11,7 +11,6 @@ import {
 } from '@lib/csv';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import Labels from './Labels';
-import { useData } from '@context/Data';
 
 type Props = {
   slug: string;
