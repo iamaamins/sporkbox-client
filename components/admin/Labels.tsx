@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   },
   name_shift: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   line: {
     width: 120,
