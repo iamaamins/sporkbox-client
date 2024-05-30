@@ -35,11 +35,10 @@ const styles = StyleSheet.create({
   },
   label: {
     width: 188,
-    border: 1,
+    margin: 4.5,
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 10,
-    marginHorizontal: 4.5,
   },
   logo: {
     width: 35,
