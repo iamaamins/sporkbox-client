@@ -52,12 +52,10 @@ const styles = StyleSheet.create({
   name_shift: {
     flexWrap: 'wrap',
     flexDirection: 'row',
+    marginBottom: 10,
   },
   line: {
     width: 151,
-  },
-  line_bottom_margin: {
-    marginBottom: 5,
   },
   bold: {
     fontWeight: 'bold',
@@ -80,13 +78,7 @@ export default function Labels({ orders }: Props) {
           <View key={order._id} style={styles.label} wrap={false}>
             <Image src='/label-icon.png' style={styles.logo} />
             <View>
-              <View
-                style={[
-                  styles.name_shift,
-                  styles.line,
-                  styles.line_bottom_margin,
-                ]}
-              >
+              <View style={[styles.name_shift, styles.line]}>
                 <Text style={styles.bold}>{order.customer.firstName} </Text>
                 <Text>{order.customer.lastName} - </Text>
                 <Text style={[styles.capitalize, styles.bold]}>
@@ -95,29 +87,10 @@ export default function Labels({ orders }: Props) {
                     : categorizeLastName(order.customer.lastName)}
                 </Text>
               </View>
-              <Text style={[styles.line, styles.line_bottom_margin]}>
-                {order.restaurant.name}
-              </Text>
-              <Text
-                style={[
-                  styles.line,
-                  styles.bold,
-                  ...(order.item.optionalAddons || order.item.requiredAddons
-                    ? [styles.line_bottom_margin]
-                    : []),
-                ]}
-              >
-                {order.item.name}
-              </Text>
+              <Text style={styles.line}>{order.restaurant.name}</Text>
+              <Text style={[styles.line, styles.bold]}>{order.item.name}</Text>
               {(order.item.optionalAddons || order.item.requiredAddons) && (
-                <Text
-                  style={[
-                    styles.line,
-                    ...(order.item.removedIngredients
-                      ? [styles.line_bottom_margin]
-                      : []),
-                  ]}
-                >
+                <Text style={styles.line}>
                   {order.item.requiredAddons} {order.item.optionalAddons}
                 </Text>
               )}
