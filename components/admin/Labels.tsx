@@ -109,19 +109,18 @@ export default function Labels({ orders }: Props) {
               >
                 {order.item.name}
               </Text>
-              {order.item.optionalAddons ||
-                (order.item.requiredAddons && (
-                  <Text
-                    style={[
-                      styles.line,
-                      ...(order.item.removedIngredients
-                        ? [styles.line_bottom_margin]
-                        : []),
-                    ]}
-                  >
-                    {order.item.requiredAddons} {order.item.optionalAddons}
-                  </Text>
-                ))}
+              {(order.item.optionalAddons || order.item.requiredAddons) && (
+                <Text
+                  style={[
+                    styles.line,
+                    ...(order.item.removedIngredients
+                      ? [styles.line_bottom_margin]
+                      : []),
+                  ]}
+                >
+                  {order.item.requiredAddons} {order.item.optionalAddons}
+                </Text>
+              )}
               {order.item.removedIngredients && (
                 <Text style={styles.line}>{order.item.removedIngredients}</Text>
               )}
