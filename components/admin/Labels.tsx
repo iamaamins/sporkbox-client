@@ -26,19 +26,21 @@ Font.register({
 
 const styles = StyleSheet.create({
   page: {
-    padding: 10,
     fontSize: 10,
     flexWrap: 'wrap',
     flexDirection: 'row',
+    paddingTop: 35,
+    paddingBottom: 27,
+    paddingHorizontal: 10,
     fontFamily: 'Raleway',
     backgroundColor: '#ffffff',
   },
   label: {
     width: 188,
-    margin: 4.5,
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 10,
+    marginVertical: 13,
+    marginHorizontal: 4.5,
   },
   logo: {
     width: 35,
