@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   label: {
-    margin: 4.5,
+    marginHorizontal: 4.5,
+    marginVertical: 10,
     width: 188,
     flexDirection: 'row',
     alignItems: 'center',
@@ -45,16 +46,16 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   name_shift: {
-    flexDirection: 'row',
     flexWrap: 'wrap',
+    flexDirection: 'row',
   },
   line: {
     width: 148,
     marginBottom: 5,
   },
   bold: {
-    fontFamily: 'Raleway',
     fontWeight: 'bold',
+    fontFamily: 'Raleway',
   },
   capitalize: {
     textTransform: 'capitalize',
