@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     flexWrap: 'wrap',
     flexDirection: 'row',
+    alignItems: 'flex-start',
     paddingTop: 22,
     paddingBottom: 14,
     paddingHorizontal: 10,
@@ -43,8 +44,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 4.5,
   },
   logo: {
-    width: 35,
-    height: 35,
+    width: 32,
+    height: 32,
     marginRight: 5,
   },
   name_shift: {
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   line: {
-    width: 148,
+    width: 151,
     marginBottom: 5,
   },
   bold: {
