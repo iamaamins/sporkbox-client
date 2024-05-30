@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   label: {
-    margin: 15,
-    width: 160,
+    margin: 4.5,
+    width: 188,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   line: {
-    width: 120,
+    width: 148,
     marginBottom: 5,
   },
   bold: {
@@ -68,7 +68,7 @@ type Props = {
 export default function Labels({ orders }: Props) {
   return (
     <Document>
-      <Page size='A4' style={styles.page}>
+      <Page size='LETTER' style={styles.page}>
         {orders.map((order) => (
           <View key={order._id} style={styles.label} wrap={false}>
             <Image src='/label-icon.png' style={styles.logo} />
