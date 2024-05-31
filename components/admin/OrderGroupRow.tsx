@@ -35,8 +35,14 @@ export default function OrderGroupRow({
         restaurants.push(...orderGroup.restaurants);
       }
     }
+    const uniqueRestaurants: string[] = [];
+    for (const restaurant of restaurants) {
+      if (!uniqueRestaurants.includes(restaurant)) {
+        uniqueRestaurants.push(restaurant);
+      }
+    }
+    setRestaurants(uniqueRestaurants);
     setDeliveryDate(deliveryDate);
-    setRestaurants(restaurants);
     setShowModal(true);
   }
 
