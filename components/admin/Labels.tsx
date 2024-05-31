@@ -28,9 +28,9 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginTop: 22,
-    marginBottom: 14,
-    marginHorizontal: 10,
+    paddingTop: 22,
+    paddingBottom: 14,
+    paddingHorizontal: 10,
     fontFamily: 'Raleway',
     backgroundColor: '#ffffff',
   },
@@ -88,7 +88,7 @@ export default function Labels({ labels }: Props) {
     lineWidth: number,
     hasOptionalTexts: boolean
   ) {
-    const baseSize = hasOptionalTexts ? 9 : 10;
+    const baseSize = hasOptionalTexts ? 8 : 10;
     const charWidth = baseSize * 0.6;
     const textWidth = text.length * charWidth;
     if (textWidth <= lineWidth) return baseSize;
