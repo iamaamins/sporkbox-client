@@ -94,6 +94,7 @@ export default function OrdersGroups({ slug, title, orderGroups }: Props) {
     a.href = url;
     a.download = `Labels - ${dateToText(deliveryDate)}.pdf`;
     a.click();
+    setShowModal(false);
   }
 
   return (
