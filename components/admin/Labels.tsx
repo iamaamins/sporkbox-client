@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 13,
     marginHorizontal: 4.5,
+    border: 1,
   },
   logo: {
     width: 32,
@@ -87,7 +88,7 @@ export default function Labels({ labels }: Props) {
     lineWidth: number,
     hasOptionalTexts: boolean
   ) {
-    const baseSize = hasOptionalTexts ? 8 : 10;
+    const baseSize = hasOptionalTexts ? 9 : 10;
     const charWidth = baseSize * 0.6;
     const textWidth = text.length * charWidth;
     if (textWidth <= lineWidth) return baseSize;
