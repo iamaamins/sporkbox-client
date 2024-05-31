@@ -8,13 +8,11 @@ import styles from './ScheduleRestaurantsModal.module.css';
 import { axiosInstance, showErrorAlert, showSuccessAlert } from '@lib/utils';
 
 export default function ScheduleRestaurantsModal() {
-  // Initial state
   const initialState = {
     date: '',
     restaurantId: '',
   };
 
-  // Hooks
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { vendors, setScheduledRestaurants } = useData();
@@ -23,14 +21,10 @@ export default function ScheduleRestaurantsModal() {
     []
   );
   const [formData, setFormData] = useState<FormData>(initialState);
-
-  // Destructure form data
   const { date, restaurantId } = formData;
 
-  // Get the approved restaurants
   useEffect(() => {
     if (vendors.data.length > 0) {
-      // Filter approved restaurants
       setApprovedRestaurants(
         vendors.data
           .filter((vendor) => vendor.status === 'ACTIVE')
@@ -40,59 +34,37 @@ export default function ScheduleRestaurantsModal() {
     }
   }, [vendors]);
 
-  // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-    // Update state
     setFormData((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value,
     }));
   }
 
-  // Schedule a restaurant
   async function scheduleRestaurant(e: FormEvent) {
     e.preventDefault();
-
-    // Schedule a restaurant
     try {
-      // Show loader
       setIsLoading(true);
-
       const data = { ...formData, companyId: router.query.company };
-
-      // Make request to backend
       const response = await axiosInstance.post(
         `/restaurants/schedule-restaurant`,
         data
       );
-
-      // Update scheduled restaurants state
       setScheduledRestaurants((prevState) => ({
         ...prevState,
         data: [...prevState.data, response.data],
       }));
-
-      // Clear form data
       setFormData(initialState);
-
-      // Show success alert
       showSuccessAlert('Restaurant scheduled', setAlerts);
     } catch (err) {
-      // Log error
       console.log(err);
-
-      // Show error alert
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      // Remove loader
       setIsLoading(false);
     }
   }
 
-  // Create min date for date picker
   const today = new Date();
-
-  // Format date like 2022-11-08
   const minDate = today.toISOString().split('T')[0];
 
   return (

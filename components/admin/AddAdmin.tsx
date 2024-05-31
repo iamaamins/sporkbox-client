@@ -6,7 +6,6 @@ import SubmitButton from '@components/layout/SubmitButton';
 import { axiosInstance, showErrorAlert, showSuccessAlert } from '@lib/utils';
 
 export default function AddAdmin() {
-  // Initial state
   const initialState = {
     firstName: '',
     lastName: '',
@@ -15,50 +14,32 @@ export default function AddAdmin() {
     confirmPassword: '',
   };
 
-  // Hooks
   const { setAlerts } = useAlert();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>(initialState);
 
-  // Destructure form data
   const { firstName, lastName, email, password, confirmPassword } = formData;
-
-  // Check passwords match
   const passwordsMatch = password === confirmPassword;
 
-  // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    // Update state
     setFormData((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value,
     }));
   }
 
-  // Handle form submit
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     try {
-      // Show loader
       setIsLoading(true);
-
-      // Make request to the backend
       await axiosInstance.post('/admins/add-admin', formData);
-
-      // Reset the form
       setFormData(initialState);
-
-      // Show success alert
       showSuccessAlert('Admin added', setAlerts);
     } catch (err) {
-      // Log error
       console.log(err);
-
-      // Show error alert
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      // Remove the loader
       setIsLoading(false);
     }
   }

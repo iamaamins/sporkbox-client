@@ -84,14 +84,14 @@ type Props = {
 export default function Labels({ labels }: Props) {
   function calculateFontSize(
     text: string,
-    maxWidth: number,
+    lineWidth: number,
     hasAddons: boolean
   ) {
     const fontSize = hasAddons ? 8 : 10;
     const charWidth = fontSize * 0.6;
     const textWidth = text.length * charWidth;
-    if (textWidth <= maxWidth) return fontSize;
-    return maxWidth / text.length / 0.6;
+    if (textWidth <= lineWidth) return fontSize;
+    return lineWidth / text.length / 0.6;
   }
 
   return (

@@ -9,61 +9,35 @@ import {
   createOrderCSVFileName,
   orderCSVHeaders,
 } from '@lib/csv';
-import { pdf } from '@react-pdf/renderer';
-import Labels from './Labels';
+import { Dispatch, SetStateAction } from 'react';
 
 type Props = {
   slug: string;
   orderGroup: OrderGroup;
   orderGroups: OrderGroup[];
+  setRestaurants: Dispatch<SetStateAction<string[]>>;
+  setDeliveryDate: Dispatch<SetStateAction<string>>;
+  setShowModal: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function OrderGroupRow({
   slug,
   orderGroup,
   orderGroups,
+  setShowModal,
+  setRestaurants,
+  setDeliveryDate,
 }: Props) {
-  async function generateAndDownloadLabels(deliveryDate: string) {
-    const orders = [];
+  function selectRestaurants(deliveryDate: string) {
+    const restaurants = [];
     for (const orderGroup of orderGroups) {
       if (orderGroup.deliveryDate === deliveryDate) {
-        orders.push(...orderGroup.orders);
+        restaurants.push(...orderGroup.restaurants);
       }
     }
-
-    const labels = [];
-    for (const order of orders) {
-      for (let i = 0; i < order.item.quantity; i++) {
-        labels.push({
-          customer: {
-            firstName: order.customer.firstName,
-            lastName: order.customer.lastName,
-            shift: order.company.shift,
-          },
-          restaurant: order.restaurant.name,
-          item: {
-            name: order.item.name,
-            addons:
-              order.item.optionalAddons || order.item.requiredAddons
-                ? `${order.item.optionalAddons} ${order.item.requiredAddons}`
-                : '',
-            removed: order.item.removedIngredients || '',
-          },
-        });
-      }
-    }
-    labels.sort((a, b) => {
-      const restaurantComp = a.restaurant.localeCompare(b.restaurant);
-      if (restaurantComp !== 0) return restaurantComp;
-      return a.item.name.localeCompare(b.item.name);
-    });
-
-    const blob = await pdf(<Labels labels={labels} />).toBlob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `Labels - ${dateToText(deliveryDate)}.pdf`;
-    a.click();
+    setDeliveryDate(deliveryDate);
+    setRestaurants(restaurants);
+    setShowModal(true);
   }
 
   return (
@@ -88,9 +62,7 @@ export default function OrderGroupRow({
       <td>{orderGroup.orders.length}</td>
       <td className={styles.actions}>
         {slug === 'upcoming-orders' && (
-          <span
-            onClick={() => generateAndDownloadLabels(orderGroup.deliveryDate)}
-          >
+          <span onClick={() => selectRestaurants(orderGroup.deliveryDate)}>
             Labels <FiDownload />
           </span>
         )}
