@@ -85,7 +85,7 @@ export default function Labels({ orders }: Props) {
     <Document>
       <Page size='LETTER' style={styles.page}>
         {orders.map((order) => {
-          const nameShift = `${order.customer.firstName} test case name ${
+          const nameShift = `${order.customer.firstName} ${
             order.customer.lastName
           } - ${
             order.company.shift === 'night'
@@ -110,7 +110,7 @@ export default function Labels({ orders }: Props) {
                       },
                     ]}
                   >
-                    {order.customer.firstName} test case name{' '}
+                    {order.customer.firstName}{' '}
                   </Text>
                   <Text
                     style={{
@@ -175,9 +175,6 @@ export default function Labels({ orders }: Props) {
                     {order.item.requiredAddons} {order.item.optionalAddons}
                   </Text>
                 )}
-                <Text>Optional addons</Text>
-                <Text>Required addons</Text>
-                <Text>Removed ingredients</Text>
                 {order.item.removedIngredients && (
                   <Text
                     style={[
