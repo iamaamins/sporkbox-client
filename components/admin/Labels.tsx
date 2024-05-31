@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     height: 59,
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 13,
+    paddingVertical: 13,
     marginHorizontal: 4.5,
     border: 1,
   },
@@ -97,7 +97,7 @@ export default function Labels({ orders }: Props) {
             (order.item.optionalAddons ||
               order.item.requiredAddons ||
               order.item.removedIngredients) &&
-            6;
+            7;
           const smallestFontSize = Math.min(
             smallerFontSize || calculateFontSize(nameShift, styles.line.width)
           );
