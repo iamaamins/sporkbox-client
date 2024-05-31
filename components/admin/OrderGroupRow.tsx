@@ -30,13 +30,19 @@ export default function OrderGroupRow({
         orders.push(...orderGroup.orders);
       }
     }
-    orders.sort((a, b) => {
+    const labels = [];
+    for (const order of orders) {
+      for (let i = 0; i < order.item.quantity; i++) {
+        labels.push(order);
+      }
+    }
+    labels.sort((a, b) => {
       const restaurantComp = a.restaurant.name.localeCompare(b.restaurant.name);
       if (restaurantComp !== 0) return restaurantComp;
       return a.item.name.localeCompare(b.item.name);
     });
 
-    const blob = await pdf(<Labels orders={orders} />).toBlob();
+    const blob = await pdf(<Labels labels={labels} />).toBlob();
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;

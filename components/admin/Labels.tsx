@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 13,
     marginHorizontal: 4.5,
-    border: 1,
   },
   logo: {
     width: 32,
@@ -67,10 +66,10 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  orders: Order[];
+  labels: Order[];
 };
 
-export default function Labels({ orders }: Props) {
+export default function Labels({ labels }: Props) {
   function calculateFontSize(
     text: string,
     maxWidth: number,
@@ -85,33 +84,33 @@ export default function Labels({ orders }: Props) {
   return (
     <Document>
       <Page size='LETTER' style={styles.page}>
-        {orders.map((order) => {
-          const nameShift = `${order.customer.firstName} ${
-            order.customer.lastName
+        {labels.map((label) => {
+          const nameShift = `${label.customer.firstName} ${
+            label.customer.lastName
           } - ${
-            order.company.shift === 'night'
-              ? order.company.shift
-              : categorizeLastName(order.customer.lastName)
+            label.company.shift === 'night'
+              ? label.company.shift
+              : categorizeLastName(label.customer.lastName)
           }`;
           const smallerFontSize =
-            (order.item.optionalAddons ||
-              order.item.requiredAddons ||
-              order.item.removedIngredients) &&
+            (label.item.optionalAddons ||
+              label.item.requiredAddons ||
+              label.item.removedIngredients) &&
             8;
           const smallestFontSize = Math.min(
             smallerFontSize || calculateFontSize(nameShift, styles.line.width)
           );
 
           return (
-            <View key={order._id} style={styles.label} wrap={false}>
+            <View key={label._id} style={styles.label} wrap={false}>
               <Image src='/label-icon.png' style={styles.logo} />
               <View>
                 <View style={[styles.name_shift, styles.line]}>
                   <Text style={[styles.bold, { fontSize: smallestFontSize }]}>
-                    {order.customer.firstName}{' '}
+                    {label.customer.lastName}{' '}
                   </Text>
                   <Text style={{ fontSize: smallestFontSize }}>
-                    {order.customer.lastName} -{' '}
+                    {label.customer.firstName} -{' '}
                   </Text>
                   <Text
                     style={[
@@ -120,13 +119,13 @@ export default function Labels({ orders }: Props) {
                       { fontSize: smallestFontSize },
                     ]}
                   >
-                    {order.company.shift === 'night'
-                      ? order.company.shift
-                      : categorizeLastName(order.customer.lastName)}
+                    {label.company.shift === 'night'
+                      ? label.company.shift
+                      : categorizeLastName(label.customer.lastName)}
                   </Text>
                 </View>
                 <Text style={[styles.line, { fontSize: smallestFontSize }]}>
-                  {order.restaurant.name}
+                  {label.restaurant.name}
                 </Text>
                 <Text
                   style={[
@@ -135,16 +134,16 @@ export default function Labels({ orders }: Props) {
                     { fontSize: smallestFontSize },
                   ]}
                 >
-                  {order.item.name}
+                  {label.item.name}
                 </Text>
-                {(order.item.optionalAddons || order.item.requiredAddons) && (
+                {(label.item.optionalAddons || label.item.requiredAddons) && (
                   <Text style={[styles.line, { fontSize: smallestFontSize }]}>
-                    {order.item.requiredAddons} {order.item.optionalAddons}
+                    {label.item.requiredAddons} {label.item.optionalAddons}
                   </Text>
                 )}
-                {order.item.removedIngredients && (
+                {label.item.removedIngredients && (
                   <Text style={[styles.line, { fontSize: smallestFontSize }]}>
-                    {order.item.removedIngredients}
+                    {label.item.removedIngredients}
                   </Text>
                 )}
               </View>
