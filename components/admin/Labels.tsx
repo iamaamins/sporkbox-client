@@ -64,8 +64,22 @@ const styles = StyleSheet.create({
   },
 });
 
+type Label = {
+  customer: {
+    firstName: string;
+    lastName: string;
+    shift: string;
+  };
+  restaurant: string;
+  item: {
+    name: string;
+    addons: string;
+    removed: string;
+  };
+};
+
 type Props = {
-  labels: Order[];
+  labels: Label[];
 };
 
 export default function Labels({ labels }: Props) {
@@ -81,42 +95,38 @@ export default function Labels({ labels }: Props) {
     return maxWidth / text.length / 0.6;
   }
 
+  const label = labels[0];
+  console.log(!!label.item.removed, !!label.item.addons);
+
   return (
     <Document>
       <Page size='LETTER' style={styles.page}>
-        {labels.map((label) => {
+        {labels.map((label, index) => {
           const nameShift = `${label.customer.firstName} ${
             label.customer.lastName
           } - ${
-            label.company.shift === 'night'
-              ? label.company.shift
+            label.customer.shift === 'night'
+              ? label.customer.shift
               : categorizeLastName(label.customer.lastName)
-          }`;
+          }`.trim();
+          const restaurant = label.restaurant.trim();
+          const item = label.item.name.trim();
+          const addons = label.item.addons.trim();
+          const removed = label.item.removed.trim();
 
-          const hasAddons =
-            !!label.item.optionalAddons ||
-            !!label.item.requiredAddons ||
-            !!label.item.removedIngredients;
+          const hasAddons = !!label.item.addons || !!label.item.removed;
           const lineWidth = styles.line.width;
 
           const fontSize = Math.min(
             calculateFontSize(nameShift, lineWidth, hasAddons),
-            calculateFontSize(label.restaurant.name, lineWidth, hasAddons),
-            calculateFontSize(label.item.name, lineWidth, hasAddons),
-            calculateFontSize(
-              `${label.item.requiredAddons} ${label.item.optionalAddons}`,
-              lineWidth,
-              hasAddons
-            ),
-            calculateFontSize(
-              `${label.item.removedIngredients}`,
-              lineWidth,
-              hasAddons
-            )
+            calculateFontSize(restaurant, lineWidth, hasAddons),
+            calculateFontSize(item, lineWidth, hasAddons),
+            calculateFontSize(addons, lineWidth, hasAddons),
+            calculateFontSize(removed, lineWidth, hasAddons)
           );
 
           return (
-            <View key={label._id} style={styles.label} wrap={false}>
+            <View key={index} style={styles.label} wrap={false}>
               <Image src='/label-icon.png' style={styles.logo} />
               <View>
                 <View style={[styles.name_shift, styles.line]}>
@@ -127,27 +137,17 @@ export default function Labels({ labels }: Props) {
                     {label.customer.firstName} -{' '}
                   </Text>
                   <Text style={[styles.bold, styles.capitalize, { fontSize }]}>
-                    {label.company.shift === 'night'
-                      ? label.company.shift
+                    {label.customer.shift === 'night'
+                      ? label.customer.shift
                       : categorizeLastName(label.customer.lastName)}
                   </Text>
                 </View>
-                <Text style={[styles.line, { fontSize }]}>
-                  {label.restaurant.name}
-                </Text>
+                <Text style={[styles.line, { fontSize }]}>{restaurant}</Text>
                 <Text style={[styles.line, styles.bold, { fontSize }]}>
-                  {label.item.name}
+                  {item}
                 </Text>
-                {(label.item.optionalAddons || label.item.requiredAddons) && (
-                  <Text style={[styles.line, { fontSize }]}>
-                    {label.item.requiredAddons} {label.item.optionalAddons}
-                  </Text>
-                )}
-                {label.item.removedIngredients && (
-                  <Text style={[styles.line, { fontSize }]}>
-                    {label.item.removedIngredients}
-                  </Text>
-                )}
+                <Text style={[styles.line, { fontSize }]}>{addons}</Text>
+                <Text style={[styles.line, { fontSize }]}>{removed}</Text>
               </View>
             </View>
           );

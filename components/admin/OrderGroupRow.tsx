@@ -33,11 +33,26 @@ export default function OrderGroupRow({
     const labels = [];
     for (const order of orders) {
       for (let i = 0; i < order.item.quantity; i++) {
-        labels.push(order);
+        labels.push({
+          customer: {
+            firstName: order.customer.firstName,
+            lastName: order.customer.lastName,
+            shift: order.company.shift,
+          },
+          restaurant: order.restaurant.name,
+          item: {
+            name: order.item.name,
+            addons:
+              order.item.optionalAddons || order.item.requiredAddons
+                ? `${order.item.optionalAddons} ${order.item.requiredAddons}`
+                : '',
+            removed: order.item.removedIngredients || '',
+          },
+        });
       }
     }
     labels.sort((a, b) => {
-      const restaurantComp = a.restaurant.name.localeCompare(b.restaurant.name);
+      const restaurantComp = a.restaurant.localeCompare(b.restaurant);
       if (restaurantComp !== 0) return restaurantComp;
       return a.item.name.localeCompare(b.item.name);
     });
