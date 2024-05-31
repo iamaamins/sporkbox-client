@@ -38,11 +38,12 @@ const styles = StyleSheet.create({
   },
   label: {
     width: 188,
-    height: 72,
+    height: 59,
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 13,
     marginHorizontal: 4.5,
+    border: 1,
   },
   logo: {
     width: 32,
@@ -92,43 +93,31 @@ export default function Labels({ orders }: Props) {
               ? order.company.shift
               : categorizeLastName(order.customer.lastName)
           }`;
-          const addons = `${order.item.optionalAddons} ${order.item.requiredAddons}`;
+          const smallerFontSize =
+            (order.item.optionalAddons ||
+              order.item.requiredAddons ||
+              order.item.removedIngredients) &&
+            6;
+          const smallestFontSize = Math.min(
+            smallerFontSize || calculateFontSize(nameShift, styles.line.width)
+          );
 
           return (
             <View key={order._id} style={styles.label} wrap={false}>
               <Image src='/label-icon.png' style={styles.logo} />
               <View>
                 <View style={[styles.name_shift, styles.line]}>
-                  <Text
-                    style={[
-                      styles.bold,
-                      {
-                        fontSize: calculateFontSize(
-                          nameShift,
-                          styles.line.width
-                        ),
-                      },
-                    ]}
-                  >
+                  <Text style={[styles.bold, { fontSize: smallestFontSize }]}>
                     {order.customer.firstName}{' '}
                   </Text>
-                  <Text
-                    style={{
-                      fontSize: calculateFontSize(nameShift, styles.line.width),
-                    }}
-                  >
+                  <Text style={{ fontSize: smallestFontSize }}>
                     {order.customer.lastName} -{' '}
                   </Text>
                   <Text
                     style={[
                       styles.bold,
                       styles.capitalize,
-                      {
-                        fontSize: calculateFontSize(
-                          nameShift,
-                          styles.line.width
-                        ),
-                      },
+                      { fontSize: smallestFontSize },
                     ]}
                   >
                     {order.company.shift === 'night'
@@ -136,57 +125,25 @@ export default function Labels({ orders }: Props) {
                       : categorizeLastName(order.customer.lastName)}
                   </Text>
                 </View>
-                <Text
-                  style={[
-                    styles.line,
-                    {
-                      fontSize: calculateFontSize(
-                        order.restaurant.name,
-                        styles.line.width
-                      ),
-                    },
-                  ]}
-                >
+                <Text style={[styles.line, { fontSize: smallestFontSize }]}>
                   {order.restaurant.name}
                 </Text>
                 <Text
                   style={[
                     styles.line,
                     styles.bold,
-                    {
-                      fontSize: calculateFontSize(
-                        order.item.name,
-                        styles.line.width
-                      ),
-                    },
+                    { fontSize: smallestFontSize },
                   ]}
                 >
                   {order.item.name}
                 </Text>
                 {(order.item.optionalAddons || order.item.requiredAddons) && (
-                  <Text
-                    style={[
-                      styles.line,
-                      {
-                        fontSize: calculateFontSize(addons, styles.line.width),
-                      },
-                    ]}
-                  >
+                  <Text style={[styles.line, { fontSize: smallestFontSize }]}>
                     {order.item.requiredAddons} {order.item.optionalAddons}
                   </Text>
                 )}
                 {order.item.removedIngredients && (
-                  <Text
-                    style={[
-                      styles.line,
-                      {
-                        fontSize: calculateFontSize(
-                          order.item.removedIngredients,
-                          styles.line.width
-                        ),
-                      },
-                    ]}
-                  >
+                  <Text style={[styles.line, { fontSize: smallestFontSize }]}>
                     {order.item.removedIngredients}
                   </Text>
                 )}
