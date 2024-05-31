@@ -8,7 +8,6 @@ import {
   Font,
   StyleSheet,
 } from '@react-pdf/renderer';
-import { Order } from 'types';
 
 Font.register({
   family: 'Raleway',
@@ -94,9 +93,6 @@ export default function Labels({ labels }: Props) {
     if (textWidth <= maxWidth) return fontSize;
     return maxWidth / text.length / 0.6;
   }
-
-  const label = labels[0];
-  console.log(!!label.item.removed, !!label.item.addons);
 
   return (
     <Document>

@@ -30,6 +30,7 @@ export default function OrderGroupRow({
         orders.push(...orderGroup.orders);
       }
     }
+
     const labels = [];
     for (const order of orders) {
       for (let i = 0; i < order.item.quantity; i++) {
