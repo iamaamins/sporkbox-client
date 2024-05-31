@@ -38,10 +38,10 @@ const styles = StyleSheet.create({
   },
   label: {
     width: 188,
-    height: 59,
+    height: 72,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 13,
+    marginVertical: 13,
     marginHorizontal: 4.5,
     border: 1,
   },
