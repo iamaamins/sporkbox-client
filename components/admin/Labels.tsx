@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   name_shift: {
-    marginBottom: 10,
+    marginBottom: 5,
     flexDirection: 'row',
   },
   line: {
