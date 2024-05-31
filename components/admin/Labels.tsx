@@ -88,7 +88,7 @@ export default function Labels({ labels }: Props) {
     lineWidth: number,
     hasOptionalTexts: boolean
   ) {
-    const baseSize = 10;
+    const baseSize = hasOptionalTexts ? 9 : 10;
     const charWidth = baseSize * 0.6;
     const textWidth = text.length * charWidth;
     if (textWidth <= lineWidth) return baseSize;
