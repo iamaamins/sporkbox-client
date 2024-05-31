@@ -36,11 +36,12 @@ const styles = StyleSheet.create({
   },
   label: {
     width: 188,
-    height: 59,
+    height: 46,
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 13,
     marginHorizontal: 4.5,
+    border: 1,
   },
   logo: {
     width: 32,
