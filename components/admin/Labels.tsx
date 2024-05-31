@@ -85,12 +85,12 @@ export default function Labels({ labels }: Props) {
   function calculateFontSize(
     text: string,
     lineWidth: number,
-    hasAddons: boolean
+    hasOptionalTexts: boolean
   ) {
-    const fontSize = hasAddons ? 8 : 10;
-    const charWidth = fontSize * 0.6;
+    const baseSize = hasOptionalTexts ? 8 : 10;
+    const charWidth = baseSize * 0.6;
     const textWidth = text.length * charWidth;
-    if (textWidth <= lineWidth) return fontSize;
+    if (textWidth <= lineWidth) return baseSize;
     return lineWidth / text.length / 0.6;
   }
 
@@ -110,15 +110,15 @@ export default function Labels({ labels }: Props) {
           const addons = label.item.addons.trim();
           const removed = label.item.removed.trim();
 
-          const hasAddons = !!label.item.addons || !!label.item.removed;
+          const hasOptionalTexts = !!label.item.addons || !!label.item.removed;
           const lineWidth = styles.line.width;
 
           const fontSize = Math.min(
-            calculateFontSize(nameShift, lineWidth, hasAddons),
-            calculateFontSize(restaurant, lineWidth, hasAddons),
-            calculateFontSize(item, lineWidth, hasAddons),
-            calculateFontSize(addons, lineWidth, hasAddons),
-            calculateFontSize(removed, lineWidth, hasAddons)
+            calculateFontSize(nameShift, lineWidth, hasOptionalTexts),
+            calculateFontSize(restaurant, lineWidth, hasOptionalTexts),
+            calculateFontSize(item, lineWidth, hasOptionalTexts),
+            calculateFontSize(addons, lineWidth, hasOptionalTexts),
+            calculateFontSize(removed, lineWidth, hasOptionalTexts)
           );
 
           return (
