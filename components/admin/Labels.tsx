@@ -25,7 +25,7 @@ Font.register({
 
 const styles = StyleSheet.create({
   page: {
-    gap: 9,
+    columnGap: 9,
     flexWrap: 'wrap',
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   label: {
-    width: 188,
+    width: 190,
     height: 46,
     flexDirection: 'row',
     alignItems: 'center',
