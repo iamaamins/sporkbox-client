@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   label: {
-    width: 193,
+    width: 198,
     height: 46,
     flexDirection: 'row',
     alignItems: 'center',
