@@ -25,6 +25,7 @@ Font.register({
 
 const styles = StyleSheet.create({
   page: {
+    gap: 9,
     flexWrap: 'wrap',
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -35,13 +36,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   label: {
-    gap: 9,
     width: 188,
     height: 46,
     flexDirection: 'row',
     alignItems: 'center',
+    paddingLeft: 4.5,
     marginVertical: 13,
-    paddingHorizontal: 4.5,
     border: 1,
   },
   logo: {
