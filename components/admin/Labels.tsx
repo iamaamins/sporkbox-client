@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   label: {
     width: 188,
-    height: 72,
+    height: 46,
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 13,
