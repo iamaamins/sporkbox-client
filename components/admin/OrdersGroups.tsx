@@ -6,7 +6,12 @@ import OrderGroupRow from './OrderGroupRow';
 import SortOrdersGroups from './SortOrderGroups';
 import styles from './OrdersGroups.module.css';
 import ActionButton from '@components/layout/ActionButton';
-import { axiosInstance, dateToText, showErrorAlert } from '@lib/utils';
+import {
+  axiosInstance,
+  dateToText,
+  getAddonIngredients,
+  showErrorAlert,
+} from '@lib/utils';
 import { CustomAxiosError, OrderGroup, SortedOrderGroups } from 'types';
 import ModalContainer from '@components/layout/ModalContainer';
 import { pdf } from '@react-pdf/renderer';
@@ -74,7 +79,9 @@ export default function OrdersGroups({ slug, title, orderGroups }: Props) {
               name: order.item.name,
               addons:
                 order.item.optionalAddons || order.item.requiredAddons
-                  ? `${order.item.optionalAddons} ${order.item.requiredAddons}`
+                  ? `${getAddonIngredients(
+                      order.item.optionalAddons
+                    )} ${getAddonIngredients(order.item.requiredAddons)}`
                   : '',
               removed: order.item.removedIngredients || '',
             },

@@ -373,3 +373,15 @@ export function categorizeLastName(lastName: string) {
   if (initial >= 'm' && initial <= 'r') return 'M-R';
   if (initial >= 's' && initial <= 'z') return 'S-Z';
 }
+
+export function getAddonIngredients(addons: string | undefined) {
+  if (!addons) return;
+
+  const addonsArr = addons.split(',');
+  const ingredients = [];
+  for (const addon of addonsArr) {
+    const ingredient = addon.split('-')[0].trim();
+    ingredients.push(ingredient);
+  }
+  return ingredients.join(', ');
+}
