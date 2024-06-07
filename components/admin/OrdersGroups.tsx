@@ -77,13 +77,10 @@ export default function OrdersGroups({ slug, title, orderGroups }: Props) {
             restaurant: order.restaurant.name,
             item: {
               name: order.item.name,
-              addons:
-                order.item.optionalAddons || order.item.requiredAddons
-                  ? `${getAddonIngredients(
-                      order.item.optionalAddons
-                    )} ${getAddonIngredients(order.item.requiredAddons)}`
-                  : '',
-              removed: getAddonIngredients(order.item.removedIngredients) || '',
+              addons: getAddonIngredients(
+                `${order.item.optionalAddons}, ${order.item.requiredAddons}`
+              ),
+              removed: getAddonIngredients(order.item.removedIngredients),
             },
           });
         }
