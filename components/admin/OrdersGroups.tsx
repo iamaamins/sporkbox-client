@@ -83,7 +83,7 @@ export default function OrdersGroups({ slug, title, orderGroups }: Props) {
                       order.item.optionalAddons
                     )} ${getAddonIngredients(order.item.requiredAddons)}`
                   : '',
-              removed: order.item.removedIngredients || '',
+              removed: getAddonIngredients(order.item.removedIngredients) || '',
             },
           });
         }
