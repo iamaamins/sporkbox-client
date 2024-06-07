@@ -375,7 +375,7 @@ export function categorizeLastName(lastName: string) {
 }
 
 export function getAddonIngredients(addons: string | undefined) {
-  if (!addons) return '';
+  if (!addons) return;
 
   const addonsArr = addons.split(',');
   const ingredients = [];
