@@ -73,7 +73,8 @@ type Label = {
   restaurant: string;
   item: {
     name: string;
-    addons: string;
+    optional: string;
+    required: string;
     removed: string;
   };
 };
@@ -108,10 +109,12 @@ export default function Labels({ labels }: Props) {
           }`.trim();
           const restaurant = label.restaurant.trim();
           const item = label.item.name.trim();
-          const addons = label.item.addons.trim();
+          const optional = label.item.optional.trim();
+          const required = label.item.required.trim();
           const removed = label.item.removed.trim();
+          const addons = `${optional} ${required}`.trim();
 
-          const hasOptionalTexts = !!label.item.addons || !!label.item.removed;
+          const hasOptionalTexts = !!addons || !!removed;
           const lineWidth = styles.line.width;
 
           const fontSize = Math.min(
