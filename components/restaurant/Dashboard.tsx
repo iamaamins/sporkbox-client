@@ -26,6 +26,7 @@ type OrderGroupSchedule = {
 
 type OrderGroup = {
   date: number;
+  shift: 'day' | 'night';
   quantity: number;
   schedule: OrderGroupSchedule;
   items: VendorUpcomingOrderItem[];
@@ -135,22 +136,26 @@ export default function Dashboard() {
     if (restaurant.data && vendorUpcomingOrders.data.length) {
       const orderMap: Record<string, OrderGroup> = {};
       for (const order of vendorUpcomingOrders.data) {
+        const shift = order.company.shift;
         const date = dateToMS(order.delivery.date);
         const schedule = restaurant.data.schedules.find(
-          (schedule) => dateToMS(schedule.date) === date
+          (schedule) =>
+            dateToMS(schedule.date) === date && schedule.company.shift === shift
         );
 
         if (schedule) {
-          if (!orderMap[date]) {
-            orderMap[date] = {
+          const dateShift = `${date}-${shift}`;
+          if (!orderMap[dateShift]) {
+            orderMap[dateShift] = {
               date,
+              shift,
               items: [],
               quantity: 0,
               schedule: { _id: schedule._id, status: schedule.status },
             };
           }
 
-          const existingItem = orderMap[date].items.find(
+          const existingItem = orderMap[dateShift].items.find(
             (item) =>
               item._id === order.item._id &&
               item.optionalAddons === order.item.optionalAddons &&
@@ -161,15 +166,15 @@ export default function Dashboard() {
           if (existingItem) {
             existingItem.quantity += order.item.quantity;
           } else {
-            orderMap[date].items.push({ ...order.item });
+            orderMap[dateShift].items.push({ ...order.item });
           }
-          orderMap[date].quantity += order.item.quantity;
+          orderMap[dateShift].quantity += order.item.quantity;
         }
       }
 
       const orderGroups: OrderGroup[] = [];
-      for (const date in orderMap) {
-        orderGroups.push(orderMap[date]);
+      for (const dateShift in orderMap) {
+        orderGroups.push(orderMap[dateShift]);
       }
       setOrderGroups(orderGroups);
     }
@@ -191,10 +196,12 @@ export default function Dashboard() {
         <h2>Loading...</h2>
       ) : orderGroups.length ? (
         <>
-          {orderGroups.map(({ date, items, quantity, schedule }) => (
-            <div className={styles.group} key={date}>
+          {orderGroups.map(({ date, shift, items, quantity, schedule }) => (
+            <div className={styles.group} key={`${date}-${shift}`}>
               <div className={styles.group_header}>
-                <h2>{dateToText(+date)}</h2>
+                <h2>
+                  {dateToText(+date)} - {shift}
+                </h2>
                 <button
                   onClick={() =>
                     initiateScheduleUpdate(dateToText(+date), schedule)

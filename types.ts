@@ -30,6 +30,9 @@ export interface Vendor extends User {
 export type Schedule = {
   _id: string;
   date: string;
+  company: {
+    shift: 'day' | 'night';
+  };
   status: 'ACTIVE' | 'INACTIVE';
 };
 
@@ -147,6 +150,9 @@ export type VendorUpcomingOrderItem = {
 
 export type VendorUpcomingOrder = {
   _id: string;
+  company: {
+    shift: 'day' | 'night';
+  };
   delivery: { date: string };
   item: VendorUpcomingOrderItem;
 };
