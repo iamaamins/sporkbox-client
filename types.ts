@@ -48,7 +48,7 @@ export type Restaurant = {
     addressLine1: string;
     addressLine2?: string;
   };
-  orderCapacity?: number;
+  orderCapacity: number;
   createdAt: string;
   schedules: Schedule[];
 };
@@ -387,7 +387,7 @@ export type RestaurantFormData = {
   lastName: string;
   firstName: string;
   password?: string;
-  orderCapacity?: string;
+  orderCapacity: string;
   addressLine1: string;
   addressLine2?: string;
   restaurantName: string;

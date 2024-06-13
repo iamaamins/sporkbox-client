@@ -70,7 +70,10 @@ export default function EditRestaurant() {
           state: vendor.restaurant.address.state,
           addressLine1: vendor.restaurant.address.addressLine1,
           addressLine2: vendor.restaurant.address.addressLine2,
-          orderCapacity: vendor.restaurant.orderCapacity?.toString(),
+          orderCapacity:
+            vendor.restaurant.orderCapacity === null
+              ? ''
+              : vendor.restaurant.orderCapacity.toString(),
         });
       }
     }
