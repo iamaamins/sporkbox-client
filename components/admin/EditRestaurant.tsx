@@ -90,8 +90,8 @@ export default function EditRestaurant() {
     data.append('firstName', firstName as string);
     data.append('addressLine1', addressLine1 as string);
     data.append('addressLine2', addressLine2 as string);
-    data.append('orderCapacity', orderCapacity as string);
     data.append('restaurantName', restaurantName as string);
+    orderCapacity && data.append('orderCapacity', orderCapacity as string);
 
     try {
       setIsLoading(true);
