@@ -44,6 +44,7 @@ export default function RestaurantForm({
     firstName,
     addressLine1,
     addressLine2,
+    orderCapacity,
     restaurantName,
     confirmPassword,
   } = formData;
@@ -176,6 +177,16 @@ export default function RestaurantForm({
           <label htmlFor='zip'>Zip</label>
           <input type='text' id='zip' value={zip} onChange={handleChange} />
         </div>
+      </div>
+
+      <div className={styles.item}>
+        <label htmlFor='orderCapacity'>Maximum order</label>
+        <input
+          type='text'
+          id='orderCapacity'
+          value={orderCapacity}
+          onChange={handleChange}
+        />
       </div>
 
       <div className={styles.logo_upload}>
