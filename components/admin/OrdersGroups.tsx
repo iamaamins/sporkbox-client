@@ -47,7 +47,7 @@ export default function OrdersGroups({ slug, title, orderGroups }: Props) {
   const [orderGroup, setOrderGroup] = useState<OrderGroup>();
   const [orderCSVFilename, setOrderCSVFilename] = useState('');
   const [restaurants, setRestaurants] = useState<string[]>([]);
-  const [orderCSVData, setOrderCSVData] = useState<OrderData[]>();
+  const [orderCSVData, setOrderCSVData] = useState<OrderData[]>([]);
   const [downloadAbles, setDownloadAbles] = useState<DownloadAbles>();
   const { allUpcomingOrders, allDeliveredOrders, setAllDeliveredOrders } =
     useData();
@@ -135,8 +135,11 @@ export default function OrdersGroups({ slug, title, orderGroups }: Props) {
     setOrderCSVData(formatOrderDataToCSV(updatedOrderGroup));
     setOrderCSVFilename(createOrderCSVFileName(updatedOrderGroup));
 
-    // @ts-ignore
-    csvLink.current?.link.click();
+    setTimeout(() => {
+      // @ts-ignore
+      csvLink.current?.link.click();
+    });
+    setShowModal(false);
   }
 
   return (
