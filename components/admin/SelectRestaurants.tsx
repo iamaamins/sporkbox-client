@@ -1,9 +1,11 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import styles from './SelectRestaurants.module.css';
+import { DownloadAbles } from 'types';
 
 type Props = {
   restaurants: string[];
-  generateAndDownloadLabels: (
+  downloadAbles: DownloadAbles;
+  generateAndDownloadDoc: (
     e: FormEvent,
     selectedRestaurants: string[]
   ) => Promise<void>;
@@ -11,7 +13,8 @@ type Props = {
 
 export default function SelectRestaurants({
   restaurants,
-  generateAndDownloadLabels,
+  downloadAbles,
+  generateAndDownloadDoc,
 }: Props) {
   const [selectedRestaurants, setSelectedRestaurants] =
     useState<string[]>(restaurants);
@@ -46,9 +49,9 @@ export default function SelectRestaurants({
         ))}
         <button
           disabled={selectedRestaurants.length === 0}
-          onClick={(e) => generateAndDownloadLabels(e, selectedRestaurants)}
+          onClick={(e) => generateAndDownloadDoc(e, selectedRestaurants)}
         >
-          Download
+          Download {downloadAbles}
         </button>
       </form>
     </div>

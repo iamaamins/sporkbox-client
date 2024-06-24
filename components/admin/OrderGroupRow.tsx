@@ -1,14 +1,8 @@
 import Link from 'next/link';
-import { CSVLink } from 'react-csv';
-import { OrderGroup } from 'types';
+import { DownloadAbles, OrderGroup } from 'types';
 import { FiDownload } from 'react-icons/fi';
 import styles from './OrderGroupRow.module.css';
 import { dateToMS, dateToText } from '@lib/utils';
-import {
-  formatOrderDataToCSV,
-  createOrderCSVFileName,
-  orderCSVHeaders,
-} from '@lib/csv';
 import { Dispatch, SetStateAction } from 'react';
 
 type Props = {
@@ -18,6 +12,8 @@ type Props = {
   setRestaurants: Dispatch<SetStateAction<string[]>>;
   setDeliveryDate: Dispatch<SetStateAction<string>>;
   setShowModal: Dispatch<SetStateAction<boolean>>;
+  setDownloadAbles: Dispatch<SetStateAction<DownloadAbles>>;
+  setOrderGroup: Dispatch<SetStateAction<OrderGroup | undefined>>;
 };
 
 export default function OrderGroupRow({
@@ -25,10 +21,16 @@ export default function OrderGroupRow({
   orderGroup,
   orderGroups,
   setShowModal,
+  setOrderGroup,
   setRestaurants,
   setDeliveryDate,
+  setDownloadAbles,
 }: Props) {
-  function selectRestaurants(deliveryDate: string) {
+  function selectRestaurants(
+    orderGroup: OrderGroup,
+    downloadAbles: DownloadAbles
+  ) {
+    const deliveryDate = orderGroup.deliveryDate;
     const restaurants = [];
     for (const orderGroup of orderGroups) {
       if (orderGroup.deliveryDate === deliveryDate) {
@@ -41,8 +43,10 @@ export default function OrderGroupRow({
         uniqueRestaurants.push(restaurant);
       }
     }
+    setDownloadAbles(downloadAbles);
     setRestaurants(uniqueRestaurants);
     setDeliveryDate(deliveryDate);
+    setOrderGroup(orderGroup);
     setShowModal(true);
   }
 
@@ -68,17 +72,13 @@ export default function OrderGroupRow({
       <td>{orderGroup.orders.length}</td>
       <td className={styles.actions}>
         {slug === 'upcoming-orders' && (
-          <span onClick={() => selectRestaurants(orderGroup.deliveryDate)}>
+          <span onClick={() => selectRestaurants(orderGroup, 'labels')}>
             Labels <FiDownload />
           </span>
         )}
-        <CSVLink
-          headers={orderCSVHeaders}
-          data={formatOrderDataToCSV(orderGroup)}
-          filename={createOrderCSVFileName(orderGroup)}
-        >
+        <span onClick={() => selectRestaurants(orderGroup, 'CSV')}>
           CSV <FiDownload />
-        </CSVLink>
+        </span>
       </td>
     </tr>
   );

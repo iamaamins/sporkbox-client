@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { useData } from '@context/Data';
 import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
@@ -12,11 +12,24 @@ import {
   getAddonIngredients,
   showErrorAlert,
 } from '@lib/utils';
-import { CustomAxiosError, OrderGroup, SortedOrderGroups } from 'types';
+import {
+  CustomAxiosError,
+  DownloadAbles,
+  Order,
+  OrderData,
+  OrderGroup,
+  SortedOrderGroups,
+} from 'types';
 import ModalContainer from '@components/layout/ModalContainer';
 import { pdf } from '@react-pdf/renderer';
 import Labels from './Labels';
 import SelectRestaurants from './SelectRestaurants';
+import {
+  formatOrderDataToCSV,
+  createOrderCSVFileName,
+  orderCSVHeaders,
+} from '@lib/csv';
+import { CSVLink } from 'react-csv';
 
 type Props = {
   slug: string;
@@ -27,10 +40,15 @@ type Props = {
 export default function OrdersGroups({ slug, title, orderGroups }: Props) {
   const router = useRouter();
   const { setAlerts } = useAlert();
+  const csvLink = useRef<CSVLink>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [deliveryDate, setDeliveryDate] = useState('');
+  const [orderGroup, setOrderGroup] = useState<OrderGroup>();
+  const [orderCSVFilename, setOrderCSVFilename] = useState('');
   const [restaurants, setRestaurants] = useState<string[]>([]);
+  const [orderCSVData, setOrderCSVData] = useState<OrderData[]>();
+  const [downloadAbles, setDownloadAbles] = useState<DownloadAbles>();
   const { allUpcomingOrders, allDeliveredOrders, setAllDeliveredOrders } =
     useData();
   const [sorted, setSorted] = useState<SortedOrderGroups>({
@@ -100,6 +118,27 @@ export default function OrdersGroups({ slug, title, orderGroups }: Props) {
     setShowModal(false);
   }
 
+  async function generateAndDownloadCSV(
+    e: FormEvent,
+    selectedRestaurants: string[]
+  ) {
+    e.preventDefault();
+    if (!orderGroup) return;
+
+    const orders: Order[] = [];
+    for (const order of orderGroup.orders) {
+      if (selectedRestaurants.includes(order.restaurant.name)) {
+        orders.push(order);
+      }
+    }
+    const updatedOrderGroup = { ...orderGroup, orders };
+    setOrderCSVData(formatOrderDataToCSV(updatedOrderGroup));
+    setOrderCSVFilename(createOrderCSVFileName(updatedOrderGroup));
+
+    // @ts-ignore
+    csvLink.current?.link.click();
+  }
+
   return (
     <>
       <section className={styles.orders_groups}>
@@ -142,8 +181,10 @@ export default function OrdersGroups({ slug, title, orderGroups }: Props) {
                     orderGroup={ordersGroup}
                     orderGroups={orderGroups}
                     setShowModal={setShowModal}
+                    setOrderGroup={setOrderGroup}
                     setRestaurants={setRestaurants}
                     setDeliveryDate={setDeliveryDate}
+                    setDownloadAbles={setDownloadAbles}
                   />
                 ))}
               </tbody>
@@ -160,14 +201,28 @@ export default function OrdersGroups({ slug, title, orderGroups }: Props) {
               )}
           </>
         )}
+        {orderCSVData && (
+          <CSVLink
+            // @ts-ignore
+            ref={csvLink}
+            data={orderCSVData}
+            headers={orderCSVHeaders}
+            filename={orderCSVFilename}
+          />
+        )}
       </section>
       <ModalContainer
         showModalContainer={showModal}
         setShowModalContainer={setShowModal}
         component={
           <SelectRestaurants
+            downloadAbles={downloadAbles}
             restaurants={restaurants}
-            generateAndDownloadLabels={generateAndDownloadLabels}
+            generateAndDownloadDoc={
+              downloadAbles === 'CSV'
+                ? generateAndDownloadCSV
+                : generateAndDownloadLabels
+            }
           />
         }
       />

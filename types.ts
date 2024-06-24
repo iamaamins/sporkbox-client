@@ -422,3 +422,23 @@ export interface Alert {
 export type CustomAxiosError = AxiosError<{
   message: string;
 }>;
+
+export type DownloadAbles = 'labels' | 'CSV' | undefined;
+
+export type OrderData = {
+  tags: string;
+  price: string;
+  shift: string;
+  itemName: string;
+  quantity: number;
+  companyName: string;
+  lastName: string;
+  customerEmail: string;
+  description: string;
+  firstName: string;
+  deliveryDate: string;
+  restaurantName: string;
+  optionalAddons?: string;
+  requiredAddons?: string;
+  removedIngredients?: string;
+};

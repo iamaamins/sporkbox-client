@@ -1,23 +1,5 @@
-import { Company, Customer, OrderGroup } from 'types';
+import { Company, Customer, OrderData, OrderGroup } from 'types';
 import { dateToText, numberToUSD } from '@lib/utils';
-
-type OrderData = {
-  tags: string;
-  price: string;
-  shift: string;
-  itemName: string;
-  quantity: number;
-  companyName: string;
-  lastName: string;
-  customerEmail: string;
-  description: string;
-  firstName: string;
-  deliveryDate: string;
-  restaurantName: string;
-  optionalAddons?: string;
-  requiredAddons?: string;
-  removedIngredients?: string;
-};
 
 type OrderStat = {
   restaurant: {
