@@ -49,7 +49,6 @@ export type Restaurant = {
     addressLine1: string;
     addressLine2?: string;
   };
-  orderCapacity: number;
   createdAt: string;
   schedules: Schedule[];
 };
@@ -94,6 +93,7 @@ export type Item = {
     addable: number;
   };
   reviews: Review[];
+  orderCapacity: number;
   averageRating?: number;
   removableIngredients?: string;
 };
@@ -378,6 +378,7 @@ export interface ItemFormData {
     addons: string;
     addable: number;
   };
+  orderCapacity?: string;
   removableIngredients?: string;
 }
 
@@ -390,7 +391,6 @@ export type RestaurantFormData = {
   lastName: string;
   firstName: string;
   password?: string;
-  orderCapacity: string;
   addressLine1: string;
   addressLine2?: string;
   restaurantName: string;

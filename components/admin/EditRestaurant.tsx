@@ -25,7 +25,6 @@ export default function EditRestaurant() {
     addressLine1: '',
     addressLine2: '',
     restaurantName: '',
-    orderCapacity: '',
   };
 
   const router = useRouter();
@@ -46,7 +45,6 @@ export default function EditRestaurant() {
     firstName,
     addressLine1,
     addressLine2,
-    orderCapacity,
     restaurantName,
   } = formData;
 
@@ -70,10 +68,6 @@ export default function EditRestaurant() {
           state: vendor.restaurant.address.state,
           addressLine1: vendor.restaurant.address.addressLine1,
           addressLine2: vendor.restaurant.address.addressLine2,
-          orderCapacity:
-            vendor.restaurant.orderCapacity === null
-              ? ''
-              : vendor.restaurant.orderCapacity.toString(),
         });
       }
     }
@@ -94,7 +88,6 @@ export default function EditRestaurant() {
     data.append('addressLine1', addressLine1 as string);
     data.append('addressLine2', addressLine2 as string);
     data.append('restaurantName', restaurantName as string);
-    orderCapacity && data.append('orderCapacity', orderCapacity as string);
 
     try {
       setIsLoading(true);

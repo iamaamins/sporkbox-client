@@ -21,7 +21,6 @@ export default function AddRestaurant() {
     addressLine2: '',
     restaurantName: '',
     confirmPassword: '',
-    orderCapacity: '',
   };
 
   const router = useRouter();
@@ -41,7 +40,6 @@ export default function AddRestaurant() {
     firstName,
     addressLine1,
     addressLine2,
-    orderCapacity,
     restaurantName,
   } = formData;
 
@@ -59,7 +57,6 @@ export default function AddRestaurant() {
     data.append('firstName', firstName as string);
     data.append('addressLine1', addressLine1 as string);
     data.append('addressLine2', addressLine2 as string);
-    data.append('orderCapacity', orderCapacity as string);
     data.append('restaurantName', restaurantName as string);
 
     try {

@@ -47,6 +47,7 @@ export default function ItemForm({
     currentTags,
     description,
     optionalAddons,
+    orderCapacity,
     requiredAddons,
     removableIngredients,
   } = formData;
@@ -205,14 +206,25 @@ export default function ItemForm({
         />
       </div>
 
-      <div className={styles.item}>
-        <label htmlFor='price'>Item price</label>
-        <input
-          type='number'
-          id='price'
-          value={price}
-          onChange={handleChangeFormData}
-        />
+      <div className={styles.price_and_capacity}>
+        <div className={styles.item}>
+          <label htmlFor='price'>Item price</label>
+          <input
+            type='number'
+            id='price'
+            value={price}
+            onChange={handleChangeFormData}
+          />
+        </div>
+        <div className={styles.item}>
+          <label htmlFor='orderCapacity'>Maximum order</label>
+          <input
+            type='text'
+            id='orderCapacity'
+            value={orderCapacity}
+            onChange={handleChangeFormData}
+          />
+        </div>
       </div>
 
       <div className={styles.dietary_tags}>
