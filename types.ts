@@ -31,6 +31,7 @@ export type Schedule = {
   _id: string;
   date: string;
   company: {
+    code: string;
     shift: 'day' | 'night';
   };
   status: 'ACTIVE' | 'INACTIVE';
@@ -59,6 +60,7 @@ export interface ScheduledRestaurant {
   company: {
     _id: string;
     name: string;
+    code: string;
     shift: string;
   };
   schedule: Schedule;
@@ -152,6 +154,7 @@ export type VendorUpcomingOrderItem = {
 export type VendorUpcomingOrder = {
   _id: string;
   company: {
+    code: string;
     shift: 'day' | 'night';
   };
   delivery: { date: string };

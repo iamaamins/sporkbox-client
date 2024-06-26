@@ -1,12 +1,7 @@
 import { useUser } from '@context/User';
 import styles from './Dashboard.module.css';
 import { useData } from '@context/Data';
-import {
-  CustomAxiosError,
-  Restaurant,
-  Schedule,
-  VendorUpcomingOrderItem,
-} from 'types';
+import { CustomAxiosError, Restaurant, VendorUpcomingOrder } from 'types';
 import {
   axiosInstance,
   dateToMS,
@@ -14,22 +9,29 @@ import {
   showErrorAlert,
   showSuccessAlert,
 } from '@lib/utils';
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
 import ModalContainer from '@components/layout/ModalContainer';
 import StatusUpdateModal from './StatusUpdateModal';
 
+type OrderMap = {
+  [key: string]: {
+    orders: VendorUpcomingOrder[];
+    quantity: number;
+  };
+};
+
 type OrderGroupSchedule = {
-  _id: string;
+  date: string;
   status: 'ACTIVE' | 'INACTIVE';
 };
 
 type OrderGroup = {
-  date: number;
-  shift: 'day' | 'night';
+  date: string;
+  company: string;
   quantity: number;
-  schedule: OrderGroupSchedule;
-  items: VendorUpcomingOrderItem[];
+  orders: VendorUpcomingOrder[];
+  schedules: OrderGroupSchedule[];
 };
 
 type VendorRestaurant = {
@@ -49,19 +51,23 @@ export default function Dashboard() {
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
   const [statusUpdatePayload, setStatusUpdatePayload] = useState({
     date: '',
-    schedule: {
-      _id: '',
-      status: '',
-    },
+    action: '',
+    companyCode: '',
   });
   const [isUpdatingScheduleStatus, setIsUpdatingScheduleStatus] =
     useState(false);
 
-  function initiateScheduleUpdate(date: string, schedule: OrderGroupSchedule) {
+  function initiateScheduleUpdate(
+    e: FormEvent,
+    date: string,
+    companyCode: string
+  ) {
+    console.log(e.currentTarget.textContent);
     setShowStatusUpdateModal(true);
     setStatusUpdatePayload({
       date,
-      schedule,
+      companyCode,
+      action: e.currentTarget.textContent!,
     });
   }
 
@@ -70,28 +76,18 @@ export default function Dashboard() {
     try {
       setIsUpdatingScheduleStatus(true);
       const response = await axiosInstance.patch(
-        `/restaurants/${restaurant.data._id}/${statusUpdatePayload.schedule._id}/change-schedule-status`,
+        `/restaurants/${restaurant.data._id}/${statusUpdatePayload.date}/${statusUpdatePayload.companyCode}/change-schedule-status`,
         {
-          action:
-            statusUpdatePayload.schedule.status === 'ACTIVE'
-              ? 'Deactivate'
-              : 'Activate',
+          action: statusUpdatePayload.action,
         }
       );
-      const schedule = response.data.find(
-        (schedule: Schedule) =>
-          schedule._id === statusUpdatePayload.schedule._id
-      );
+
       setRestaurant((prevState) => ({
         ...prevState,
         data: prevState.data
           ? {
               ...prevState.data,
-              schedules: prevState.data?.schedules.map((prevSchedule) =>
-                prevSchedule._id === schedule._id
-                  ? { ...prevSchedule, status: schedule.status }
-                  : prevSchedule
-              ),
+              schedules: response.data,
             }
           : null,
       }));
@@ -103,14 +99,6 @@ export default function Dashboard() {
       setIsUpdatingScheduleStatus(false);
       setShowStatusUpdateModal(false);
     }
-  }
-
-  function combineAddons(optional: string, required: string) {
-    let combined = '';
-    if (optional) combined = optional;
-    if (required) combined = required;
-    if (optional && required) combined = `${optional}, ${required}`;
-    return combined;
   }
 
   // Get the restaurant
@@ -134,47 +122,40 @@ export default function Dashboard() {
   // Create order groups
   useEffect(() => {
     if (restaurant.data && vendorUpcomingOrders.data.length) {
-      const orderMap: Record<string, OrderGroup> = {};
+      const orderMap: OrderMap = {};
       for (const order of vendorUpcomingOrders.data) {
-        const shift = order.company.shift;
+        const company = order.company.code;
         const date = dateToMS(order.delivery.date);
-        const schedule = restaurant.data.schedules.find(
-          (schedule) =>
-            dateToMS(schedule.date) === date && schedule.company.shift === shift
-        );
+        const dateAndCompany = `${date}-${company}`;
 
-        if (schedule) {
-          const dateShift = `${date}-${shift}`;
-          if (!orderMap[dateShift]) {
-            orderMap[dateShift] = {
-              date,
-              shift,
-              items: [],
-              quantity: 0,
-              schedule: { _id: schedule._id, status: schedule.status },
-            };
-          }
+        if (!orderMap[dateAndCompany])
+          orderMap[dateAndCompany] = { orders: [], quantity: 0 };
 
-          const existingItem = orderMap[dateShift].items.find(
-            (item) =>
-              item._id === order.item._id &&
-              item.optionalAddons === order.item.optionalAddons &&
-              item.requiredAddons === order.item.requiredAddons &&
-              item.removedIngredients === order.item.removedIngredients
-          );
-
-          if (existingItem) {
-            existingItem.quantity += order.item.quantity;
-          } else {
-            orderMap[dateShift].items.push({ ...order.item });
-          }
-          orderMap[dateShift].quantity += order.item.quantity;
-        }
+        orderMap[dateAndCompany].orders.push(order);
+        orderMap[dateAndCompany].quantity += order.item.quantity;
       }
 
       const orderGroups: OrderGroup[] = [];
-      for (const dateShift in orderMap) {
-        orderGroups.push(orderMap[dateShift]);
+      for (const key in orderMap) {
+        const schedules: OrderGroupSchedule[] = [];
+        for (const schedule of restaurant.data.schedules) {
+          const company = schedule.company.code;
+          const date = dateToMS(schedule.date);
+          const dateAndCompany = `${date}-${company}`;
+
+          if (key === dateAndCompany)
+            schedules.push({ date: schedule.date, status: schedule.status });
+        }
+
+        if (schedules.length) {
+          orderGroups.push({
+            schedules,
+            date: key.split('-')[0],
+            company: key.split('-')[1],
+            orders: orderMap[key].orders,
+            quantity: orderMap[key].quantity,
+          });
+        }
       }
       setOrderGroups(orderGroups);
     }
@@ -196,18 +177,14 @@ export default function Dashboard() {
         <h2>Loading...</h2>
       ) : orderGroups.length ? (
         <>
-          {orderGroups.map(({ date, shift, items, quantity, schedule }) => (
-            <div className={styles.group} key={`${date}-${shift}`}>
+          {orderGroups.map(({ date, company, orders, quantity, schedules }) => (
+            <div className={styles.group} key={date}>
               <div className={styles.group_header}>
-                <h2>
-                  {dateToText(+date)} - {shift}
-                </h2>
+                <h2>{dateToText(+date)}</h2>
                 <button
-                  onClick={() =>
-                    initiateScheduleUpdate(dateToText(+date), schedule)
-                  }
+                  onClick={(e) => initiateScheduleUpdate(e, date, company)}
                 >
-                  {schedule.status === 'ACTIVE' ? 'Deactivate' : 'Activate'}
+                  {schedules[0].status === 'ACTIVE' ? 'Deactivate' : 'Activate'}
                 </button>
               </div>
               <table>
@@ -220,16 +197,14 @@ export default function Dashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {items.map((item, index) => (
-                    <tr key={index}>
-                      <td>{item.name}</td>
-                      <td>{item.quantity}</td>
-                      <td>{item.removedIngredients}</td>
+                  {orders.map((order) => (
+                    <tr key={order._id}>
+                      <td>{order.item.name}</td>
+                      <td>{order.item.quantity}</td>
+                      <td>{order.item.removedIngredients}</td>
                       <td>
-                        {combineAddons(
-                          item.optionalAddons,
-                          item.requiredAddons
-                        )}
+                        {order.item.optionalAddons}
+                        {order.item.requiredAddons}
                       </td>
                     </tr>
                   ))}
@@ -257,11 +232,7 @@ export default function Dashboard() {
             date={statusUpdatePayload.date}
             setShowModal={setShowStatusUpdateModal}
             isUpdating={isUpdatingScheduleStatus}
-            action={
-              statusUpdatePayload.schedule.status === 'ACTIVE'
-                ? 'Deactivate'
-                : 'Activate'
-            }
+            action={statusUpdatePayload.action}
           />
         }
       />

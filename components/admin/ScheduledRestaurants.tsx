@@ -6,6 +6,7 @@ import { FormEvent, useState } from 'react';
 import { CustomAxiosError, Schedule, ScheduledRestaurant } from 'types';
 import {
   axiosInstance,
+  dateToMS,
   dateToText,
   showErrorAlert,
   showSuccessAlert,
@@ -25,11 +26,12 @@ export default function ScheduledRestaurants({
     useState(false);
   const [statusUpdatePayload, setStatusUpdatePayload] = useState({
     action: '',
+    date: '',
     restaurant: {
       _id: '',
       name: '',
     },
-    scheduleId: '',
+    companyCode: '',
   });
   const [scheduleRemovalPayload, setScheduleRemovalPayload] = useState({
     restaurant: {
@@ -49,18 +51,20 @@ export default function ScheduledRestaurants({
 
   function initiateScheduleUpdate(
     e: FormEvent,
+    date: string,
+    companyCode: string,
     restaurantId: string,
-    restaurantName: string,
-    scheduleId: string
+    restaurantName: string
   ) {
     setShowStatusUpdateModal(true);
     setStatusUpdatePayload({
-      action: e.currentTarget.textContent!,
-      scheduleId,
+      date,
+      companyCode,
       restaurant: {
         _id: restaurantId,
         name: restaurantName,
       },
+      action: e.currentTarget.textContent!,
     });
   }
 
@@ -68,22 +72,29 @@ export default function ScheduledRestaurants({
     try {
       setIsUpdatingScheduleStatus(true);
       const response = await axiosInstance.patch(
-        `/restaurants/${statusUpdatePayload.restaurant._id}/${statusUpdatePayload.scheduleId}/change-schedule-status`,
+        `/restaurants/${statusUpdatePayload.restaurant._id}/${dateToMS(
+          statusUpdatePayload.date
+        )}/${statusUpdatePayload.companyCode}/change-schedule-status`,
         { action: statusUpdatePayload.action }
       );
       const schedule = response.data.find(
-        (schedule: Schedule) => schedule._id === statusUpdatePayload.scheduleId
+        (schedule: Schedule) =>
+          dateToMS(schedule.date) === dateToMS(statusUpdatePayload.date) &&
+          schedule.company.code === statusUpdatePayload.companyCode
       );
+
       setScheduledRestaurants((prevState) => ({
         ...prevState,
         data: prevState.data.map((restaurant) => {
-          if (restaurant.schedule._id === statusUpdatePayload.scheduleId) {
+          if (
+            restaurant._id === statusUpdatePayload.restaurant._id &&
+            restaurant.company.code === statusUpdatePayload.companyCode &&
+            dateToMS(restaurant.schedule.date) ===
+              dateToMS(statusUpdatePayload.date)
+          ) {
             return {
               ...restaurant,
-              schedule: {
-                ...restaurant.schedule,
-                status: schedule.status,
-              },
+              schedule: schedule,
             };
           } else {
             return restaurant;
@@ -197,9 +208,10 @@ export default function ScheduledRestaurants({
                       onClick={(e) =>
                         initiateScheduleUpdate(
                           e,
+                          restaurant.schedule.date,
+                          restaurant.company.code,
                           restaurant._id,
-                          restaurant.name,
-                          restaurant.schedule._id
+                          restaurant.name
                         )
                       }
                     >

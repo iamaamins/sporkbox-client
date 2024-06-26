@@ -1,12 +1,13 @@
 import ButtonLoader from '@components/layout/ButtonLoader';
 import { Dispatch, SetStateAction } from 'react';
 import styles from './StatusUpdateModal.module.css';
+import { dateToText } from '@lib/utils';
 
 type Props = {
   date: string;
   action: string;
-  updateStatus: () => Promise<void>;
   isUpdating: boolean;
+  updateStatus: () => Promise<void>;
   setShowModal: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -20,7 +21,7 @@ export default function StatusUpdateModal({
   return (
     <div className={styles.container}>
       <p>
-        Are you sure you want to {action} {date}?
+        Are you sure you want to {action} {dateToText(+date)}?
       </p>
 
       <div className={styles.buttons}>
