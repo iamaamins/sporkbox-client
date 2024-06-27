@@ -73,9 +73,9 @@ type Label = {
   restaurant: string;
   item: {
     name: string;
-    optional: string;
     required: string;
     removed: string;
+    optional: string;
   };
 };
 
@@ -109,20 +109,20 @@ export default function Labels({ labels }: Props) {
           }`.trim();
           const restaurant = label.restaurant.trim();
           const item = label.item.name.trim();
-          const optional = label.item.optional.trim();
           const required = label.item.required.trim();
           const removed = label.item.removed.trim();
-          const addons = `${optional} ${required}`.trim();
+          const optional = label.item.optional.trim();
+          const requiredRemoved = `${required} ${removed}`.trim();
 
-          const hasOptionalTexts = !!addons || !!removed;
+          const hasOptionalTexts = !!requiredRemoved || !!optional;
           const lineWidth = styles.line.width;
 
           const fontSize = Math.min(
             calculateFontSize(nameShift, lineWidth, hasOptionalTexts),
             calculateFontSize(restaurant, lineWidth, hasOptionalTexts),
             calculateFontSize(item, lineWidth, hasOptionalTexts),
-            calculateFontSize(addons, lineWidth, hasOptionalTexts),
-            calculateFontSize(removed, lineWidth, hasOptionalTexts)
+            calculateFontSize(requiredRemoved, lineWidth, hasOptionalTexts),
+            calculateFontSize(optional, lineWidth, hasOptionalTexts)
           );
 
           return (
@@ -146,8 +146,10 @@ export default function Labels({ labels }: Props) {
                 <Text style={[styles.line, styles.bold, { fontSize }]}>
                   {item}
                 </Text>
-                <Text style={[styles.line, { fontSize }]}>{addons}</Text>
-                <Text style={[styles.line, { fontSize }]}>{removed}</Text>
+                <Text style={[styles.line, { fontSize }]}>
+                  {requiredRemoved}
+                </Text>
+                <Text style={[styles.line, { fontSize }]}>{optional}</Text>
               </View>
             </View>
           );
