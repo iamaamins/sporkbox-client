@@ -17,6 +17,7 @@ import {
   CustomAxiosError,
   CustomerFavoriteItems,
   DateTotal,
+  VendorUpcomingOrder,
 } from 'types';
 
 export const currentYear = new Date().getFullYear();
@@ -263,7 +264,7 @@ export function showErrorAlert(
   );
 }
 
-export const groupIdenticalOrders = (orders: Order[]) =>
+export const groupIdenticalOrdersForAdmin = (orders: Order[]) =>
   orders.reduce((acc: Order[], curr) => {
     if (
       !acc.some(
@@ -385,3 +386,39 @@ export function getAddonIngredients(addons: string | undefined) {
   }
   return ingredients.join(', ');
 }
+
+export const groupIdenticalOrdersForVendor = (orders: VendorUpcomingOrder[]) =>
+  orders
+    .reduce((acc: VendorUpcomingOrder[], curr) => {
+      if (
+        !acc.some(
+          (order) =>
+            order.item._id === curr.item._id &&
+            order.item.optionalAddons === curr.item.optionalAddons &&
+            order.item.requiredAddons === curr.item.requiredAddons &&
+            order.item.removedIngredients === curr.item.removedIngredients
+        )
+      ) {
+        return [...acc, curr];
+      } else {
+        return acc.map((order) => {
+          if (
+            order.item._id === curr.item._id &&
+            order.item.optionalAddons === curr.item.optionalAddons &&
+            order.item.requiredAddons === curr.item.requiredAddons &&
+            order.item.removedIngredients === curr.item.removedIngredients
+          ) {
+            return {
+              ...order,
+              item: {
+                ...order.item,
+                quantity: order.item.quantity + curr.item.quantity,
+              },
+            };
+          } else {
+            return order;
+          }
+        });
+      }
+    }, [])
+    .sort((a, b) => a.item.name.localeCompare(b.item.name));

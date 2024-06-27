@@ -8,6 +8,7 @@ import {
   dateToText,
   showErrorAlert,
   showSuccessAlert,
+  groupIdenticalOrdersForVendor,
 } from '@lib/utils';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
@@ -17,7 +18,7 @@ import StatusUpdateModal from './StatusUpdateModal';
 type OrderMap = {
   [key: string]: {
     orders: VendorUpcomingOrder[];
-    quantity: number;
+    totalQuantity: number;
   };
 };
 
@@ -29,7 +30,7 @@ type OrderGroupSchedule = {
 type OrderGroup = {
   date: string;
   company: string;
-  quantity: number;
+  totalQuantity: number;
   orders: VendorUpcomingOrder[];
   schedules: OrderGroupSchedule[];
 };
@@ -129,10 +130,10 @@ export default function Dashboard() {
         const dateAndCompany = `${date}-${company}`;
 
         if (!orderMap[dateAndCompany])
-          orderMap[dateAndCompany] = { orders: [], quantity: 0 };
+          orderMap[dateAndCompany] = { orders: [], totalQuantity: 0 };
 
         orderMap[dateAndCompany].orders.push(order);
-        orderMap[dateAndCompany].quantity += order.item.quantity;
+        orderMap[dateAndCompany].totalQuantity += order.item.quantity;
       }
 
       const orderGroups: OrderGroup[] = [];
@@ -152,8 +153,8 @@ export default function Dashboard() {
             schedules,
             date: key.split('-')[0],
             company: key.split('-')[1],
-            orders: orderMap[key].orders,
-            quantity: orderMap[key].quantity,
+            totalQuantity: orderMap[key].totalQuantity,
+            orders: groupIdenticalOrdersForVendor(orderMap[key].orders),
           });
         }
       }
@@ -177,47 +178,51 @@ export default function Dashboard() {
         <h2>Loading...</h2>
       ) : orderGroups.length ? (
         <>
-          {orderGroups.map(({ date, company, orders, quantity, schedules }) => (
-            <div className={styles.group} key={date}>
-              <div className={styles.group_header}>
-                <h2>{dateToText(+date)}</h2>
-                <button
-                  onClick={(e) => initiateScheduleUpdate(e, date, company)}
-                >
-                  {schedules[0].status === 'ACTIVE' ? 'Deactivate' : 'Activate'}
-                </button>
-              </div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                    <th>Removed</th>
-                    <th>Addons</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {orders.map((order) => (
-                    <tr key={order._id}>
-                      <td>{order.item.name}</td>
-                      <td>{order.item.quantity}</td>
-                      <td>{order.item.removedIngredients}</td>
-                      <td>
-                        {order.item.optionalAddons}
-                        {order.item.requiredAddons}
-                      </td>
+          {orderGroups.map(
+            ({ date, company, orders, totalQuantity, schedules }) => (
+              <div className={styles.group} key={date}>
+                <div className={styles.group_header}>
+                  <h2>{dateToText(+date)}</h2>
+                  <button
+                    onClick={(e) => initiateScheduleUpdate(e, date, company)}
+                  >
+                    {schedules[0].status === 'ACTIVE'
+                      ? 'Deactivate'
+                      : 'Activate'}
+                  </button>
+                </div>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Quantity</th>
+                      <th>Removed</th>
+                      <th>Addons</th>
                     </tr>
-                  ))}
-                  <tr>
-                    <td>Total</td>
-                    <td>{quantity}</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          ))}
+                  </thead>
+                  <tbody>
+                    {orders.map((order) => (
+                      <tr key={order._id}>
+                        <td>{order.item.name}</td>
+                        <td>{order.item.quantity}</td>
+                        <td>{order.item.removedIngredients}</td>
+                        <td>
+                          {order.item.optionalAddons}
+                          {order.item.requiredAddons}
+                        </td>
+                      </tr>
+                    ))}
+                    <tr>
+                      <td>Total</td>
+                      <td>{totalQuantity}</td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            )
+          )}
         </>
       ) : (
         <p>No upcoming orders</p>

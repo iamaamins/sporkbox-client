@@ -11,7 +11,7 @@ import {
   showSuccessAlert,
   dateToText,
   numberToUSD,
-  groupIdenticalOrders,
+  groupIdenticalOrdersForAdmin,
 } from '@lib/utils';
 import styles from './OrdersGroupDetails.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
@@ -285,7 +285,7 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
                 </thead>
 
                 <tbody>
-                  {groupIdenticalOrders(ordersByRestaurant.orders).map(
+                  {groupIdenticalOrdersForAdmin(ordersByRestaurant.orders).map(
                     (order, index) => (
                       <tr key={index}>
                         <td>{order.item.name}</td>
