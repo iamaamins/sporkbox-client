@@ -48,10 +48,12 @@ export default function Calendar() {
   }
 
   function isItemSoldOut(item: Item) {
+    const company = customer?.companies.find(
+      (company) => company.status === 'ACTIVE'
+    );
     return item.soldOutStat?.some(
       (el) =>
-        upcomingDates.includes(dateToMS(el.date)) &&
-        customer?.companies.some((company) => company._id === el.company)
+        upcomingDates.includes(dateToMS(el.date)) && company?._id === el.company
     );
   }
 
