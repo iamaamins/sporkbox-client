@@ -76,6 +76,11 @@ export type Review = {
   comment: string;
 };
 
+export type SoldOutStat = {
+  date: string;
+  company: string;
+};
+
 export type Item = {
   _id: string;
   tags: string;
@@ -95,6 +100,7 @@ export type Item = {
   reviews: Review[];
   orderCapacity: number;
   averageRating?: number;
+  soldOutStat?: SoldOutStat[];
   removableIngredients?: string;
 };
 

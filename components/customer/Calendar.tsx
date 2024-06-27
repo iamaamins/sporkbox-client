@@ -6,16 +6,18 @@ import { useCart } from '@context/Cart';
 import { useEffect, useState } from 'react';
 import { getDay, getDate, dateToMS, numberToUSD } from '@lib/utils';
 import CalendarSort from './CalendarSort';
-import { UpcomingRestaurant } from 'types';
+import { Item, UpcomingRestaurant } from 'types';
 import { IoIosArrowUp } from 'react-icons/io';
 import CalendarFiltersModal from './CalendarFiltersModal';
 import styles from './Calendar.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
 import { AiFillStar } from 'react-icons/ai';
+import { useUser } from '@context/User';
 
 export default function Calendar() {
   const router = useRouter();
   const { cartItems } = useCart();
+  const { customer } = useUser();
   const [sorted, setSorted] = useState({
     byLowToHigh: false,
     byHighToLow: false,
@@ -42,6 +44,14 @@ export default function Calendar() {
           return activeRestaurant;
         }
       })
+    );
+  }
+
+  function isItemSoldOut(item: Item) {
+    return item.soldOutStat?.some(
+      (el) =>
+        upcomingDates.includes(dateToMS(el.date)) &&
+        customer?.companies.some((company) => company._id === el.company)
     );
   }
 
@@ -163,12 +173,17 @@ export default function Calendar() {
                           <Link
                             key={item._id}
                             href={
+                              !isItemSoldOut(item) &&
                               restaurant.schedule.status === 'ACTIVE'
                                 ? `/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`
                                 : '#'
                             }
                           >
-                            <a className={styles.item}>
+                            <a
+                              className={`${styles.item} ${
+                                isItemSoldOut(item) && styles.sold_out
+                              }`}
+                            >
                               <div className={styles.item_details}>
                                 <p className={styles.item_name}>
                                   {item.name}
@@ -188,9 +203,10 @@ export default function Calendar() {
                               </div>
 
                               <div className={styles.item_image}>
-                                <div
+                                <span
                                   className={styles.item_image_overlay}
-                                ></div>
+                                ></span>
+                                <p className={styles.sold_out_text}>Sold out</p>
                                 <Image
                                   src={item.image || restaurant.logo}
                                   width={16}
