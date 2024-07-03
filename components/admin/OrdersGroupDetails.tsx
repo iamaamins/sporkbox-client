@@ -131,7 +131,7 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
   const hasRemovedIngredients = (ordersByRestaurant: OrdersByRestaurant) =>
     ordersByRestaurant.orders.some((order) => order.item.removedIngredients);
 
-  const getQuantity = (orders: Order[]) =>
+  const getOrdersQuantity = (orders: Order[]) =>
     orders.reduce((acc, curr) => acc + curr.item.quantity, 0);
 
   // Separate order for each restaurant
@@ -234,7 +234,7 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
                   </td>
                   <td>{ordersByRestaurant.restaurantName}</td>
                   <td className={styles.hide_on_mobile}>
-                    {getQuantity(ordersByRestaurant.orders)}
+                    {getOrdersQuantity(ordersByRestaurant.orders)}
                   </td>
                   <td>
                     {ordersByRestaurant.orders.every(
@@ -343,7 +343,7 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
                         )
                       )}
                     </td>
-                    <td>{getQuantity(ordersByRestaurant.orders)}</td>
+                    <td>{getOrdersQuantity(ordersByRestaurant.orders)}</td>
                   </tr>
                 </tbody>
               </table>
