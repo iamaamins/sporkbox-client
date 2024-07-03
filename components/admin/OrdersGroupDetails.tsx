@@ -131,6 +131,9 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
   const hasRemovedIngredients = (ordersByRestaurant: OrdersByRestaurant) =>
     ordersByRestaurant.orders.some((order) => order.item.removedIngredients);
 
+  const getQuantity = (orders: Order[]) =>
+    orders.reduce((acc, curr) => acc + curr.item.quantity, 0);
+
   // Separate order for each restaurant
   useEffect(() => {
     if (!isLoading && router.isReady) {
@@ -214,7 +217,7 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
                 <th>Company</th>
                 <th className={styles.hide_on_mobile}>Shift</th>
                 <th>Restaurant</th>
-                <th className={styles.hide_on_mobile}>Orders</th>
+                <th className={styles.hide_on_mobile}>Quantity</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -231,7 +234,7 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
                   </td>
                   <td>{ordersByRestaurant.restaurantName}</td>
                   <td className={styles.hide_on_mobile}>
-                    {ordersByRestaurant.orders.length}
+                    {getQuantity(ordersByRestaurant.orders)}
                   </td>
                   <td>
                     {ordersByRestaurant.orders.every(
@@ -340,12 +343,7 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
                         )
                       )}
                     </td>
-                    <td>
-                      {ordersByRestaurant.orders.reduce(
-                        (acc, curr) => acc + curr.item.quantity,
-                        0
-                      )}
-                    </td>
+                    <td>{getQuantity(ordersByRestaurant.orders)}</td>
                   </tr>
                 </tbody>
               </table>
