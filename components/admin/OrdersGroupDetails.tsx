@@ -173,13 +173,13 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
         dateToMS(order.delivery.date).toString() === router.query.date &&
         order.company._id === router.query.company;
 
-      const allOrders = [
+      const filteredOrders = [
         ...allUpcomingOrders.data.filter((order) => filterConditions(order)),
         ...allDeliveredOrders.data.filter((order) => filterConditions(order)),
       ];
 
       const paidOrders: Order[] = [];
-      for (const order of allOrders) {
+      for (const order of filteredOrders) {
         if (
           order.payment &&
           !paidOrders.some((el) => el.payment?.intent === order.payment?.intent)
@@ -192,7 +192,7 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
           (acc, curr) => acc + (curr.payment?.amount as number),
           0
         ),
-        total: allOrders.reduce((acc, curr) => acc + curr.item.total, 0),
+        total: filteredOrders.reduce((acc, curr) => acc + curr.item.total, 0),
       });
     }
   }, [allUpcomingOrders, allDeliveredOrders]);
