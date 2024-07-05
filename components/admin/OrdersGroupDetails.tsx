@@ -178,22 +178,20 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
         ...allDeliveredOrders.data.filter((order) => filterConditions(order)),
       ];
 
+      const paidOrders: Order[] = [];
+      for (const order of allOrders) {
+        if (
+          order.payment &&
+          !paidOrders.some((el) => el.payment?.intent === order.payment?.intent)
+        ) {
+          paidOrders.push(order);
+        }
+      }
       setAmount({
-        paid: allOrders
-          .filter((order) => order.payment)
-          .reduce((acc: Order[], curr) => {
-            // Remove orders with duplicate payment intent
-            if (
-              !acc.some(
-                (order) => order.payment?.intent === curr.payment?.intent
-              )
-            ) {
-              return [...acc, curr];
-            } else {
-              return acc;
-            }
-          }, [])
-          .reduce((acc, curr) => acc + (curr.payment?.amount as number), 0),
+        paid: paidOrders.reduce(
+          (acc, curr) => acc + (curr.payment?.amount as number),
+          0
+        ),
         total: allOrders.reduce((acc, curr) => acc + curr.item.total, 0),
       });
     }
@@ -265,7 +263,6 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
               <h2>
                 Order summary - {ordersByRestaurant.restaurantName} - {date}
               </h2>
-
               <table>
                 <thead>
                   <tr>
@@ -347,12 +344,10 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
                   </tr>
                 </tbody>
               </table>
-
               <h2>
                 Customer information - {ordersByRestaurant.restaurantName} -{' '}
                 {date}
               </h2>
-
               <table>
                 <thead>
                   <tr>
@@ -393,7 +388,6 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
           ))}
 
           <h2>Charge information - {date}</h2>
-
           <table>
             <thead>
               <tr>
