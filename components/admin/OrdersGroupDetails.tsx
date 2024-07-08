@@ -26,6 +26,7 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
   const [amount, setAmount] = useState({
     paid: 0,
     total: 0,
+    discount: 0,
   });
   const {
     allUpcomingOrders,
@@ -189,7 +190,11 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
       }
       setAmount({
         paid: paidOrders.reduce(
-          (acc, curr) => acc + (curr.payment?.amount as number),
+          (acc, curr) => acc + (curr.payment?.amount || 0),
+          0
+        ),
+        discount: filteredOrders.reduce(
+          (acc, curr) => acc + (curr.discount?.distributed || 0),
           0
         ),
         total: filteredOrders.reduce((acc, curr) => acc + curr.item.total, 0),
@@ -392,6 +397,7 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
             <thead>
               <tr>
                 <th>Reimbursed</th>
+                <th>Discount</th>
                 <th>Paid</th>
                 <th>Total</th>
               </tr>
@@ -399,7 +405,10 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
 
             <tbody>
               <tr>
-                <td>{numberToUSD(amount.total - amount.paid)}</td>
+                <td>
+                  {numberToUSD(amount.total - (amount.paid + amount.discount))}
+                </td>
+                <td>{numberToUSD(amount.discount)}</td>
                 <td>{numberToUSD(amount.paid)}</td>
                 <td>{numberToUSD(amount.total)}</td>
               </tr>

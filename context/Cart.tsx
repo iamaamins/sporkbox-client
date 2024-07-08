@@ -138,7 +138,6 @@ export default function CartProvider({ children }: ContextProviderProps) {
   async function checkoutCart(discountCodeId?: string) {
     if (isCustomer) {
       const orderItems = cartItems.map((cartItem) => ({
-        discountCodeId,
         itemId: cartItem._id,
         quantity: cartItem.quantity,
         companyId: cartItem.companyId,

@@ -282,6 +282,12 @@ export type Order = {
   };
   createdAt: string;
   hasReviewed: boolean;
+  discount?: {
+    _id: string;
+    code: string;
+    value: number;
+    distributed: number;
+  };
   item: {
     _id: string;
     name: string;
