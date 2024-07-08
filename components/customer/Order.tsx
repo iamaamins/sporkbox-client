@@ -87,7 +87,7 @@ export default function Order() {
           ) {
             return {
               ...customerDeliveredOrder,
-              hasReviewed: updatedCustomerDeliveredOrder.hasReviewed,
+              isReviewed: updatedCustomerDeliveredOrder.isReviewed,
             };
           } else {
             return customerDeliveredOrder;
@@ -278,7 +278,7 @@ export default function Order() {
                     </>
                   )}
 
-                  {!order.hasReviewed && (
+                  {!order.isReviewed && (
                     <>
                       <p className={styles.review_title}>Leave a review</p>
 

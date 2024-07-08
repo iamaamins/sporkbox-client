@@ -281,7 +281,7 @@ export type Order = {
     amount: number;
   };
   createdAt: string;
-  hasReviewed: boolean;
+  isReviewed: boolean;
   discount?: {
     _id: string;
     code: string;
@@ -326,7 +326,7 @@ export interface CustomerOrder {
   };
   status: string;
   createdAt: string;
-  hasReviewed: boolean;
+  isReviewed: boolean;
 }
 
 export interface SortedOrderGroups {
