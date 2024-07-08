@@ -88,12 +88,12 @@ export default function EditItem() {
     const data = new FormData();
     const tags = updatedTags.join(', ');
 
-    data.append('name', name as string);
-    data.append('tags', tags as string);
+    data.append('name', name);
+    data.append('tags', tags);
+    file && data.append('file', file);
     data.append('price', price as string);
-    file && data.append('file', file as File);
-    image && data.append('image', image as string);
-    data.append('description', description as string);
+    image && data.append('image', image);
+    data.append('description', description);
     orderCapacity && data.append('orderCapacity', orderCapacity);
     data.append('optionalAddons', JSON.stringify(optionalAddons));
     data.append('requiredAddons', JSON.stringify(requiredAddons));
