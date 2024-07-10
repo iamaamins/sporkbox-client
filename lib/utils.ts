@@ -156,6 +156,7 @@ export const createOrderGroups = (orders: Order[]) =>
             _id: curr.company._id,
             shift: curr.company.shift,
             name: curr.company.name,
+            code: curr.company.code,
           },
           customers: [curr.customer._id],
           deliveryDate: curr.delivery.date,

@@ -226,6 +226,7 @@ export type OrderGroup = {
     _id: string;
     name: string;
     shift: string;
+    code: string;
   };
   customers: string[];
   deliveryDate: string;
@@ -271,6 +272,7 @@ export type Order = {
     _id: string;
     name: string;
     shift: string;
+    code: string;
   };
   delivery: {
     date: string;
@@ -457,4 +459,9 @@ export type OrderData = {
   optionalAddons?: string;
   requiredAddons?: string;
   removedIngredients?: string;
+};
+
+export type LabelFilters = {
+  companyCode: string;
+  deliveryDate: string;
 };

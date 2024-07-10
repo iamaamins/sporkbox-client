@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { DownloadAbles, OrderGroup } from 'types';
+import { DownloadAbles, LabelFilters, OrderGroup } from 'types';
 import { FiDownload } from 'react-icons/fi';
 import styles from './OrderGroupRow.module.css';
 import { dateToMS, dateToText } from '@lib/utils';
@@ -10,10 +10,10 @@ type Props = {
   orderGroup: OrderGroup;
   orderGroups: OrderGroup[];
   setRestaurants: Dispatch<SetStateAction<string[]>>;
-  setDeliveryDate: Dispatch<SetStateAction<string>>;
   setShowModal: Dispatch<SetStateAction<boolean>>;
   setDownloadAbles: Dispatch<SetStateAction<DownloadAbles>>;
   setOrderGroup: Dispatch<SetStateAction<OrderGroup | undefined>>;
+  setLabelFilters: Dispatch<SetStateAction<LabelFilters | undefined>>;
 };
 
 export default function OrderGroupRow({
@@ -23,17 +23,22 @@ export default function OrderGroupRow({
   setShowModal,
   setOrderGroup,
   setRestaurants,
-  setDeliveryDate,
+  setLabelFilters,
   setDownloadAbles,
 }: Props) {
   function selectRestaurants(
     orderGroup: OrderGroup,
     downloadAbles: DownloadAbles
   ) {
+    const companyCode = orderGroup.company.code;
     const deliveryDate = orderGroup.deliveryDate;
+    console.log(orderGroup.company);
     const restaurants = [];
     for (const orderGroup of orderGroups) {
-      if (orderGroup.deliveryDate === deliveryDate) {
+      if (
+        orderGroup.company.code === companyCode &&
+        orderGroup.deliveryDate === deliveryDate
+      ) {
         restaurants.push(...orderGroup.restaurants);
       }
     }
@@ -43,9 +48,9 @@ export default function OrderGroupRow({
         uniqueRestaurants.push(restaurant);
       }
     }
-    setDownloadAbles(downloadAbles);
+    setLabelFilters({ companyCode, deliveryDate });
     setRestaurants(uniqueRestaurants);
-    setDeliveryDate(deliveryDate);
+    setDownloadAbles(downloadAbles);
     setOrderGroup(orderGroup);
     setShowModal(true);
   }

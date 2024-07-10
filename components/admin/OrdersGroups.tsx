@@ -15,6 +15,7 @@ import {
 import {
   CustomAxiosError,
   DownloadAbles,
+  LabelFilters,
   Order,
   OrderData,
   OrderGroup,
@@ -43,10 +44,10 @@ export default function OrdersGroups({ slug, title, orderGroups }: Props) {
   const csvLink = useRef<CSVLink>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [deliveryDate, setDeliveryDate] = useState('');
   const [orderGroup, setOrderGroup] = useState<OrderGroup>();
   const [orderCSVFilename, setOrderCSVFilename] = useState('');
   const [restaurants, setRestaurants] = useState<string[]>([]);
+  const [labelFilters, setLabelFilters] = useState<LabelFilters>();
   const [orderCSVData, setOrderCSVData] = useState<OrderData[]>([]);
   const [downloadAbles, setDownloadAbles] = useState<DownloadAbles>();
   const { allUpcomingOrders, allDeliveredOrders, setAllDeliveredOrders } =
@@ -77,7 +78,10 @@ export default function OrdersGroups({ slug, title, orderGroups }: Props) {
 
     const orders = [];
     for (const orderGroup of orderGroups) {
-      if (orderGroup.deliveryDate === deliveryDate) {
+      if (
+        orderGroup.company.code === labelFilters?.companyCode &&
+        orderGroup.deliveryDate === labelFilters?.deliveryDate
+      ) {
         orders.push(...orderGroup.orders);
       }
     }
@@ -113,7 +117,7 @@ export default function OrdersGroups({ slug, title, orderGroups }: Props) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `Labels - ${dateToText(deliveryDate)}.pdf`;
+    a.download = `Labels - ${dateToText(labelFilters?.deliveryDate || '')}.pdf`;
     a.click();
     setShowModal(false);
   }
@@ -186,7 +190,7 @@ export default function OrdersGroups({ slug, title, orderGroups }: Props) {
                     setShowModal={setShowModal}
                     setOrderGroup={setOrderGroup}
                     setRestaurants={setRestaurants}
-                    setDeliveryDate={setDeliveryDate}
+                    setLabelFilters={setLabelFilters}
                     setDownloadAbles={setDownloadAbles}
                   />
                 ))}
