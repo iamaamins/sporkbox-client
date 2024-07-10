@@ -46,7 +46,8 @@ export default function OrderGroupRow({
       }
     }
     downloadAbles === 'CSV' && setOrderGroup(orderGroup);
-    setLabelFilters({ companyCode, deliveryDate });
+    downloadAbles === 'labels' &&
+      setLabelFilters({ companyCode, deliveryDate });
     setRestaurants(uniqueRestaurants);
     setDownloadAbles(downloadAbles);
     setShowModal(true);
