@@ -3,8 +3,8 @@ import { useData } from '@context/Data';
 import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
 import OrderGroupRow from './OrderGroupRow';
-import SortOrdersGroups from './SortOrderGroups';
-import styles from './OrdersGroups.module.css';
+import SortOrderGroups from './SortOrderGroups';
+import styles from './OrderGroups.module.css';
 import ActionButton from '@components/layout/ActionButton';
 import {
   axiosInstance,
@@ -164,7 +164,7 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
           <>
             <div className={styles.orders_top}>
               <h2>{title}</h2>
-              <SortOrdersGroups
+              <SortOrderGroups
                 setSorted={setSorted}
                 orderGroups={orderGroups}
               />

@@ -13,13 +13,13 @@ import {
   numberToUSD,
   groupIdenticalOrdersForAdmin,
 } from '@lib/utils';
-import styles from './OrdersGroupDetails.module.css';
+import styles from './OrderGroupDetails.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
 
 type Props = { isLoading: boolean; orderGroups: OrderGroup[] };
 type DeliverOrdersPayload = { orders: Order[]; restaurantName: string };
 
-export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
+export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const [orderId, setOrderId] = useState('');
@@ -138,25 +138,25 @@ export default function OrdersGroupDetails({ isLoading, orderGroups }: Props) {
   // Separate order for each restaurant
   useEffect(() => {
     if (!isLoading && router.isReady) {
-      const ordersGroup = orderGroups.find(
-        (ordersGroup) =>
-          dateToMS(ordersGroup.deliveryDate).toString() === router.query.date &&
-          ordersGroup.company._id === router.query.company
+      const orderGroup = orderGroups.find(
+        (orderGroup) =>
+          dateToMS(orderGroup.deliveryDate).toString() === router.query.date &&
+          orderGroup.company._id === router.query.company
       );
 
-      if (ordersGroup) {
+      if (orderGroup) {
         setOrdersByRestaurants(
-          ordersGroup.restaurants.reduce((acc: OrdersByRestaurant[], curr) => {
+          orderGroup.restaurants.reduce((acc: OrdersByRestaurant[], curr) => {
             return [
               ...acc,
               {
                 company: {
-                  name: ordersGroup.company.name,
-                  shift: ordersGroup.company.shift,
+                  name: orderGroup.company.name,
+                  shift: orderGroup.company.shift,
                 },
                 restaurantName: curr,
-                deliveryDate: ordersGroup.deliveryDate,
-                orders: ordersGroup.orders.filter(
+                deliveryDate: orderGroup.deliveryDate,
+                orders: orderGroup.orders.filter(
                   (order) => order.restaurant.name === curr
                 ),
               },

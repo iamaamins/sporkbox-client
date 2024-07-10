@@ -4,9 +4,9 @@ import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
 import PageLoader from '@components/layout/PageLoader';
-import OrdersGroupDetails from '@components/admin/OrdersGroupDetails';
+import OrderGroupDetails from '@components/admin/OrderGroupDetails';
 
-export default function DeliveredOrdersGroupDetailsPage() {
+export default function DeliveredOrderGroupDetailsPage() {
   const router = useRouter();
   const { isUserLoading, isAdmin } = useUser();
   const { deliveredOrderGroups, allDeliveredOrders } = useData();
@@ -19,7 +19,7 @@ export default function DeliveredOrdersGroupDetailsPage() {
     <main>
       {isUserLoading && <PageLoader />}
       {isAdmin && (
-        <OrdersGroupDetails
+        <OrderGroupDetails
           orderGroups={deliveredOrderGroups}
           isLoading={allDeliveredOrders.isLoading}
         />

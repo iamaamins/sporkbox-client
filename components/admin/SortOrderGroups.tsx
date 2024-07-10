@@ -1,7 +1,7 @@
 import { dateToMS } from '@lib/utils';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { OrderGroup, SortedOrderGroups } from 'types';
-import styles from './SortOrdersGroups.module.css';
+import styles from './SortOrderGroups.module.css';
 
 type Props = {
   orderGroups: OrderGroup[];

@@ -3,10 +3,10 @@ import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
 import { useData } from '@context/Data';
-import OrdersGroups from '@components/admin/OrdersGroups';
+import OrderGroups from '@components/admin/OrderGroups';
 import PageLoader from '@components/layout/PageLoader';
 
-export default function DeliveredOrdersGroupsPage() {
+export default function DeliveredOrderGroupsPage() {
   const router = useRouter();
   const { deliveredOrderGroups } = useData();
   const { isUserLoading, isAdmin } = useUser();
@@ -19,7 +19,7 @@ export default function DeliveredOrdersGroupsPage() {
     <main>
       {isUserLoading && <PageLoader />}
       {isAdmin && (
-        <OrdersGroups
+        <OrderGroups
           slug='delivered-orders'
           title='Delivered orders'
           orderGroups={deliveredOrderGroups}

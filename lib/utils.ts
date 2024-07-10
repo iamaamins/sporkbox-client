@@ -143,9 +143,9 @@ export const createOrderGroups = (orders: Order[]) =>
   orders.reduce((acc: OrderGroup[], curr): OrderGroup[] => {
     if (
       !acc.some(
-        (ordersGroup) =>
-          ordersGroup.company._id === curr.company._id &&
-          ordersGroup.deliveryDate === curr.delivery.date
+        (orderGroup) =>
+          orderGroup.company._id === curr.company._id &&
+          orderGroup.deliveryDate === curr.delivery.date
       )
     ) {
       return [
@@ -164,23 +164,23 @@ export const createOrderGroups = (orders: Order[]) =>
         },
       ];
     } else {
-      return acc.map((ordersGroup) => {
+      return acc.map((orderGroup) => {
         if (
-          ordersGroup.company._id === curr.company._id &&
-          ordersGroup.deliveryDate === curr.delivery.date
+          orderGroup.company._id === curr.company._id &&
+          orderGroup.deliveryDate === curr.delivery.date
         ) {
           return {
-            ...ordersGroup,
-            orders: [...ordersGroup.orders, curr],
-            customers: ordersGroup.customers.includes(curr.customer._id)
-              ? ordersGroup.customers
-              : [...ordersGroup.customers, curr.customer._id],
-            restaurants: ordersGroup.restaurants.includes(curr.restaurant.name)
-              ? ordersGroup.restaurants
-              : [...ordersGroup.restaurants, curr.restaurant.name],
+            ...orderGroup,
+            orders: [...orderGroup.orders, curr],
+            customers: orderGroup.customers.includes(curr.customer._id)
+              ? orderGroup.customers
+              : [...orderGroup.customers, curr.customer._id],
+            restaurants: orderGroup.restaurants.includes(curr.restaurant.name)
+              ? orderGroup.restaurants
+              : [...orderGroup.restaurants, curr.restaurant.name],
           };
         } else {
-          return ordersGroup;
+          return orderGroup;
         }
       });
     }
