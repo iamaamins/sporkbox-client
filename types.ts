@@ -34,6 +34,7 @@ export type Schedule = {
     code: string;
     shift: 'day' | 'night';
   };
+  createdAt: string;
   status: 'ACTIVE' | 'INACTIVE';
 };
 

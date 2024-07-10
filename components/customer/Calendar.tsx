@@ -72,8 +72,7 @@ export default function Calendar() {
           )
           .sort(
             (a, b) =>
-              new Date(a.schedule.date).getTime() -
-              new Date(b.schedule.date).getTime()
+              dateToMS(a.schedule.createdAt) - dateToMS(b.schedule.createdAt)
           );
         const activeRestaurants = upcomingRestaurantsOnDate.map(
           (upcomingRestaurant) => ({
