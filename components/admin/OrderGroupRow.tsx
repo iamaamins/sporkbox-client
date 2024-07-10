@@ -12,7 +12,7 @@ type Props = {
   setRestaurants: Dispatch<SetStateAction<string[]>>;
   setShowModal: Dispatch<SetStateAction<boolean>>;
   setDownloadAbles: Dispatch<SetStateAction<DownloadAbles>>;
-  setOrderGroup: Dispatch<SetStateAction<OrderGroup | undefined>>;
+  setCSVOrderGroup: Dispatch<SetStateAction<OrderGroup | undefined>>;
   setLabelFilters: Dispatch<SetStateAction<LabelFilters | undefined>>;
 };
 
@@ -21,9 +21,9 @@ export default function OrderGroupRow({
   orderGroup,
   orderGroups,
   setShowModal,
-  setOrderGroup,
   setRestaurants,
   setLabelFilters,
+  setCSVOrderGroup,
   setDownloadAbles,
 }: Props) {
   function selectRestaurants(downloadAbles: DownloadAbles) {
@@ -45,7 +45,7 @@ export default function OrderGroupRow({
         uniqueRestaurants.push(restaurant);
       }
     }
-    downloadAbles === 'CSV' && setOrderGroup(orderGroup);
+    downloadAbles === 'CSV' && setCSVOrderGroup(orderGroup);
     downloadAbles === 'labels' &&
       setLabelFilters({ companyCode, deliveryDate });
     setRestaurants(uniqueRestaurants);

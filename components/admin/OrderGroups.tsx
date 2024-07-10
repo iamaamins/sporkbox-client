@@ -44,7 +44,7 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
   const csvLink = useRef<CSVLink>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [orderGroup, setOrderGroup] = useState<OrderGroup>();
+  const [csvOrderGroup, setCSVOrderGroup] = useState<OrderGroup>();
   const [orderCSVFilename, setOrderCSVFilename] = useState('');
   const [restaurants, setRestaurants] = useState<string[]>([]);
   const [labelFilters, setLabelFilters] = useState<LabelFilters>();
@@ -128,15 +128,15 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
     selectedRestaurants: string[]
   ) {
     e.preventDefault();
-    if (!orderGroup) return;
+    if (!csvOrderGroup) return;
 
     const orders: Order[] = [];
-    for (const order of orderGroup.orders) {
+    for (const order of csvOrderGroup.orders) {
       if (selectedRestaurants.includes(order.restaurant.name)) {
         orders.push(order);
       }
     }
-    const updatedOrderGroup = { ...orderGroup, orders };
+    const updatedOrderGroup = { ...csvOrderGroup, orders };
     setOrderCSVData(formatOrderDataToCSV(updatedOrderGroup));
     setOrderCSVFilename(createOrderCSVFileName(updatedOrderGroup));
 
@@ -189,9 +189,9 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
                     orderGroup={orderGroup}
                     orderGroups={orderGroups}
                     setShowModal={setShowModal}
-                    setOrderGroup={setOrderGroup}
                     setRestaurants={setRestaurants}
                     setLabelFilters={setLabelFilters}
+                    setCSVOrderGroup={setCSVOrderGroup}
                     setDownloadAbles={setDownloadAbles}
                   />
                 ))}
