@@ -26,20 +26,17 @@ export default function OrderGroupRow({
   setLabelFilters,
   setDownloadAbles,
 }: Props) {
-  function selectRestaurants(
-    orderGroup: OrderGroup,
-    downloadAbles: DownloadAbles
-  ) {
+  function selectRestaurants(downloadAbles: DownloadAbles) {
     const companyCode = orderGroup.company.code;
     const deliveryDate = orderGroup.deliveryDate;
-    console.log(orderGroup.company);
+
     const restaurants = [];
-    for (const orderGroup of orderGroups) {
+    for (const group of orderGroups) {
       if (
-        orderGroup.company.code === companyCode &&
-        orderGroup.deliveryDate === deliveryDate
+        group.company.code === companyCode &&
+        group.deliveryDate === deliveryDate
       ) {
-        restaurants.push(...orderGroup.restaurants);
+        restaurants.push(...group.restaurants);
       }
     }
     const uniqueRestaurants: string[] = [];
@@ -48,10 +45,10 @@ export default function OrderGroupRow({
         uniqueRestaurants.push(restaurant);
       }
     }
+    downloadAbles === 'CSV' && setOrderGroup(orderGroup);
     setLabelFilters({ companyCode, deliveryDate });
     setRestaurants(uniqueRestaurants);
     setDownloadAbles(downloadAbles);
-    setOrderGroup(orderGroup);
     setShowModal(true);
   }
 
@@ -77,11 +74,11 @@ export default function OrderGroupRow({
       <td>{orderGroup.orders.length}</td>
       <td className={styles.actions}>
         {slug === 'upcoming-orders' && (
-          <span onClick={() => selectRestaurants(orderGroup, 'labels')}>
+          <span onClick={() => selectRestaurants('labels')}>
             Labels <FiDownload />
           </span>
         )}
-        <span onClick={() => selectRestaurants(orderGroup, 'CSV')}>
+        <span onClick={() => selectRestaurants('CSV')}>
           CSV <FiDownload />
         </span>
       </td>

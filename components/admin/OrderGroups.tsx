@@ -38,7 +38,7 @@ type Props = {
   orderGroups: OrderGroup[];
 };
 
-export default function OrdersGroups({ slug, title, orderGroups }: Props) {
+export default function OrderGroups({ slug, title, orderGroups }: Props) {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const csvLink = useRef<CSVLink>(null);
@@ -75,14 +75,15 @@ export default function OrdersGroups({ slug, title, orderGroups }: Props) {
     selectedRestaurants: string[]
   ) {
     e.preventDefault();
+    if (!labelFilters) return;
 
     const orders = [];
-    for (const orderGroup of orderGroups) {
+    for (const group of orderGroups) {
       if (
-        orderGroup.company.code === labelFilters?.companyCode &&
-        orderGroup.deliveryDate === labelFilters?.deliveryDate
+        group.company.code === labelFilters.companyCode &&
+        group.deliveryDate === labelFilters.deliveryDate
       ) {
-        orders.push(...orderGroup.orders);
+        orders.push(...group.orders);
       }
     }
 
@@ -117,7 +118,7 @@ export default function OrdersGroups({ slug, title, orderGroups }: Props) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `Labels - ${dateToText(labelFilters?.deliveryDate || '')}.pdf`;
+    a.download = `Labels - ${dateToText(labelFilters.deliveryDate)}.pdf`;
     a.click();
     setShowModal(false);
   }
@@ -181,11 +182,11 @@ export default function OrdersGroups({ slug, title, orderGroups }: Props) {
                 </tr>
               </thead>
               <tbody>
-                {orderGroups.map((ordersGroup, index) => (
+                {orderGroups.map((orderGroup, index) => (
                   <OrderGroupRow
                     key={index}
                     slug={slug}
-                    orderGroup={ordersGroup}
+                    orderGroup={orderGroup}
                     orderGroups={orderGroups}
                     setShowModal={setShowModal}
                     setOrderGroup={setOrderGroup}

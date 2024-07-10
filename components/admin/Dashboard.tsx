@@ -1,4 +1,4 @@
-import OrdersGroups from './OrdersGroups';
+import OrderGroups from './OrderGroups';
 import { useData } from '@context/Data';
 import ScheduledRestaurants from './ScheduledRestaurants';
 
@@ -7,7 +7,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <OrdersGroups
+      <OrderGroups
         slug='upcoming-orders'
         title='Upcoming orders'
         orderGroups={upcomingOrderGroups}
