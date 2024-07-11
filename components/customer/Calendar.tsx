@@ -99,6 +99,9 @@ export default function Calendar() {
         {upcomingDates.length > 0 && (
           <>
             <div className={styles.header_and_controller}>
+              <p className={styles.notice}>
+                Pricing includes all fees. No gratuity accepted.
+              </p>
               <div className={styles.header}>
                 <h2>Upcoming week</h2>
                 <CalendarSort
@@ -114,7 +117,6 @@ export default function Calendar() {
                   Filter
                 </p>
               </div>
-
               <div className={styles.controller}>
                 {upcomingDates.map((upcomingDate, index) => (
                   <div key={index}>
