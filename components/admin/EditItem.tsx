@@ -31,7 +31,6 @@ export default function EditItem() {
       addons: '',
       addable: 0,
     },
-    orderCapacity: '',
     removableIngredients: '',
   };
 
@@ -51,7 +50,6 @@ export default function EditItem() {
     description,
     optionalAddons,
     requiredAddons,
-    orderCapacity,
     removableIngredients,
   } = formData;
 
@@ -76,8 +74,6 @@ export default function EditItem() {
           updatedTags: splitTags(item.tags).filter((currTag) =>
             tags.includes(currTag)
           ),
-          orderCapacity:
-            item.orderCapacity === null ? '' : item.orderCapacity.toString(),
         });
       }
     }
@@ -94,7 +90,6 @@ export default function EditItem() {
     data.append('price', price as string);
     image && data.append('image', image);
     data.append('description', description);
-    orderCapacity && data.append('orderCapacity', orderCapacity);
     data.append('optionalAddons', JSON.stringify(optionalAddons));
     data.append('requiredAddons', JSON.stringify(requiredAddons));
     data.append('removableIngredients', removableIngredients as string);

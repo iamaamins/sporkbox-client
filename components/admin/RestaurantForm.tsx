@@ -45,6 +45,7 @@ export default function RestaurantForm({
     isFeatured,
     addressLine1,
     addressLine2,
+    orderCapacity,
     restaurantName,
     confirmPassword,
   } = formData;
@@ -79,83 +80,88 @@ export default function RestaurantForm({
       }
     >
       <p className={styles.form_title}>Contact info</p>
-      <div className={styles.item}>
-        <label htmlFor='firstName'>First name</label>
-        <input
-          type='text'
-          id='firstName'
-          value={firstName}
-          onChange={handleChange}
-        />
+      <div className={styles.items}>
+        <div className={styles.item}>
+          <label htmlFor='firstName'>First name</label>
+          <input
+            type='text'
+            id='firstName'
+            value={firstName}
+            onChange={handleChange}
+          />
+        </div>
+        <div className={styles.item}>
+          <label htmlFor='lastName'>Last name</label>
+          <input
+            type='text'
+            id='lastName'
+            value={lastName}
+            onChange={handleChange}
+          />
+        </div>
+        <div className={styles.item}>
+          <label htmlFor='email'>Email address</label>
+          <input
+            type='email'
+            id='email'
+            value={email}
+            onChange={handleChange}
+          />
+        </div>
+        {showPasswordFields && (
+          <>
+            <div className={styles.item}>
+              <label htmlFor='password'>Password</label>
+              <input
+                type='password'
+                id='password'
+                value={password}
+                onChange={handleChange}
+              />
+            </div>
+            <div className={styles.item}>
+              <label htmlFor='confirmPassword'>
+                Confirm password {!passwordsMatch && " - Passwords don't match"}
+              </label>
+              <input
+                type='password'
+                id='confirmPassword'
+                value={confirmPassword}
+                onChange={handleChange}
+              />
+            </div>
+          </>
+        )}
       </div>
-      <div className={styles.item}>
-        <label htmlFor='lastName'>Last name</label>
-        <input
-          type='text'
-          id='lastName'
-          value={lastName}
-          onChange={handleChange}
-        />
-      </div>
-      <div className={styles.item}>
-        <label htmlFor='email'>Email address</label>
-        <input type='email' id='email' value={email} onChange={handleChange} />
-      </div>
-
-      {showPasswordFields && (
-        <>
-          <div className={styles.item}>
-            <label htmlFor='password'>Password</label>
-            <input
-              type='password'
-              id='password'
-              value={password}
-              onChange={handleChange}
-            />
-          </div>
-          <div className={styles.item}>
-            <label htmlFor='confirmPassword'>
-              Confirm password {!passwordsMatch && " - Passwords don't match"}
-            </label>
-            <input
-              type='password'
-              id='confirmPassword'
-              value={confirmPassword}
-              onChange={handleChange}
-            />
-          </div>
-        </>
-      )}
-
       <p className={styles.form_title}>Restaurant info</p>
-      <div className={styles.item}>
-        <label htmlFor='restaurantName'>Name</label>
-        <input
-          type='text'
-          id='restaurantName'
-          value={restaurantName}
-          onChange={handleChange}
-        />
-      </div>
-      <div className={styles.item}>
-        <label htmlFor='addressLine1'>Address line 1</label>
-        <input
-          type='text'
-          id='addressLine1'
-          value={addressLine1}
-          onChange={handleChange}
-        />
-      </div>
-      <div className={styles.item}>
-        <label htmlFor='addressLine2'>Address line 2</label>
-        <input
-          type='text'
-          id='addressLine2'
-          value={addressLine2}
-          onChange={handleChange}
-        />
-      </div>
-      <div className={styles.city_state_zip_featured}>
+      <div className={styles.items}>
+        <div className={styles.item}>
+          <label htmlFor='restaurantName'>Name</label>
+          <input
+            type='text'
+            id='restaurantName'
+            value={restaurantName}
+            onChange={handleChange}
+          />
+        </div>
+        <div className={styles.item}>
+          <label htmlFor='addressLine1'>Address line 1</label>
+          <input
+            type='text'
+            id='addressLine1'
+            value={addressLine1}
+            onChange={handleChange}
+          />
+        </div>
+        <div className={styles.item}>
+          <label htmlFor='addressLine2'>Address line 2</label>
+          <input
+            type='text'
+            id='addressLine2'
+            value={addressLine2}
+            onChange={handleChange}
+          />
+        </div>
         <div className={styles.item}>
           <label htmlFor='city'>City</label>
           <input type='text' id='city' value={city} onChange={handleChange} />
@@ -168,6 +174,15 @@ export default function RestaurantForm({
           <label htmlFor='zip'>Zip</label>
           <input type='text' id='zip' value={zip} onChange={handleChange} />
         </div>
+        <div className={styles.item}>
+          <label htmlFor='orderCapacity'>Maximum quantity</label>
+          <input
+            type='text'
+            id='orderCapacity'
+            value={orderCapacity}
+            onChange={handleChange}
+          />
+        </div>
         <div className={styles.is_featured}>
           <label htmlFor='isFeatured'>Make featured</label>
           <input
@@ -178,7 +193,6 @@ export default function RestaurantForm({
           />
         </div>
       </div>
-
       <div className={styles.logo_upload}>
         <div className={styles.upload}>
           <div className={styles.upload_icon_and_text}>
@@ -189,7 +203,10 @@ export default function RestaurantForm({
             <span
               className={styles.remove_logo}
               onClick={() =>
-                setFormData((prevState) => ({ ...prevState, file: undefined }))
+                setFormData((prevState) => ({
+                  ...prevState,
+                  file: undefined,
+                }))
               }
             >
               Remove <RiDeleteBinLine />

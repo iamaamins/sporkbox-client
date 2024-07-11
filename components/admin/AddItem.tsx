@@ -13,7 +13,6 @@ import {
 import styles from './AddItem.module.css';
 
 export default function AddItem() {
-  // Initial states
   const initialState = {
     name: '',
     price: '',
@@ -31,7 +30,6 @@ export default function AddItem() {
     removableIngredients: '',
   };
 
-  // Hooks
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { setVendors, vendors } = useData();
@@ -39,7 +37,6 @@ export default function AddItem() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<ItemFormData>(initialState);
 
-  // Destructure form data
   const {
     file,
     name,
@@ -48,7 +45,6 @@ export default function AddItem() {
     description,
     optionalAddons,
     requiredAddons,
-    orderCapacity,
     removableIngredients,
   } = formData;
 
@@ -72,7 +68,6 @@ export default function AddItem() {
     data.append('price', price as string);
     data.append('index', index as string);
     data.append('description', description);
-    orderCapacity && data.append('orderCapacity', orderCapacity);
     data.append('optionalAddons', JSON.stringify(optionalAddons));
     data.append('requiredAddons', JSON.stringify(requiredAddons));
     data.append('removableIngredients', removableIngredients as string);

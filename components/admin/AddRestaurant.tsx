@@ -20,6 +20,7 @@ export default function AddRestaurant() {
     addressLine1: '',
     addressLine2: '',
     isFeatured: false,
+    orderCapacity: '',
     restaurantName: '',
     confirmPassword: '',
   };
@@ -42,6 +43,7 @@ export default function AddRestaurant() {
     isFeatured,
     addressLine1,
     addressLine2,
+    orderCapacity,
     restaurantName,
   } = formData;
 
@@ -61,6 +63,7 @@ export default function AddRestaurant() {
     data.append('addressLine2', addressLine2 as string);
     data.append('isFeatured', JSON.stringify(isFeatured));
     data.append('restaurantName', restaurantName as string);
+    orderCapacity && data.append('orderCapacity', orderCapacity);
 
     try {
       setIsLoading(true);

@@ -52,6 +52,7 @@ export type Restaurant = {
   };
   isFeatured: boolean;
   createdAt: string;
+  orderCapacity: number;
   schedules: Schedule[];
 };
 
@@ -101,7 +102,6 @@ export type Item = {
     addable: number;
   };
   reviews: Review[];
-  orderCapacity: number;
   averageRating?: number;
   soldOutStat?: SoldOutStat[];
   removableIngredients?: string;
@@ -395,7 +395,6 @@ export interface ItemFormData {
     addons: string;
     addable: number;
   };
-  orderCapacity?: string;
   removableIngredients?: string;
 }
 
@@ -413,6 +412,7 @@ export type RestaurantFormData = {
   addressLine2?: string;
   restaurantName: string;
   file?: File | undefined;
+  orderCapacity: string;
   confirmPassword?: string;
 };
 

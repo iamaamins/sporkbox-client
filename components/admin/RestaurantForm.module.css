@@ -4,10 +4,15 @@
   margin-bottom: 1rem;
 }
 
+.items {
+  display: grid;
+  gap: 1.5rem 1rem;
+  margin-bottom: 1.5rem;
+}
+
 .item {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.5rem;
 }
 
 .item label {
@@ -36,12 +41,6 @@
   font-weight: 500;
   margin-right: 1rem;
   margin-bottom: 0rem;
-}
-
-.city_state_zip_featured {
-  display: grid;
-  gap: 0rem 1rem;
-  grid-template-columns: repeat(2, 1fr);
 }
 
 .logo_upload {
@@ -115,6 +114,10 @@
 }
 
 @media (min-width: 768px) {
+  .items {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .logo_upload {
     flex-direction: row;
     align-items: center;

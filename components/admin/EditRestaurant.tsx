@@ -24,6 +24,7 @@ export default function EditRestaurant() {
     file: undefined,
     addressLine1: '',
     addressLine2: '',
+    orderCapacity: '',
     isFeatured: false,
     restaurantName: '',
   };
@@ -47,6 +48,7 @@ export default function EditRestaurant() {
     isFeatured,
     addressLine1,
     addressLine2,
+    orderCapacity,
     restaurantName,
   } = formData;
 
@@ -71,6 +73,10 @@ export default function EditRestaurant() {
           isFeatured: vendor.restaurant.isFeatured,
           addressLine1: vendor.restaurant.address.addressLine1,
           addressLine2: vendor.restaurant.address.addressLine2,
+          orderCapacity:
+            vendor.restaurant.orderCapacity === null
+              ? ''
+              : vendor.restaurant.orderCapacity.toString(),
         });
       }
     }
@@ -80,18 +86,19 @@ export default function EditRestaurant() {
     e.preventDefault();
     const data = new FormData();
 
-    data.append('zip', zip as string);
-    data.append('city', city as string);
+    data.append('zip', zip);
+    data.append('city', city);
+    data.append('email', email);
+    data.append('state', state);
+    file && data.append('file', file);
     data.append('logo', logo as string);
-    data.append('email', email as string);
-    data.append('state', state as string);
-    file && data.append('file', file as File);
-    data.append('lastName', lastName as string);
-    data.append('firstName', firstName as string);
-    data.append('addressLine1', addressLine1 as string);
+    data.append('lastName', lastName);
+    data.append('firstName', firstName);
+    data.append('addressLine1', addressLine1);
+    data.append('restaurantName', restaurantName);
     data.append('addressLine2', addressLine2 as string);
     data.append('isFeatured', JSON.stringify(isFeatured));
-    data.append('restaurantName', restaurantName as string);
+    orderCapacity && data.append('orderCapacity', orderCapacity);
 
     try {
       setIsLoading(true);

@@ -47,7 +47,6 @@ export default function ItemForm({
     currentTags,
     description,
     optionalAddons,
-    orderCapacity,
     requiredAddons,
     removableIngredients,
   } = formData;
@@ -142,7 +141,6 @@ export default function ItemForm({
           onChange={handleChangeFormData}
         />
       </div>
-
       <div className={styles.addons}>
         <div>
           <label htmlFor='optionalAddons'>Optional addons</label>
@@ -155,7 +153,6 @@ export default function ItemForm({
             onChange={(e) => handleChangeAddons(e, 'optionalAddons')}
           />
         </div>
-
         <div>
           <label htmlFor='optionalAddable'>Optional addable</label>
           <input
@@ -168,7 +165,6 @@ export default function ItemForm({
           />
         </div>
       </div>
-
       <div className={styles.addons}>
         <div>
           <label htmlFor='requiredAddons'>Required addons</label>
@@ -181,7 +177,6 @@ export default function ItemForm({
             onChange={(e) => handleChangeAddons(e, 'requiredAddons')}
           />
         </div>
-
         <div>
           <label htmlFor='requiredAddable'>Required addable</label>
           <input
@@ -194,7 +189,6 @@ export default function ItemForm({
           />
         </div>
       </div>
-
       <div className={styles.item}>
         <label htmlFor='removableIngredients'>Removable ingredients</label>
         <input
@@ -205,31 +199,17 @@ export default function ItemForm({
           placeholder='E.g. Cheese, Mayo'
         />
       </div>
-
-      <div className={styles.price_and_capacity}>
-        <div className={styles.item}>
-          <label htmlFor='price'>Item price</label>
-          <input
-            type='number'
-            id='price'
-            value={price}
-            onChange={handleChangeFormData}
-          />
-        </div>
-        <div className={styles.item}>
-          <label htmlFor='orderCapacity'>Maximum order</label>
-          <input
-            type='text'
-            id='orderCapacity'
-            value={orderCapacity}
-            onChange={handleChangeFormData}
-          />
-        </div>
+      <div className={styles.item}>
+        <label htmlFor='price'>Item price</label>
+        <input
+          type='number'
+          id='price'
+          value={price}
+          onChange={handleChangeFormData}
+        />
       </div>
-
       <div className={styles.dietary_tags}>
         <p>Dietary tags</p>
-
         <div className={styles.tags}>
           {Object.keys(staticTags).map((staticTag, index) => (
             <div className={styles.tag} key={index}>
@@ -245,7 +225,6 @@ export default function ItemForm({
           ))}
         </div>
       </div>
-
       <div className={styles.item}>
         <label htmlFor='description'>Item description</label>
         <textarea
@@ -254,14 +233,12 @@ export default function ItemForm({
           onChange={handleChangeFormData}
         />
       </div>
-
       <div className={styles.image_upload}>
         <div className={styles.upload}>
           <div className={styles.upload_icon_and_text}>
             <FiUpload />
             <span>{file ? formatImageName(file.name) : 'Upload image'}</span>
           </div>
-
           {file && (
             <span
               className={styles.remove_upload}
@@ -276,7 +253,6 @@ export default function ItemForm({
             </span>
           )}
         </div>
-
         <input
           type='file'
           id='image'
@@ -288,7 +264,6 @@ export default function ItemForm({
             }))
           }
         />
-
         {image && (
           <div className={styles.image} ref={imageRef}>
             <Image
@@ -298,7 +273,6 @@ export default function ItemForm({
               objectFit='cover'
               layout='responsive'
             />
-
             <span
               className={styles.remove_image}
               onClick={() =>
@@ -313,7 +287,6 @@ export default function ItemForm({
           </div>
         )}
       </div>
-
       <SubmitButton text={buttonText} isLoading={isLoading} />
     </form>
   );

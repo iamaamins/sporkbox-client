@@ -5,16 +5,14 @@
   margin-bottom: 1.5rem;
 }
 
-.addons,
-.price_and_capacity {
+.addons {
   display: flex;
   align-items: center;
   margin-bottom: 1.5rem;
   justify-content: space-between;
 }
 
-.addons div,
-.price_and_capacity div {
+.addons div {
   width: 48%;
   display: flex;
   flex-direction: column;
