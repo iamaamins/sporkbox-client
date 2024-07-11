@@ -19,6 +19,7 @@ export default function AddRestaurant() {
     file: undefined,
     addressLine1: '',
     addressLine2: '',
+    isFeatured: false,
     restaurantName: '',
     confirmPassword: '',
   };
@@ -38,6 +39,7 @@ export default function AddRestaurant() {
     lastName,
     password,
     firstName,
+    isFeatured,
     addressLine1,
     addressLine2,
     restaurantName,
@@ -57,6 +59,7 @@ export default function AddRestaurant() {
     data.append('firstName', firstName as string);
     data.append('addressLine1', addressLine1 as string);
     data.append('addressLine2', addressLine2 as string);
+    data.append('isFeatured', JSON.stringify(isFeatured));
     data.append('restaurantName', restaurantName as string);
 
     try {
@@ -83,7 +86,6 @@ export default function AddRestaurant() {
   return (
     <section className={styles.add_restaurant}>
       <h2>Add a restaurant</h2>
-
       <RestaurantForm
         formData={formData}
         isLoading={isLoading}

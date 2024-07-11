@@ -42,6 +42,7 @@ export default function RestaurantForm({
     lastName,
     password,
     firstName,
+    isFeatured,
     addressLine1,
     addressLine2,
     restaurantName,
@@ -50,9 +51,10 @@ export default function RestaurantForm({
   const passwordsMatch = password === confirmPassword;
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    const isCheckbox = e.target.type === 'checkbox';
     setFormData((prevState) => ({
       ...prevState,
-      [e.target.id]: e.target.value,
+      [e.target.id]: isCheckbox ? e.target.checked : e.target.value,
     }));
   }
 
@@ -77,7 +79,6 @@ export default function RestaurantForm({
       }
     >
       <p className={styles.form_title}>Contact info</p>
-
       <div className={styles.item}>
         <label htmlFor='firstName'>First name</label>
         <input
@@ -87,7 +88,6 @@ export default function RestaurantForm({
           onChange={handleChange}
         />
       </div>
-
       <div className={styles.item}>
         <label htmlFor='lastName'>Last name</label>
         <input
@@ -97,7 +97,6 @@ export default function RestaurantForm({
           onChange={handleChange}
         />
       </div>
-
       <div className={styles.item}>
         <label htmlFor='email'>Email address</label>
         <input type='email' id='email' value={email} onChange={handleChange} />
@@ -114,7 +113,6 @@ export default function RestaurantForm({
               onChange={handleChange}
             />
           </div>
-
           <div className={styles.item}>
             <label htmlFor='confirmPassword'>
               Confirm password {!passwordsMatch && " - Passwords don't match"}
@@ -130,7 +128,6 @@ export default function RestaurantForm({
       )}
 
       <p className={styles.form_title}>Restaurant info</p>
-
       <div className={styles.item}>
         <label htmlFor='restaurantName'>Name</label>
         <input
@@ -140,7 +137,6 @@ export default function RestaurantForm({
           onChange={handleChange}
         />
       </div>
-
       <div className={styles.item}>
         <label htmlFor='addressLine1'>Address line 1</label>
         <input
@@ -150,7 +146,6 @@ export default function RestaurantForm({
           onChange={handleChange}
         />
       </div>
-
       <div className={styles.item}>
         <label htmlFor='addressLine2'>Address line 2</label>
         <input
@@ -160,21 +155,27 @@ export default function RestaurantForm({
           onChange={handleChange}
         />
       </div>
-
-      <div className={styles.city_state_zip}>
+      <div className={styles.city_state_zip_featured}>
         <div className={styles.item}>
           <label htmlFor='city'>City</label>
           <input type='text' id='city' value={city} onChange={handleChange} />
         </div>
-
         <div className={styles.item}>
           <label htmlFor='state'>State</label>
           <input type='text' id='state' value={state} onChange={handleChange} />
         </div>
-
         <div className={styles.item}>
           <label htmlFor='zip'>Zip</label>
           <input type='text' id='zip' value={zip} onChange={handleChange} />
+        </div>
+        <div className={styles.is_featured}>
+          <label htmlFor='isFeatured'>Make featured</label>
+          <input
+            type='checkbox'
+            id='isFeatured'
+            checked={isFeatured}
+            onChange={handleChange}
+          />
         </div>
       </div>
 
@@ -184,7 +185,6 @@ export default function RestaurantForm({
             <FiUpload />
             <span>{file ? formatImageName(file.name) : 'Upload logo'}</span>
           </div>
-
           {file && (
             <span
               className={styles.remove_logo}
@@ -196,7 +196,6 @@ export default function RestaurantForm({
             </span>
           )}
         </div>
-
         <input
           type='file'
           id='image'
@@ -208,7 +207,6 @@ export default function RestaurantForm({
             }))
           }
         />
-
         {logo && (
           <div className={styles.image} ref={logoRef}>
             <Image
@@ -221,7 +219,6 @@ export default function RestaurantForm({
           </div>
         )}
       </div>
-
       <SubmitButton text={buttonText} isLoading={isLoading} />
     </form>
   );

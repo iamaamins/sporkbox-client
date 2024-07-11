@@ -82,6 +82,10 @@
   color: var(--almost_white);
 }
 
+.restaurant_name svg {
+  margin: 0rem 0.25rem;
+}
+
 .restaurant.sold_out .restaurant_name,
 .restaurant.sold_out .item_name span,
 .item.sold_out .item_name span {

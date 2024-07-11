@@ -24,6 +24,7 @@ export default function EditRestaurant() {
     file: undefined,
     addressLine1: '',
     addressLine2: '',
+    isFeatured: false,
     restaurantName: '',
   };
 
@@ -43,6 +44,7 @@ export default function EditRestaurant() {
     state,
     lastName,
     firstName,
+    isFeatured,
     addressLine1,
     addressLine2,
     restaurantName,
@@ -66,6 +68,7 @@ export default function EditRestaurant() {
           city: vendor.restaurant.address.city,
           restaurantName: vendor.restaurant.name,
           state: vendor.restaurant.address.state,
+          isFeatured: vendor.restaurant.isFeatured,
           addressLine1: vendor.restaurant.address.addressLine1,
           addressLine2: vendor.restaurant.address.addressLine2,
         });
@@ -87,6 +90,7 @@ export default function EditRestaurant() {
     data.append('firstName', firstName as string);
     data.append('addressLine1', addressLine1 as string);
     data.append('addressLine2', addressLine2 as string);
+    data.append('isFeatured', JSON.stringify(isFeatured));
     data.append('restaurantName', restaurantName as string);
 
     try {
@@ -111,13 +115,10 @@ export default function EditRestaurant() {
   return (
     <section className={styles.edit_restaurant}>
       {vendors.isLoading && <h2>Loading...</h2>}
-
       {!vendors.isLoading && !vendor && <h2>No vendor found</h2>}
-
       {vendor && (
         <>
           <h2>Edit the details</h2>
-
           <RestaurantForm
             buttonText='Save'
             formData={formData}

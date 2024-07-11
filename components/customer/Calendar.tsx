@@ -13,6 +13,7 @@ import styles from './Calendar.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
 import { AiFillStar } from 'react-icons/ai';
 import { useUser } from '@context/User';
+import { RiShieldStarFill } from 'react-icons/ri';
 
 export default function Calendar() {
   const router = useRouter();
@@ -73,7 +74,8 @@ export default function Calendar() {
           .sort(
             (a, b) =>
               dateToMS(a.schedule.createdAt) - dateToMS(b.schedule.createdAt)
-          );
+          )
+          .sort((a, b) => Number(b.isFeatured) - Number(a.isFeatured));
         const activeRestaurants = upcomingRestaurantsOnDate.map(
           (upcomingRestaurant) => ({
             id: upcomingRestaurant._id,
@@ -152,7 +154,10 @@ export default function Calendar() {
                       className={styles.restaurant_name}
                       onClick={() => updateActiveRestaurants(restaurant)}
                     >
-                      {restaurant.name}{' '}
+                      {restaurant.name}
+                      {restaurant.isFeatured && (
+                        <RiShieldStarFill title='Featured restaurant' />
+                      )}
                       {restaurant.schedule.status === 'INACTIVE' &&
                         '- sold out'}
                       <IoIosArrowUp

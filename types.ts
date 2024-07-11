@@ -50,6 +50,7 @@ export type Restaurant = {
     addressLine1: string;
     addressLine2?: string;
   };
+  isFeatured: boolean;
   createdAt: string;
   schedules: Schedule[];
 };
@@ -69,6 +70,7 @@ export interface ScheduledRestaurant {
 export interface UpcomingRestaurant extends ScheduledRestaurant {
   logo: string;
   items: Item[];
+  isFeatured: boolean;
 }
 
 export type Review = {
@@ -406,6 +408,7 @@ export type RestaurantFormData = {
   lastName: string;
   firstName: string;
   password?: string;
+  isFeatured: boolean;
   addressLine1: string;
   addressLine2?: string;
   restaurantName: string;
