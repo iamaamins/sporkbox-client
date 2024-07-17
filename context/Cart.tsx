@@ -58,7 +58,8 @@ export default function CartProvider({ children }: ContextProviderProps) {
     )
     .map((upcomingOrder) => ({
       date: dateToMS(upcomingOrder.delivery.date),
-      total: upcomingOrder.item.total,
+      total:
+        upcomingOrder.item.total - (upcomingOrder.payment?.distributed || 0),
     }));
 
   const upcomingOrderDetails = getDateTotal(upcomingDateTotalDetails);

@@ -283,6 +283,7 @@ export type Order = {
   status: string;
   payment?: {
     intent: string;
+    total: number;
     distributed: number;
   };
   createdAt: string;
@@ -318,6 +319,9 @@ export interface CustomerOrder {
     optionalAddons?: string;
     requiredAddons?: string;
     removedIngredients?: string;
+  };
+  payment?: {
+    distributed: number;
   };
   delivery: {
     date: string;
