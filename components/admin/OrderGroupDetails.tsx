@@ -181,12 +181,7 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
 
       const paidOrders: Order[] = [];
       for (const order of filteredOrders) {
-        if (
-          order.payment &&
-          !paidOrders.some((el) => el.payment?.intent === order.payment?.intent)
-        ) {
-          paidOrders.push(order);
-        }
+        if (order.payment) paidOrders.push(order);
       }
       setAmount({
         paid: paidOrders.reduce(
