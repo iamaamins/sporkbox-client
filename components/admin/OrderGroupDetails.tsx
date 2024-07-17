@@ -185,7 +185,7 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
       }
       setAmount({
         paid: paidOrders.reduce(
-          (acc, curr) => acc + (curr.payment?.amount || 0),
+          (acc, curr) => acc + (curr.payment?.distributed || 0),
           0
         ),
         discount: filteredOrders.reduce(

@@ -283,7 +283,7 @@ export type Order = {
   status: string;
   payment?: {
     intent: string;
-    amount: number;
+    distributed: number;
   };
   createdAt: string;
   isReviewed: boolean;
