@@ -200,11 +200,9 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
   return (
     <section className={styles.orders_group_details}>
       {isLoading && <h2>Loading...</h2>}
-
       {!isLoading && ordersByRestaurants.length === 0 && (
         <h2>No orders found</h2>
       )}
-
       {ordersByRestaurants.length > 0 && (
         <>
           <h2>Order details - {date}</h2>
@@ -219,7 +217,6 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                 <th>Action</th>
               </tr>
             </thead>
-
             <tbody>
               {ordersByRestaurants.map((ordersByRestaurant, index) => (
                 <tr key={index}>
@@ -257,7 +254,6 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
               ))}
             </tbody>
           </table>
-
           {ordersByRestaurants.map((ordersByRestaurant, index) => (
             <div key={index}>
               <h2>
@@ -270,26 +266,21 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                     {hasOptionalAddons(ordersByRestaurant) && (
                       <th className={styles.hide_on_mobile}>Optional addons</th>
                     )}
-
                     {hasRequiredAddons(ordersByRestaurant) && (
                       <th className={styles.hide_on_mobile}>Required addons</th>
                     )}
-
                     {hasRemovedIngredients(ordersByRestaurant) && (
                       <th className={styles.hide_on_mobile}>Removed</th>
                     )}
-
                     <th>Item price</th>
                     <th>Quantity</th>
                   </tr>
                 </thead>
-
                 <tbody>
                   {groupIdenticalOrdersForAdmin(ordersByRestaurant.orders).map(
                     (order, index) => (
                       <tr key={index}>
                         <td>{order.item.name}</td>
-
                         {hasOptionalAddons(ordersByRestaurant) && (
                           <td
                             className={`${styles.hide_on_mobile} ${styles.ingredients}`}
@@ -297,7 +288,6 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                             {order.item.optionalAddons}
                           </td>
                         )}
-
                         {hasRequiredAddons(ordersByRestaurant) && (
                           <td
                             className={`${styles.hide_on_mobile} ${styles.ingredients}`}
@@ -305,7 +295,6 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                             {order.item.requiredAddons}
                           </td>
                         )}
-
                         {hasRemovedIngredients(ordersByRestaurant) && (
                           <td
                             className={`${styles.hide_on_mobile} ${styles.ingredients}`}
@@ -314,7 +303,6 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                           </td>
                         )}
                         <td>{numberToUSD(order.item.total)}</td>
-
                         <td>{order.item.quantity}</td>
                       </tr>
                     )
@@ -324,11 +312,9 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                     {hasOptionalAddons(ordersByRestaurant) && (
                       <td className={styles.hide_on_mobile}></td>
                     )}
-
                     {hasRequiredAddons(ordersByRestaurant) && (
                       <td className={styles.hide_on_mobile}></td>
                     )}
-
                     {hasRemovedIngredients(ordersByRestaurant) && (
                       <td className={styles.hide_on_mobile}></td>
                     )}
@@ -357,7 +343,6 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                     <th>Action</th>
                   </tr>
                 </thead>
-
                 <tbody>
                   {ordersByRestaurant.orders.map((order, index) => (
                     <tr key={index}>
@@ -386,7 +371,6 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
               </table>
             </div>
           ))}
-
           <h2>Charge information - {date}</h2>
           <table>
             <thead>
@@ -397,7 +381,6 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                 <th>Total</th>
               </tr>
             </thead>
-
             <tbody>
               <tr>
                 <td>
@@ -411,7 +394,6 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
           </table>
         </>
       )}
-
       {/* Archive modal */}
       <ModalContainer
         showModalContainer={showStatusUpdateModal}
@@ -426,7 +408,6 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
           />
         }
       />
-
       {/* Delivery modal */}
       <ModalContainer
         showModalContainer={showDeliveryModal}
