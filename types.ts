@@ -13,12 +13,12 @@ export interface Admin extends User {}
 
 export interface Customer extends User {
   status: string;
-  shifts: string[];
   createdAt: string;
   companies: Company[];
   subscribedTo: {
     orderReminder: boolean;
   };
+  shifts: Exclude<Shift, 'general'>[];
 }
 
 export interface Vendor extends User {
@@ -27,12 +27,14 @@ export interface Vendor extends User {
   restaurant: Restaurant;
 }
 
+type Shift = 'day' | 'night' | 'general';
+
 export type Schedule = {
   _id: string;
   date: string;
   company: {
     code: string;
-    shift: 'day' | 'night';
+    shift: Shift;
   };
   createdAt: string;
   status: 'ACTIVE' | 'INACTIVE';
@@ -124,7 +126,7 @@ export type CustomerFavoriteItem = {
 export type Company = {
   _id: string;
   name: string;
-  shift: string;
+  shift: Shift;
   code: string;
   website: string;
   address: {
@@ -164,7 +166,7 @@ export type VendorUpcomingOrder = {
   _id: string;
   company: {
     code: string;
-    shift: 'day' | 'night';
+    shift: Shift;
   };
   delivery: { date: string };
   item: VendorUpcomingOrderItem;
@@ -227,7 +229,7 @@ export type OrderGroup = {
   company: {
     _id: string;
     name: string;
-    shift: string;
+    shift: Shift;
     code: string;
   };
   customers: string[];
@@ -273,7 +275,7 @@ export type Order = {
   company: {
     _id: string;
     name: string;
-    shift: string;
+    shift: Shift;
     code: string;
   };
   delivery: {
@@ -327,7 +329,7 @@ export interface CustomerOrder {
     date: string;
   };
   company: {
-    shift: string;
+    shift: Shift;
   };
   restaurant: {
     _id: string;
@@ -358,7 +360,7 @@ export type FormData = {
 export type OrdersByRestaurant = {
   company: {
     name: string;
-    shift: string;
+    shift: Shift;
   };
   orders: Order[];
   deliveryDate: string;

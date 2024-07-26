@@ -13,7 +13,6 @@ import {
 import styles from './AddCompany.module.css';
 
 export default function AddCompany() {
-  // Initial state
   const initialState = {
     zip: '',
     name: '',
@@ -26,47 +25,29 @@ export default function AddCompany() {
     addressLine1: '',
     addressLine2: '',
   };
-
-  // Hooks
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { setCompanies } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<CompanyFormData>(initialState);
 
-  // Handle submit
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     try {
-      // Show loader
       setIsLoading(true);
-
-      // Make request to backend
       const response = await axiosInstance.post(
         `/companies/add-company`,
         formData
       );
-
-      // Update companies
       updateCompanies(response.data, setCompanies);
-
-      // Clear the form
       setFormData(initialState);
-
-      // Show success alert
       showSuccessAlert('Company added', setAlerts);
-
-      // Push to dashboard
       router.push('/admin/companies');
     } catch (err) {
-      // Log error
       console.log(err);
-
-      // Show error alert
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      // Remove loader
       setIsLoading(false);
     }
   }
@@ -74,7 +55,6 @@ export default function AddCompany() {
   return (
     <section className={styles.add_company}>
       <h2>Add a company</h2>
-
       <CompanyForm
         formData={formData}
         isLoading={isLoading}

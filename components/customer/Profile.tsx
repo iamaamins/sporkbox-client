@@ -23,7 +23,6 @@ export default function Profile() {
   const isSubscribed =
     customer && Object.values(customer.subscribedTo).includes(true);
 
-  // Opt-in and opt-out automated emails
   async function handleEmailSubscriptions() {
     if (!customer) return;
 
@@ -51,52 +50,51 @@ export default function Profile() {
     }
   }
 
+  const company = customer?.companies.find((el) => el.status === 'ACTIVE');
+
   return (
     <section className={styles.profile}>
       {customer && (
         <div className={styles.details}>
           <h2>Welcome {customer.firstName}</h2>
-          <p>
-            Company: <span>{customer.companies[0].name}</span>
-          </p>
-
-          {customer.companies
-            .filter((company) => company.status === 'ACTIVE')
-            .map((company, index) => (
-              <div key={index}>
-                <p className={styles.shift}>
-                  Shift: <span>{company.shift}</span>
-                </p>
-                <p>
-                  Budget: <span>{numberToUSD(company.shiftBudget)}</span>
-                </p>
-                <p>
-                  Address:{' '}
-                  <span>
-                    {company.address.addressLine2 ? (
-                      <>
-                        {company.address.addressLine1},{' '}
-                        {company.address.addressLine2}, {company.address.city},{' '}
-                        {company.address.state} {company.address.zip}
-                      </>
-                    ) : (
-                      <>
-                        {company.address.addressLine1}, {company.address.city},{' '}
-                        {company.address.state} {company.address.zip}
-                      </>
-                    )}
-                  </span>
-                </p>
-              </div>
-            ))}
-
+          {company && (
+            <p>
+              Company: <span>{company.name}</span>
+            </p>
+          )}
+          {company && (
+            <div>
+              <p className={styles.shift}>
+                Shift: <span>{company.shift}</span>
+              </p>
+              <p>
+                Budget: <span>{numberToUSD(company.shiftBudget)}</span>
+              </p>
+              <p>
+                Address:{' '}
+                <span>
+                  {company.address.addressLine2 ? (
+                    <>
+                      {company.address.addressLine1},{' '}
+                      {company.address.addressLine2}, {company.address.city},{' '}
+                      {company.address.state} {company.address.zip}
+                    </>
+                  ) : (
+                    <>
+                      {company.address.addressLine1}, {company.address.city},{' '}
+                      {company.address.state} {company.address.zip}
+                    </>
+                  )}
+                </span>
+              </p>
+            </div>
+          )}
           <div className={styles.buttons}>
             {customer.shifts.length > 0 && (
               <button onClick={() => setShowShiftChangeModal(true)}>
                 Select shift
               </button>
             )}
-
             <button onClick={handleEmailSubscriptions}>
               {isLoading ? (
                 <ButtonLoader />
@@ -109,11 +107,9 @@ export default function Profile() {
           </div>
         </div>
       )}
-
       <div>
         <div className={styles.order_timeline}>
           <p className={styles.title}>Order timeline</p>
-
           <div className={styles.timeline_items}>
             <p>
               <strong>Tuesday</strong> 12pm - Ordering opens up for the
@@ -123,17 +119,14 @@ export default function Profile() {
               <strong>Friday</strong> 12pm - Ordering closes for next week
               Monday-Wednesday.
             </p>
-
             <p>
               <strong>Monday</strong> 12pm - Ordering closes for that week
               Thursday-Sunday.
             </p>
           </div>
         </div>
-
         <div className={styles.instructions}>
           <p className={styles.title}>Getting started with Spork Box</p>
-
           <div className={styles.instruction}>
             <p>
               <strong>Step 1</strong>: Choose a shift
@@ -149,7 +142,6 @@ export default function Profile() {
               </li>
             </ul>
           </div>
-
           <div className={styles.instruction}>
             <p>
               <strong>Step 2</strong>: Place your lunch orders
@@ -170,7 +162,6 @@ export default function Profile() {
               <li>Prices includes all fees and gratuity.</li>
             </ul>
           </div>
-
           <div className={styles.instruction}>
             <p>
               <strong>Step 3</strong>: Check out
@@ -203,7 +194,6 @@ export default function Profile() {
               </li>
             </ul>
           </div>
-
           <a
             target='_blank'
             rel='noreferrer'
@@ -212,7 +202,6 @@ export default function Profile() {
           >
             Watch a video on how Spork Box works here!{' '}
           </a>
-
           <LinkButton
             target='_blank'
             linkText='Leave feedback'
@@ -220,7 +209,6 @@ export default function Profile() {
           />
         </div>
       </div>
-
       <ModalContainer
         showModalContainer={showShiftChangeModal}
         setShowModalContainer={setShowShiftChangeModal}
