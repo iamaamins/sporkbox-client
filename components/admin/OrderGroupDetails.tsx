@@ -103,7 +103,7 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
   async function updateStatus() {
     try {
       setIsUpdatingOrderStatus(true);
-      await axiosInstance.patch(`/orders/${orderId}/archive-order`);
+      await axiosInstance.patch(`/orders/${orderId}/archive`);
       setAllUpcomingOrders((prevState) => ({
         ...prevState,
         data: prevState.data.filter((order) => order._id !== orderId),
