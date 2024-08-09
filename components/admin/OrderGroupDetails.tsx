@@ -60,7 +60,7 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
 
     try {
       setIsUpdatingOrdersStatus(true);
-      await axiosInstance.patch('/orders/change-orders-status', {
+      await axiosInstance.patch('/orders/deliver', {
         orderIds,
       });
       setOrdersByRestaurants((prevState) =>
