@@ -108,23 +108,6 @@ export default function Profile() {
         </div>
       )}
       <div>
-        <div className={styles.order_timeline}>
-          <p className={styles.title}>Order timeline</p>
-          <div className={styles.timeline_items}>
-            <p>
-              <strong>Tuesday</strong> 12pm - Ordering opens up for the
-              following week.
-            </p>
-            <p>
-              <strong>Friday</strong> 12pm - Ordering closes for next week
-              Monday-Wednesday.
-            </p>
-            <p>
-              <strong>Monday</strong> 12pm - Ordering closes for that week
-              Thursday-Sunday.
-            </p>
-          </div>
-        </div>
         <div className={styles.instructions}>
           <p className={styles.title}>Getting started with Spork Box</p>
           <div className={styles.instruction}>
