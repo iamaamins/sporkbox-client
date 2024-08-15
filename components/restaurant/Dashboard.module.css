@@ -9,16 +9,19 @@
 
 .group_header {
   display: flex;
+  gap: 0.5rem;
   align-items: center;
   margin-bottom: 8px;
 }
 
 .group_header h2 {
   font-size: 16px;
-  margin-right: 1rem;
 }
 
 .group_header button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   border-radius: 2rem;
   padding: 4px 12px;
   font-weight: 500;

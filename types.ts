@@ -164,6 +164,13 @@ export type VendorUpcomingOrderItem = {
 
 export type VendorUpcomingOrder = {
   _id: string;
+  customer: {
+    firstName: string;
+    lastName: string;
+  };
+  restaurant: {
+    name: string;
+  };
   company: {
     code: string;
     shift: Shift;

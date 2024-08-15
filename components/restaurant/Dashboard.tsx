@@ -9,11 +9,15 @@ import {
   showErrorAlert,
   showSuccessAlert,
   groupIdenticalOrdersForVendor,
+  getAddonIngredients,
 } from '@lib/utils';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
 import ModalContainer from '@components/layout/ModalContainer';
 import StatusUpdateModal from './StatusUpdateModal';
+import { FiDownload } from 'react-icons/fi';
+import { pdf } from '@react-pdf/renderer';
+import Labels from '@components/admin/Labels';
 
 type OrderMap = {
   [key: string]: {
@@ -63,7 +67,6 @@ export default function Dashboard() {
     date: string,
     companyCode: string
   ) {
-    console.log(e.currentTarget.textContent);
     setShowStatusUpdateModal(true);
     setStatusUpdatePayload({
       date,
@@ -100,6 +103,39 @@ export default function Dashboard() {
       setIsUpdatingScheduleStatus(false);
       setShowStatusUpdateModal(false);
     }
+  }
+
+  async function generateAndDownloadLabels(
+    date: string,
+    orders: VendorUpcomingOrder[]
+  ) {
+    const labels = [];
+    for (const order of orders) {
+      for (let i = 0; i < order.item.quantity; i++) {
+        labels.push({
+          customer: {
+            firstName: order.customer.firstName,
+            lastName: order.customer.lastName,
+            shift: order.company.shift,
+          },
+          restaurant: order.restaurant.name,
+          item: {
+            name: order.item.name,
+            optional: getAddonIngredients(order.item.optionalAddons),
+            required: getAddonIngredients(order.item.requiredAddons),
+            removed: getAddonIngredients(order.item.removedIngredients),
+          },
+        });
+      }
+    }
+    labels.sort((a, b) => a.item.name.localeCompare(b.item.name));
+
+    const blob = await pdf(<Labels labels={labels} />).toBlob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Labels - ${dateToText(+date)}.pdf`;
+    a.click();
   }
 
   // Get the restaurant
@@ -173,7 +209,6 @@ export default function Dashboard() {
           </p>
         </div>
       )}
-
       {vendorUpcomingOrders.isLoading || restaurant.isLoading ? (
         <h2>Loading...</h2>
       ) : orderGroups.length ? (
@@ -189,6 +224,11 @@ export default function Dashboard() {
                     {schedules[0].status === 'ACTIVE'
                       ? 'Deactivate'
                       : 'Activate'}
+                  </button>
+                  <button
+                    onClick={() => generateAndDownloadLabels(date, orders)}
+                  >
+                    Label <FiDownload />
                   </button>
                 </div>
                 <table>
@@ -227,7 +267,6 @@ export default function Dashboard() {
       ) : (
         <p>No upcoming orders</p>
       )}
-
       <ModalContainer
         showModalContainer={showStatusUpdateModal}
         setShowModalContainer={setShowStatusUpdateModal}
