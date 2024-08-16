@@ -173,8 +173,7 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
               <thead>
                 <tr>
                   <th>Delivery date</th>
-                  <th className={styles.hide_on_mobile}>Company</th>
-                  <th>Shift</th>
+                  <th className={styles.hide_on_mobile}>Company code</th>
                   <th className={styles.hide_on_mobile}>Restaurant</th>
                   <th>Headcount</th>
                   <th>Orders</th>

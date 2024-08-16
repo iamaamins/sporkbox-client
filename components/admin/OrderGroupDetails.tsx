@@ -153,6 +153,7 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                 company: {
                   name: orderGroup.company.name,
                   shift: orderGroup.company.shift,
+                  code: orderGroup.company.code,
                 },
                 restaurantName: curr,
                 deliveryDate: orderGroup.deliveryDate,
@@ -211,8 +212,7 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
             <thead>
               <tr>
                 <th className={styles.hide_on_mobile}>Date</th>
-                <th>Company</th>
-                <th className={styles.hide_on_mobile}>Shift</th>
+                <th>Company code</th>
                 <th>Restaurant</th>
                 <th className={styles.hide_on_mobile}>Quantity</th>
                 <th>Action</th>
@@ -224,10 +224,7 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                   <td className={styles.hide_on_mobile}>
                     {dateToText(ordersByRestaurant.deliveryDate)}
                   </td>
-                  <td>{ordersByRestaurant.company.name}</td>
-                  <td className={`${styles.shift} ${styles.hide_on_mobile}`}>
-                    {ordersByRestaurant.company.shift}
-                  </td>
+                  <td>{ordersByRestaurant.company.code}</td>
                   <td>{ordersByRestaurant.restaurantName}</td>
                   <td className={styles.hide_on_mobile}>
                     {getOrdersQuantity(ordersByRestaurant.orders)}

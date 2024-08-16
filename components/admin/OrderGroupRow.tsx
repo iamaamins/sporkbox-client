@@ -64,8 +64,7 @@ export default function OrderGroupRow({
           <a>{dateToText(orderGroup.deliveryDate)} </a>
         </Link>
       </td>
-      <td className={styles.hide_on_mobile}>{orderGroup.company.name}</td>
-      <td className={styles.shift}>{orderGroup.company.shift}</td>
+      <td className={styles.hide_on_mobile}>{orderGroup.company.code}</td>
       <td className={`${styles.restaurants} ${styles.hide_on_mobile}`}>
         {orderGroup.restaurants.map((restaurant) => (
           <span key={restaurant}>{restaurant}</span>

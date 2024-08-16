@@ -368,6 +368,7 @@ export type OrdersByRestaurant = {
   company: {
     name: string;
     shift: Shift;
+    code: string;
   };
   orders: Order[];
   deliveryDate: string;
