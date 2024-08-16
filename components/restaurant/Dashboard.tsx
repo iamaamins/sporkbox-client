@@ -228,7 +228,7 @@ export default function Dashboard() {
                   <button
                     onClick={() => generateAndDownloadLabels(date, orders)}
                   >
-                    Label <FiDownload />
+                    Labels <FiDownload />
                   </button>
                 </div>
                 <table>
