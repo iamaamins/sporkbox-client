@@ -138,13 +138,13 @@ export async function handleRemoveFromFavorite(
 export const createSlug = (text: string) =>
   text.toLowerCase().split(' ').join('-');
 
-// Group orders by company name and delivery date
+// Group orders by company and delivery date
 export const createOrderGroups = (orders: Order[]) =>
   orders.reduce((acc: OrderGroup[], curr): OrderGroup[] => {
     if (
       !acc.some(
         (orderGroup) =>
-          orderGroup.company._id === curr.company._id &&
+          orderGroup.company.code === curr.company.code &&
           orderGroup.deliveryDate === curr.delivery.date
       )
     ) {
@@ -166,7 +166,7 @@ export const createOrderGroups = (orders: Order[]) =>
     } else {
       return acc.map((orderGroup) => {
         if (
-          orderGroup.company._id === curr.company._id &&
+          orderGroup.company.code === curr.company.code &&
           orderGroup.deliveryDate === curr.delivery.date
         ) {
           return {

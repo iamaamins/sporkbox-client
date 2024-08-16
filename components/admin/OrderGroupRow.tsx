@@ -57,7 +57,7 @@ export default function OrderGroupRow({
     <tr className={styles.orders_group_row}>
       <td className={styles.important}>
         <Link
-          href={`/admin/${slug}/${orderGroup.company._id}/${dateToMS(
+          href={`/admin/${slug}/${orderGroup.company.code}/${dateToMS(
             orderGroup.deliveryDate
           )}`}
         >
@@ -73,7 +73,7 @@ export default function OrderGroupRow({
       </td>
       <td>{orderGroup.customers.length}</td>
       <td>{orderGroup.orders.length}</td>
-      <td className={styles.actions}>
+      <td>
         {slug === 'upcoming-orders' && (
           <span onClick={() => selectRestaurants('labels')}>
             Labels <FiDownload />

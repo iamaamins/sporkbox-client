@@ -11,13 +11,21 @@
 
 .orders_group_row td:last-child {
   display: flex;
+  gap: 0.5rem;
   align-items: center;
   justify-content: flex-end;
 }
 
+.orders_group_row td:last-child span {
+  cursor: pointer;
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  color: var(--orange);
+}
+
 .orders_group_row td:last-child svg {
   font-size: 18px;
-  margin-left: 0.25rem;
 }
 
 .important a {
@@ -29,27 +37,13 @@
   text-transform: capitalize;
 }
 
-.hide_on_mobile {
-  display: none;
-}
-
 .restaurants span {
   display: block;
   padding: 2px 0px;
 }
 
-.actions {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.actions a,
-.actions span {
-  display: flex;
-  align-items: center;
-  color: var(--orange);
-  cursor: pointer;
+.hide_on_mobile {
+  display: none;
 }
 
 @media (min-width: 768px) {
