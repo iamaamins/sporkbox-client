@@ -11,7 +11,7 @@ import {
   showSuccessAlert,
   dateToText,
   numberToUSD,
-  groupIdenticalOrdersForAdmin,
+  groupIdenticalOrdersAndSort,
 } from '@lib/utils';
 import styles from './OrderGroupDetails.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
@@ -263,11 +263,11 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                   <tr>
                     <th className={styles.hide_on_mobile}>Shift</th>
                     <th>Dish</th>
-                    {hasOptionalAddons(ordersByRestaurant) && (
-                      <th className={styles.hide_on_mobile}>Optional addons</th>
-                    )}
                     {hasRequiredAddons(ordersByRestaurant) && (
                       <th className={styles.hide_on_mobile}>Required addons</th>
+                    )}
+                    {hasOptionalAddons(ordersByRestaurant) && (
+                      <th className={styles.hide_on_mobile}>Optional addons</th>
                     )}
                     {hasRemovedIngredients(ordersByRestaurant) && (
                       <th className={styles.hide_on_mobile}>Removed</th>
@@ -277,7 +277,7 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                   </tr>
                 </thead>
                 <tbody>
-                  {groupIdenticalOrdersForAdmin(ordersByRestaurant.orders).map(
+                  {groupIdenticalOrdersAndSort(ordersByRestaurant.orders).map(
                     (order, index) => (
                       <tr key={index}>
                         <td
@@ -286,18 +286,18 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                           {order.company.shift}
                         </td>
                         <td>{order.item.name}</td>
-                        {hasOptionalAddons(ordersByRestaurant) && (
-                          <td
-                            className={`${styles.ingredients} ${styles.hide_on_mobile}`}
-                          >
-                            {order.item.optionalAddons}
-                          </td>
-                        )}
                         {hasRequiredAddons(ordersByRestaurant) && (
                           <td
                             className={`${styles.ingredients} ${styles.hide_on_mobile}`}
                           >
                             {order.item.requiredAddons}
+                          </td>
+                        )}
+                        {hasOptionalAddons(ordersByRestaurant) && (
+                          <td
+                            className={`${styles.ingredients} ${styles.hide_on_mobile}`}
+                          >
+                            {order.item.optionalAddons}
                           </td>
                         )}
                         {hasRemovedIngredients(ordersByRestaurant) && (

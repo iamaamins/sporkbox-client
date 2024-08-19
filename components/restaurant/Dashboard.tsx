@@ -8,8 +8,8 @@ import {
   dateToText,
   showErrorAlert,
   showSuccessAlert,
-  groupIdenticalOrdersForVendor,
   getAddonIngredients,
+  groupIdenticalOrdersAndSort,
 } from '@lib/utils';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
@@ -190,7 +190,7 @@ export default function Dashboard() {
             date: key.split('-')[0],
             company: key.split('-')[1],
             totalQuantity: orderMap[key].totalQuantity,
-            orders: groupIdenticalOrdersForVendor(orderMap[key].orders),
+            orders: groupIdenticalOrdersAndSort(orderMap[key].orders),
           });
         }
       }

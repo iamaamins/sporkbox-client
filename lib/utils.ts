@@ -265,42 +265,50 @@ export function showErrorAlert(
   );
 }
 
-export const groupIdenticalOrdersForAdmin = (orders: Order[]) =>
-  orders.reduce((acc: Order[], curr) => {
-    if (
-      !acc.some(
-        (order) =>
-          order.item._id === curr.item._id &&
-          order.delivery.date === curr.delivery.date &&
-          order.item.optionalAddons === curr.item.optionalAddons &&
-          order.item.requiredAddons === curr.item.requiredAddons &&
-          order.item.removedIngredients === curr.item.removedIngredients
-      )
-    ) {
-      return [...acc, curr];
-    } else {
-      return acc.map((order) => {
-        if (
-          order.item._id === curr.item._id &&
-          order.delivery.date === curr.delivery.date &&
-          order.item.optionalAddons === curr.item.optionalAddons &&
-          order.item.requiredAddons === curr.item.requiredAddons &&
-          order.item.removedIngredients === curr.item.removedIngredients
-        ) {
-          return {
-            ...order,
-            item: {
-              ...order.item,
-              quantity: order.item.quantity + curr.item.quantity,
-              total: order.item.total + curr.item.total,
-            },
-          };
-        } else {
-          return order;
-        }
-      });
-    }
-  }, []);
+export function groupIdenticalOrdersAndSort<
+  T extends Order | VendorUpcomingOrder
+>(orders: T[]): T[] {
+  return orders
+    .reduce((acc: T[], curr) => {
+      if (
+        !acc.some(
+          (order) =>
+            order.item._id === curr.item._id &&
+            order.delivery.date === curr.delivery.date &&
+            order.item.optionalAddons === curr.item.optionalAddons &&
+            order.item.requiredAddons === curr.item.requiredAddons &&
+            order.item.removedIngredients === curr.item.removedIngredients
+        )
+      ) {
+        return [...acc, curr];
+      } else {
+        return acc.map((order) => {
+          if (
+            order.item._id === curr.item._id &&
+            order.delivery.date === curr.delivery.date &&
+            order.item.optionalAddons === curr.item.optionalAddons &&
+            order.item.requiredAddons === curr.item.requiredAddons &&
+            order.item.removedIngredients === curr.item.removedIngredients
+          ) {
+            return {
+              ...order,
+              item: {
+                ...order.item,
+                quantity: order.item.quantity + curr.item.quantity,
+                ...('total' in order.item &&
+                  'total' in curr.item && {
+                    total: order.item.total + curr.item.total,
+                  }),
+              },
+            };
+          } else {
+            return order;
+          }
+        });
+      }
+    }, [])
+    .sort((a, b) => a.item.name.localeCompare(b.item.name));
+}
 
 // Format addable ingredients
 export const formatAddons = (ingredients: string) =>
@@ -387,39 +395,3 @@ export function getAddonIngredients(addons: string | undefined) {
   }
   return ingredients.join(', ');
 }
-
-export const groupIdenticalOrdersForVendor = (orders: VendorUpcomingOrder[]) =>
-  orders
-    .reduce((acc: VendorUpcomingOrder[], curr) => {
-      if (
-        !acc.some(
-          (order) =>
-            order.item._id === curr.item._id &&
-            order.item.optionalAddons === curr.item.optionalAddons &&
-            order.item.requiredAddons === curr.item.requiredAddons &&
-            order.item.removedIngredients === curr.item.removedIngredients
-        )
-      ) {
-        return [...acc, curr];
-      } else {
-        return acc.map((order) => {
-          if (
-            order.item._id === curr.item._id &&
-            order.item.optionalAddons === curr.item.optionalAddons &&
-            order.item.requiredAddons === curr.item.requiredAddons &&
-            order.item.removedIngredients === curr.item.removedIngredients
-          ) {
-            return {
-              ...order,
-              item: {
-                ...order.item,
-                quantity: order.item.quantity + curr.item.quantity,
-              },
-            };
-          } else {
-            return order;
-          }
-        });
-      }
-    }, [])
-    .sort((a, b) => a.item.name.localeCompare(b.item.name));
