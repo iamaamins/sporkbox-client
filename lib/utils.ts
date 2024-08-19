@@ -5,7 +5,6 @@ import { NextRouter } from 'next/router';
 import {
   Order,
   Alert,
-  Groups,
   Vendor,
   Vendors,
   Company,
@@ -78,35 +77,6 @@ export function updateVendors(
       }
     }),
   }));
-}
-
-// Group items by property
-export function groupBy<
-  Key extends keyof Item,
-  Item extends Record<Key, string>,
-  ItemsName extends PropertyKey
->(
-  key: Key,
-  items: Item[],
-  itemsName: ItemsName
-): Groups<Item, Key, ItemsName>[] {
-  const groupsObj = items.reduce<Record<string, Item[]>>((acc, curr) => {
-    const property: string = curr[key];
-    if (property in acc) {
-      return { ...acc, [property]: [...acc[property], curr] };
-    }
-    return { ...acc, [property]: [curr] };
-  }, {});
-
-  const groupsArr = Object.keys(groupsObj).map(
-    (property) =>
-      ({
-        [key]: property,
-        [itemsName]: groupsObj[property],
-      } as Groups<Item, Key, ItemsName>)
-  );
-
-  return groupsArr;
 }
 
 export const getDate = (date: number | string) =>

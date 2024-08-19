@@ -353,16 +353,8 @@ export interface SortedOrderGroups {
   byDeliveryDate: boolean;
 }
 
-export type Groups<
-  Item extends object,
-  Key extends keyof Item,
-  ItemsName extends PropertyKey // Property key is a string | number | symbol
-> = {
-  [key in Key]: Item[Key];
-} & { [itemsName in ItemsName]: Item[] };
-
 export type FormData = {
-  [key: string]: string | number; // Index type
+  [key: string]: string | number;
 };
 
 export type OrdersByRestaurant = {
