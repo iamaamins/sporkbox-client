@@ -236,8 +236,8 @@ export default function Dashboard() {
                     <tr>
                       <th>Name</th>
                       <th>Quantity</th>
-                      <th>Removed</th>
                       <th>Addons</th>
+                      <th>Removed</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -245,11 +245,11 @@ export default function Dashboard() {
                       <tr key={order._id}>
                         <td>{order.item.name}</td>
                         <td>{order.item.quantity}</td>
-                        <td>{order.item.removedIngredients}</td>
                         <td>
-                          {order.item.optionalAddons}
+                          {order.item.optionalAddons}{' '}
                           {order.item.requiredAddons}
                         </td>
+                        <td>{order.item.removedIngredients}</td>
                       </tr>
                     ))}
                     <tr>
