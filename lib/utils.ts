@@ -273,6 +273,7 @@ export function groupIdenticalOrdersAndSort<
       if (
         !acc.some(
           (order) =>
+            order.company._id === curr.company._id &&
             order.item._id === curr.item._id &&
             order.delivery.date === curr.delivery.date &&
             order.item.optionalAddons === curr.item.optionalAddons &&
@@ -284,6 +285,7 @@ export function groupIdenticalOrdersAndSort<
       } else {
         return acc.map((order) => {
           if (
+            order.company._id === curr.company._id &&
             order.item._id === curr.item._id &&
             order.delivery.date === curr.delivery.date &&
             order.item.optionalAddons === curr.item.optionalAddons &&

@@ -172,6 +172,7 @@ export type VendorUpcomingOrder = {
     name: string;
   };
   company: {
+    _id: string;
     code: string;
     shift: Shift;
   };
