@@ -110,51 +110,31 @@ export const createSlug = (text: string) =>
 
 // Group orders by company and delivery date
 export function createOrderGroups(orders: Order[]) {
-  return orders.reduce((acc: OrderGroup[], curr): OrderGroup[] => {
-    if (
-      !acc.some(
-        (orderGroup) =>
-          orderGroup.company.code === curr.company.code &&
-          orderGroup.deliveryDate === curr.delivery.date
-      )
-    ) {
-      return [
-        ...acc,
-        {
-          orders: [curr],
-          company: {
-            _id: curr.company._id,
-            shift: curr.company.shift,
-            name: curr.company.name,
-            code: curr.company.code,
-          },
-          customers: [curr.customer._id],
-          deliveryDate: curr.delivery.date,
-          restaurants: [curr.restaurant.name],
+  const groupMap: Record<string, OrderGroup> = {};
+  for (const order of orders) {
+    const key = order.company.code + order.delivery.date;
+    if (!groupMap[key]) {
+      groupMap[key] = {
+        orders: [order],
+        company: {
+          _id: order.company._id,
+          shift: order.company.shift,
+          name: order.company.name,
+          code: order.company.code,
         },
-      ];
+        customers: [order.customer._id],
+        deliveryDate: order.delivery.date,
+        restaurants: [order.restaurant.name],
+      };
     } else {
-      return acc.map((orderGroup) => {
-        if (
-          orderGroup.company.code === curr.company.code &&
-          orderGroup.deliveryDate === curr.delivery.date
-        ) {
-          return {
-            ...orderGroup,
-            orders: [...orderGroup.orders, curr],
-            customers: orderGroup.customers.includes(curr.customer._id)
-              ? orderGroup.customers
-              : [...orderGroup.customers, curr.customer._id],
-            restaurants: orderGroup.restaurants.includes(curr.restaurant.name)
-              ? orderGroup.restaurants
-              : [...orderGroup.restaurants, curr.restaurant.name],
-          };
-        } else {
-          return orderGroup;
-        }
-      });
+      groupMap[key].orders.push(order);
+      if (!groupMap[key].customers.includes(order.customer._id))
+        groupMap[key].customers.push(order.customer._id);
+      if (!groupMap[key].restaurants.includes(order.restaurant.name))
+        groupMap[key].restaurants.push(order.restaurant.name);
     }
-  }, []);
+  }
+  return Object.values(groupMap);
 }
 
 export const sortByLastName = (a: Customer, b: Customer) =>
@@ -253,9 +233,8 @@ export function groupIdenticalOrdersAndSort<
       orderMap[key] = structuredClone(order);
     } else {
       orderMap[key].item.quantity += order.item.quantity;
-      if ('total' in order.item && 'total' in orderMap[key].item) {
+      if ('total' in order.item && 'total' in orderMap[key].item)
         (orderMap[key] as Order).item.total += (order as Order).item.total;
-      }
     }
   }
   return Object.values(orderMap).sort((a, b) =>
