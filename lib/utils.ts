@@ -109,8 +109,8 @@ export const createSlug = (text: string) =>
   text.toLowerCase().split(' ').join('-');
 
 // Group orders by company and delivery date
-export const createOrderGroups = (orders: Order[]) =>
-  orders.reduce((acc: OrderGroup[], curr): OrderGroup[] => {
+export function createOrderGroups(orders: Order[]) {
+  return orders.reduce((acc: OrderGroup[], curr): OrderGroup[] => {
     if (
       !acc.some(
         (orderGroup) =>
@@ -155,6 +155,7 @@ export const createOrderGroups = (orders: Order[]) =>
       });
     }
   }, []);
+}
 
 export const sortByLastName = (a: Customer, b: Customer) =>
   a.lastName.toLowerCase().localeCompare(b.lastName.toLowerCase());
@@ -253,7 +254,7 @@ export function groupIdenticalOrdersAndSort<
     } else {
       orderMap[key].item.quantity += order.item.quantity;
       if ('total' in order.item && 'total' in orderMap[key].item) {
-        orderMap[key].item.total += order.item.total;
+        (orderMap[key] as Order).item.total += (order as Order).item.total;
       }
     }
   }
