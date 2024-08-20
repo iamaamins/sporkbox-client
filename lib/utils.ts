@@ -290,22 +290,16 @@ export const getAddonsTotal = (addons: string[]) =>
 
 // Get total amount for each date
 export function getDateTotal(details: DateTotal[]) {
-  return details.reduce((acc, curr) => {
-    if (!acc.some((detail) => detail.date === curr.date)) {
-      return [...acc, curr];
+  const dateTotalMap: Record<string, DateTotal> = {};
+  for (const detail of details) {
+    const key = detail.date;
+    if (!dateTotalMap[key]) {
+      dateTotalMap[key] = structuredClone(detail);
     } else {
-      return acc.map((detail) => {
-        if (detail.date === curr.date) {
-          return {
-            ...detail,
-            total: detail.total + curr.total,
-          };
-        } else {
-          return detail;
-        }
-      });
+      dateTotalMap[key].total += detail.total;
     }
-  }, [] as DateTotal[]);
+  }
+  return Object.values(dateTotalMap);
 }
 
 export function categorizeLastName(lastName: string) {
