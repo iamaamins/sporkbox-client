@@ -238,48 +238,28 @@ export function showErrorAlert(
 export function groupIdenticalOrdersAndSort<
   T extends Order | VendorUpcomingOrder
 >(orders: T[]): T[] {
-  return orders
-    .reduce((acc: T[], curr) => {
-      if (
-        !acc.some(
-          (order) =>
-            order.company._id === curr.company._id &&
-            order.item._id === curr.item._id &&
-            order.delivery.date === curr.delivery.date &&
-            order.item.optionalAddons === curr.item.optionalAddons &&
-            order.item.requiredAddons === curr.item.requiredAddons &&
-            order.item.removedIngredients === curr.item.removedIngredients
-        )
-      ) {
-        return [...acc, curr];
-      } else {
-        return acc.map((order) => {
-          if (
-            order.company._id === curr.company._id &&
-            order.item._id === curr.item._id &&
-            order.delivery.date === curr.delivery.date &&
-            order.item.optionalAddons === curr.item.optionalAddons &&
-            order.item.requiredAddons === curr.item.requiredAddons &&
-            order.item.removedIngredients === curr.item.removedIngredients
-          ) {
-            return {
-              ...order,
-              item: {
-                ...order.item,
-                quantity: order.item.quantity + curr.item.quantity,
-                ...('total' in order.item &&
-                  'total' in curr.item && {
-                    total: order.item.total + curr.item.total,
-                  }),
-              },
-            };
-          } else {
-            return order;
-          }
-        });
+  const orderMap: Record<string, T> = {};
+  for (const order of orders) {
+    const key =
+      order.company._id +
+      order.delivery.date +
+      order.item._id +
+      order.item.optionalAddons +
+      order.item.requiredAddons +
+      order.item.removedIngredients;
+
+    if (!orderMap[key]) {
+      orderMap[key] = structuredClone(order);
+    } else {
+      orderMap[key].item.quantity += order.item.quantity;
+      if ('total' in order.item && 'total' in orderMap[key].item) {
+        orderMap[key].item.total += order.item.total;
       }
-    }, [])
-    .sort((a, b) => a.item.name.localeCompare(b.item.name));
+    }
+  }
+  return Object.values(orderMap).sort((a, b) =>
+    a.item.name.localeCompare(b.item.name)
+  );
 }
 
 // Format addable ingredients
