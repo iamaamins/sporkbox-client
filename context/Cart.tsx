@@ -45,21 +45,21 @@ export default function CartProvider({ children }: ContextProviderProps) {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { customer, isCustomer } = useUser();
-  const { customerAllOrders, setCustomerUpcomingOrders } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const { customerAllOrders, setCustomerUpcomingOrders } = useData();
 
   const upcomingDateTotalDetails = customerAllOrders
-    .filter((upcomingOrder) =>
+    .filter((order) =>
       cartItems.some(
         (cartItem) =>
-          cartItem.deliveryDate === dateToMS(upcomingOrder.delivery.date)
+          cartItem.companyId === order.company._id &&
+          cartItem.deliveryDate === dateToMS(order.delivery.date)
       )
     )
-    .map((upcomingOrder) => ({
-      date: dateToMS(upcomingOrder.delivery.date),
-      total:
-        upcomingOrder.item.total - (upcomingOrder.payment?.distributed || 0),
+    .map((order) => ({
+      date: dateToMS(order.delivery.date),
+      total: order.item.total - (order.payment?.distributed || 0),
     }));
 
   const upcomingOrderDetails = getDateTotal(upcomingDateTotalDetails);

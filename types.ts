@@ -337,6 +337,7 @@ export interface CustomerOrder {
     date: string;
   };
   company: {
+    _id: string;
     shift: Shift;
   };
   restaurant: {

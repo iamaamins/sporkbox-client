@@ -40,7 +40,6 @@ export default function Cart() {
   const [isApplyingDiscount, setIsApplyingDiscount] = useState(false);
 
   let payableAmount = 0;
-
   if (customer) {
     const cartDateTotalDetails = cartItems.map((cartItem) => {
       const optionalAddonsPrice = getAddonsTotal(cartItem.optionalAddons);
