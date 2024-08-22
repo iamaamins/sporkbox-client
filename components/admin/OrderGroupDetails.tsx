@@ -145,24 +145,20 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
       );
 
       if (orderGroup) {
+        const { company, deliveryDate, restaurants, orders } = orderGroup;
         setOrdersByRestaurants(
-          orderGroup.restaurants.reduce((acc: OrdersByRestaurant[], curr) => {
-            return [
-              ...acc,
-              {
-                company: {
-                  name: orderGroup.company.name,
-                  shift: orderGroup.company.shift,
-                  code: orderGroup.company.code,
-                },
-                restaurantName: curr,
-                deliveryDate: orderGroup.deliveryDate,
-                orders: orderGroup.orders.filter(
-                  (order) => order.restaurant.name === curr
-                ),
-              },
-            ];
-          }, [])
+          restaurants.map((restaurant) => ({
+            company: {
+              name: company.name,
+              shift: company.shift,
+              code: company.code,
+            },
+            deliveryDate,
+            restaurantName: restaurant,
+            orders: orders.filter(
+              (order) => order.restaurant.name === restaurant
+            ),
+          }))
         );
       }
     }
