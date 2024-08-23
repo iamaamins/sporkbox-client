@@ -224,6 +224,7 @@ export function groupIdenticalOrdersAndSort<
     const key =
       order.company._id +
       order.delivery.date +
+      order.restaurant._id +
       order.item._id +
       order.item.optionalAddons +
       order.item.requiredAddons +

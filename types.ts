@@ -169,6 +169,7 @@ export type VendorUpcomingOrder = {
     lastName: string;
   };
   restaurant: {
+    _id: string;
     name: string;
   };
   company: {
