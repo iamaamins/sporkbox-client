@@ -222,7 +222,6 @@ export function groupIdenticalOrdersAndSort<
   const orderMap: Record<string, T> = {};
   for (const order of orders) {
     const key =
-      order.company._id +
       order.delivery.date +
       order.restaurant._id +
       order.item._id +
