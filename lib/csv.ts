@@ -234,3 +234,12 @@ export const formatRestaurantItemsStat = (
     item: item.name,
     price: item.price,
   }));
+
+export const reviewStatCSVHeaders = [
+  { label: 'Date', key: 'date' },
+  { label: 'Restaurant', key: 'restaurant' },
+  { label: 'Item', key: 'item' },
+  { label: 'Rating', key: 'rating' },
+  { label: 'Comment', key: 'comment' },
+  { label: 'Customer', key: 'customer' },
+];

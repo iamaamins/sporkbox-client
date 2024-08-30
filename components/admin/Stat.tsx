@@ -7,6 +7,7 @@ import {
   orderStatCSVHeaders,
   peopleStatCSVHeaders,
   restaurantItemsCSVHeaders,
+  reviewStatCSVHeaders,
 } from '@lib/csv';
 import { axiosInstance, showErrorAlert } from '@lib/utils';
 import { useEffect, useState } from 'react';
@@ -27,8 +28,9 @@ export default function Stat() {
     isLoading: true,
     data: [],
   });
+  const [reviewStat, setReviewStat] = useState({ isLoading: true, data: [] });
 
-  async function downloadOrderStat() {
+  async function getOrderStat() {
     try {
       const response = await axiosInstance.get('/stats/order');
       setOrderStat((prevState) => ({ ...prevState, data: response.data }));
@@ -40,7 +42,7 @@ export default function Stat() {
     }
   }
 
-  async function downloadItemStat() {
+  async function getItemStat() {
     try {
       const response = await axiosInstance.get('/stats/item');
       setItemStat((prevState) => ({ ...prevState, data: response.data }));
@@ -52,7 +54,7 @@ export default function Stat() {
     }
   }
 
-  async function downloadPeopleStat() {
+  async function getPeopleStat() {
     try {
       const response = await axiosInstance.get('/stats/people');
       setPeopleStat((prevState) => ({ ...prevState, data: response.data }));
@@ -64,7 +66,7 @@ export default function Stat() {
     }
   }
 
-  async function downloadRestaurantItemsStat() {
+  async function getRestaurantItemsStat() {
     try {
       const response = await axiosInstance.get('/stats/restaurant-items');
       setRestaurantItemsStat((prevState) => ({
@@ -82,12 +84,25 @@ export default function Stat() {
     }
   }
 
-  // Download the stats
+  async function getReviewStat() {
+    try {
+      const response = await axiosInstance.get('/stats/review');
+      setReviewStat((prevState) => ({ ...prevState, data: response.data }));
+    } catch (err) {
+      console.log(err);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      setReviewStat((prevState) => ({ ...prevState, isLoading: false }));
+    }
+  }
+
+  // Get the stats
   useEffect(() => {
-    downloadOrderStat();
-    downloadItemStat();
-    downloadPeopleStat();
-    downloadRestaurantItemsStat();
+    getOrderStat();
+    getItemStat();
+    getPeopleStat();
+    getRestaurantItemsStat();
+    getReviewStat();
   }, [router.isReady]);
 
   return (
@@ -146,6 +161,20 @@ export default function Stat() {
         <p>Restaurant items stat loading...</p>
       ) : (
         <p>No restaurant items stat found</p>
+      )}
+
+      {reviewStat.data.length > 0 ? (
+        <CSVLink
+          data={reviewStat.data}
+          headers={reviewStatCSVHeaders}
+          filename='Review stat'
+        >
+          Review stat <FiDownload />
+        </CSVLink>
+      ) : reviewStat.isLoading ? (
+        <p>Review stat loading...</p>
+      ) : (
+        <p>No review stat found</p>
       )}
     </section>
   );
