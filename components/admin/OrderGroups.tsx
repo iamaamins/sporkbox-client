@@ -110,7 +110,7 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
     }
     labels.sort((a, b) => {
       const restaurantComp = a.restaurant.localeCompare(b.restaurant);
-      if (restaurantComp !== 0) return restaurantComp;
+      if (restaurantComp) return restaurantComp;
       return a.item.name.localeCompare(b.item.name);
     });
 

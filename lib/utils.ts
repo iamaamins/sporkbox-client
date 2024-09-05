@@ -225,8 +225,8 @@ export function groupIdenticalOrdersAndSort<
       order.delivery.date +
       order.restaurant._id +
       order.item._id +
-      order.item.optionalAddons +
       order.item.requiredAddons +
+      order.item.optionalAddons +
       order.item.removedIngredients;
 
     if (!orderMap[key]) {
@@ -237,9 +237,24 @@ export function groupIdenticalOrdersAndSort<
         (orderMap[key] as Order).item.total += (order as Order).item.total;
     }
   }
-  return Object.values(orderMap).sort((a, b) =>
-    a.item.name.localeCompare(b.item.name)
-  );
+  return Object.values(orderMap).sort((a, b) => {
+    const itemNameComp = a.item.name.localeCompare(b.item.name);
+    if (itemNameComp) return itemNameComp;
+
+    const requiredAddonsA = a.item.requiredAddons || '';
+    const requiredAddonsB = b.item.requiredAddons || '';
+    const requiredAddonsComp = requiredAddonsA.localeCompare(requiredAddonsB);
+    if (requiredAddonsComp) return requiredAddonsComp;
+
+    const optionalAddonsA = a.item.optionalAddons || '';
+    const optionalAddonsB = b.item.optionalAddons || '';
+    const optionalAddonsComp = optionalAddonsA.localeCompare(optionalAddonsB);
+    if (optionalAddonsComp) return optionalAddonsComp;
+
+    const removedIngredientsA = a.item.removedIngredients || '';
+    const removedIngredientsB = b.item.removedIngredients || '';
+    return removedIngredientsA.localeCompare(removedIngredientsB);
+  });
 }
 
 // Format addable ingredients
