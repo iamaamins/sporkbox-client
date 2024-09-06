@@ -9,7 +9,8 @@ import {
   showErrorAlert,
   showSuccessAlert,
   getAddonIngredients,
-  groupIdenticalOrdersAndSort,
+  groupIdenticalOrders,
+  sortOrderGroups,
 } from '@lib/utils';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
@@ -190,7 +191,9 @@ export default function Dashboard() {
             date: key.split('-')[0],
             company: key.split('-')[1],
             totalQuantity: orderMap[key].totalQuantity,
-            orders: groupIdenticalOrdersAndSort(orderMap[key].orders),
+            orders: groupIdenticalOrders(orderMap[key].orders).sort(
+              sortOrderGroups
+            ),
           });
         }
       }

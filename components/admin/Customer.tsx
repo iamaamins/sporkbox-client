@@ -8,7 +8,7 @@ import { CustomAxiosError, Company, Order, CustomerWithCompany } from 'types';
 import {
   axiosInstance,
   showErrorAlert,
-  groupIdenticalOrdersAndSort,
+  groupIdenticalOrders,
 } from '@lib/utils';
 
 type CustomerWithOrders = {
@@ -77,9 +77,7 @@ export default function Customer() {
   return (
     <section className={styles.customer}>
       {customers.isLoading && <h2>Loading...</h2>}
-
       {!customers.isLoading && !customer && <h2> No customer found</h2>}
-
       {customer.data && (
         <>
           <h2>General</h2>
@@ -125,13 +123,13 @@ export default function Customer() {
       {customer.upcomingOrders.length > 0 && (
         <CustomerOrders
           orderStatus='Upcoming'
-          orders={groupIdenticalOrdersAndSort(customer.upcomingOrders)}
+          orders={groupIdenticalOrders(customer.upcomingOrders)}
         />
       )}
       {customer.deliveredOrders.length > 0 && (
         <CustomerOrders
           orderStatus='Delivered'
-          orders={groupIdenticalOrdersAndSort(customer.deliveredOrders)}
+          orders={groupIdenticalOrders(customer.deliveredOrders)}
         />
       )}
     </section>

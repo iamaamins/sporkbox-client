@@ -11,7 +11,8 @@ import {
   showSuccessAlert,
   dateToText,
   numberToUSD,
-  groupIdenticalOrdersAndSort,
+  groupIdenticalOrders,
+  sortOrderGroups,
 } from '@lib/utils';
 import styles from './OrderGroupDetails.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
@@ -273,8 +274,9 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                   </tr>
                 </thead>
                 <tbody>
-                  {groupIdenticalOrdersAndSort(ordersByRestaurant.orders).map(
-                    (order, index) => (
+                  {groupIdenticalOrders(ordersByRestaurant.orders)
+                    .sort(sortOrderGroups)
+                    .map((order, index) => (
                       <tr key={index}>
                         <td
                           className={`${styles.hide_on_mobile} ${styles.shift}`}
@@ -306,8 +308,7 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                         <td>{numberToUSD(order.item.total)}</td>
                         <td>{order.item.quantity}</td>
                       </tr>
-                    )
-                  )}
+                    ))}
                   <tr className={styles.total}>
                     <td>Total</td>
                     <td className={styles.hide_on_mobile}></td>

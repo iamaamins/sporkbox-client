@@ -216,9 +216,9 @@ export function showErrorAlert(
   );
 }
 
-export function groupIdenticalOrdersAndSort<
-  T extends Order | VendorUpcomingOrder
->(orders: T[]): T[] {
+export function groupIdenticalOrders<T extends Order | VendorUpcomingOrder>(
+  orders: T[]
+): T[] {
   const orderMap: Record<string, T> = {};
   for (const order of orders) {
     const key =
@@ -237,24 +237,29 @@ export function groupIdenticalOrdersAndSort<
         (orderMap[key] as Order).item.total += (order as Order).item.total;
     }
   }
-  return Object.values(orderMap).sort((a, b) => {
-    const itemNameComp = a.item.name.localeCompare(b.item.name);
-    if (itemNameComp) return itemNameComp;
+  return Object.values(orderMap);
+}
 
-    const requiredAddonsA = a.item.requiredAddons || '';
-    const requiredAddonsB = b.item.requiredAddons || '';
-    const requiredAddonsComp = requiredAddonsA.localeCompare(requiredAddonsB);
-    if (requiredAddonsComp) return requiredAddonsComp;
+export function sortOrderGroups<T extends Order | VendorUpcomingOrder>(
+  a: T,
+  b: T
+) {
+  const itemNameComp = a.item.name.localeCompare(b.item.name);
+  if (itemNameComp) return itemNameComp;
 
-    const optionalAddonsA = a.item.optionalAddons || '';
-    const optionalAddonsB = b.item.optionalAddons || '';
-    const optionalAddonsComp = optionalAddonsA.localeCompare(optionalAddonsB);
-    if (optionalAddonsComp) return optionalAddonsComp;
+  const requiredAddonsA = a.item.requiredAddons || '';
+  const requiredAddonsB = b.item.requiredAddons || '';
+  const requiredAddonsComp = requiredAddonsA.localeCompare(requiredAddonsB);
+  if (requiredAddonsComp) return requiredAddonsComp;
 
-    const removedIngredientsA = a.item.removedIngredients || '';
-    const removedIngredientsB = b.item.removedIngredients || '';
-    return removedIngredientsA.localeCompare(removedIngredientsB);
-  });
+  const optionalAddonsA = a.item.optionalAddons || '';
+  const optionalAddonsB = b.item.optionalAddons || '';
+  const optionalAddonsComp = optionalAddonsA.localeCompare(optionalAddonsB);
+  if (optionalAddonsComp) return optionalAddonsComp;
+
+  const removedIngredientsA = a.item.removedIngredients || '';
+  const removedIngredientsB = b.item.removedIngredients || '';
+  return removedIngredientsA.localeCompare(removedIngredientsB);
 }
 
 // Format addable ingredients
