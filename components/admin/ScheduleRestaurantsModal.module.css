@@ -2,30 +2,49 @@
   margin-bottom: 1rem;
 }
 
-.item {
+.date {
   display: flex;
   flex-direction: column;
   margin-bottom: 1.5rem;
 }
 
-.item label {
-  font-size: 0.9rem;
-  color: var(--gray);
+.date label,
+.restaurants p {
+  font-weight: 500;
   margin-bottom: 0.75rem;
 }
 
-.item input,
-.item select {
+.date input {
   padding: 12px;
   border-radius: 0.25rem;
   -webkit-appearance: none;
   border: 1px solid var(--border_color);
 }
 
-.item input:focus,
-.item select:focus {
+.date input:focus {
   outline: none;
   border: 1px solid var(--teal);
+}
+
+.restaurants {
+  margin-bottom: 1rem;
+}
+
+.restaurant_names {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.restaurant {
+  margin-bottom: 0.5rem;
+}
+
+.restaurant label {
+  font-size: 0.9rem;
+  color: var(--gray);
+  margin-left: 0.5rem;
 }
 
 @media (min-width: 768px) {
