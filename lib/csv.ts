@@ -242,4 +242,5 @@ export const reviewStatCSVHeaders = [
   { label: 'Rating', key: 'rating' },
   { label: 'Comment', key: 'comment' },
   { label: 'Customer', key: 'customer' },
+  { label: 'Company', key: 'company' },
 ];
