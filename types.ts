@@ -294,7 +294,6 @@ export type Order = {
   status: string;
   payment?: {
     intent: string;
-    total: number;
     distributed: number;
   };
   createdAt: string;
