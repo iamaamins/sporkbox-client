@@ -152,6 +152,7 @@
 
 .item {
   display: flex;
+  gap: 1rem;
   color: var(--black);
   align-items: center;
   justify-content: space-between;
@@ -163,7 +164,7 @@
 }
 
 .item_details {
-  width: 65%;
+  width: 60%;
 }
 
 .item_name {
@@ -204,7 +205,7 @@
 }
 
 .item_image {
-  width: 30%;
+  width: 40%;
   position: relative;
   border-radius: 0.25rem;
   border: 1px solid var(--border_color);
@@ -227,6 +228,18 @@
   border-radius: 100%;
   color: var(--white);
   background: var(--black);
+}
+
+.popularity_index {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 1;
+  color: var(--teal);
+  font-weight: 600;
+  padding: 0px 4px;
+  border-radius: 2px;
+  background-color: #eef7f5;
 }
 
 .restaurant.sold_out .quantity,
@@ -269,6 +282,11 @@
     width: 24px;
     height: 24px;
     font-size: 1rem;
+  }
+
+  .popularity_index {
+    top: 0.5rem;
+    left: 0.5rem;
   }
 }
 

@@ -211,6 +211,11 @@ export default function Calendar() {
                               </div>
 
                               <div className={styles.item_image}>
+                                {item.popularityIndex && (
+                                  <span className={styles.popularity_index}>
+                                    #{item.popularityIndex} Most Liked
+                                  </span>
+                                )}
                                 <span
                                   className={styles.item_image_overlay}
                                 ></span>

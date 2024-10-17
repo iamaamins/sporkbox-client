@@ -105,6 +105,7 @@ export type Item = {
   };
   reviews: Review[];
   averageRating?: number;
+  popularityIndex?: number;
   soldOutStat?: SoldOutStat[];
   removableIngredients?: string;
 };
