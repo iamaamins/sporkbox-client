@@ -48,7 +48,7 @@ export default function Calendar() {
     );
   }
 
-  function isItemSoldOut(item: Item) {
+  function isSoldOutItem(item: Item) {
     const company = customer?.companies.find(
       (company) => company.status === 'ACTIVE'
     );
@@ -181,7 +181,7 @@ export default function Calendar() {
                           <Link
                             key={item._id}
                             href={
-                              !isItemSoldOut(item) &&
+                              !isSoldOutItem(item) &&
                               restaurant.schedule.status === 'ACTIVE'
                                 ? `/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`
                                 : '#'
@@ -189,7 +189,7 @@ export default function Calendar() {
                           >
                             <a
                               className={`${styles.item} ${
-                                isItemSoldOut(item) && styles.sold_out
+                                isSoldOutItem(item) && styles.sold_out
                               }`}
                             >
                               <div className={styles.item_details}>
