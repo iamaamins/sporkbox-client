@@ -73,11 +73,9 @@ export default function OrderGroupRow({
       <td>{orderGroup.customers.length}</td>
       <td>{orderGroup.orders.length}</td>
       <td>
-        {slug === 'upcoming-orders' && (
-          <span onClick={() => selectRestaurants('labels')}>
-            Labels <FiDownload />
-          </span>
-        )}
+        <span onClick={() => selectRestaurants('labels')}>
+          Labels <FiDownload />
+        </span>
         <span onClick={() => selectRestaurants('CSV')}>
           CSV <FiDownload />
         </span>
