@@ -15,6 +15,7 @@ export interface Customer extends User {
   status: string;
   createdAt: string;
   companies: Company[];
+  foodPreferences?: string[];
   subscribedTo: {
     orderReminder: boolean;
   };

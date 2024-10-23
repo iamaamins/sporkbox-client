@@ -26,7 +26,10 @@
 
 .buttons {
   display: flex;
+  gap: 1rem;
   align-items: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
 }
 
 .buttons button {
@@ -36,19 +39,12 @@
   font-size: 1rem;
   font-weight: 500;
   height: 2.75rem;
-  margin-top: 1rem;
   min-width: 10rem;
   align-items: center;
   padding: 0rem 1.15rem;
   border-radius: 0.25rem;
   justify-content: center;
   background: var(--black);
-  color: var(--almost_white);
-}
-
-.buttons button:first-child {
-  margin-right: 1rem;
-  background: var(--orange);
   color: var(--almost_white);
 }
 

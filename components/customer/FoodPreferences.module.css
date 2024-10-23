@@ -1,0 +1,16 @@
+.container h2 {
+  margin-bottom: 1rem;
+}
+
+.tags {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.tag {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}

@@ -1,7 +1,7 @@
 import { useUser } from '@context/User';
 import { useRouter } from 'next/router';
 import { UpcomingRestaurant } from 'types';
-import { tags as tagFilters } from '@lib/utils';
+import { TAGS as tagFilters } from '@lib/utils';
 import {
   ChangeEvent,
   Dispatch,
@@ -121,7 +121,6 @@ export default function CalendarFiltersModal({
   return (
     <div className={styles.calendar_filters_modal}>
       <h2>Filters</h2>
-
       <form onSubmit={filterItemsOnSubmit}>
         {allInitialFilters.map((filter, index) => (
           <div key={index} className={styles.tag}>
@@ -134,7 +133,6 @@ export default function CalendarFiltersModal({
             <label htmlFor={filter}>{filter}</label>
           </div>
         ))}
-
         <input type='submit' value='Apply' />
       </form>
     </div>

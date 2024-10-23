@@ -282,7 +282,7 @@ export const axiosInstance = axios.create({
 });
 
 // Dietary tags
-export const tags = [
+export const TAGS = [
   'Vegan',
   'Vegetarian',
   'Gluten-Free',
@@ -296,7 +296,7 @@ export const tags = [
   'Contains Shellfish',
 ] as const;
 
-type Tags = (typeof tags)[number][];
+type Tags = (typeof TAGS)[number][];
 
 export const splitTags = (tags: string) =>
   tags.split(',').map((tag) => tag.trim()) as Tags;

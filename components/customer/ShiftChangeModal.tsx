@@ -74,7 +74,6 @@ export default function ShiftChangeModal({ setShowShiftChangeModal }: Props) {
             </label>
           </div>
         ))}
-
         <SubmitButton text='Submit' isLoading={isChangingShift} />
       </form>
     </div>

@@ -19,12 +19,11 @@
   cursor: pointer;
 }
 
-.calendar_filters_modal form input[type="submit"] {
+.calendar_filters_modal form input[type='submit'] {
   border: none;
   width: 10rem;
   cursor: pointer;
   height: 2.75rem;
-  cursor: pointer;
   font-weight: 500;
   font-size: 0.9rem;
   margin-top: 0.5rem;

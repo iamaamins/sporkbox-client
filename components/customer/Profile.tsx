@@ -13,12 +13,15 @@ import ModalContainer from '@components/layout/ModalContainer';
 import { CustomAxiosError } from 'types';
 import { useAlert } from '@context/Alert';
 import ButtonLoader from '@components/layout/ButtonLoader';
+import FoodPreferences from './FoodPreferences';
 
 export default function Profile() {
   const { customer, setCustomer } = useUser();
   const { setAlerts } = useAlert();
   const [isLoading, setIsLoading] = useState(false);
   const [showShiftChangeModal, setShowShiftChangeModal] = useState(false);
+  const [showFoodPreferencesModal, setShowFoodPreferencesModal] =
+    useState(false);
 
   const isSubscribed =
     customer && Object.values(customer.subscribedTo).includes(true);
@@ -43,7 +46,6 @@ export default function Profile() {
       );
       showSuccessAlert('Subscriptions updated', setAlerts);
     } catch (err) {
-      console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       setIsLoading(false);
@@ -103,6 +105,9 @@ export default function Profile() {
               ) : (
                 'Opt-in emails'
               )}
+            </button>
+            <button onClick={() => setShowFoodPreferencesModal(true)}>
+              Food preferences
             </button>
           </div>
         </div>
@@ -197,6 +202,15 @@ export default function Profile() {
         setShowModalContainer={setShowShiftChangeModal}
         component={
           <ShiftChangeModal setShowShiftChangeModal={setShowShiftChangeModal} />
+        }
+      />
+      <ModalContainer
+        showModalContainer={showFoodPreferencesModal}
+        setShowModalContainer={setShowFoodPreferencesModal}
+        component={
+          <FoodPreferences
+            setShowFoodPreferencesModal={setShowFoodPreferencesModal}
+          />
         }
       />
     </section>
