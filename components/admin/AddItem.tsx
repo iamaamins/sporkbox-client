@@ -16,8 +16,8 @@ export default function AddItem() {
   const initialState = {
     name: '',
     price: '',
+    tags: [],
     file: undefined,
-    updatedTags: [],
     description: '',
     optionalAddons: {
       addons: '',
@@ -41,7 +41,7 @@ export default function AddItem() {
     file,
     name,
     price,
-    updatedTags,
+    tags,
     description,
     optionalAddons,
     requiredAddons,
@@ -60,10 +60,9 @@ export default function AddItem() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const data = new FormData();
-    const tags = updatedTags.join(', ');
 
     data.append('name', name);
-    data.append('tags', tags);
+    data.append('tags', tags.join(', '));
     file && data.append('file', file);
     data.append('price', price as string);
     data.append('index', index as string);

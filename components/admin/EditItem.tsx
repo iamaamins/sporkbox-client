@@ -6,7 +6,6 @@ import styles from './EditItem.module.css';
 import { FormEvent, useEffect, useState } from 'react';
 import { Item, CustomAxiosError, ItemFormData } from 'types';
 import {
-  tags,
   splitTags,
   axiosInstance,
   showErrorAlert,
@@ -19,9 +18,8 @@ export default function EditItem() {
     name: '',
     price: 0,
     image: '',
-    currentTags: '',
+    tags: [],
     file: undefined,
-    updatedTags: [],
     description: '',
     optionalAddons: {
       addons: '',
@@ -35,6 +33,7 @@ export default function EditItem() {
   };
 
   const router = useRouter();
+  const { dietaryTags } = useData();
   const { setAlerts } = useAlert();
   const { vendors, setVendors } = useData();
   const [item, setItem] = useState<Item>();
@@ -46,7 +45,7 @@ export default function EditItem() {
     name,
     price,
     image,
-    updatedTags,
+    tags,
     description,
     optionalAddons,
     requiredAddons,
@@ -66,13 +65,12 @@ export default function EditItem() {
           name: item.name,
           price: item.price,
           image: item.image,
-          currentTags: item.tags,
           description: item.description,
           optionalAddons: item.optionalAddons,
           requiredAddons: item.requiredAddons,
           removableIngredients: item.removableIngredients,
-          updatedTags: splitTags(item.tags).filter((currTag) =>
-            tags.includes(currTag)
+          tags: splitTags(item.tags).filter((currTag) =>
+            dietaryTags.data.includes(currTag)
           ),
         });
       }
@@ -82,11 +80,10 @@ export default function EditItem() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const data = new FormData();
-    const tags = updatedTags.join(', ');
 
     data.append('name', name);
-    data.append('tags', tags);
     file && data.append('file', file);
+    data.append('tags', tags.join(', '));
     data.append('price', price as string);
     image && data.append('image', image);
     data.append('description', description);

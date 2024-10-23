@@ -396,9 +396,8 @@ export type CompanyFormData = {
 export interface ItemFormData {
   name: string;
   image?: string;
+  tags: string[];
   description: string;
-  currentTags?: string;
-  updatedTags: string[];
   price: string | number;
   file?: File | undefined;
   optionalAddons: {

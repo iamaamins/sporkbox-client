@@ -116,7 +116,6 @@ export default function DataProvider({ children }: ContextProviderProps) {
   // Group delivered orders by company and delivery date
   const deliveredOrderGroups = createOrderGroups(allDeliveredOrders.data);
 
-  // Get upcoming dates
   const upcomingDates =
     !upcomingRestaurants.isLoading && upcomingRestaurants.data.length > 0
       ? upcomingRestaurants.data
@@ -129,6 +128,19 @@ export default function DataProvider({ children }: ContextProviderProps) {
           )
           .filter((date, index, dates) => dates.indexOf(date) === index)
       : [];
+
+  async function getDietaryTags() {
+    try {
+      const response = await axiosInstance.get('/data/dietary-tags');
+      setDietaryTags({ isLoading: false, data: response.data });
+    } catch (err) {
+      setDietaryTags((prevState) => ({
+        ...prevState,
+        isLoading: false,
+      }));
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    }
+  }
 
   // Get admin data
   useEffect(() => {
@@ -232,6 +244,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
       getDeliveredOrders();
       getCustomers();
       getDiscountCodes();
+      getDietaryTags();
     }
   }, [isAdmin]);
 
@@ -257,18 +270,6 @@ export default function DataProvider({ children }: ContextProviderProps) {
         setCustomerDeliveredOrders({ isLoading: false, data: response.data });
       } catch (err) {
         setCustomerDeliveredOrders((prevState) => ({
-          ...prevState,
-          isLoading: false,
-        }));
-        showErrorAlert(err as CustomAxiosError, setAlerts);
-      }
-    }
-    async function getDietaryTags() {
-      try {
-        const response = await axiosInstance.get('/customers/dietary-tags');
-        setDietaryTags({ isLoading: false, data: response.data });
-      } catch (err) {
-        setDietaryTags((prevState) => ({
           ...prevState,
           isLoading: false,
         }));

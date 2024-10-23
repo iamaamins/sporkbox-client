@@ -4,7 +4,7 @@ import { RiDeleteBinLine } from 'react-icons/ri';
 import { FormProps, ItemFormData } from 'types';
 import styles from './ItemForm.module.css';
 import SubmitButton from '@components/layout/SubmitButton';
-import { formatImageName, splitTags, tags } from '@lib/utils';
+import { formatImageName, splitTags } from '@lib/utils';
 import React, {
   ChangeEvent,
   Dispatch,
@@ -14,8 +14,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-
-type StaticTags = Record<string, boolean>;
+import { useData } from '@context/Data';
 
 interface Props extends FormProps {
   formData: ItemFormData;
@@ -30,21 +29,16 @@ export default function ItemForm({
   setFormData,
   handleSubmit,
 }: Props) {
-  const initialStaticTags = tags.reduce(
-    (acc, curr) => ({ ...acc, [curr]: false }),
-    {}
-  );
-
+  const { dietaryTags } = useData();
   const imageRef = useRef<HTMLDivElement>(null);
   const [imageHeight, setImageHeight] = useState(0);
-  const [staticTags, setStaticTags] = useState<StaticTags>(initialStaticTags);
+  const [tags, setTags] = useState<string[]>([]);
 
   const {
     name,
     file,
     price,
     image,
-    currentTags,
     description,
     optionalAddons,
     requiredAddons,
@@ -76,17 +70,13 @@ export default function ItemForm({
   }
 
   function handleChangeTags(e: ChangeEvent<HTMLInputElement>) {
-    setStaticTags((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.checked,
-    }));
+    const tag = e.target.id;
+    const isChecked = e.target.checked;
     setFormData((prevState) => ({
       ...prevState,
-      updatedTags: e.target.checked
-        ? [...prevState.updatedTags, e.target.name]
-        : prevState.updatedTags.filter(
-            (updatedTag) => updatedTag !== e.target.name
-          ),
+      tags: isChecked
+        ? [...prevState.tags, tag]
+        : prevState.tags.filter((el) => el !== tag),
     }));
   }
 
@@ -102,26 +92,9 @@ export default function ItemForm({
     };
   }, []);
 
-  // Update dietary tags
   useEffect(() => {
-    if (currentTags) {
-      setStaticTags(
-        tags.reduce((acc, curr) => {
-          if (splitTags(currentTags).includes(curr)) {
-            return {
-              ...acc,
-              [curr]: true,
-            };
-          } else {
-            return {
-              ...acc,
-              [curr]: false,
-            };
-          }
-        }, {} as StaticTags)
-      );
-    }
-  }, [currentTags]);
+    if (dietaryTags.data) setTags(dietaryTags.data);
+  }, [dietaryTags]);
 
   return (
     <form
@@ -211,16 +184,15 @@ export default function ItemForm({
       <div className={styles.dietary_tags}>
         <p>Dietary tags</p>
         <div className={styles.tags}>
-          {Object.keys(staticTags).map((staticTag, index) => (
+          {tags.map((tag, index) => (
             <div className={styles.tag} key={index}>
               <input
                 type='checkbox'
-                id={staticTag}
-                name={staticTag}
+                id={tag}
                 onChange={handleChangeTags}
-                checked={staticTags[staticTag]}
+                checked={formData.tags.includes(tag)}
               />
-              <label htmlFor={staticTag}>{staticTag}</label>
+              <label htmlFor={tag}>{tag}</label>
             </div>
           ))}
         </div>
