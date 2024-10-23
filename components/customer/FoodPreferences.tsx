@@ -1,9 +1,4 @@
-import {
-  axiosInstance,
-  showErrorAlert,
-  showSuccessAlert,
-  TAGS,
-} from '@lib/utils';
+import { axiosInstance, showErrorAlert, showSuccessAlert } from '@lib/utils';
 import styles from './FoodPreferences.module.css';
 import {
   ChangeEvent,
@@ -17,6 +12,7 @@ import { useUser } from '@context/User';
 import { CustomAxiosError } from 'types';
 import { useAlert } from '@context/Alert';
 import SubmitButton from '@components/layout/SubmitButton';
+import { useData } from '@context/Data';
 
 type Props = {
   setShowFoodPreferencesModal: Dispatch<SetStateAction<boolean>>;
@@ -26,6 +22,7 @@ export default function FoodPreferences({
   setShowFoodPreferencesModal,
 }: Props) {
   const { setAlerts } = useAlert();
+  const { dietaryTags } = useData();
   const { customer, setCustomer } = useUser();
   const [isUpdatingPreferences, setIsUpdatingPreferences] = useState(false);
   const [preferences, setPreferences] = useState<string[]>([]);
@@ -74,7 +71,7 @@ export default function FoodPreferences({
       <h2>Food preferences</h2>
       <form onSubmit={savePreferences}>
         <div className={styles.tags}>
-          {TAGS.map((tag, index) => (
+          {dietaryTags.data.map((tag, index) => (
             <div key={index} className={styles.tag}>
               <input
                 id={tag}

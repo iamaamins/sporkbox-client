@@ -18,6 +18,7 @@ import {
   VendorUpcomingOrders,
   Order,
   OrderGroup,
+  DietaryTags,
 } from 'types';
 import {
   axiosInstance,
@@ -40,6 +41,7 @@ type DataContext = {
   companies: Companies;
   customers: Customers;
   upcomingDates: number[];
+  dietaryTags: DietaryTags;
   discountCodes: DiscountCodes;
   customerAllOrders: CustomerOrder[];
   upcomingOrderGroups: OrderGroup[];
@@ -97,6 +99,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
     useState<DiscountCodes>(initialState);
   const [vendorUpcomingOrders, setVendorUpcomingOrders] =
     useState<VendorUpcomingOrders>(initialState);
+  const [dietaryTags, setDietaryTags] = useState<DietaryTags>(initialState);
 
   // All admin orders
   const allOrders = [...allUpcomingOrders.data, ...allDeliveredOrders.data];
@@ -113,6 +116,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
   // Group delivered orders by company and delivery date
   const deliveredOrderGroups = createOrderGroups(allDeliveredOrders.data);
 
+  // Get upcoming dates
   const upcomingDates =
     !upcomingRestaurants.isLoading && upcomingRestaurants.data.length > 0
       ? upcomingRestaurants.data
@@ -128,90 +132,83 @@ export default function DataProvider({ children }: ContextProviderProps) {
 
   // Get admin data
   useEffect(() => {
-    async function getAdminData() {
-      // Get upcoming orders
+    async function getUpcomingOrders() {
       try {
         const response = await axiosInstance.get(`/orders/all-upcoming-orders`);
         setAllUpcomingOrders({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         setAllUpcomingOrders((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
-
-      // Get scheduled restaurants
+    }
+    async function getScheduledRestaurants() {
       try {
         const response = await axiosInstance.get(
           `/restaurants/scheduled-restaurants`
         );
         setScheduledRestaurants({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         setScheduledRestaurants((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
-
-      // Get all companies
+    }
+    async function getCompanies() {
       try {
         const response = await axiosInstance.get(`/companies`);
         setCompanies({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         setCompanies((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
-
-      // Get 25 latest vendors
+    }
+    async function getVendors() {
       try {
         const response = await axiosInstance.get(`/vendors/0`);
         setVendors({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         setVendors((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
-
-      // Get 2500 delivered orders
+    }
+    async function getDeliveredOrders() {
       try {
         const response = await axiosInstance.get(
           `/orders/all-delivered-orders/2500`
         );
         setAllDeliveredOrders({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         setAllDeliveredOrders((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
-
-      // Get all customers
+    }
+    async function getCustomers() {
       try {
         const response = await axiosInstance.get('/customers');
         setCustomers({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         setCustomers((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
-
-      // Get discount codes
+    }
+    async function getDiscountCodes() {
       try {
         const response = await axiosInstance.get('/discount-code');
         setDiscountCodes({
@@ -219,7 +216,6 @@ export default function DataProvider({ children }: ContextProviderProps) {
           data: response.data,
         });
       } catch (err) {
-        console.log(err);
         setDiscountCodes((prevState) => ({
           ...prevState,
           isLoading: false,
@@ -228,46 +224,62 @@ export default function DataProvider({ children }: ContextProviderProps) {
       }
     }
 
-    if (isAdmin) getAdminData();
+    if (isAdmin) {
+      getUpcomingOrders();
+      getScheduledRestaurants();
+      getCompanies();
+      getVendors();
+      getDeliveredOrders();
+      getCustomers();
+      getDiscountCodes();
+    }
   }, [isAdmin]);
 
   // Get customer's data
   useEffect(() => {
-    async function getCustomerData() {
-      // Get all upcoming orders
+    async function getUpcomingOrders() {
       try {
         const response = await axiosInstance.get(`/orders/me/upcoming-orders`);
         setCustomerUpcomingOrders({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         setCustomerUpcomingOrders((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
-
-      // Get 10 latest delivered orders
+    }
+    async function getDeliveredOrders() {
       try {
         const response = await axiosInstance.get(
           `/orders/me/delivered-orders/25`
         );
         setCustomerDeliveredOrders({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         setCustomerDeliveredOrders((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
-
-      // Get favorite items
+    }
+    async function getDietaryTags() {
+      try {
+        const response = await axiosInstance.get('/customers/dietary-tags');
+        setDietaryTags({ isLoading: false, data: response.data });
+      } catch (err) {
+        setDietaryTags((prevState) => ({
+          ...prevState,
+          isLoading: false,
+        }));
+        showErrorAlert(err as CustomAxiosError, setAlerts);
+      }
+    }
+    async function getFavoriteItems() {
       try {
         const response = await axiosInstance.get(`/favorites/me`);
         setCustomerFavoriteItems({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         setCustomerFavoriteItems((prevState) => ({
           ...prevState,
           isLoading: false,
@@ -276,7 +288,12 @@ export default function DataProvider({ children }: ContextProviderProps) {
       }
     }
 
-    if (isCustomer) getCustomerData();
+    if (isCustomer) {
+      getUpcomingOrders();
+      getDeliveredOrders();
+      getDietaryTags();
+      getFavoriteItems();
+    }
   }, [isCustomer]);
 
   // Get customer's upcoming restaurants
@@ -301,8 +318,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
 
   // Get vendor's data
   useEffect(() => {
-    async function getVendorData() {
-      // Get all upcoming orders
+    async function getUpcomingOrders() {
       try {
         const response = await axiosInstance.get(
           `/orders/vendor/upcoming-orders`
@@ -317,7 +333,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
-    if (isVendor) getVendorData();
+    if (isVendor) getUpcomingOrders();
   }, [isVendor]);
 
   return (
@@ -329,6 +345,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
         allOrders,
         setCompanies,
         customers,
+        dietaryTags,
         setCustomers,
         upcomingDates,
         discountCodes,

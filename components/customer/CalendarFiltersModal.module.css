@@ -1,32 +1,26 @@
-.calendar_filters_modal h2 {
+.container h2 {
   margin-bottom: 1rem;
 }
 
-.tag,
-.twenty_and_under {
+.filters {
   display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.filter {
+  display: flex;
+  gap: 0.5rem;
   align-items: center;
-  margin-bottom: 0.75rem;
 }
 
-.tag input,
-.twenty_and_under input {
-  margin-right: 0.5rem;
-}
-
-.tag label,
-.twenty_and_under label {
-  cursor: pointer;
-}
-
-.calendar_filters_modal form input[type='submit'] {
+.container form button {
   border: none;
   width: 10rem;
   cursor: pointer;
   height: 2.75rem;
   font-weight: 500;
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
   border-radius: 0.25rem;
   background: var(--orange);
   color: var(--almost_white);

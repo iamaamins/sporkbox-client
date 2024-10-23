@@ -235,6 +235,10 @@ export interface DiscountCodes extends IsLoading {
   data: DiscountCode[];
 }
 
+export interface DietaryTags extends IsLoading {
+  data: string[];
+}
+
 export type OrderGroup = {
   orders: Order[];
   company: {

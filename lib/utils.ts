@@ -281,25 +281,8 @@ export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
 
-// Dietary tags
-export const TAGS = [
-  'Vegan',
-  'Vegetarian',
-  'Gluten-Free',
-  'Nut-Free',
-  'Soy-Free',
-  'Dairy-Free',
-  'Contains Nuts',
-  'Contains Soy',
-  'Enjoy Later',
-  'Pork-Free',
-  'Contains Shellfish',
-] as const;
-
-type Tags = (typeof TAGS)[number][];
-
 export const splitTags = (tags: string) =>
-  tags.split(',').map((tag) => tag.trim()) as Tags;
+  tags.split(',').map((tag) => tag.trim());
 
 export const getAddonsTotal = (addons: string[]) =>
   addons

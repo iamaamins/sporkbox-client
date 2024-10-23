@@ -1,7 +1,5 @@
 import { useUser } from '@context/User';
-import { useRouter } from 'next/router';
 import { UpcomingRestaurant } from 'types';
-import { TAGS as tagFilters } from '@lib/utils';
 import {
   ChangeEvent,
   Dispatch,
@@ -11,6 +9,7 @@ import {
   useState,
 } from 'react';
 import styles from '@components/customer/CalendarFiltersModal.module.css';
+import { useData } from '@context/Data';
 
 type Props = {
   restaurants: UpcomingRestaurant[];
@@ -23,73 +22,51 @@ export default function CalendarFiltersModal({
   setUpdatedRestaurants,
   setShowCalendarFilters,
 }: Props) {
-  const additionalFilters = ['$20 and under'] as const;
-  const allInitialFilters = [...tagFilters, ...additionalFilters] as const;
-
-  type InitialFilters = {
-    [key in (typeof allInitialFilters)[number]]: boolean;
-  };
-
-  const initialFilters = allInitialFilters.reduce(
-    (acc, curr) => ({ ...acc, [curr]: false }),
-    {} as InitialFilters
-  );
-
-  const router = useRouter();
   const { customer } = useUser();
-  const [filtersData, setFiltersData] = useState(initialFilters);
+  const { dietaryTags } = useData();
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+
+  const additionalFilters = ['$20 and under'] as const;
+  const filters = [...dietaryTags.data, ...additionalFilters] as const;
 
   function handleFilterChange(e: ChangeEvent<HTMLInputElement>) {
-    setFiltersData((prevState) => ({
-      ...prevState,
-      [e.target.id]: e.target.checked,
-    }));
+    setSelectedFilters((prevState) =>
+      e.target.checked
+        ? [...prevState, e.target.id]
+        : prevState.filter((el) => el !== e.target.id)
+    );
   }
 
   function filterItems() {
-    // Create updated restaurants
-    let updatedRestaurants = restaurants;
-
-    // All filters type
-    type AllFilters = (typeof allInitialFilters)[number][];
-
-    // All filters array
-    const allFilters = Object.entries(filtersData)
-      .filter((data) => data[1] === true)
-      .map((data) => data[0]) as AllFilters;
-
-    // Tag filters type
-    type TagFilters = (typeof tagFilters)[number][];
-
-    // Only keep tag filters
-    const tagsFilters = allFilters.filter(
+    const selectedDietaryTags = selectedFilters.filter(
       (filter) =>
         !additionalFilters.some(
           (additionalFilter) => additionalFilter === filter
         )
-    ) as TagFilters;
+    );
+    let updatedRestaurants = restaurants;
 
     // Filter items by dietary tags
-    if (tagsFilters.length > 0) {
+    if (selectedDietaryTags.length > 0) {
       updatedRestaurants = updatedRestaurants.map((updatedRestaurant) => ({
         ...updatedRestaurant,
         items: updatedRestaurant.items.filter((item) =>
-          tagsFilters.some((tag) =>
-            item.tags.toLowerCase().includes(tag.toLowerCase())
+          selectedDietaryTags.some((filter) =>
+            item.tags.toLowerCase().includes(filter.toLowerCase())
           )
         ),
       }));
     }
 
     // Filter items with price $20 and less
-    if (allFilters.includes('$20 and under')) {
+    if (selectedFilters.includes('$20 and under')) {
       updatedRestaurants = updatedRestaurants.map((updatedRestaurant) => ({
         ...updatedRestaurant,
         items: updatedRestaurant.items.filter((item) => item.price <= 20),
       }));
     }
 
-    // Update states
+    // Update state
     setUpdatedRestaurants(
       updatedRestaurants.filter(
         (updatedRestaurant) => updatedRestaurant.items.length > 0
@@ -103,7 +80,7 @@ export default function CalendarFiltersModal({
     setShowCalendarFilters(false);
     localStorage.setItem(
       `filters-${customer?._id}`,
-      JSON.stringify(filtersData)
+      JSON.stringify(selectedFilters)
     );
   }
 
@@ -112,28 +89,32 @@ export default function CalendarFiltersModal({
   }, [restaurants]);
 
   useEffect(() => {
-    const savedFilters = JSON.parse(
-      localStorage.getItem(`filters-${customer?._id}`) as string
-    );
-    setFiltersData(savedFilters || initialFilters);
-  }, [customer, router.isReady]);
+    if (customer && customer.foodPreferences) {
+      const savedFilters = JSON.parse(
+        localStorage.getItem(`filters-${customer._id}`) as string
+      );
+      setSelectedFilters(savedFilters || customer.foodPreferences);
+    }
+  }, [customer]);
 
   return (
-    <div className={styles.calendar_filters_modal}>
+    <div className={styles.container}>
       <h2>Filters</h2>
       <form onSubmit={filterItemsOnSubmit}>
-        {allInitialFilters.map((filter, index) => (
-          <div key={index} className={styles.tag}>
-            <input
-              type='checkbox'
-              id={filter}
-              onChange={handleFilterChange}
-              checked={filtersData[filter]}
-            />
-            <label htmlFor={filter}>{filter}</label>
-          </div>
-        ))}
-        <input type='submit' value='Apply' />
+        <div className={styles.filters}>
+          {filters.map((filter, index) => (
+            <div key={index} className={styles.filter}>
+              <input
+                type='checkbox'
+                id={filter}
+                onChange={handleFilterChange}
+                checked={selectedFilters.includes(filter)}
+              />
+              <label htmlFor={filter}>{filter}</label>
+            </div>
+          ))}
+        </div>
+        <button type='submit'>Apply</button>
       </form>
     </div>
   );
