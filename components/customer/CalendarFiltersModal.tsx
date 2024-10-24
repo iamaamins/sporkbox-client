@@ -51,8 +51,8 @@ export default function CalendarFiltersModal({
       updatedRestaurants = updatedRestaurants.map((updatedRestaurant) => ({
         ...updatedRestaurant,
         items: updatedRestaurant.items.filter((item) =>
-          selectedDietaryTags.some((filter) =>
-            item.tags.toLowerCase().includes(filter.toLowerCase())
+          selectedDietaryTags.some((dietaryTag) =>
+            item.tags.toLowerCase().includes(dietaryTag.toLowerCase())
           )
         ),
       }));
@@ -76,10 +76,12 @@ export default function CalendarFiltersModal({
 
   function filterItemsOnSubmit(e: FormEvent) {
     e.preventDefault();
+    if (!customer) return;
+
     filterItems();
     setShowCalendarFilters(false);
     localStorage.setItem(
-      `filters-${customer?._id}`,
+      `filters-${customer._id}`,
       JSON.stringify(selectedFilters)
     );
   }
@@ -96,6 +98,8 @@ export default function CalendarFiltersModal({
       setSelectedFilters(savedFilters || customer.foodPreferences);
     }
   }, [customer]);
+
+  console.log(selectedFilters);
 
   return (
     <div className={styles.container}>

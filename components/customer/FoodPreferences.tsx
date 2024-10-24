@@ -52,6 +52,10 @@ export default function FoodPreferences({
             foodPreferences: response.data.foodPreferences,
           }
       );
+      localStorage.setItem(
+        `filters-${customer._id}`,
+        JSON.stringify(preferences)
+      );
       setShowFoodPreferencesModal(false);
       showSuccessAlert('Preferences updated', setAlerts);
     } catch (err) {
