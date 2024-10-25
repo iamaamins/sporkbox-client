@@ -51,7 +51,7 @@ export default function CalendarFiltersModal({
       updatedRestaurants = updatedRestaurants.map((updatedRestaurant) => ({
         ...updatedRestaurant,
         items: updatedRestaurant.items.filter((item) =>
-          selectedDietaryTags.some((dietaryTag) =>
+          selectedDietaryTags.every((dietaryTag) =>
             item.tags.toLowerCase().includes(dietaryTag.toLowerCase())
           )
         ),
