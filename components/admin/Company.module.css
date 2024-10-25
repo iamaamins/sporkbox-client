@@ -33,7 +33,8 @@
 }
 
 .schedule_restaurants_button,
-.customer_info_download_button {
+.customer_info_download_button,
+.order_reminder_button {
   height: 2.75rem;
   border: none;
   cursor: pointer;
@@ -45,13 +46,20 @@
 
 .schedule_restaurants_button {
   width: 12rem;
+  margin-right: 2rem;
   background: var(--teal);
+  color: var(--almost_white);
+}
+
+.order_reminder_button {
+  width: 12rem;
+  margin-right: 2rem;
+  background: var(--brown);
   color: var(--almost_white);
 }
 
 .customer_info_download_button {
   width: 10rem;
-  margin-left: 2rem;
   background: var(--global);
   color: var(--almost_white);
 }
@@ -73,7 +81,8 @@
   }
 
   .schedule_restaurants_button,
-  .customer_info_download_button {
+  .customer_info_download_button,
+  .order_reminder_button {
     margin-top: 0rem;
   }
 

@@ -29,6 +29,7 @@ import {
   createCustomerCSVFileName,
   customerCSVHeaders,
 } from '@lib/csv';
+import ButtonLoader from '@components/layout/ButtonLoader';
 
 export default function Company() {
   const router = useRouter();
@@ -51,6 +52,7 @@ export default function Company() {
   const [unenrolledCustomers, setUnenrolledCustomers] = useState<Customer[]>(
     []
   );
+  const [isSendingOrderReminder, setIsSendingOrderReminder] = useState(false);
 
   function initiateStatusUpdate(e: FormEvent) {
     setShowStatusUpdateModal(true);
@@ -69,11 +71,24 @@ export default function Company() {
       updateCompanies(response.data, setCompanies);
       showSuccessAlert('Status updated', setAlerts);
     } catch (err) {
-      console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       setIsUpdatingCompanyStatus(false);
       setShowStatusUpdateModal(false);
+    }
+  }
+
+  async function sendOrderReminder(code: string) {
+    try {
+      setIsSendingOrderReminder(true);
+      const response = await axiosInstance.post('/email/time-to-order', {
+        code,
+      });
+      showSuccessAlert(response.data.message, setAlerts);
+    } catch (err) {
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      setIsSendingOrderReminder(false);
     }
   }
 
@@ -205,6 +220,17 @@ export default function Company() {
                 className={styles.schedule_restaurants_button}
               >
                 Schedule restaurants
+              </button>
+
+              <button
+                onClick={() => sendOrderReminder(company.code)}
+                className={styles.order_reminder_button}
+              >
+                {isSendingOrderReminder ? (
+                  <ButtonLoader />
+                ) : (
+                  'Send order reminders'
+                )}
               </button>
 
               <CSVLink
