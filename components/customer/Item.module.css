@@ -75,13 +75,14 @@
 
 .addons_and_removable_items {
   display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
   align-items: center;
 }
 
 .addons_and_removable_item {
   display: flex;
   align-items: center;
-  margin-right: 1rem;
 }
 
 .addons_and_removable_item label {
