@@ -75,12 +75,16 @@ export default function Customer() {
   }, [router.isReady, customers, allUpcomingOrders]);
 
   return (
-    <section className={styles.customer}>
-      {customers.isLoading && <h2>Loading...</h2>}
-      {!customers.isLoading && !customer && <h2> No customer found</h2>}
-      {customer.data && (
-        <>
-          <h2>General</h2>
+    <>
+      <section className={styles.container}>
+        <h2>
+          {customers.isLoading
+            ? 'Loading...'
+            : !customers.isLoading && !customer
+            ? 'No customer found'
+            : 'General'}
+        </h2>
+        {customer.data && (
           <table>
             <thead>
               <tr>
@@ -118,20 +122,24 @@ export default function Customer() {
               </tr>
             </tbody>
           </table>
-        </>
-      )}
+        )}
+      </section>
       {customer.upcomingOrders.length > 0 && (
-        <CustomerOrders
-          orderStatus='Upcoming'
-          orders={groupIdenticalOrders(customer.upcomingOrders)}
-        />
+        <section className={styles.container}>
+          <h2>Upcoming orders</h2>
+          <CustomerOrders
+            orders={groupIdenticalOrders(customer.upcomingOrders)}
+          />
+        </section>
       )}
       {customer.deliveredOrders.length > 0 && (
-        <CustomerOrders
-          orderStatus='Delivered'
-          orders={groupIdenticalOrders(customer.deliveredOrders)}
-        />
+        <section className={styles.container}>
+          <h2>Delivered orders</h2>
+          <CustomerOrders
+            orders={groupIdenticalOrders(customer.deliveredOrders)}
+          />
+        </section>
       )}
-    </section>
+    </>
   );
 }

@@ -1,10 +1,10 @@
 import { Order } from 'types';
-import styles from '@components/admin/Customer.module.css';
+import styles from '@components/admin/Employee.module.css';
 import { dateToText, numberToUSD } from '@lib/utils';
 
 type Props = { orders: Order[] };
 
-export default function CustomerOrders({ orders }: Props) {
+export default function EmployeeOrders({ orders }: Props) {
   const hasOptionalAddons = orders.some((order) => order.item.optionalAddons);
   const hasRequiredAddons = orders.some((order) => order.item.requiredAddons);
   const hasRemovedIngredients = orders.some(
@@ -26,7 +26,6 @@ export default function CustomerOrders({ orders }: Props) {
           {hasRemovedIngredients && (
             <th className={styles.hide_on_mobile}>Removed</th>
           )}
-
           <th>Quantity</th>
           <th className={styles.hide_on_mobile}>Restaurant</th>
           <th>Price</th>
