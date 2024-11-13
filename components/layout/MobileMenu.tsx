@@ -21,6 +21,7 @@ import styles from './MobileMenu.module.css';
 import { AiTwotonePhone, AiTwotoneStar } from 'react-icons/ai';
 import { TbBuildingStore, TbBuildingSkyscraper } from 'react-icons/tb';
 import { currentYear, axiosInstance, showErrorAlert } from '@lib/utils';
+import { MdHome } from 'react-icons/md';
 
 type Props = {
   isOpen: boolean;
@@ -115,6 +116,17 @@ export default function MobileMenu({ isOpen, setIsOpen }: Props) {
           onClick={() => setIsOpen(false)}
         >
           <Link href='/admin'>
+            <a>
+              <MdHome /> Home
+            </a>
+          </Link>
+        </li>
+
+        <li
+          className={!isAdmin ? styles.hide : ''}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href='/admin/dashboard'>
             <a>
               <MdSpaceDashboard /> Dashboard
             </a>

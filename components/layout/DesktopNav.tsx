@@ -104,7 +104,13 @@ export default function DesktopNav() {
         {/* Admin nav items */}
         <li className={!isAdmin ? styles.hide : ''}>
           <Link href='/admin'>
-            <a className={pathName === '/admin' ? styles.active : ''}>
+            <a className={pathName === '/admin' ? styles.active : ''}>Home</a>
+          </Link>
+        </li>
+
+        <li className={!isAdmin ? styles.hide : ''}>
+          <Link href='/admin/dashboard'>
+            <a className={pathName === '/admin/dashboard' ? styles.active : ''}>
               Dashboard
             </a>
           </Link>

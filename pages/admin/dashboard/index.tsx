@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
-import { useUser } from '@context/User';
-import { useRouter } from 'next/router';
-import { checkUser } from '@lib/utils';
-import Home from '@components/admin/Home';
+import Dashboard from '@components/admin/Dashboard';
 import PageLoader from '@components/layout/PageLoader';
+import { useUser } from '@context/User';
+import { checkUser } from '@lib/utils';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
-export default function AdminHomePage() {
+export default function DashboardPage() {
   const router = useRouter();
   const { isUserLoading, isAdmin } = useUser();
 
@@ -16,7 +16,7 @@ export default function AdminHomePage() {
   return (
     <main>
       {isUserLoading && <PageLoader />}
-      {isAdmin && <Home />}
+      {isAdmin && <Dashboard />}
     </main>
   );
 }
