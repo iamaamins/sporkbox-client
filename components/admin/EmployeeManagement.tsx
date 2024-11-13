@@ -77,7 +77,7 @@ export default function EmployeeManagement() {
             </thead>
             <tbody>
               {customerData.map((customer) => (
-                <tr>
+                <tr key={customer._id}>
                   <td className={styles.important}>
                     <Link href={`/admin/dashboard/${customer._id}`}>
                       <a>
