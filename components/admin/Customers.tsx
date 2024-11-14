@@ -44,7 +44,7 @@ export default function Customers({ status, customers }: Props) {
     });
   }
 
-  async function updateStatus() {
+  async function updateCustomerStatus() {
     try {
       setIsUpdatingCustomerStatus(true);
       const response = await axiosInstance.patch(
@@ -54,7 +54,6 @@ export default function Customers({ status, customers }: Props) {
       updateCustomers(response.data, setCustomers);
       showSuccessAlert('Status updated', setAlerts);
     } catch (err) {
-      console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       setIsUpdatingCustomerStatus(false);
@@ -119,7 +118,7 @@ export default function Customers({ status, customers }: Props) {
           <ActionModal
             name={statusUpdatePayload.data.customerName}
             action={statusUpdatePayload.action}
-            performAction={updateStatus}
+            performAction={updateCustomerStatus}
             isPerformingAction={isUpdatingCustomerStatus}
             setShowActionModal={setShowStatusUpdateModal}
           />

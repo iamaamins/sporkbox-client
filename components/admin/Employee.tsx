@@ -4,12 +4,15 @@ import {
   axiosInstance,
   groupIdenticalOrders,
   showErrorAlert,
+  updateCustomers,
 } from '@lib/utils';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { CustomAxiosError, Customer, Order } from 'types';
 import EmployeeOrders from './EmployeeOrders';
 import styles from './Employee.module.css';
+import ModalContainer from '@components/layout/ModalContainer';
+import ActionModal from './ActionModal';
 
 type EmployeeWithOrders = {
   data: Customer | null;
@@ -20,12 +23,22 @@ type EmployeeWithOrders = {
 export default function Employee() {
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const { customers, allUpcomingOrders } = useData();
+  const { customers, allUpcomingOrders, setCustomers } = useData();
   const [employee, setEmployee] = useState<EmployeeWithOrders>({
     data: null,
     upcomingOrders: [],
     deliveredOrders: [],
   });
+  const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
+  const [statusUpdatePayload, setStatusUpdatePayload] = useState({
+    action: '',
+    data: {
+      employeeId: '',
+      employeeName: '',
+    },
+  });
+  const [isUpdatingEmployeeStatus, setIsUpdatingEmployeeStatus] =
+    useState(false);
 
   async function getDeliveredOrders() {
     try {
@@ -42,7 +55,35 @@ export default function Employee() {
     }
   }
 
-  // Get customer data and upcoming orders
+  function initiateStatusUpdate(employee: Customer | null) {
+    if (!employee) return showErrorAlert('Employee not found', setAlerts);
+    setShowStatusUpdateModal(true);
+    setStatusUpdatePayload({
+      action: employee.status === 'ACTIVE' ? 'Archive' : 'Activate',
+      data: {
+        employeeId: employee._id,
+        employeeName: `${employee.firstName} ${employee.lastName}`,
+      },
+    });
+  }
+
+  async function updateEmployeeStatus() {
+    try {
+      setIsUpdatingEmployeeStatus(true);
+      const response = await axiosInstance.patch(
+        `/customers/${statusUpdatePayload.data.employeeId}/change-customer-status`,
+        { action: statusUpdatePayload.action }
+      );
+      updateCustomers(response.data, setCustomers);
+    } catch (err) {
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      setIsUpdatingEmployeeStatus(false);
+      setShowStatusUpdateModal(false);
+    }
+  }
+
+  // Get employee data and upcoming orders
   useEffect(() => {
     if (router.isReady && customers.data.length > 0) {
       const employee = customers.data.find(
@@ -79,7 +120,7 @@ export default function Employee() {
               <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Company code</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -88,7 +129,14 @@ export default function Employee() {
                   {employee.data.firstName} {employee.data.lastName}
                 </td>
                 <td>{employee.data.email}</td>
-                <td>{employee.data.companies[0].code}</td>
+                <td>
+                  <span
+                    onClick={() => initiateStatusUpdate(employee.data)}
+                    className={styles.action}
+                  >
+                    {employee.data.status === 'ACTIVE' ? 'Archive' : 'Activate'}
+                  </span>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -110,6 +158,19 @@ export default function Employee() {
           />
         </section>
       )}
+      <ModalContainer
+        showModalContainer={showStatusUpdateModal}
+        setShowModalContainer={setShowStatusUpdateModal}
+        component={
+          <ActionModal
+            name={statusUpdatePayload.data.employeeName}
+            action={statusUpdatePayload.action}
+            performAction={updateEmployeeStatus}
+            isPerformingAction={isUpdatingEmployeeStatus}
+            setShowActionModal={setShowStatusUpdateModal}
+          />
+        }
+      />
     </>
   );
 }

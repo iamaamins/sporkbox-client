@@ -12,7 +12,7 @@ interface User {
 export interface Admin extends User {}
 
 export interface Customer extends User {
-  status: string;
+  status: 'ACTIVE' | 'ARCHIVED';
   createdAt: string;
   companies: Company[];
   foodPreferences?: string[];

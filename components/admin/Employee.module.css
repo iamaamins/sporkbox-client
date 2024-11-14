@@ -37,6 +37,14 @@
   font-size: 0.9rem;
 }
 
+.action {
+  padding: 4px 8px;
+  border-radius: 2rem;
+  color: var(--orange);
+  cursor: pointer;
+  border: 1px solid var(--orange);
+}
+
 .hide_on_mobile {
   display: none;
 }

@@ -2,20 +2,18 @@ import { useData } from '@context/Data';
 import styles from './EmployeeManagement.module.css';
 import { IoSearch } from 'react-icons/io5';
 import { FormEvent, useEffect, useState } from 'react';
-import { GoFoldUp } from 'react-icons/go';
 import { Customer } from 'types';
 import Link from 'next/link';
 
 export default function EmployeeManagement() {
   const { customers } = useData();
-  const [customerData, setCustomerData] = useState<Customer[]>([]);
-  const [showSearchField, setShowSearchField] = useState(false);
   const [query, setQuery] = useState('');
+  const [employees, setEmployees] = useState<Customer[]>([]);
 
   function handleSearch(e: FormEvent) {
     e.preventDefault();
 
-    setCustomerData(
+    setEmployees(
       customers.data.filter(
         (customer) =>
           customer.firstName.toLowerCase().includes(query) ||
@@ -27,7 +25,7 @@ export default function EmployeeManagement() {
 
   useEffect(() => {
     if (customers.data.length > 0 && !query)
-      setCustomerData(customers.data.slice(0, 10));
+      setEmployees(customers.data.slice(0, 10));
   }, [customers, query]);
 
   return (
@@ -39,54 +37,40 @@ export default function EmployeeManagement() {
           ? 'No customers found'
           : 'Employee management'}
       </h2>
-      {customerData.length > 0 && (
+      {employees.length > 0 && (
         <>
-          <div className={styles.table_header}>
-            <h3>Order history</h3>
-            {showSearchField ? (
-              <form onSubmit={handleSearch}>
-                <input
-                  type='text'
-                  value={query}
-                  placeholder='Search employee'
-                  onChange={(e) => setQuery(e.target.value.toLowerCase())}
-                />
-                <GoFoldUp
-                  className={styles.fold_icon}
-                  size={20}
-                  title='Close search field'
-                  onClick={() => setShowSearchField(false)}
-                />
-              </form>
-            ) : (
-              <IoSearch
-                className={styles.search_icon}
-                size={20}
-                title='Show search field'
-                onClick={() => setShowSearchField(true)}
-              />
-            )}
-          </div>
+          <form onSubmit={handleSearch} className={styles.search}>
+            <input
+              type='text'
+              value={query}
+              placeholder='Search employees...'
+              onChange={(e) => setQuery(e.target.value.toLowerCase())}
+            />
+            <IoSearch className={styles.search_icon} size={20} />
+          </form>
+
           <table>
             <thead>
               <tr>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Status</th>
                 <th>Company code</th>
               </tr>
             </thead>
             <tbody>
-              {customerData.map((customer) => (
-                <tr key={customer._id}>
+              {employees.map((employee) => (
+                <tr key={employee._id}>
                   <td className={styles.important}>
-                    <Link href={`/admin/dashboard/${customer._id}`}>
+                    <Link href={`/admin/dashboard/${employee._id}`}>
                       <a>
-                        {customer.lastName} {customer.firstName}
+                        {employee.lastName} {employee.firstName}
                       </a>
                     </Link>
                   </td>
-                  <td>{customer.email}</td>
-                  <td>{customer.companies[0].code}</td>
+                  <td>{employee.email}</td>
+                  <td>{employee.status}</td>
+                  <td>{employee.companies[0].code}</td>
                 </tr>
               ))}
             </tbody>

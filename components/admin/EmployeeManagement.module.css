@@ -6,34 +6,25 @@
   margin-bottom: 1rem;
 }
 
-.table_header {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.table_header form {
+.search {
   position: relative;
+  margin-bottom: 1rem;
+  width: 15rem;
 }
 
-.search_icon {
-  cursor: pointer;
-}
-
-.table_header form input {
-  padding: 0.75rem 1rem;
-  border-radius: 2rem;
+.search input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 3rem;
+  border-radius: 0.5rem;
   border: 1px solid var(--border_color);
 }
 
-.fold_icon {
+.search_icon {
   position: absolute;
+  left: 1rem;
   top: 50%;
+  color: var(--gray);
   translate: 0% -50%;
-  right: 1rem;
-  rotate: -90deg;
-  cursor: pointer;
 }
 
 .container table {
