@@ -71,7 +71,7 @@ export default function Customer() {
         }));
       }
     }
-    if (customer) getDeliveredOrders();
+    if (router.isReady && customer) getDeliveredOrders();
   }, [router.isReady, customers, allUpcomingOrders]);
 
   return (

@@ -4,6 +4,7 @@ import {
   axiosInstance,
   groupIdenticalOrders,
   showErrorAlert,
+  showSuccessAlert,
   updateCustomers,
 } from '@lib/utils';
 import { useRouter } from 'next/router';
@@ -75,6 +76,7 @@ export default function Employee() {
         { action: statusUpdatePayload.action }
       );
       updateCustomers(response.data, setCustomers);
+      showSuccessAlert('Status updated', setAlerts);
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
@@ -101,7 +103,7 @@ export default function Employee() {
         }));
       }
     }
-    if (employee) getDeliveredOrders();
+    if (router.isReady && employee) getDeliveredOrders();
   }, [router.isReady, customers, allUpcomingOrders]);
 
   return (
@@ -146,16 +148,15 @@ export default function Employee() {
         <section className={styles.container}>
           <h2>Upcoming orders</h2>
           <EmployeeOrders
-            orders={groupIdenticalOrders(employee.upcomingOrders)}
+            hasOrderAction={true}
+            orders={employee.upcomingOrders}
           />
         </section>
       )}
       {employee.deliveredOrders.length > 0 && (
         <section className={styles.container}>
           <h2>Delivered orders</h2>
-          <EmployeeOrders
-            orders={groupIdenticalOrders(employee.deliveredOrders)}
-          />
+          <EmployeeOrders orders={employee.deliveredOrders} />
         </section>
       )}
       <ModalContainer

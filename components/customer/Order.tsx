@@ -33,7 +33,7 @@ export default function Order() {
     setCustomerUpcomingOrders,
     setCustomerDeliveredOrders,
   } = useData();
-  const [cancellingOrder, setCancellingOrder] = useState(false);
+  const [isCancellingOrder, setIsCancellingOrder] = useState(false);
 
   const stars = [];
   for (let i = 0; i < 5; i++) {
@@ -46,7 +46,7 @@ export default function Order() {
     );
   }
 
-  async function handleAddToFavorite() {
+  async function addItemToFavorite() {
     try {
       const response = await axiosInstance.post(`/favorites/add-to-favorite`, {
         itemId: order?.item._id,
@@ -64,7 +64,7 @@ export default function Order() {
     }
   }
 
-  async function handleAddReview(e: FormEvent) {
+  async function addItemReview(e: FormEvent) {
     e.preventDefault();
 
     try {
@@ -103,10 +103,10 @@ export default function Order() {
     }
   }
 
-  async function handleCancelOrder() {
+  async function cancelOrder() {
     if (!order) return;
     try {
-      setCancellingOrder(true);
+      setIsCancellingOrder(true);
       const response = await axiosInstance.patch(`/orders/${order._id}/cancel`);
       setCustomerUpcomingOrders((prevState) => ({
         ...prevState,
@@ -118,7 +118,7 @@ export default function Order() {
       console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      setCancellingOrder(false);
+      setIsCancellingOrder(false);
     }
   }
 
@@ -163,7 +163,7 @@ export default function Order() {
                         favoriteItem._id,
                         setCustomerFavoriteItems
                       )
-                  : handleAddToFavorite
+                  : addItemToFavorite
               }
               className={`${styles.not_favorite} ${
                 favoriteItem && styles.favorite
@@ -231,8 +231,8 @@ export default function Order() {
 
                     <ActionButton
                       buttonText='Cancel order'
-                      isLoading={cancellingOrder}
-                      handleClick={handleCancelOrder}
+                      isLoading={isCancellingOrder}
+                      handleClick={cancelOrder}
                     />
                   </div>
                 </>
@@ -286,7 +286,7 @@ export default function Order() {
                         {stars.map((star) => star)}
                       </div>
 
-                      <form onSubmit={handleAddReview}>
+                      <form onSubmit={addItemReview}>
                         <textarea
                           id='comment'
                           value={comment}
