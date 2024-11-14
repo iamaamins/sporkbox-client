@@ -122,7 +122,8 @@ export default function Employee() {
               <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Action</th>
+                <th>Company code</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -131,6 +132,7 @@ export default function Employee() {
                   {employee.data.firstName} {employee.data.lastName}
                 </td>
                 <td>{employee.data.email}</td>
+                <td>{employee.data.companies[0].code}</td>
                 <td>
                   <span
                     onClick={() => initiateStatusUpdate(employee.data)}
