@@ -76,7 +76,6 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
   ) {
     e.preventDefault();
     if (!labelFilters) return;
-
     const orders = [];
     for (const group of orderGroups) {
       if (
@@ -129,7 +128,6 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
   ) {
     e.preventDefault();
     if (!csvOrderGroup) return;
-
     const orders: Order[] = [];
     for (const order of csvOrderGroup.orders) {
       if (selectedRestaurants.includes(order.restaurant.name)) {

@@ -38,7 +38,6 @@ export default function FoodPreferences({
   async function savePreferences(e: FormEvent) {
     e.preventDefault();
     if (!customer) return;
-
     try {
       setIsUpdatingPreferences(true);
       const response = await axiosInstance.patch(

@@ -41,9 +41,7 @@ export function checkUser(
   user: boolean,
   router: NextRouter
 ) {
-  if (!isUserLoading && !user) {
-    router.push('/login');
-  }
+  if (!isUserLoading && !user) router.push('/login');
 }
 
 // Update restaurants items
@@ -328,7 +326,6 @@ export function categorizeLastName(lastName: string) {
 
 export function getAddonIngredients(addons: string | undefined) {
   if (!addons) return '';
-
   const addonsArr = addons.split(',');
   const ingredients = [];
   for (const addon of addonsArr) {

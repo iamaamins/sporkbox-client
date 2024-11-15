@@ -28,7 +28,6 @@ export default function Profile() {
 
   async function handleEmailSubscriptions() {
     if (!customer) return;
-
     try {
       setIsLoading(true);
       const response = await axiosInstance.patch(

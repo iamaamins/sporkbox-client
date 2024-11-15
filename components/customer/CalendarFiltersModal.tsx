@@ -77,7 +77,6 @@ export default function CalendarFiltersModal({
   function filterItemsOnSubmit(e: FormEvent) {
     e.preventDefault();
     if (!customer) return;
-
     filterItems();
     setShowCalendarFilters(false);
     localStorage.setItem(

@@ -196,11 +196,12 @@ export default function Dashboard() {
         const date = dateToMS(order.delivery.date);
         const dateAndCompany = `${date}-${company}`;
 
-        if (!orderMap[dateAndCompany])
+        if (!orderMap[dateAndCompany]) {
           orderMap[dateAndCompany] = { orders: [], totalQuantity: 0 };
-
-        orderMap[dateAndCompany].orders.push(order);
-        orderMap[dateAndCompany].totalQuantity += order.item.quantity;
+        } else {
+          orderMap[dateAndCompany].orders.push(order);
+          orderMap[dateAndCompany].totalQuantity += order.item.quantity;
+        }
       }
 
       const orderGroups: OrderGroup[] = [];
@@ -211,8 +212,9 @@ export default function Dashboard() {
           const date = dateToMS(schedule.date);
           const dateAndCompany = `${date}-${company}`;
 
-          if (key === dateAndCompany)
+          if (key === dateAndCompany) {
             schedules.push({ date: schedule.date, status: schedule.status });
+          }
         }
 
         if (schedules.length) {
