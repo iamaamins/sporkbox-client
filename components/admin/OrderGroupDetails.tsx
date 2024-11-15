@@ -11,8 +11,8 @@ import {
   showSuccessAlert,
   dateToText,
   numberToUSD,
+  sortOrders,
   groupIdenticalOrders,
-  sortOrderGroups,
 } from '@lib/utils';
 import styles from './OrderGroupDetails.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
@@ -124,15 +124,6 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
 
   const date = dateToText(+(router.query.date as string));
 
-  const hasOptionalAddons = (ordersByRestaurant: OrdersByRestaurant) =>
-    ordersByRestaurant.orders.some((order) => order.item.optionalAddons);
-
-  const hasRequiredAddons = (ordersByRestaurant: OrdersByRestaurant) =>
-    ordersByRestaurant.orders.some((order) => order.item.requiredAddons);
-
-  const hasRemovedIngredients = (ordersByRestaurant: OrdersByRestaurant) =>
-    ordersByRestaurant.orders.some((order) => order.item.removedIngredients);
-
   const getOrdersQuantity = (orders: Order[]) =>
     orders.reduce((acc, curr) => acc + curr.item.quantity, 0);
 
@@ -156,9 +147,9 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
             },
             deliveryDate,
             restaurantName: restaurant,
-            orders: orders.filter(
-              (order) => order.restaurant.name === restaurant
-            ),
+            orders: orders
+              .filter((order) => order.restaurant.name === restaurant)
+              .sort(sortOrders),
           }))
         );
       }
@@ -260,67 +251,49 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                   <tr>
                     <th className={styles.hide_on_mobile}>Shift</th>
                     <th>Dish</th>
-                    {hasRequiredAddons(ordersByRestaurant) && (
-                      <th className={styles.hide_on_mobile}>Required addons</th>
-                    )}
-                    {hasOptionalAddons(ordersByRestaurant) && (
-                      <th className={styles.hide_on_mobile}>Optional addons</th>
-                    )}
-                    {hasRemovedIngredients(ordersByRestaurant) && (
-                      <th className={styles.hide_on_mobile}>Removed</th>
-                    )}
+                    <th className={styles.hide_on_mobile}>Required addons</th>
+                    <th className={styles.hide_on_mobile}>Optional addons</th>
+                    <th className={styles.hide_on_mobile}>Removed</th>
                     <th>Item price</th>
                     <th>Quantity</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {groupIdenticalOrders(ordersByRestaurant.orders)
-                    .sort(sortOrderGroups)
-                    .map((order, index) => (
+                  {groupIdenticalOrders(ordersByRestaurant.orders).map(
+                    (group, index) => (
                       <tr key={index}>
                         <td
                           className={`${styles.hide_on_mobile} ${styles.shift}`}
                         >
-                          {order.company.shift}
+                          {group.company.shift}
                         </td>
-                        <td>{order.item.name}</td>
-                        {hasRequiredAddons(ordersByRestaurant) && (
-                          <td
-                            className={`${styles.ingredients} ${styles.hide_on_mobile}`}
-                          >
-                            {order.item.requiredAddons}
-                          </td>
-                        )}
-                        {hasOptionalAddons(ordersByRestaurant) && (
-                          <td
-                            className={`${styles.ingredients} ${styles.hide_on_mobile}`}
-                          >
-                            {order.item.optionalAddons}
-                          </td>
-                        )}
-                        {hasRemovedIngredients(ordersByRestaurant) && (
-                          <td
-                            className={`${styles.hide_on_mobile} ${styles.ingredients}`}
-                          >
-                            {order.item.removedIngredients}
-                          </td>
-                        )}
-                        <td>{numberToUSD(order.item.total)}</td>
-                        <td>{order.item.quantity}</td>
+                        <td>{group.item.name}</td>
+                        <td
+                          className={`${styles.ingredients} ${styles.hide_on_mobile}`}
+                        >
+                          {group.item.requiredAddons}
+                        </td>
+                        <td
+                          className={`${styles.ingredients} ${styles.hide_on_mobile}`}
+                        >
+                          {group.item.optionalAddons}
+                        </td>
+                        <td
+                          className={`${styles.hide_on_mobile} ${styles.ingredients}`}
+                        >
+                          {group.item.removedIngredients}
+                        </td>
+                        <td>{numberToUSD(group.item.total)}</td>
+                        <td>{group.item.quantity}</td>
                       </tr>
-                    ))}
+                    )
+                  )}
                   <tr className={styles.total}>
                     <td>Total</td>
                     <td className={styles.hide_on_mobile}></td>
-                    {hasOptionalAddons(ordersByRestaurant) && (
-                      <td className={styles.hide_on_mobile}></td>
-                    )}
-                    {hasRequiredAddons(ordersByRestaurant) && (
-                      <td className={styles.hide_on_mobile}></td>
-                    )}
-                    {hasRemovedIngredients(ordersByRestaurant) && (
-                      <td className={styles.hide_on_mobile}></td>
-                    )}
+                    <td className={styles.hide_on_mobile}></td>
+                    <td className={styles.hide_on_mobile}></td>
+                    <td className={styles.hide_on_mobile}></td>
                     <td>
                       {numberToUSD(
                         ordersByRestaurant.orders.reduce(

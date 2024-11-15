@@ -3,7 +3,6 @@ import { useData } from '@context/Data';
 import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
 import OrderGroupRow from './OrderGroupRow';
-import SortOrderGroups from './SortOrderGroups';
 import styles from './OrderGroups.module.css';
 import ActionButton from '@components/layout/ActionButton';
 import {
@@ -31,6 +30,7 @@ import {
   orderCSVHeaders,
 } from '@lib/csv';
 import { CSVLink } from 'react-csv';
+import SortOrderGroups from './SortOrderGroups';
 
 type Props = {
   slug: string;

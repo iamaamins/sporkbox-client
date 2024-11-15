@@ -28,7 +28,7 @@ export interface Vendor extends User {
   restaurant: Restaurant;
 }
 
-type Shift = 'day' | 'night' | 'general';
+export type Shift = 'day' | 'night' | 'general';
 
 export type Schedule = {
   _id: string;
@@ -480,4 +480,24 @@ export type OrderData = {
 export type LabelFilters = {
   companyCode: string;
   deliveryDate: string;
+};
+
+export type IdenticalOrderGroup = {
+  company: {
+    shift: Shift;
+  };
+  restaurant: {
+    name: string;
+  };
+  delivery: {
+    date: string;
+  };
+  item: {
+    name: string;
+    quantity: number;
+    total: number;
+    requiredAddons?: string;
+    optionalAddons?: string;
+    removedIngredients?: string;
+  };
 };

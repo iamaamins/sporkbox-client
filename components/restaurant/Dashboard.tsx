@@ -9,8 +9,7 @@ import {
   showErrorAlert,
   showSuccessAlert,
   getAddonIngredients,
-  groupIdenticalOrders,
-  sortOrderGroups,
+  sortOrders,
 } from '@lib/utils';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
@@ -139,6 +138,37 @@ export default function Dashboard() {
     a.click();
   }
 
+  type IdenticalItem = {
+    name: string;
+    quantity: number;
+    requiredAddons?: string;
+    optionalAddons?: string;
+    removedIngredients?: string;
+  };
+  function groupIdenticalItems(orders: VendorUpcomingOrder[]) {
+    const orderMap: Record<string, IdenticalItem> = {};
+    for (const order of orders) {
+      const key =
+        order.item._id +
+        order.item.requiredAddons +
+        order.item.optionalAddons +
+        order.item.removedIngredients;
+
+      if (!orderMap[key]) {
+        orderMap[key] = {
+          name: order.item.name,
+          quantity: order.item.quantity,
+          requiredAddons: order.item.requiredAddons,
+          optionalAddons: order.item.optionalAddons,
+          removedIngredients: order.item.removedIngredients,
+        };
+      } else {
+        orderMap[key].quantity += order.item.quantity;
+      }
+    }
+    return Object.values(orderMap);
+  }
+
   // Get the restaurant
   useEffect(() => {
     async function getRestaurant() {
@@ -191,9 +221,7 @@ export default function Dashboard() {
             date: key.split('-')[0],
             company: key.split('-')[1],
             totalQuantity: orderMap[key].totalQuantity,
-            orders: groupIdenticalOrders(orderMap[key].orders).sort(
-              sortOrderGroups
-            ),
+            orders: orderMap[key].orders.sort(sortOrders),
           });
         }
       }
@@ -214,7 +242,7 @@ export default function Dashboard() {
       )}
       {vendorUpcomingOrders.isLoading || restaurant.isLoading ? (
         <h2>Loading...</h2>
-      ) : orderGroups.length ? (
+      ) : orderGroups.length > 0 ? (
         <>
           {orderGroups.map(
             ({ date, company, orders, totalQuantity, schedules }) => (
@@ -244,15 +272,14 @@ export default function Dashboard() {
                     </tr>
                   </thead>
                   <tbody>
-                    {orders.map((order) => (
-                      <tr key={order._id}>
-                        <td>{order.item.name}</td>
-                        <td>{order.item.quantity}</td>
+                    {groupIdenticalItems(orders).map((item, index) => (
+                      <tr key={index}>
+                        <td>{item.name}</td>
+                        <td>{item.quantity}</td>
                         <td>
-                          {order.item.optionalAddons}{' '}
-                          {order.item.requiredAddons}
+                          {item.optionalAddons} {item.requiredAddons}
                         </td>
-                        <td>{order.item.removedIngredients}</td>
+                        <td>{item.removedIngredients}</td>
                       </tr>
                     ))}
                     <tr>
