@@ -17,6 +17,7 @@ import {
   CustomerFavoriteItems,
   DateTotal,
   VendorUpcomingOrder,
+  IdenticalOrderGroup,
 } from 'types';
 
 export const currentYear = new Date().getFullYear();
@@ -216,10 +217,8 @@ export function showErrorAlert(
   );
 }
 
-export function groupIdenticalOrders<T extends Order | VendorUpcomingOrder>(
-  orders: T[]
-): T[] {
-  const orderMap: Record<string, T> = {};
+export function groupIdenticalOrders(orders: Order[]): IdenticalOrderGroup[] {
+  const orderMap: Record<string, IdenticalOrderGroup> = {};
   for (const order of orders) {
     const key =
       order.delivery.date +
@@ -230,20 +229,34 @@ export function groupIdenticalOrders<T extends Order | VendorUpcomingOrder>(
       order.item.removedIngredients;
 
     if (!orderMap[key]) {
-      orderMap[key] = structuredClone(order);
+      orderMap[key] = {
+        company: {
+          shift: order.company.shift,
+        },
+        restaurant: {
+          name: order.restaurant.name,
+        },
+        delivery: {
+          date: order.delivery.date,
+        },
+        item: {
+          name: order.item.name,
+          total: order.item.total,
+          quantity: order.item.quantity,
+          requiredAddons: order.item.requiredAddons,
+          optionalAddons: order.item.optionalAddons,
+          removedIngredients: order.item.removedIngredients,
+        },
+      };
     } else {
+      orderMap[key].item.total += order.item.total;
       orderMap[key].item.quantity += order.item.quantity;
-      if ('total' in order.item && 'total' in orderMap[key].item)
-        (orderMap[key] as Order).item.total += (order as Order).item.total;
     }
   }
   return Object.values(orderMap);
 }
 
-export function sortOrderGroups<T extends Order | VendorUpcomingOrder>(
-  a: T,
-  b: T
-) {
+export function sortOrders<T extends Order | VendorUpcomingOrder>(a: T, b: T) {
   const itemNameComp = a.item.name.localeCompare(b.item.name);
   if (itemNameComp) return itemNameComp;
 

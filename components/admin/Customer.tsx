@@ -9,6 +9,7 @@ import {
   axiosInstance,
   showErrorAlert,
   groupIdenticalOrders,
+  sortOrders,
 } from '@lib/utils';
 
 type CustomerWithOrders = {
@@ -34,10 +35,12 @@ export default function Customer() {
       );
       setCustomer((prevState) => ({
         ...prevState,
-        deliveredOrders: response.data.filter(
-          (deliveredOrder) =>
-            deliveredOrder.company._id === router.query.company
-        ),
+        deliveredOrders: response.data
+          .filter(
+            (deliveredOrder) =>
+              deliveredOrder.company._id === router.query.company
+          )
+          .sort(sortOrders),
       }));
     } catch (err) {
       console.log(err);
@@ -63,11 +66,13 @@ export default function Customer() {
         setCustomer((prevState) => ({
           ...prevState,
           data: customerWithCompany,
-          upcomingOrders: allUpcomingOrders.data.filter(
-            (upcomingOrder) =>
-              upcomingOrder.customer._id === router.query.customer &&
-              upcomingOrder.company._id === router.query.company
-          ),
+          upcomingOrders: allUpcomingOrders.data
+            .filter(
+              (upcomingOrder) =>
+                upcomingOrder.customer._id === router.query.customer &&
+                upcomingOrder.company._id === router.query.company
+            )
+            .sort(sortOrders),
         }));
       }
     }
@@ -128,7 +133,7 @@ export default function Customer() {
         <section className={styles.container}>
           <h2>Upcoming orders</h2>
           <CustomerOrders
-            orders={groupIdenticalOrders(customer.upcomingOrders)}
+            orderGroups={groupIdenticalOrders(customer.upcomingOrders)}
           />
         </section>
       )}
@@ -136,7 +141,7 @@ export default function Customer() {
         <section className={styles.container}>
           <h2>Delivered orders</h2>
           <CustomerOrders
-            orders={groupIdenticalOrders(customer.deliveredOrders)}
+            orderGroups={groupIdenticalOrders(customer.deliveredOrders)}
           />
         </section>
       )}
