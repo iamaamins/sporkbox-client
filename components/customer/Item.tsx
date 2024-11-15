@@ -296,9 +296,7 @@ export default function Item() {
   return (
     <section className={styles.item}>
       {upcomingRestaurants.isLoading && <h2>Loading...</h2>}
-
       {!upcomingRestaurants.isLoading && !item && <h2>No item found</h2>}
-
       {upcomingRestaurant && item && (
         <>
           <div className={styles.image_and_details}>
@@ -328,11 +326,9 @@ export default function Item() {
                     <span key={index}>{tag}</span>
                   ))}
                 </p>
-
                 <p className={styles.delivery_date}>
                   Delivery date - {dateToText(+(router.query.date as string))}
                 </p>
-
                 {item.optionalAddons.addons && (
                   <div className={styles.optional_addons}>
                     <p>
@@ -341,7 +337,6 @@ export default function Item() {
                     {renderOptionalAddons}
                   </div>
                 )}
-
                 {item.requiredAddons.addons && (
                   <div className={styles.required_addons}>
                     <p>
@@ -351,7 +346,6 @@ export default function Item() {
                     {renderRequiredAddons}
                   </div>
                 )}
-
                 {item.removableIngredients && (
                   <div className={styles.removable}>
                     <p>Remove ingredients</p>
@@ -359,7 +353,6 @@ export default function Item() {
                   </div>
                 )}
               </div>
-
               <div className={styles.controller}>
                 <div
                   onClick={decreaseQuantity}
@@ -374,7 +367,6 @@ export default function Item() {
                   <HiPlus />
                 </div>
               </div>
-
               <button
                 className={`${styles.button}`}
                 onClick={() => addItemToCart(initialItem, item)}

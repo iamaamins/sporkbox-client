@@ -96,9 +96,7 @@ export default function Restaurant() {
   return (
     <section className={styles.restaurant}>
       {vendors.isLoading && <h2>Loading...</h2>}
-
       {!vendors.isLoading && !vendor && <h2>No restaurant found</h2>}
-
       {vendor && (
         <>
           <div className={styles.details_and_items}>
@@ -113,7 +111,6 @@ export default function Restaurant() {
                 <p>
                   <span>Email:</span> {vendor.email}
                 </p>
-
                 <p>
                   <span>Address:</span>{' '}
                   {vendor.restaurant.address.addressLine2 ? (
@@ -134,8 +131,6 @@ export default function Restaurant() {
                   )}
                 </p>
               </div>
-
-              {/* Buttons */}
               <div className={styles.buttons}>
                 <Buttons
                   linkText='Add item'
@@ -145,7 +140,6 @@ export default function Restaurant() {
                   }
                   href={`/admin/restaurants/${vendor.restaurant._id}/add-item`}
                 />
-
                 <Link
                   href={`/admin/restaurants/${vendor.restaurant._id}/edit-restaurant`}
                 >
@@ -153,13 +147,10 @@ export default function Restaurant() {
                 </Link>
               </div>
             </div>
-
-            {/* Items */}
             {vendor.restaurant.items.length > 0 && (
               <>
                 <div className={styles.items_header}>
                   <h2 className={styles.items_title}>Items</h2>
-
                   {isDesktop && (
                     <>
                       {reorderItems ? (
@@ -180,7 +171,6 @@ export default function Restaurant() {
                     </>
                   )}
                 </div>
-
                 {isDesktop && reorderItems ? (
                   <ReorderAbleItems vendor={vendor} setVendor={setVendor} />
                 ) : (
@@ -228,7 +218,6 @@ export default function Restaurant() {
               </>
             )}
           </div>
-
           <ModalContainer
             showModalContainer={showStatusUpdateModal}
             setShowModalContainer={setShowStatusUpdateModal}

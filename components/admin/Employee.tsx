@@ -2,7 +2,6 @@ import { useAlert } from '@context/Alert';
 import { useData } from '@context/Data';
 import {
   axiosInstance,
-  groupIdenticalOrders,
   showErrorAlert,
   showSuccessAlert,
   updateCustomers,
@@ -14,6 +13,7 @@ import EmployeeOrders from './EmployeeOrders';
 import styles from './Employee.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
 import ActionModal from './ActionModal';
+import Link from 'next/link';
 
 type EmployeeWithOrders = {
   data: Customer | null;
@@ -140,6 +140,11 @@ export default function Employee() {
                   >
                     {employee.data.status === 'ACTIVE' ? 'Archive' : 'Activate'}
                   </span>
+                  <Link
+                    href={`/admin/dashboard/${router.query.employee}/place-order/date`}
+                  >
+                    <a className={styles.place_order}>Place orders</a>
+                  </Link>
                 </td>
               </tr>
             </tbody>

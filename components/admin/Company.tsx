@@ -162,20 +162,18 @@ export default function Company() {
   return (
     <>
       {companies.isLoading && (
-        <section className={styles.section}>
+        <section className={styles.container}>
           <h2>Loading...</h2>
         </section>
       )}
-
       {!companies.isLoading && !company && (
-        <section className={styles.section}>
+        <section className={styles.container}>
           <h2>No company found</h2>
         </section>
       )}
-
       {company && (
         <>
-          <section className={styles.section}>
+          <section className={styles.container}>
             <div className={styles.details}>
               <h2 className={styles.company_name}>{company.name}</h2>
               <p className={styles.shift}>
@@ -203,8 +201,6 @@ export default function Company() {
                 )}
               </p>
             </div>
-
-            {/* Buttons */}
             <div className={styles.buttons}>
               <Buttons
                 initiateStatusUpdate={initiateStatusUpdate}
@@ -214,14 +210,12 @@ export default function Company() {
                 }
                 href={`/admin/companies/${router.query.company}/edit-company`}
               />
-
               <button
                 onClick={() => setShowModal(true)}
                 className={styles.schedule_restaurants_button}
               >
                 Schedule restaurants
               </button>
-
               <button
                 onClick={() => sendOrderReminder(company.code)}
                 className={styles.order_reminder_button}
@@ -232,7 +226,6 @@ export default function Company() {
                   'Send order reminders'
                 )}
               </button>
-
               <CSVLink
                 data={formatCustomerDataToCSV([
                   ...activeCustomers,
@@ -248,42 +241,30 @@ export default function Company() {
               </CSVLink>
             </div>
           </section>
-
-          {/* Scheduled restaurants */}
           {restaurants.length > 0 && (
             <ScheduledRestaurants
               restaurants={restaurants}
               isLoading={scheduledRestaurants.isLoading}
             />
           )}
-
-          {/* Active customers */}
           {activeCustomers.length > 0 && (
-            <section className={styles.section}>
+            <section className={styles.container}>
               <h2>Active customers</h2>
               <Customers status='active' customers={activeCustomers} />
             </section>
           )}
-
-          {/* Archived customers */}
           {archivedCustomers.length > 0 && (
-            <section className={styles.section}>
+            <section className={styles.container}>
               <h2>Archived customers</h2>
-
               <Customers status='archived' customers={archivedCustomers} />
             </section>
           )}
-
-          {/* Unenrolled customers */}
           {unenrolledCustomers.length > 0 && (
-            <section className={styles.section}>
+            <section className={styles.container}>
               <h2>Unenrolled customers</h2>
-
               <Customers customers={unenrolledCustomers} />
             </section>
           )}
-
-          {/* Archive company modal */}
           <ModalContainer
             showModalContainer={showStatusUpdateModal}
             setShowModalContainer={setShowStatusUpdateModal}
@@ -299,8 +280,6 @@ export default function Company() {
           />
         </>
       )}
-
-      {/* Schedule restaurants modal */}
       <ModalContainer
         showModalContainer={showModal}
         setShowModalContainer={setShowModal}

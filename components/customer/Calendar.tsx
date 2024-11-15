@@ -60,7 +60,7 @@ export default function Calendar() {
 
   // Get restaurants for a date
   useEffect(() => {
-    if (upcomingDates.length > 0 && router.isReady) {
+    if (router.isReady && upcomingDates.length) {
       const upcomingDate = upcomingDates.find(
         (upcomingDate) => upcomingDate.toString() === router.query.date
       );
@@ -97,7 +97,6 @@ export default function Calendar() {
         {!upcomingRestaurants.isLoading &&
           (upcomingRestaurants.data.length === 0 ||
             updatedRestaurants.length === 0) && <h2>No restaurants</h2>}
-
         {upcomingDates.length > 0 && (
           <>
             <div className={styles.header_and_controller}>
@@ -139,7 +138,6 @@ export default function Calendar() {
                 ))}
               </div>
             </div>
-
             {updatedRestaurants.length > 0 ? (
               <>
                 {updatedRestaurants.map((restaurant, index) => (
@@ -150,7 +148,7 @@ export default function Calendar() {
                       styles.sold_out
                     }`}
                   >
-                    <h2
+                    <h3
                       className={styles.restaurant_name}
                       onClick={() => updateActiveRestaurants(restaurant)}
                     >
@@ -169,8 +167,7 @@ export default function Calendar() {
                           ) && styles.rotate_arrow
                         }`}
                       />
-                    </h2>
-
+                    </h3>
                     {activeRestaurants.some(
                       (activeRestaurant) =>
                         activeRestaurant.show &&

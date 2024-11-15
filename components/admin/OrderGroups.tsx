@@ -151,7 +151,6 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
         {(allUpcomingOrders.isLoading || allDeliveredOrders.isLoading) && (
           <h2>Loading...</h2>
         )}
-
         {!allUpcomingOrders.isLoading &&
           !allDeliveredOrders.isLoading &&
           orderGroups.length === 0 && <h2>No {title.toLowerCase()}</h2>}

@@ -22,14 +22,11 @@ export default function Favorite() {
   return (
     <section className={styles.favorite}>
       {customerFavoriteItems.isLoading && <h2>Loading...</h2>}
-
       {!customerFavoriteItems.isLoading &&
         customerFavoriteItems.data.length === 0 && <h2>No favorite items</h2>}
-
       {customerFavoriteItems.data.length > 0 && (
         <>
           <h2 className={styles.favorite_title}>Favorite items</h2>
-
           <div className={styles.items}>
             {customerFavoriteItems.data.map((customerFavoriteItem) => (
               <div key={customerFavoriteItem._id} className={styles.item}>
@@ -38,7 +35,6 @@ export default function Favorite() {
                     {customerFavoriteItem.item.name} from{' '}
                     {customerFavoriteItem.restaurant.name}
                   </p>
-
                   {upcomingRestaurants.data.some(
                     (upcomingRestaurant) =>
                       upcomingRestaurant._id ===
@@ -46,7 +42,6 @@ export default function Favorite() {
                   ) ? (
                     <div className={styles.dates}>
                       <p className={styles.available}>Available to order on</p>
-
                       {upcomingRestaurants.data.map(
                         (upcomingRestaurant, index) =>
                           upcomingRestaurant._id ===
@@ -78,7 +73,6 @@ export default function Favorite() {
                     </p>
                   )}
                 </div>
-
                 <div className={styles.cover_image}>
                   <Image
                     src={customerFavoriteItem.item.image}
@@ -87,7 +81,6 @@ export default function Favorite() {
                     layout='responsive'
                     objectFit='cover'
                   />
-
                   <div
                     className={styles.remove}
                     onClick={() =>

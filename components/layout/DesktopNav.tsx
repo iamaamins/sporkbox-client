@@ -19,11 +19,8 @@ export default function DesktopNav() {
   const { isAdmin, isVendor, isCustomer, setAdmin, setVendor, setCustomer } =
     useUser();
 
-  // Get first scheduled date of next week
   useEffect(() => {
-    if (upcomingDates.length > 0) {
-      setDate(upcomingDates[0]);
-    }
+    if (upcomingDates.length) setDate(upcomingDates[0]);
   }, [upcomingDates]);
 
   async function handleSignOut() {

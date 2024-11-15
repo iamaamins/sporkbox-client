@@ -97,13 +97,10 @@ export default function EditCustomer() {
   return (
     <section className={styles.edit_customer}>
       {customers.isLoading && <h2>Loading...</h2>}
-
       {!customers.isLoading && !customer && <h2>No vendor found</h2>}
-
       {customer && (
         <>
           <h2>Edit the details</h2>
-
           <form onSubmit={handleSubmit}>
             <div className={styles.item}>
               <label htmlFor='firstName'>First name</label>
@@ -114,7 +111,6 @@ export default function EditCustomer() {
                 onChange={handleChange}
               />
             </div>
-
             <div className={styles.item}>
               <label htmlFor='lastName'>Last name</label>
               <input
@@ -124,7 +120,6 @@ export default function EditCustomer() {
                 onChange={handleChange}
               />
             </div>
-
             <div className={styles.item}>
               <label htmlFor='email'>Email address</label>
               <input
@@ -134,7 +129,6 @@ export default function EditCustomer() {
                 onChange={handleChange}
               />
             </div>
-
             <SubmitButton text='Save' isLoading={isLoading} />
           </form>
         </>

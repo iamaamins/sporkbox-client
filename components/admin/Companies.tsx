@@ -9,15 +9,12 @@ export default function Companies() {
   return (
     <section className={styles.all_companies}>
       {companies.isLoading && <h2>Loading...</h2>}
-
       {!companies.isLoading && companies.data.length === 0 && (
         <h2>No companies</h2>
       )}
-
       {companies.data.length > 0 && (
         <>
           <h2>All companies</h2>
-
           <table>
             <thead>
               <tr>
@@ -28,7 +25,6 @@ export default function Companies() {
                 <th>Budget/shift</th>
               </tr>
             </thead>
-
             <tbody>
               {companies.data.map((company) => (
                 <tr key={company._id}>
@@ -47,7 +43,6 @@ export default function Companies() {
           </table>
         </>
       )}
-
       <LinkButton linkText='Add company' href='/admin/companies/add-company' />
     </section>
   );

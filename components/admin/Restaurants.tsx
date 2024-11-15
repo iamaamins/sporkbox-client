@@ -11,15 +11,12 @@ export default function Restaurants() {
   return (
     <section className={styles.all_restaurants}>
       {vendors.isLoading && <h2>Loading...</h2>}
-
       {!vendors.isLoading && vendors.data.length === 0 && (
         <h2 className={styles.no_vendors_title}>No Restaurants</h2>
       )}
-
       {vendors.data.length > 0 && (
         <>
           <h2 className={styles.all_restaurants_title}>All Restaurants</h2>
-
           <table>
             <thead>
               <tr>
@@ -29,7 +26,6 @@ export default function Restaurants() {
                 <th>Status</th>
               </tr>
             </thead>
-
             <tbody>
               {vendors.data.map((vendor) => (
                 <tr key={vendor._id}>
@@ -49,7 +45,6 @@ export default function Restaurants() {
           </table>
         </>
       )}
-
       <div className={styles.buttons}>
         <LinkButton
           linkText='Add a restaurant'

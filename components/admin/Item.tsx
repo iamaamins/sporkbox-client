@@ -83,7 +83,6 @@ export default function Item() {
     <section className={styles.container}>
       {vendors.isLoading && <h2>Loading...</h2>}
       {!vendors.isLoading && !item && <h2>No item found</h2>}
-
       {vendor && item && (
         <>
           <div className={styles.image_and_details}>
@@ -96,7 +95,6 @@ export default function Item() {
                 layout='responsive'
               />
             </div>
-
             <div className={styles.details}>
               <p className={styles.name}>{item.name}</p>
               <p className={styles.description}>{item.description}</p>
@@ -106,7 +104,6 @@ export default function Item() {
                   <span key={index}>{tag}</span>
                 ))}
               </p>
-
               {item.optionalAddons.addons && (
                 <>
                   <p className={styles.title}>
@@ -117,7 +114,6 @@ export default function Item() {
                   </p>
                 </>
               )}
-
               {item.requiredAddons.addons && (
                 <>
                   <p className={styles.title}>
@@ -128,7 +124,6 @@ export default function Item() {
                   </p>
                 </>
               )}
-
               {item.removableIngredients && (
                 <div>
                   <p className={styles.title}>Removable ingredients</p>

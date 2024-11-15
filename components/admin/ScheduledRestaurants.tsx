@@ -171,15 +171,12 @@ export default function ScheduledRestaurants({
   return (
     <section className={styles.scheduled_restaurants}>
       {isLoading && <h2>Loading...</h2>}
-
       {!isLoading && restaurants.length === 0 && (
         <h2>No scheduled restaurants</h2>
       )}
-
       {restaurants.length > 0 && (
         <>
           <h2>Scheduled restaurants</h2>
-
           <table>
             <thead>
               <tr>
@@ -190,7 +187,6 @@ export default function ScheduledRestaurants({
                 <th className={styles.hide_on_mobile}>Actions</th>
               </tr>
             </thead>
-
             <tbody>
               {restaurants.map((restaurant, index) => (
                 <tr key={index}>
@@ -240,8 +236,6 @@ export default function ScheduledRestaurants({
           </table>
         </>
       )}
-
-      {/* Status update modal */}
       <ModalContainer
         showModalContainer={showStatusUpdateModal}
         setShowModalContainer={setShowStatusUpdateModal}
@@ -255,8 +249,6 @@ export default function ScheduledRestaurants({
           />
         }
       />
-
-      {/* Schedule removal modal */}
       <ModalContainer
         showModalContainer={showScheduleRemovalModal}
         setShowModalContainer={setShowScheduleRemovalModal}

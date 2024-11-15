@@ -1,13 +1,9 @@
-.dashboard {
+.container {
   padding: var(--section_padding);
 }
 
-.dashboard h2 {
+.container h2 {
   margin-bottom: 1rem;
-}
-
-.active_orders {
-  margin-bottom: 2rem;
 }
 
 .load_all {
@@ -16,14 +12,14 @@
 }
 
 @media (min-width: 768px) {
-  .dashboard {
+  .container {
     max-width: 85%;
     margin: 0 auto;
   }
 }
 
 @media (min-width: 1024px) {
-  .dashboard {
+  .container {
     max-width: 80%;
     margin: 0 auto;
   }

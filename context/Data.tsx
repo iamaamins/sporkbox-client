@@ -117,7 +117,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
   const deliveredOrderGroups = createOrderGroups(allDeliveredOrders.data);
 
   const upcomingDates =
-    !upcomingRestaurants.isLoading && upcomingRestaurants.data.length > 0
+    !upcomingRestaurants.isLoading && upcomingRestaurants.data.length
       ? upcomingRestaurants.data
           .filter(
             (upcomingRestaurant) =>

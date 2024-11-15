@@ -37,15 +37,12 @@ export default function DiscountCodes() {
   return (
     <section className={styles.discount_codes}>
       {discountCodes.isLoading && <h2>Loading...</h2>}
-
       {!discountCodes.isLoading && discountCodes.data.length === 0 && (
         <h2>No discount codes</h2>
       )}
-
       {discountCodes.data.length > 0 && (
         <>
           <h2>Discount codes</h2>
-
           <table>
             <thead>
               <tr>
@@ -56,7 +53,6 @@ export default function DiscountCodes() {
                 <th>Actions</th>
               </tr>
             </thead>
-
             <tbody>
               {discountCodes.data.map((discountCode) => (
                 <tr key={discountCode._id}>
@@ -77,7 +73,6 @@ export default function DiscountCodes() {
           </table>
         </>
       )}
-
       <LinkButton
         linkText='Add discount code'
         href='/admin/discount-codes/add-discount-code'

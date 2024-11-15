@@ -194,7 +194,6 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
       )}
       {ordersByRestaurants.length > 0 && (
         <>
-          {/* Order details */}
           <h2>Order details - {date}</h2>
           <table>
             <thead>
@@ -240,7 +239,6 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
               ))}
             </tbody>
           </table>
-          {/* Order summary */}
           {ordersByRestaurants.map((ordersByRestaurant, index) => (
             <div key={index}>
               <h2>
@@ -308,7 +306,6 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
               </table>
             </div>
           ))}
-          {/* Customer info */}
           {ordersByRestaurants.map((ordersByRestaurant, index) => (
             <div key={index}>
               <h2>
@@ -358,7 +355,6 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
               </table>
             </div>
           ))}
-          {/* Charge info */}
           <h2>Charge information - {date}</h2>
           <table>
             <thead>
@@ -382,7 +378,6 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
           </table>
         </>
       )}
-      {/* Archive modal */}
       <ModalContainer
         showModalContainer={showStatusUpdateModal}
         setShowModalContainer={setShowStatusUpdateModal}
@@ -396,7 +391,6 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
           />
         }
       />
-      {/* Delivery modal */}
       <ModalContainer
         showModalContainer={showDeliveryModal}
         setShowModalContainer={setShowDeliveryModal}

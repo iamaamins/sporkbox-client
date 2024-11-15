@@ -1,12 +1,12 @@
-.section {
+.container {
   padding: var(--section_padding);
 }
 
-.section h2 {
+.container h2 {
   margin-bottom: 1rem;
 }
 
-.section table {
+.container table {
   margin-bottom: 0rem;
 }
 
@@ -70,7 +70,7 @@
 }
 
 @media (min-width: 768px) {
-  .section {
+  .container {
     max-width: 85%;
     margin: 0 auto;
   }
@@ -92,7 +92,7 @@
 }
 
 @media (min-width: 1024px) {
-  .section {
+  .container {
     max-width: 80%;
     margin: 0 auto;
   }
