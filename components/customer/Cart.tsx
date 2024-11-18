@@ -135,7 +135,6 @@ export default function Cart() {
   return (
     <section className={styles.cart}>
       {cartItems.length === 0 && <h2>No items in basket</h2>}
-
       {cartItems.length > 0 && (
         <>
           <h2 className={styles.cart_title}>Your basket</h2>
@@ -183,7 +182,6 @@ export default function Cart() {
               </div>
             ))}
           </div>
-
           {!appliedDiscount && payableAmount > 0 && (
             <form
               onSubmit={applyDiscount}
@@ -207,7 +205,6 @@ export default function Cart() {
               </div>
             </form>
           )}
-
           {appliedDiscount && (
             <div className={styles.applied_discount}>
               <p>
@@ -217,7 +214,6 @@ export default function Cart() {
               <p onClick={removeDiscount}>Remove</p>
             </div>
           )}
-
           <button
             disabled={isLoading}
             className={styles.button}

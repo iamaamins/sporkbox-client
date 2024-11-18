@@ -33,7 +33,9 @@ export default function MobileNav({ isOpen, setIsOpen }: Props) {
           </a>
         </Link>
       </div>
-      {isCustomer && <CartIcon totalCartQuantity={totalCartQuantity} />}
+      {isCustomer && (
+        <CartIcon href='/cart' totalCartQuantity={totalCartQuantity} />
+      )}
     </nav>
   );
 }

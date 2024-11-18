@@ -41,21 +41,6 @@ export default function Employee() {
   const [isUpdatingEmployeeStatus, setIsUpdatingEmployeeStatus] =
     useState(false);
 
-  async function getDeliveredOrders() {
-    try {
-      const response = await axiosInstance.get<Order[]>(
-        `/orders/${router.query.employee}/all-delivered-orders`
-      );
-      setEmployee((prevState) => ({
-        ...prevState,
-        deliveredOrders: response.data,
-      }));
-    } catch (err) {
-      console.log(err);
-      showErrorAlert(err as CustomAxiosError, setAlerts);
-    }
-  }
-
   function initiateStatusUpdate(employee: Customer | null) {
     if (!employee) return showErrorAlert('Employee not found', setAlerts);
     setShowStatusUpdateModal(true);
@@ -85,25 +70,37 @@ export default function Employee() {
     }
   }
 
-  // Get employee data and upcoming orders
+  // Get employee data, upcoming orders and delivered orders
   useEffect(() => {
-    if (router.isReady && customers.data.length > 0) {
-      const employee = customers.data.find(
-        (customer) => customer._id === router.query.employee
-      );
+    async function getEmployeeData() {
+      try {
+        const employee = customers.data.find(
+          (customer) => customer._id === router.query.employee
+        );
+        if (!employee) return showErrorAlert('Employee not found', setAlerts);
 
-      if (employee) {
+        const upcomingOrders = allUpcomingOrders.data.filter(
+          (upcomingOrder) => upcomingOrder.customer._id === employee._id
+        );
         setEmployee((prevState) => ({
           ...prevState,
           data: employee,
-          upcomingOrders: allUpcomingOrders.data.filter(
-            (upcomingOrder) =>
-              upcomingOrder.customer._id === router.query.employee
-          ),
+          upcomingOrders,
         }));
+
+        const response = await axiosInstance.get(
+          `/orders/${employee._id}/all-delivered-orders`
+        );
+        const deliveredOrders = response.data;
+        setEmployee((prevState) => ({
+          ...prevState,
+          deliveredOrders,
+        }));
+      } catch (err) {
+        showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
-    if (router.isReady && employee) getDeliveredOrders();
+    if (router.isReady && customers.data.length) getEmployeeData();
   }, [router.isReady, customers, allUpcomingOrders]);
 
   return (

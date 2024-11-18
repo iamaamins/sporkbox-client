@@ -198,6 +198,7 @@ export default function Calendar() {
                   Filter
                 </p>
                 <CartIcon
+                  href={`/admin/dashboard/${employee?._id}/cart`}
                   totalCartQuantity={cartItems.reduce(
                     (acc, curr) => acc + curr.quantity,
                     0

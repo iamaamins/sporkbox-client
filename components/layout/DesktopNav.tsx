@@ -176,7 +176,9 @@ export default function DesktopNav() {
 
       {/* Call to actions */}
       <div className={styles.ctas}>
-        {isCustomer && <CartIcon totalCartQuantity={totalCartQuantity} />}
+        {isCustomer && (
+          <CartIcon href='/cart' totalCartQuantity={totalCartQuantity} />
+        )}
         <button
           onClick={handleSignOut}
           className={`${styles.sign_out} ${
