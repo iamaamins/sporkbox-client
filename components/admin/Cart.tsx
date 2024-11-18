@@ -133,7 +133,7 @@ export default function Cart() {
       setCartItems(
         JSON.parse(localStorage.getItem(`admin-cart-${employee?._id}`) || '[]')
       );
-  }, [router, isAdmin, employee]);
+  }, [isAdmin, employee, router]);
 
   // Get saved discount
   useEffect(() => {
@@ -143,7 +143,7 @@ export default function Cart() {
       );
       setAppliedDiscount(localDiscount ? JSON.parse(localDiscount) : null);
     }
-  }, [router, isAdmin, employee]);
+  }, [isAdmin, employee, router]);
 
   // Get employee details
   useEffect(() => {
@@ -156,7 +156,7 @@ export default function Cart() {
       }
     }
     if (router.isReady && isAdmin) getEmployee(router.query.employee as string);
-  }, [isAdmin]);
+  }, [isAdmin, router]);
 
   // Get employee all orders
   useEffect(() => {
@@ -176,7 +176,7 @@ export default function Cart() {
       }
     }
     if (router.isReady && isAdmin) getAllOrders();
-  }, [isAdmin]);
+  }, [isAdmin, router]);
 
   // Get payable amount
   useEffect(() => {
