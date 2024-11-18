@@ -101,7 +101,7 @@ export default function Employee() {
       }
     }
     if (router.isReady && customers.data.length) getEmployeeData();
-  }, [router.isReady, customers, allUpcomingOrders]);
+  }, [customers, allUpcomingOrders, router]);
 
   return (
     <>

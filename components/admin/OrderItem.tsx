@@ -196,7 +196,7 @@ export default function OrderItem() {
       }
     }
     if (router.isReady && isAdmin) getEmployee(router.query.employee as string);
-  }, [isAdmin, router.isReady]);
+  }, [isAdmin, router]);
 
   // Get cart items
   useEffect(() => {
@@ -304,7 +304,7 @@ export default function OrderItem() {
         }
       }
     }
-  }, [upcomingRestaurants, router.isReady]);
+  }, [upcomingRestaurants, router]);
 
   // Get upcoming restaurants
   useEffect(() => {
@@ -322,7 +322,7 @@ export default function OrderItem() {
 
     if (router.isReady && isAdmin)
       getUpcomingRestaurants(router.query.employee as string);
-  }, [isAdmin, router.isReady]);
+  }, [isAdmin, router]);
 
   return (
     <section className={styles.container}>

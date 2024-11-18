@@ -94,7 +94,9 @@ export default function PlaceOrderFiltersModal({
   useEffect(() => {
     if (customer && customer.foodPreferences) {
       const savedFilters = JSON.parse(
-        localStorage.getItem(`filters-${customer._id}`) as string
+        localStorage.getItem(
+          `${isAdmin && 'admin-'}filters-${customer._id}`
+        ) as string
       );
       setSelectedFilters(savedFilters || customer.foodPreferences);
     }

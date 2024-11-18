@@ -98,7 +98,7 @@ export default function PlaceOrder() {
       }
     }
     if (router.isReady && isAdmin) getEmployee(router.query.employee as string);
-  }, [isAdmin]);
+  }, [isAdmin, router]);
 
   // Get upcoming restaurants
   useEffect(() => {
@@ -134,7 +134,7 @@ export default function PlaceOrder() {
 
     if (router.isReady && isAdmin)
       getUpcomingRestaurants(router.query.employee as string);
-  }, [isAdmin]);
+  }, [isAdmin, router]);
 
   // Get restaurants
   useEffect(() => {
