@@ -28,7 +28,7 @@ export default function Cart() {
   const {
     cartItems,
     isLoading,
-    checkoutCart,
+    checkout,
     removeItemFromCart,
     upcomingOrderDetails,
   } = useCart();
@@ -217,7 +217,7 @@ export default function Cart() {
           <button
             disabled={isLoading}
             className={styles.button}
-            onClick={() => checkoutCart(appliedDiscount?._id)}
+            onClick={() => checkout(appliedDiscount?._id)}
           >
             {isLoading ? (
               <ButtonLoader />

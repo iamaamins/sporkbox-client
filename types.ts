@@ -1,10 +1,12 @@
 import { AxiosError } from 'axios';
 import { Dispatch, SetStateAction, ReactNode } from 'react';
 
+export type UserRole = 'ADMIN' | 'VENDOR' | 'CUSTOMER';
+
 interface User {
   _id: string;
   email: string;
-  role: string;
+  role: UserRole;
   lastName: string;
   firstName: string;
 }

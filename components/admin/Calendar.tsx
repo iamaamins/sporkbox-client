@@ -98,7 +98,7 @@ export default function Calendar() {
       }
     }
     if (router.isReady && isAdmin) getEmployee(router.query.employee as string);
-  }, [isAdmin, router.isReady]);
+  }, [isAdmin]);
 
   // Get upcoming restaurants
   useEffect(() => {
@@ -124,13 +124,19 @@ export default function Calendar() {
         );
       } catch (err) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
+      } finally {
+        setUpcomingRestaurants((prevState) => ({
+          ...prevState,
+          isLoading: false,
+        }));
       }
     }
 
     if (router.isReady && isAdmin)
       getUpcomingRestaurants(router.query.employee as string);
-  }, [isAdmin, router.isReady]);
+  }, [isAdmin]);
 
+  // Get restaurants
   useEffect(() => {
     if (router.isReady && upcomingDates.length) {
       const upcomingDate = upcomingDates.find(
@@ -177,7 +183,7 @@ export default function Calendar() {
     <>
       <section className={styles.calendar}>
         {upcomingRestaurants.isLoading && <h2>Loading...</h2>}
-        {!upcomingRestaurants.isLoading && !upcomingRestaurants.data.length && (
+        {!upcomingRestaurants.isLoading && !upcomingDates.length && (
           <h2>No restaurants</h2>
         )}
         {upcomingDates.length > 0 && (
@@ -351,6 +357,7 @@ export default function Calendar() {
         setShowModalContainer={setShowCalendarFilters}
         component={
           <CalendarFiltersModal
+            isAdmin={true}
             customer={employee}
             restaurants={restaurants}
             setUpdatedRestaurants={setUpdatedRestaurants}

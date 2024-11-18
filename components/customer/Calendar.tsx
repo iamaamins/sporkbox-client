@@ -94,7 +94,7 @@ export default function Calendar() {
     <>
       <section className={styles.calendar}>
         {upcomingRestaurants.isLoading && <h2>Loading...</h2>}
-        {!upcomingRestaurants.isLoading && !upcomingRestaurants.data.length && (
+        {!upcomingRestaurants.isLoading && !upcomingDates.length && (
           <h2>No restaurants</h2>
         )}
         {upcomingDates.length > 0 && (

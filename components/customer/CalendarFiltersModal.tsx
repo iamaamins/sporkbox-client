@@ -1,4 +1,3 @@
-import { useUser } from '@context/User';
 import { Customer, UpcomingRestaurant } from 'types';
 import {
   ChangeEvent,
@@ -12,6 +11,7 @@ import styles from '@components/customer/CalendarFiltersModal.module.css';
 import { useData } from '@context/Data';
 
 type Props = {
+  isAdmin?: boolean;
   customer: Customer | null;
   restaurants: UpcomingRestaurant[];
   setShowCalendarFilters: Dispatch<SetStateAction<boolean>>;
@@ -19,6 +19,7 @@ type Props = {
 };
 
 export default function CalendarFiltersModal({
+  isAdmin,
   customer,
   restaurants,
   setUpdatedRestaurants,
@@ -81,7 +82,7 @@ export default function CalendarFiltersModal({
     filterItems();
     setShowCalendarFilters(false);
     localStorage.setItem(
-      `filters-${customer._id}`,
+      `${isAdmin && 'admin-'}filters-${customer._id}`,
       JSON.stringify(selectedFilters)
     );
   }

@@ -34,7 +34,7 @@ type CartContext = {
   upcomingOrderDetails: DateTotal[];
   removeItemFromCart: (item: CartItem) => void;
   setCartItems: Dispatch<SetStateAction<CartItem[]>>;
-  checkoutCart: (discountCodeId?: string) => Promise<void>;
+  checkout: (discountCodeId?: string) => Promise<void>;
   addItemToCart: (initialItem: CartItem, item: Item) => void;
 };
 
@@ -136,7 +136,7 @@ export default function CartProvider({ children }: ContextProviderProps) {
   }
 
   // Checkout cart
-  async function checkoutCart(discountCodeId?: string) {
+  async function checkout(discountCodeId?: string) {
     if (isCustomer) {
       const orderItems = cartItems.map((cartItem) => ({
         itemId: cartItem._id,
@@ -193,7 +193,7 @@ export default function CartProvider({ children }: ContextProviderProps) {
         cartItems,
         isLoading,
         setCartItems,
-        checkoutCart,
+        checkout,
         addItemToCart,
         totalCartPrice,
         totalCartQuantity,

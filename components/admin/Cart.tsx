@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCart } from '@context/Cart';
 import { useUser } from '@context/User';
 import { IoMdRemove } from 'react-icons/io';
 import styles from '@components/customer/Cart.module.css';
@@ -18,13 +17,7 @@ import {
 import { FormEvent, useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
 import { useRouter } from 'next/router';
-import {
-  CartItem,
-  CustomAxiosError,
-  Customer,
-  CustomerOrder,
-  Order,
-} from 'types';
+import { CartItem, CustomAxiosError, Customer, CustomerOrder } from 'types';
 import { useData } from '@context/Data';
 
 type AppliedDiscount = {
@@ -50,7 +43,6 @@ export default function Cart() {
 
   async function applyDiscount(e: FormEvent) {
     e.preventDefault();
-
     try {
       setIsApplyingDiscount(true);
       const response = await axiosInstance.post(
@@ -91,7 +83,6 @@ export default function Cart() {
 
   async function checkout(discountCodeId?: string) {
     if (!employee) return showErrorAlert('No employee found', setAlerts);
-
     const orderItems = cartItems.map((cartItem) => ({
       itemId: cartItem._id,
       quantity: cartItem.quantity,
@@ -130,9 +121,9 @@ export default function Cart() {
     }
   }
 
+  // Remove discount
   useEffect(() => {
     if (appliedDiscount && payableAmount <= 0) {
-      removeDiscount();
     }
   }, [cartItems]);
 
@@ -142,7 +133,7 @@ export default function Cart() {
       setCartItems(
         JSON.parse(localStorage.getItem(`admin-cart-${employee?._id}`) || '[]')
       );
-  }, [router.isReady, isAdmin, employee]);
+  }, [router, isAdmin, employee]);
 
   // Get saved discount
   useEffect(() => {
@@ -152,7 +143,7 @@ export default function Cart() {
       );
       setAppliedDiscount(localDiscount ? JSON.parse(localDiscount) : null);
     }
-  }, [isAdmin, employee, router.isReady]);
+  }, [router, isAdmin, employee]);
 
   // Get employee details
   useEffect(() => {
@@ -165,7 +156,7 @@ export default function Cart() {
       }
     }
     if (router.isReady && isAdmin) getEmployee(router.query.employee as string);
-  }, [router.isReady, isAdmin]);
+  }, [isAdmin]);
 
   // Get employee all orders
   useEffect(() => {
@@ -184,8 +175,8 @@ export default function Cart() {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
-    if (router.isReady && isAdmin && employee) getAllOrders();
-  }, [router.isReady, isAdmin, employee]);
+    if (router.isReady && isAdmin) getAllOrders();
+  }, [isAdmin]);
 
   // Get payable amount
   useEffect(() => {
@@ -256,7 +247,7 @@ export default function Cart() {
         setPayableAmount(totalPayableAmount - discountAmount);
       }
     }
-  }, [router.isReady, allOrders, cartItems, appliedDiscount]);
+  }, [allOrders, cartItems, appliedDiscount]);
 
   return (
     <section className={styles.cart}>
