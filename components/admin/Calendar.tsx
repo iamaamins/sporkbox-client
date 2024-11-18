@@ -24,6 +24,8 @@ import { RiShieldStarFill } from 'react-icons/ri';
 import { IoIosArrowUp } from 'react-icons/io';
 import Image from 'next/image';
 import { AiFillStar } from 'react-icons/ai';
+import ModalContainer from '@components/layout/ModalContainer';
+import CalendarFiltersModal from '@components/customer/CalendarFiltersModal';
 
 export default function Calendar() {
   const router = useRouter();
@@ -41,8 +43,13 @@ export default function Calendar() {
   const [updatedRestaurants, setUpdatedRestaurants] = useState<
     UpcomingRestaurant[]
   >([]);
-  const [employee, setEmployee] = useState<Customer>();
+  const [employee, setEmployee] = useState<Customer | null>(null);
   const [upcomingDates, setUpcomingDates] = useState<number[]>([]);
+  const [showCalendarFilters, setShowCalendarFilters] = useState(false);
+  const [sorted, setSorted] = useState({
+    byLowToHigh: false,
+    byHighToLow: false,
+  });
 
   function updateActiveRestaurants(restaurant: UpcomingRestaurant) {
     setActiveRestaurants((prevState) =>
@@ -59,15 +66,28 @@ export default function Calendar() {
     );
   }
 
-  //   function isSoldOutItem(item: Item) {
-  //     const company = customer?.companies.find(
-  //       (company) => company.status === 'ACTIVE'
-  //     );
-  //     return item.soldOutStat?.some(
-  //       (el) =>
-  //         upcomingDates.includes(dateToMS(el.date)) && company?._id === el.company
-  //     );
-  //   }
+  function isSoldOutItem(item: Item) {
+    const company = employee?.companies.find(
+      (company) => company.status === 'ACTIVE'
+    );
+    return item.soldOutStat?.some(
+      (el) =>
+        upcomingDates.includes(dateToMS(el.date)) && company?._id === el.company
+    );
+  }
+
+  // Get employee details
+  useEffect(() => {
+    async function getEmployee(employee: string) {
+      try {
+        const response = await axiosInstance.get(`/customers/${employee}`);
+        setEmployee(response.data);
+      } catch (err) {
+        showErrorAlert(err as CustomAxiosError, setAlerts);
+      }
+    }
+    if (router.isReady && isAdmin) getEmployee(router.query.employee as string);
+  }, [isAdmin, router.isReady]);
 
   // Get upcoming restaurants
   useEffect(() => {
@@ -143,136 +163,139 @@ export default function Calendar() {
   }, [upcomingDates]);
 
   return (
-    <section className={styles.calendar}>
-      {upcomingRestaurants.isLoading && <h2>Loading...</h2>}
-      {!upcomingRestaurants.isLoading && !upcomingRestaurants.data.length && (
-        <h2>No restaurants</h2>
-      )}
-      {upcomingDates.length > 0 && (
-        <>
-          <div className={styles.header_and_controller}>
-            <div className={styles.header}>
-              <h2>Upcoming week</h2>
-              {/* <CalendarSort
-                setSorted={setSorted}
-                updatedRestaurants={updatedRestaurants}
-              />
-              <p
-                onClick={() => setShowCalendarFilters(true)}
-                className={`${styles.filter} ${
-                  showCalendarFilters && styles.active
-                }`}
-              >
-                Filter
-              </p> */}
-            </div>
-            <div className={styles.controller}>
-              {upcomingDates.map((upcomingDate, index) => (
-                <div key={index}>
-                  <Link
-                    href={`/admin/dashboard/${router.query.employee}/place-order/${upcomingDate}`}
-                  >
-                    <a
-                      key={index}
-                      className={
-                        upcomingDate.toString() === router.query.date
-                          ? styles.active
-                          : ''
-                      }
-                    >
-                      <span>{getDate(upcomingDate)}</span>
-                      <span>{getDay(upcomingDate)}</span>
-                    </a>
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </div>
-          {updatedRestaurants.length > 0 ? (
-            <>
-              {updatedRestaurants.map((restaurant, index) => (
-                <div
-                  key={index}
-                  className={`${styles.restaurant} ${
-                    restaurant.schedule.status === 'INACTIVE' && styles.sold_out
+    <>
+      <section className={styles.calendar}>
+        {upcomingRestaurants.isLoading && <h2>Loading...</h2>}
+        {!upcomingRestaurants.isLoading && !upcomingRestaurants.data.length && (
+          <h2>No restaurants</h2>
+        )}
+        {upcomingDates.length > 0 && (
+          <>
+            <div className={styles.header_and_controller}>
+              <div className={styles.header}>
+                <h2>Upcoming week</h2>
+                <CalendarSort
+                  setSorted={setSorted}
+                  updatedRestaurants={updatedRestaurants}
+                />
+                <p
+                  onClick={() => setShowCalendarFilters(true)}
+                  className={`${styles.filter} ${
+                    showCalendarFilters && styles.active
                   }`}
                 >
-                  <h2
-                    className={styles.restaurant_name}
-                    onClick={() => updateActiveRestaurants(restaurant)}
+                  Filter
+                </p>
+              </div>
+              <div className={styles.controller}>
+                {upcomingDates.map((upcomingDate, index) => (
+                  <div key={index}>
+                    <Link
+                      href={`/admin/dashboard/${router.query.employee}/place-order/${upcomingDate}`}
+                    >
+                      <a
+                        key={index}
+                        className={
+                          upcomingDate.toString() === router.query.date
+                            ? styles.active
+                            : ''
+                        }
+                      >
+                        <span>{getDate(upcomingDate)}</span>
+                        <span>{getDay(upcomingDate)}</span>
+                      </a>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {updatedRestaurants.length > 0 ? (
+              <>
+                {updatedRestaurants.map((restaurant, index) => (
+                  <div
+                    key={index}
+                    className={`${styles.restaurant} ${
+                      restaurant.schedule.status === 'INACTIVE' &&
+                      styles.sold_out
+                    }`}
                   >
-                    {restaurant.name}
-                    {restaurant.isFeatured && (
-                      <RiShieldStarFill title='Featured restaurant' />
-                    )}
-                    {restaurant.schedule.status === 'INACTIVE' && '- sold out'}
-                    <IoIosArrowUp
-                      className={`${styles.restaurant_name_arrow} ${
-                        activeRestaurants.some(
-                          (activeRestaurant) =>
-                            !activeRestaurant.show &&
-                            activeRestaurant.id === restaurant._id
-                        ) && styles.rotate_arrow
-                      }`}
-                    />
-                  </h2>
-
-                  {activeRestaurants.some(
-                    (activeRestaurant) =>
-                      activeRestaurant.show &&
-                      activeRestaurant.id === restaurant._id
-                  ) ? (
-                    <div className={styles.items}>
-                      {restaurant.items.map((item) => (
-                        <Link
-                          key={item._id}
-                          href={
-                            // !isSoldOutItem(item) &&
-                            restaurant.schedule.status === 'ACTIVE'
-                              ? `/admin/dashboard/${router.query.employee}/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`
-                              : '#'
-                          }
-                        >
-                          <a
-                            className={`${styles.item}`}
-                            // ${isSoldOutItem(item) && styles.sold_out}
+                    <h3
+                      className={styles.restaurant_name}
+                      onClick={() => updateActiveRestaurants(restaurant)}
+                    >
+                      {restaurant.name}
+                      {restaurant.isFeatured && (
+                        <RiShieldStarFill title='Featured restaurant' />
+                      )}
+                      {restaurant.schedule.status === 'INACTIVE' &&
+                        '- sold out'}
+                      <IoIosArrowUp
+                        className={`${styles.restaurant_name_arrow} ${
+                          activeRestaurants.some(
+                            (activeRestaurant) =>
+                              !activeRestaurant.show &&
+                              activeRestaurant.id === restaurant._id
+                          ) && styles.rotate_arrow
+                        }`}
+                      />
+                    </h3>
+                    {activeRestaurants.some(
+                      (activeRestaurant) =>
+                        activeRestaurant.show &&
+                        activeRestaurant.id === restaurant._id
+                    ) ? (
+                      <div className={styles.items}>
+                        {restaurant.items.map((item) => (
+                          <Link
+                            key={item._id}
+                            href={
+                              !isSoldOutItem(item) &&
+                              restaurant.schedule.status === 'ACTIVE'
+                                ? `/admin/dashboard/${router.query.employee}/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`
+                                : '#'
+                            }
                           >
-                            <div className={styles.item_details}>
-                              <p className={styles.item_name}>
-                                {item.name}
-                                {item.averageRating && (
-                                  <span>
-                                    <AiFillStar />
-                                    {item.averageRating}
+                            <a
+                              className={`${styles.item} ${
+                                isSoldOutItem(item) && styles.sold_out
+                              }`}
+                            >
+                              <div className={styles.item_details}>
+                                <p className={styles.item_name}>
+                                  {item.name}
+                                  {item.averageRating && (
+                                    <span>
+                                      <AiFillStar />
+                                      {item.averageRating}
+                                    </span>
+                                  )}
+                                </p>
+                                <p className={styles.item_price}>
+                                  {numberToUSD(item.price)}
+                                </p>
+                                <p className={styles.item_description}>
+                                  {item.description}
+                                </p>
+                              </div>
+
+                              <div className={styles.item_image}>
+                                {item.popularityIndex && (
+                                  <span className={styles.popularity_index}>
+                                    #{item.popularityIndex} Most Liked
                                   </span>
                                 )}
-                              </p>
-                              <p className={styles.item_price}>
-                                {numberToUSD(item.price)}
-                              </p>
-                              <p className={styles.item_description}>
-                                {item.description}
-                              </p>
-                            </div>
-
-                            <div className={styles.item_image}>
-                              {item.popularityIndex && (
-                                <span className={styles.popularity_index}>
-                                  #{item.popularityIndex} Most Liked
-                                </span>
-                              )}
-                              <span
-                                className={styles.item_image_overlay}
-                              ></span>
-                              <p className={styles.sold_out_text}>Sold out</p>
-                              <Image
-                                src={item.image || restaurant.logo}
-                                width={16}
-                                height={10}
-                                objectFit='cover'
-                                layout='responsive'
-                              />
-                              {/* {cartItems.map(
+                                <span
+                                  className={styles.item_image_overlay}
+                                ></span>
+                                <p className={styles.sold_out_text}>Sold out</p>
+                                <Image
+                                  src={item.image || restaurant.logo}
+                                  width={16}
+                                  height={10}
+                                  objectFit='cover'
+                                  layout='responsive'
+                                />
+                                {/* {cartItems.map(
                                 (cartItem) =>
                                   cartItem.deliveryDate.toString() ===
                                     router.query.date &&
@@ -287,24 +310,36 @@ export default function Calendar() {
                                     </span>
                                   )
                               )} */}
-                            </div>
-                          </a>
-                        </Link>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className={styles.collapsed_text}>
-                      Items are collapsed!
-                    </p>
-                  )}
-                </div>
-              ))}
-            </>
-          ) : (
-            <h2>No items found</h2>
-          )}
-        </>
-      )}
-    </section>
+                              </div>
+                            </a>
+                          </Link>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className={styles.message}>Items are collapsed!</p>
+                    )}
+                  </div>
+                ))}
+              </>
+            ) : (
+              <p className={styles.message}>No items found</p>
+            )}
+          </>
+        )}
+      </section>
+      <ModalContainer
+        width='20rem'
+        showModalContainer={showCalendarFilters}
+        setShowModalContainer={setShowCalendarFilters}
+        component={
+          <CalendarFiltersModal
+            customer={employee}
+            restaurants={restaurants}
+            setUpdatedRestaurants={setUpdatedRestaurants}
+            setShowCalendarFilters={setShowCalendarFilters}
+          />
+        }
+      />
+    </>
   );
 }

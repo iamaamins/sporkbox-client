@@ -138,7 +138,7 @@ export default function Dashboard() {
     a.click();
   }
 
-  type IdenticalItem = {
+  type IdenticalItemGroup = {
     item: {
       name: string;
       requiredAddons?: string;
@@ -148,7 +148,7 @@ export default function Dashboard() {
     quantity: number;
   };
   function groupIdenticalItems(orders: VendorUpcomingOrder[]) {
-    const orderMap: Record<string, IdenticalItem> = {};
+    const orderMap: Record<string, IdenticalItemGroup> = {};
     for (const order of orders) {
       const key =
         order.item._id +

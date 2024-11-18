@@ -17,7 +17,6 @@ export default function App({ Component, pageProps }: AppProps) {
           content='width=device-width, initial-scale=1, maximum-scale=1'
         />
       </Head>
-
       <AlertProvider>
         <UserProvider>
           <DataProvider>

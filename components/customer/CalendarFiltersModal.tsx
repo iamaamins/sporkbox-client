@@ -1,5 +1,5 @@
 import { useUser } from '@context/User';
-import { UpcomingRestaurant } from 'types';
+import { Customer, UpcomingRestaurant } from 'types';
 import {
   ChangeEvent,
   Dispatch,
@@ -12,17 +12,18 @@ import styles from '@components/customer/CalendarFiltersModal.module.css';
 import { useData } from '@context/Data';
 
 type Props = {
+  customer: Customer | null;
   restaurants: UpcomingRestaurant[];
   setShowCalendarFilters: Dispatch<SetStateAction<boolean>>;
   setUpdatedRestaurants: Dispatch<SetStateAction<UpcomingRestaurant[]>>;
 };
 
 export default function CalendarFiltersModal({
+  customer,
   restaurants,
   setUpdatedRestaurants,
   setShowCalendarFilters,
 }: Props) {
-  const { customer } = useUser();
   const { dietaryTags } = useData();
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
 
@@ -97,8 +98,6 @@ export default function CalendarFiltersModal({
       setSelectedFilters(savedFilters || customer.foodPreferences);
     }
   }, [customer]);
-
-  console.log(selectedFilters);
 
   return (
     <div className={styles.container}>

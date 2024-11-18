@@ -247,7 +247,7 @@
   background: var(--disabled);
 }
 
-.collapsed_text {
+.message {
   font-weight: 500;
   color: var(--gray);
 }

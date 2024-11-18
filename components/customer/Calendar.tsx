@@ -94,9 +94,9 @@ export default function Calendar() {
     <>
       <section className={styles.calendar}>
         {upcomingRestaurants.isLoading && <h2>Loading...</h2>}
-        {!upcomingRestaurants.isLoading &&
-          (upcomingRestaurants.data.length === 0 ||
-            updatedRestaurants.length === 0) && <h2>No restaurants</h2>}
+        {!upcomingRestaurants.isLoading && !upcomingRestaurants.data.length && (
+          <h2>No restaurants</h2>
+        )}
         {upcomingDates.length > 0 && (
           <>
             <div className={styles.header_and_controller}>
@@ -245,26 +245,24 @@ export default function Calendar() {
                         ))}
                       </div>
                     ) : (
-                      <p className={styles.collapsed_text}>
-                        Items are collapsed!
-                      </p>
+                      <p className={styles.message}>Items are collapsed!</p>
                     )}
                   </div>
                 ))}
               </>
             ) : (
-              <h2>No items found</h2>
+              <p className={styles.message}>No items found</p>
             )}
           </>
         )}
       </section>
-
       <ModalContainer
         width='20rem'
         showModalContainer={showCalendarFilters}
         setShowModalContainer={setShowCalendarFilters}
         component={
           <CalendarFiltersModal
+            customer={customer}
             restaurants={restaurants}
             setUpdatedRestaurants={setUpdatedRestaurants}
             setShowCalendarFilters={setShowCalendarFilters}

@@ -140,11 +140,13 @@ export default function Employee() {
                   >
                     {employee.data.status === 'ACTIVE' ? 'Archive' : 'Activate'}
                   </span>
-                  <Link
-                    href={`/admin/dashboard/${router.query.employee}/place-order/date`}
-                  >
-                    <a className={styles.place_order}>Place orders</a>
-                  </Link>
+                  {employee.data.status === 'ACTIVE' && (
+                    <Link
+                      href={`/admin/dashboard/${router.query.employee}/place-order/date`}
+                    >
+                      <a className={styles.place_order}>Place orders</a>
+                    </Link>
+                  )}
                 </td>
               </tr>
             </tbody>
