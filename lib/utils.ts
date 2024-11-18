@@ -239,16 +239,16 @@ export function groupIdenticalOrders(orders: Order[]): IdenticalOrderGroup[] {
         },
         item: {
           name: order.item.name,
-          total: order.item.total,
-          quantity: order.item.quantity,
           requiredAddons: order.item.requiredAddons,
           optionalAddons: order.item.optionalAddons,
           removedIngredients: order.item.removedIngredients,
         },
+        total: order.item.total,
+        quantity: order.item.quantity,
       };
     } else {
-      orderMap[key].item.total += order.item.total;
-      orderMap[key].item.quantity += order.item.quantity;
+      orderMap[key].total += order.item.total;
+      orderMap[key].quantity += order.item.quantity;
     }
   }
   return Object.values(orderMap);

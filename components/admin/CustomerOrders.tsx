@@ -35,9 +35,9 @@ export default function CustomerOrders({ orderGroups }: Props) {
             >
               {group.item.removedIngredients}
             </td>
-            <td>{group.item.quantity}</td>
+            <td>{group.quantity}</td>
             <td className={styles.hide_on_mobile}>{group.restaurant.name}</td>
-            <td>{numberToUSD(group.item.total)}</td>
+            <td>{numberToUSD(group.total)}</td>
           </tr>
         ))}
       </tbody>

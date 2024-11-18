@@ -494,10 +494,10 @@ export type IdenticalOrderGroup = {
   };
   item: {
     name: string;
-    quantity: number;
-    total: number;
     requiredAddons?: string;
     optionalAddons?: string;
     removedIngredients?: string;
   };
+  total: number;
+  quantity: number;
 };

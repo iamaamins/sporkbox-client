@@ -281,8 +281,8 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                         >
                           {group.item.removedIngredients}
                         </td>
-                        <td>{numberToUSD(group.item.total)}</td>
-                        <td>{group.item.quantity}</td>
+                        <td>{numberToUSD(group.total)}</td>
+                        <td>{group.quantity}</td>
                       </tr>
                     )
                   )}

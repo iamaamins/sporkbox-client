@@ -139,11 +139,13 @@ export default function Dashboard() {
   }
 
   type IdenticalItem = {
-    name: string;
+    item: {
+      name: string;
+      requiredAddons?: string;
+      optionalAddons?: string;
+      removedIngredients?: string;
+    };
     quantity: number;
-    requiredAddons?: string;
-    optionalAddons?: string;
-    removedIngredients?: string;
   };
   function groupIdenticalItems(orders: VendorUpcomingOrder[]) {
     const orderMap: Record<string, IdenticalItem> = {};
@@ -156,11 +158,13 @@ export default function Dashboard() {
 
       if (!orderMap[key]) {
         orderMap[key] = {
-          name: order.item.name,
+          item: {
+            name: order.item.name,
+            requiredAddons: order.item.requiredAddons,
+            optionalAddons: order.item.optionalAddons,
+            removedIngredients: order.item.removedIngredients,
+          },
           quantity: order.item.quantity,
-          requiredAddons: order.item.requiredAddons,
-          optionalAddons: order.item.optionalAddons,
-          removedIngredients: order.item.removedIngredients,
         };
       } else {
         orderMap[key].quantity += order.item.quantity;
@@ -274,14 +278,15 @@ export default function Dashboard() {
                     </tr>
                   </thead>
                   <tbody>
-                    {groupIdenticalItems(orders).map((item, index) => (
+                    {groupIdenticalItems(orders).map((group, index) => (
                       <tr key={index}>
-                        <td>{item.name}</td>
-                        <td>{item.quantity}</td>
+                        <td>{group.item.name}</td>
+                        <td>{group.quantity}</td>
                         <td>
-                          {item.optionalAddons} {item.requiredAddons}
+                          {group.item.optionalAddons}{' '}
+                          {group.item.requiredAddons}
                         </td>
-                        <td>{item.removedIngredients}</td>
+                        <td>{group.item.removedIngredients}</td>
                       </tr>
                     ))}
                     <tr>
