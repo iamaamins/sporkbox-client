@@ -2,7 +2,7 @@ import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-import OrderItem from '@components/customer/OrderItem';
+import PlaceOrderItem from '@components/customer/PlaceOrderItem';
 import PageLoader from '@components/layout/PageLoader';
 
 export default function ItemPage() {
@@ -16,7 +16,7 @@ export default function ItemPage() {
   return (
     <main>
       {isUserLoading && <PageLoader />}
-      {isCustomer && <OrderItem />}
+      {isCustomer && <PlaceOrderItem />}
     </main>
   );
 }

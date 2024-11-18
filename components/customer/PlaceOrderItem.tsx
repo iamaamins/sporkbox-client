@@ -3,7 +3,7 @@ import { useData } from '@context/Data';
 import { useCart } from '@context/Cart';
 import { useRouter } from 'next/router';
 import { HiMinus, HiPlus } from 'react-icons/hi';
-import styles from './OrderItem.module.css';
+import styles from './PlaceOrderItem.module.css';
 import { ChangeEvent, useEffect, useState } from 'react';
 import {
   splitTags,
@@ -26,7 +26,7 @@ import { useAlert } from '@context/Alert';
 import { AiFillStar } from 'react-icons/ai';
 import AddonsOrRemovableIngredients from './AddonsOrRemovableIngredients';
 
-export default function OrderItem() {
+export default function PlaceOrderItem() {
   const initialState = {
     _id: '',
     name: '',

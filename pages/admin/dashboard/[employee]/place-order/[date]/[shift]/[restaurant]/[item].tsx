@@ -1,9 +1,9 @@
-import OrderItem from '@components/admin/OrderItem';
+import PlaceOrderItem from '@components/admin/PlaceOrderItem';
 
 export default function ItemPage() {
   return (
     <main>
-      <OrderItem />
+      <PlaceOrderItem />
     </main>
   );
 }

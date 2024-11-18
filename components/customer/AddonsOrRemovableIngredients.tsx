@@ -5,7 +5,7 @@ import {
   RemovableIngredients,
   SetAddonsOrRemovableIngredients,
 } from 'types';
-import styles from './OrderItem.module.css';
+import styles from './PlaceOrderItem.module.css';
 
 type Props = {
   data: Addons | RemovableIngredients;
