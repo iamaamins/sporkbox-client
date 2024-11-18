@@ -206,7 +206,6 @@ export default function Calendar() {
                                   {item.description}
                                 </p>
                               </div>
-
                               <div className={styles.item_image}>
                                 {item.popularityIndex && (
                                   <span className={styles.popularity_index}>

@@ -1,3 +1,9 @@
+import CalendarItem from '@components/admin/CalendarItem';
+
 export default function ItemPage() {
-  return <main>ItemPage</main>;
+  return (
+    <main>
+      <CalendarItem />
+    </main>
+  );
 }

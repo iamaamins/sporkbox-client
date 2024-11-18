@@ -73,19 +73,19 @@
   margin-bottom: 0.5rem;
 }
 
-.addons_and_removable_items {
+.addons_or_removable_items {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
   align-items: center;
 }
 
-.addons_and_removable_item {
+.addons_or_removable_item {
   display: flex;
   align-items: center;
 }
 
-.addons_and_removable_item label {
+.addons_or_removable_item label {
   cursor: pointer;
   color: var(--gray);
   margin-left: 0.5rem;

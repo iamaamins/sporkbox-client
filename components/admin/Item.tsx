@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useData } from '@context/Data';
 import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
-import { CustomAxiosError, Item as ItemType, Review, Vendor } from 'types';
+import { CustomAxiosError, Item as ItemType, Vendor } from 'types';
 import { FormEvent, useEffect, useState } from 'react';
 import {
   axiosInstance,

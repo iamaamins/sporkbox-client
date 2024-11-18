@@ -5,10 +5,12 @@ import { useUser } from '@context/User';
 import logo from '@public/layout/logo.png';
 import styles from './MobileNav.module.css';
 import { Dispatch, SetStateAction } from 'react';
+import { useCart } from '@context/Cart';
 
 type Props = { isOpen: boolean; setIsOpen: Dispatch<SetStateAction<boolean>> };
 
 export default function MobileNav({ isOpen, setIsOpen }: Props) {
+  const { totalCartQuantity } = useCart();
   const { isAdmin, isVendor, isCustomer } = useUser();
 
   return (
@@ -31,8 +33,7 @@ export default function MobileNav({ isOpen, setIsOpen }: Props) {
           </a>
         </Link>
       </div>
-
-      {isCustomer && <CartIcon />}
+      {isCustomer && <CartIcon totalCartQuantity={totalCartQuantity} />}
     </nav>
   );
 }

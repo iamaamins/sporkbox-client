@@ -14,12 +14,9 @@
 
 .header {
   display: flex;
+  gap: 1rem;
   align-items: center;
   margin-bottom: 1.5rem;
-}
-
-.header h2 {
-  margin-right: 1rem;
 }
 
 .controller {

@@ -1,16 +1,16 @@
 import Link from 'next/link';
-import { useCart } from '@context/Cart';
 import { BsHandbag } from 'react-icons/bs';
 import styles from './CartIcon.module.css';
 
-export default function CartIcon() {
-  const { totalCartQuantity } = useCart();
+type Props = {
+  totalCartQuantity: number;
+};
 
+export default function CartIcon({ totalCartQuantity }: Props) {
   return (
     <Link href='/cart'>
-      <a className={styles.cart}>
+      <a className={styles.container}>
         <BsHandbag />
-
         {totalCartQuantity > 0 && (
           <span className={styles.quantity}>{totalCartQuantity}</span>
         )}

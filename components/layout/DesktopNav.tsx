@@ -10,10 +10,12 @@ import logo from '@public/layout/logo.png';
 import { useEffect, useState } from 'react';
 import { axiosInstance, showErrorAlert } from '@lib/utils';
 import styles from './DesktopNav.module.css';
+import { useCart } from '@context/Cart';
 
 export default function DesktopNav() {
   const { setAlerts } = useAlert();
   const { upcomingDates } = useData();
+  const { totalCartQuantity } = useCart();
   const pathName = useRouter().pathname;
   const [date, setDate] = useState<number>();
   const { isAdmin, isVendor, isCustomer, setAdmin, setVendor, setCustomer } =
@@ -174,8 +176,7 @@ export default function DesktopNav() {
 
       {/* Call to actions */}
       <div className={styles.ctas}>
-        {isCustomer && <CartIcon />}
-
+        {isCustomer && <CartIcon totalCartQuantity={totalCartQuantity} />}
         <button
           onClick={handleSignOut}
           className={`${styles.sign_out} ${

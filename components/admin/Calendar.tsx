@@ -11,6 +11,7 @@ import {
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import {
+  CartItem,
   CustomAxiosError,
   Customer,
   Item,
@@ -26,6 +27,7 @@ import Image from 'next/image';
 import { AiFillStar } from 'react-icons/ai';
 import ModalContainer from '@components/layout/ModalContainer';
 import CalendarFiltersModal from '@components/customer/CalendarFiltersModal';
+import CartIcon from '@components/layout/CartIcon';
 
 export default function Calendar() {
   const router = useRouter();
@@ -50,6 +52,7 @@ export default function Calendar() {
     byLowToHigh: false,
     byHighToLow: false,
   });
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   function updateActiveRestaurants(restaurant: UpcomingRestaurant) {
     setActiveRestaurants((prevState) =>
@@ -75,6 +78,14 @@ export default function Calendar() {
         upcomingDates.includes(dateToMS(el.date)) && company?._id === el.company
     );
   }
+
+  // Get cart items
+  useEffect(() => {
+    if (router.isReady && isAdmin && employee)
+      setCartItems(
+        JSON.parse(localStorage.getItem(`admin-cart-${employee?._id}`) || '[]')
+      );
+  }, [isAdmin, employee, router]);
 
   // Get employee details
   useEffect(() => {
@@ -186,6 +197,12 @@ export default function Calendar() {
                 >
                   Filter
                 </p>
+                <CartIcon
+                  totalCartQuantity={cartItems.reduce(
+                    (acc, curr) => acc + curr.quantity,
+                    0
+                  )}
+                />
               </div>
               <div className={styles.controller}>
                 {upcomingDates.map((upcomingDate, index) => (
@@ -295,21 +312,21 @@ export default function Calendar() {
                                   objectFit='cover'
                                   layout='responsive'
                                 />
-                                {/* {cartItems.map(
-                                (cartItem) =>
-                                  cartItem.deliveryDate.toString() ===
-                                    router.query.date &&
-                                  cartItem._id === item._id &&
-                                  cartItem.companyId ===
-                                    restaurant.company._id && (
-                                    <span
-                                      key={item._id}
-                                      className={styles.quantity}
-                                    >
-                                      {cartItem.quantity}
-                                    </span>
-                                  )
-                              )} */}
+                                {cartItems.map(
+                                  (cartItem) =>
+                                    cartItem.deliveryDate.toString() ===
+                                      router.query.date &&
+                                    cartItem._id === item._id &&
+                                    cartItem.companyId ===
+                                      restaurant.company._id && (
+                                      <span
+                                        key={item._id}
+                                        className={styles.quantity}
+                                      >
+                                        {cartItem.quantity}
+                                      </span>
+                                    )
+                                )}
                               </div>
                             </a>
                           </Link>

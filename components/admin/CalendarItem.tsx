@@ -1,9 +1,7 @@
 import Image from 'next/image';
-import { useData } from '@context/Data';
-import { useCart } from '@context/Cart';
 import { useRouter } from 'next/router';
 import { HiMinus, HiPlus } from 'react-icons/hi';
-import styles from './Item.module.css';
+import styles from '@components/customer/Item.module.css';
 import { ChangeEvent, useEffect, useState } from 'react';
 import {
   splitTags,
@@ -12,6 +10,7 @@ import {
   dateToText,
   numberToUSD,
   showErrorAlert,
+  axiosInstance,
 } from '@lib/utils';
 import {
   Item as ItemType,
@@ -21,11 +20,17 @@ import {
   RemovableIngredients,
   SetAddonsOrRemovableIngredients,
   AddonsOrRemovableIngredientsType,
+  UpcomingRestaurants,
+  CustomAxiosError,
+  CartItem,
+  Item,
+  Customer,
 } from 'types';
 import { useAlert } from '@context/Alert';
 import { AiFillStar } from 'react-icons/ai';
+import { useUser } from '@context/User';
 
-export default function Item() {
+export default function CalendarItem() {
   const initialState = {
     _id: '',
     name: '',
@@ -42,10 +47,9 @@ export default function Item() {
     removableIngredients: [],
   };
   const router = useRouter();
+  const { isAdmin } = useUser();
   const { setAlerts } = useAlert();
   const [item, setItem] = useState<ItemType>();
-  const { upcomingRestaurants } = useData();
-  const { cartItems, addItemToCart } = useCart();
   const [upcomingRestaurant, setUpcomingRestaurant] =
     useState<UpcomingRestaurant>();
   const [optionalAddons, setOptionalAddons] = useState<Addons>();
@@ -53,8 +57,14 @@ export default function Item() {
   const [removableIngredients, setRemovableIngredients] =
     useState<RemovableIngredients>();
   const [initialItem, setInitialItem] = useState<InitialItem>(initialState);
-
   const { price, quantity, addonPrice } = initialItem;
+  const [upcomingRestaurants, setUpcomingRestaurants] =
+    useState<UpcomingRestaurants>({
+      isLoading: true,
+      data: [],
+    });
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [employee, setEmployee] = useState<Customer | null>(null);
 
   function increaseQuantity() {
     setInitialItem((prevState) => ({
@@ -72,6 +82,52 @@ export default function Item() {
       addonPrice:
         (prevState.addonPrice / prevState.quantity) * (prevState.quantity - 1),
     }));
+  }
+
+  function addItemToCart(initialItem: CartItem, item: Item) {
+    if (initialItem.requiredAddons.length < item.requiredAddons.addable) {
+      return showErrorAlert(
+        `Please add ${item.requiredAddons.addable} required addons`,
+        setAlerts
+      );
+    }
+
+    let updatedCartItems: CartItem[] = [];
+    if (
+      !cartItems.some(
+        (cartItem) =>
+          cartItem._id === initialItem._id &&
+          cartItem.companyId === initialItem.companyId &&
+          cartItem.deliveryDate === initialItem.deliveryDate
+      )
+    ) {
+      updatedCartItems = [...cartItems, initialItem];
+    } else {
+      updatedCartItems = cartItems.map((cartItem) => {
+        if (
+          cartItem._id === initialItem._id &&
+          cartItem.companyId === initialItem.companyId &&
+          cartItem.deliveryDate === initialItem.deliveryDate
+        ) {
+          return {
+            ...cartItem,
+            quantity: initialItem.quantity,
+            addonPrice: initialItem.addonPrice,
+            optionalAddons: initialItem.optionalAddons,
+            requiredAddons: initialItem.requiredAddons,
+            removableIngredients: initialItem.removableIngredients,
+          };
+        } else {
+          return cartItem;
+        }
+      });
+    }
+    setCartItems(updatedCartItems);
+    localStorage.setItem(
+      `admin-cart-${employee?._id}`,
+      JSON.stringify(updatedCartItems)
+    );
+    router.back();
   }
 
   // Handle change optional and required
@@ -127,6 +183,29 @@ export default function Item() {
           ),
     }));
   }
+
+  // Get employee details
+  useEffect(() => {
+    async function getEmployee(employee: string) {
+      try {
+        const response = await axiosInstance.get(`/customers/${employee}`);
+        setEmployee(response.data);
+      } catch (err) {
+        showErrorAlert(err as CustomAxiosError, setAlerts);
+      }
+    }
+    if (router.isReady && isAdmin) getEmployee(router.query.employee as string);
+  }, [isAdmin, router.isReady]);
+
+  // Get cart items
+  useEffect(() => {
+    if (router.isReady && isAdmin)
+      setCartItems(
+        JSON.parse(
+          localStorage.getItem(`admin-cart-${router.query.employee}`) || '[]'
+        )
+      );
+  }, [isAdmin, router]);
 
   // Get item and date from schedules restaurants
   useEffect(() => {
@@ -225,6 +304,24 @@ export default function Item() {
       }
     }
   }, [upcomingRestaurants, router.isReady]);
+
+  // Get upcoming restaurants
+  useEffect(() => {
+    async function getUpcomingRestaurants(employee: string) {
+      try {
+        const response = await axiosInstance.get(
+          `/restaurants/upcoming-restaurants/${employee}`
+        );
+        const upcomingRestaurants = response.data as UpcomingRestaurant[];
+        setUpcomingRestaurants({ isLoading: false, data: upcomingRestaurants });
+      } catch (err) {
+        showErrorAlert(err as CustomAxiosError, setAlerts);
+      }
+    }
+
+    if (router.isReady && isAdmin)
+      getUpcomingRestaurants(router.query.employee as string);
+  }, [isAdmin, router.isReady]);
 
   return (
     <section className={styles.item}>

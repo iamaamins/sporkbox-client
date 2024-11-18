@@ -1,13 +1,14 @@
-.cart {
+.container {
   cursor: pointer;
   position: relative;
   display: flex;
   color: var(--black);
   align-items: center;
+  margin-left: auto;
   justify-content: center;
 }
 
-.cart svg {
+.container svg {
   font-size: 1.25rem;
 }
 
@@ -27,7 +28,7 @@
 }
 
 @media (min-width: 768px) {
-  .cart svg {
+  .container svg {
     font-size: 1.5rem;
   }
 
