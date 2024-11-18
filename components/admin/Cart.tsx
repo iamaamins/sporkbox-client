@@ -175,8 +175,8 @@ export default function Cart() {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
-    if (router.isReady && isAdmin) getAllOrders();
-  }, [isAdmin, router]);
+    if (router.isReady && isAdmin && employee) getAllOrders();
+  }, [isAdmin, employee, router]);
 
   // Get payable amount
   useEffect(() => {
@@ -247,7 +247,7 @@ export default function Cart() {
         setPayableAmount(totalPayableAmount - discountAmount);
       }
     }
-  }, [allOrders, cartItems, appliedDiscount]);
+  }, [allOrders, cartItems, appliedDiscount, router]);
 
   return (
     <section className={styles.cart}>

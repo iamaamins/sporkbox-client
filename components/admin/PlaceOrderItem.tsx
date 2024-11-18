@@ -200,13 +200,13 @@ export default function PlaceOrderItem() {
 
   // Get cart items
   useEffect(() => {
-    if (router.isReady && isAdmin)
+    if (router.isReady && isAdmin && employee)
       setCartItems(
         JSON.parse(
           localStorage.getItem(`admin-cart-${router.query.employee}`) || '[]'
         )
       );
-  }, [isAdmin, router]);
+  }, [isAdmin, employee, router]);
 
   // Get item and date from schedules restaurants
   useEffect(() => {
@@ -320,9 +320,9 @@ export default function PlaceOrderItem() {
       }
     }
 
-    if (router.isReady && isAdmin)
+    if (router.isReady && isAdmin && employee)
       getUpcomingRestaurants(router.query.employee as string);
-  }, [isAdmin, router]);
+  }, [isAdmin, employee, router]);
 
   return (
     <section className={styles.container}>
