@@ -24,6 +24,7 @@ import {
 } from 'types';
 import { useAlert } from '@context/Alert';
 import { AiFillStar } from 'react-icons/ai';
+import AddonsOrRemovableIngredients from './AddonsOrRemovableIngredients';
 
 export default function Item() {
   const initialState = {
@@ -343,39 +344,5 @@ export default function Item() {
         </>
       )}
     </section>
-  );
-}
-
-type AddonsOrRemovableIngredientsProps = {
-  data: Addons | RemovableIngredients;
-  setData: SetAddonsOrRemovableIngredients;
-  dataType: AddonsOrRemovableIngredientsType;
-  handleChange: (
-    e: ChangeEvent<HTMLInputElement>,
-    setData: SetAddonsOrRemovableIngredients,
-    dataType: AddonsOrRemovableIngredientsType
-  ) => void;
-};
-function AddonsOrRemovableIngredients({
-  data,
-  setData,
-  dataType,
-  handleChange,
-}: AddonsOrRemovableIngredientsProps) {
-  return (
-    <div className={styles.addons_or_removable_items}>
-      {Object.keys(data).map((el, index) => (
-        <div key={index} className={styles.addons_or_removable_item}>
-          <input
-            type='checkbox'
-            name={el}
-            id={el}
-            checked={data[el]}
-            onChange={(e) => handleChange(e, setData, dataType)}
-          />
-          <label htmlFor={el}>{el}</label>
-        </div>
-      ))}
-    </div>
   );
 }
