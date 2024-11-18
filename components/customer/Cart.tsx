@@ -121,9 +121,7 @@ export default function Cart() {
   }
 
   useEffect(() => {
-    if (appliedDiscount && payableAmount <= 0) {
-      removeDiscount();
-    }
+    if (appliedDiscount && payableAmount <= 0) removeDiscount();
   }, [cartItems]);
 
   // Get saved discount

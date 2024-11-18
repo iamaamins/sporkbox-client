@@ -208,9 +208,32 @@ export default function PlaceOrderItem() {
       );
   }, [isAdmin, employee, router]);
 
-  // Get item and date from schedules restaurants
+  // Get upcoming restaurants
   useEffect(() => {
-    if (upcomingRestaurants.data.length > 0 && router.isReady) {
+    async function getUpcomingRestaurants(employee: string) {
+      try {
+        const response = await axiosInstance.get(
+          `/restaurants/upcoming-restaurants/${employee}`
+        );
+        const upcomingRestaurants = response.data as UpcomingRestaurant[];
+        setUpcomingRestaurants({ isLoading: false, data: upcomingRestaurants });
+      } catch (err) {
+        showErrorAlert(err as CustomAxiosError, setAlerts);
+      } finally {
+        setUpcomingRestaurants((prevState) => ({
+          ...prevState,
+          isLoading: false,
+        }));
+      }
+    }
+
+    if (router.isReady && isAdmin)
+      getUpcomingRestaurants(router.query.employee as string);
+  }, [isAdmin, router]);
+
+  // Get item and date from upcoming restaurants
+  useEffect(() => {
+    if (upcomingRestaurants.data.length && router.isReady) {
       const upcomingRestaurant = upcomingRestaurants.data.find(
         (upcomingRestaurant) =>
           dateToMS(upcomingRestaurant.schedule.date).toString() ===
@@ -305,24 +328,6 @@ export default function PlaceOrderItem() {
       }
     }
   }, [upcomingRestaurants, router]);
-
-  // Get upcoming restaurants
-  useEffect(() => {
-    async function getUpcomingRestaurants(employee: string) {
-      try {
-        const response = await axiosInstance.get(
-          `/restaurants/upcoming-restaurants/${employee}`
-        );
-        const upcomingRestaurants = response.data as UpcomingRestaurant[];
-        setUpcomingRestaurants({ isLoading: false, data: upcomingRestaurants });
-      } catch (err) {
-        showErrorAlert(err as CustomAxiosError, setAlerts);
-      }
-    }
-
-    if (router.isReady && isAdmin && employee)
-      getUpcomingRestaurants(router.query.employee as string);
-  }, [isAdmin, employee, router]);
 
   return (
     <section className={styles.container}>

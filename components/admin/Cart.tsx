@@ -121,30 +121,6 @@ export default function Cart() {
     }
   }
 
-  // Remove discount
-  useEffect(() => {
-    if (appliedDiscount && payableAmount <= 0) {
-    }
-  }, [cartItems]);
-
-  // Get cart items
-  useEffect(() => {
-    if (router.isReady && isAdmin && employee)
-      setCartItems(
-        JSON.parse(localStorage.getItem(`admin-cart-${employee?._id}`) || '[]')
-      );
-  }, [isAdmin, employee, router]);
-
-  // Get saved discount
-  useEffect(() => {
-    if (router.isReady && isAdmin && employee) {
-      const localDiscount = localStorage.getItem(
-        `admin-discount-${employee?._id}`
-      );
-      setAppliedDiscount(localDiscount ? JSON.parse(localDiscount) : null);
-    }
-  }, [isAdmin, employee, router]);
-
   // Get employee details
   useEffect(() => {
     async function getEmployee(employee: string) {
@@ -157,6 +133,14 @@ export default function Cart() {
     }
     if (router.isReady && isAdmin) getEmployee(router.query.employee as string);
   }, [isAdmin, router]);
+
+  // Get cart items
+  useEffect(() => {
+    if (router.isReady && isAdmin && employee)
+      setCartItems(
+        JSON.parse(localStorage.getItem(`admin-cart-${employee?._id}`) || '[]')
+      );
+  }, [isAdmin, employee, router]);
 
   // Get employee all orders
   useEffect(() => {
@@ -180,7 +164,7 @@ export default function Cart() {
 
   // Get payable amount
   useEffect(() => {
-    if (router.isReady && allOrders.length && employee) {
+    if (router.isReady && cartItems.length && employee) {
       const upcomingDateTotalDetails = allOrders
         .filter((order) =>
           cartItems.some(
@@ -248,6 +232,21 @@ export default function Cart() {
       }
     }
   }, [allOrders, cartItems, appliedDiscount, router]);
+
+  // Get saved discount
+  useEffect(() => {
+    if (router.isReady && isAdmin && employee) {
+      const localDiscount = localStorage.getItem(
+        `admin-discount-${employee?._id}`
+      );
+      setAppliedDiscount(localDiscount ? JSON.parse(localDiscount) : null);
+    }
+  }, [isAdmin, employee, router]);
+
+  // Remove discount
+  useEffect(() => {
+    if (appliedDiscount && payableAmount <= 0) removeDiscount();
+  }, [cartItems]);
 
   return (
     <section className={styles.cart}>

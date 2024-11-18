@@ -79,14 +79,6 @@ export default function PlaceOrder() {
     );
   }
 
-  // Get cart items
-  useEffect(() => {
-    if (router.isReady && isAdmin && employee)
-      setCartItems(
-        JSON.parse(localStorage.getItem(`admin-cart-${employee?._id}`) || '[]')
-      );
-  }, [isAdmin, employee, router]);
-
   // Get employee details
   useEffect(() => {
     async function getEmployee(employee: string) {
@@ -100,9 +92,9 @@ export default function PlaceOrder() {
     if (router.isReady && isAdmin) getEmployee(router.query.employee as string);
   }, [isAdmin, router]);
 
-  // Get upcoming restaurants
+  // Get upcoming restaurants and dates
   useEffect(() => {
-    async function getUpcomingRestaurants(employee: string) {
+    async function getUpcomingRestaurantsAndDates(employee: string) {
       try {
         const response = await axiosInstance.get(
           `/restaurants/upcoming-restaurants/${employee}`
@@ -133,7 +125,7 @@ export default function PlaceOrder() {
     }
 
     if (router.isReady && isAdmin)
-      getUpcomingRestaurants(router.query.employee as string);
+      getUpcomingRestaurantsAndDates(router.query.employee as string);
   }, [isAdmin, router]);
 
   // Get restaurants
@@ -178,6 +170,14 @@ export default function PlaceOrder() {
       router.replace(path.replace(/\/date$/, `/${upcomingDates[0]}`));
     }
   }, [upcomingDates]);
+
+  // Get cart items
+  useEffect(() => {
+    if (router.isReady && isAdmin && employee)
+      setCartItems(
+        JSON.parse(localStorage.getItem(`admin-cart-${employee?._id}`) || '[]')
+      );
+  }, [isAdmin, employee, router]);
 
   return (
     <>
