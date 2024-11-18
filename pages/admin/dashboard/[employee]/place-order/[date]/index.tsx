@@ -1,4 +1,4 @@
-import Calendar from '@components/admin/Calendar';
+import PlaceOrder from '@components/admin/PlaceOrder';
 import PageLoader from '@components/layout/PageLoader';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
@@ -17,7 +17,7 @@ export default function PlaceOrderPage() {
   return (
     <main>
       {isUserLoading && <PageLoader />}
-      {isAdmin && <Calendar />}
+      {isAdmin && <PlaceOrder />}
     </main>
   );
 }

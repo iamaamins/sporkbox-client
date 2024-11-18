@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { HiMinus, HiPlus } from 'react-icons/hi';
-import styles from '@components/customer/Item.module.css';
+import styles from '@components/customer/OrderItem.module.css';
 import { ChangeEvent, useEffect, useState } from 'react';
 import {
   splitTags,
@@ -31,7 +31,7 @@ import { AiFillStar } from 'react-icons/ai';
 import { useUser } from '@context/User';
 import AddonsOrRemovableIngredients from '@components/customer/AddonsOrRemovableIngredients';
 
-export default function CalendarItem() {
+export default function OrderItem() {
   const initialState = {
     _id: '',
     name: '',
@@ -325,7 +325,7 @@ export default function CalendarItem() {
   }, [isAdmin, router.isReady]);
 
   return (
-    <section className={styles.item}>
+    <section className={styles.container}>
       {upcomingRestaurants.isLoading && <h2>Loading...</h2>}
       {!upcomingRestaurants.isLoading && !item && <h2>No item found</h2>}
       {upcomingRestaurant && item && (

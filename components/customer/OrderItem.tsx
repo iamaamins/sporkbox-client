@@ -3,7 +3,7 @@ import { useData } from '@context/Data';
 import { useCart } from '@context/Cart';
 import { useRouter } from 'next/router';
 import { HiMinus, HiPlus } from 'react-icons/hi';
-import styles from './Item.module.css';
+import styles from './OrderItem.module.css';
 import { ChangeEvent, useEffect, useState } from 'react';
 import {
   splitTags,
@@ -26,7 +26,7 @@ import { useAlert } from '@context/Alert';
 import { AiFillStar } from 'react-icons/ai';
 import AddonsOrRemovableIngredients from './AddonsOrRemovableIngredients';
 
-export default function Item() {
+export default function OrderItem() {
   const initialState = {
     _id: '',
     name: '',
@@ -228,7 +228,7 @@ export default function Item() {
   }, [upcomingRestaurants, router.isReady]);
 
   return (
-    <section className={styles.item}>
+    <section className={styles.container}>
       {upcomingRestaurants.isLoading && <h2>Loading...</h2>}
       {!upcomingRestaurants.isLoading && !item && <h2>No item found</h2>}
       {upcomingRestaurant && item && (

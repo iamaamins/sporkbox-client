@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
-import Calendar from '@components/customer/Calendar';
+import PlaceOrder from '@components/customer/PlaceOrder';
 import PageLoader from '@components/layout/PageLoader';
 
 export default function DatePage() {
@@ -16,7 +16,7 @@ export default function DatePage() {
   return (
     <main>
       {isUserLoading && <PageLoader />}
-      {isCustomer && <Calendar />}
+      {isCustomer && <PlaceOrder />}
     </main>
   );
 }

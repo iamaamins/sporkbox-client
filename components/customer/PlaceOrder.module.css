@@ -1,4 +1,4 @@
-.calendar {
+.container {
   padding: var(--section_padding);
 }
 
@@ -288,7 +288,7 @@
 }
 
 @media (min-width: 1024px) {
-  .calendar {
+  .container {
     max-width: 80%;
     margin: 0 auto;
   }

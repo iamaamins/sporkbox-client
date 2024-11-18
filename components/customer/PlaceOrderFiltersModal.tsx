@@ -7,23 +7,23 @@ import {
   useEffect,
   useState,
 } from 'react';
-import styles from '@components/customer/CalendarFiltersModal.module.css';
+import styles from '@components/customer/PlaceOrderFiltersModal.module.css';
 import { useData } from '@context/Data';
 
 type Props = {
   isAdmin?: boolean;
   customer: Customer | null;
   restaurants: UpcomingRestaurant[];
-  setShowCalendarFilters: Dispatch<SetStateAction<boolean>>;
+  setShowPlaceOrderFilters: Dispatch<SetStateAction<boolean>>;
   setUpdatedRestaurants: Dispatch<SetStateAction<UpcomingRestaurant[]>>;
 };
 
-export default function CalendarFiltersModal({
+export default function PlaceOrderFiltersModal({
   isAdmin,
   customer,
   restaurants,
   setUpdatedRestaurants,
-  setShowCalendarFilters,
+  setShowPlaceOrderFilters,
 }: Props) {
   const { dietaryTags } = useData();
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
@@ -80,7 +80,7 @@ export default function CalendarFiltersModal({
     e.preventDefault();
     if (!customer) return;
     filterItems();
-    setShowCalendarFilters(false);
+    setShowPlaceOrderFilters(false);
     localStorage.setItem(
       `${isAdmin && 'admin-'}filters-${customer._id}`,
       JSON.stringify(selectedFilters)

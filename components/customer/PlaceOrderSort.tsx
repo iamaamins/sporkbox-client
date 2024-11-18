@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { UpcomingRestaurant } from 'types';
-import styles from './CalendarSort.module.css';
+import styles from './PlaceOrderSort.module.css';
 
 type Props = {
   updatedRestaurants: UpcomingRestaurant[];
@@ -9,7 +9,10 @@ type Props = {
   >;
 };
 
-export default function CalendarSort({ setSorted, updatedRestaurants }: Props) {
+export default function PlaceOrderSort({
+  setSorted,
+  updatedRestaurants,
+}: Props) {
   const [sortBy, setSortBy] = useState('');
 
   useEffect(() => {
@@ -27,7 +30,7 @@ export default function CalendarSort({ setSorted, updatedRestaurants }: Props) {
   }, [sortBy, updatedRestaurants]);
 
   return (
-    <form className={styles.calendar_sort}>
+    <form className={styles.container}>
       <select onChange={(e) => setSortBy(e.target.value)}>
         <option hidden>Sort by price</option>
         <option value='lowToHigh'>Low to high</option>

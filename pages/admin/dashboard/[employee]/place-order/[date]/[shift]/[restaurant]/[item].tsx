@@ -1,9 +1,9 @@
-import CalendarItem from '@components/admin/CalendarItem';
+import OrderItem from '@components/admin/OrderItem';
 
 export default function ItemPage() {
   return (
     <main>
-      <CalendarItem />
+      <OrderItem />
     </main>
   );
 }

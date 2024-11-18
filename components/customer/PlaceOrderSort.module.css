@@ -1,4 +1,4 @@
-.calendar_sort select {
+.container select {
   width: auto;
   cursor: pointer;
   text-align: center;
@@ -9,7 +9,7 @@
   border: 1px solid var(--border_color);
 }
 
-.calendar_sort select:focus {
+.container select:focus {
   outline: none;
   border: 1px solid var(--orange);
 }

@@ -18,18 +18,18 @@ import {
   UpcomingRestaurant,
   UpcomingRestaurants,
 } from 'types';
-import styles from '@components/customer/Calendar.module.css';
-import CalendarSort from '@components/customer/CalendarSort';
+import styles from '@components/customer/PlaceOrder.module.css';
+import PlaceOrderSort from '@components/customer/PlaceOrderSort';
 import Link from 'next/link';
 import { RiShieldStarFill } from 'react-icons/ri';
 import { IoIosArrowUp } from 'react-icons/io';
 import Image from 'next/image';
 import { AiFillStar } from 'react-icons/ai';
 import ModalContainer from '@components/layout/ModalContainer';
-import CalendarFiltersModal from '@components/customer/CalendarFiltersModal';
+import PlaceOrderFiltersModal from '@components/customer/PlaceOrderFiltersModal';
 import CartIcon from '@components/layout/CartIcon';
 
-export default function Calendar() {
+export default function PlaceOrder() {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { isAdmin } = useUser();
@@ -47,7 +47,7 @@ export default function Calendar() {
   >([]);
   const [employee, setEmployee] = useState<Customer | null>(null);
   const [upcomingDates, setUpcomingDates] = useState<number[]>([]);
-  const [showCalendarFilters, setShowCalendarFilters] = useState(false);
+  const [showPlaceOrderFilters, setShowPlaceOrderFilters] = useState(false);
   const [sorted, setSorted] = useState({
     byLowToHigh: false,
     byHighToLow: false,
@@ -181,7 +181,7 @@ export default function Calendar() {
 
   return (
     <>
-      <section className={styles.calendar}>
+      <section className={styles.container}>
         {upcomingRestaurants.isLoading && <h2>Loading...</h2>}
         {!upcomingRestaurants.isLoading && !upcomingDates.length && (
           <h2>No restaurants</h2>
@@ -191,14 +191,14 @@ export default function Calendar() {
             <div className={styles.header_and_controller}>
               <div className={styles.header}>
                 <h2>Upcoming week</h2>
-                <CalendarSort
+                <PlaceOrderSort
                   setSorted={setSorted}
                   updatedRestaurants={updatedRestaurants}
                 />
                 <p
-                  onClick={() => setShowCalendarFilters(true)}
+                  onClick={() => setShowPlaceOrderFilters(true)}
                   className={`${styles.filter} ${
-                    showCalendarFilters && styles.active
+                    showPlaceOrderFilters && styles.active
                   }`}
                 >
                   Filter
@@ -353,15 +353,15 @@ export default function Calendar() {
       </section>
       <ModalContainer
         width='20rem'
-        showModalContainer={showCalendarFilters}
-        setShowModalContainer={setShowCalendarFilters}
+        showModalContainer={showPlaceOrderFilters}
+        setShowModalContainer={setShowPlaceOrderFilters}
         component={
-          <CalendarFiltersModal
+          <PlaceOrderFiltersModal
             isAdmin={true}
             customer={employee}
             restaurants={restaurants}
             setUpdatedRestaurants={setUpdatedRestaurants}
-            setShowCalendarFilters={setShowCalendarFilters}
+            setShowPlaceOrderFilters={setShowPlaceOrderFilters}
           />
         }
       />
