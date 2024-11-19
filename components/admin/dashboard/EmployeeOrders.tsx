@@ -1,5 +1,5 @@
 import { CustomAxiosError, Order } from 'types';
-import styles from '@components/admin/Employee.module.css';
+import styles from './Employee.module.css';
 import {
   axiosInstance,
   dateToText,
@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { useAlert } from '@context/Alert';
 import { useData } from '@context/Data';
 import ModalContainer from '@components/layout/ModalContainer';
-import ActionModal from './ActionModal';
+import ActionModal from '../layout/ActionModal';
 
 type Props = { orders: Order[]; hasOrderAction?: boolean };
 

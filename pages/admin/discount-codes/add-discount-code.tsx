@@ -3,7 +3,7 @@ import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
 import PageLoader from '@components/layout/PageLoader';
-import AddDiscountCodeForm from '@components/admin/AddDiscountCodeForm';
+import AddDiscountCodeForm from '@components/admin/discount/AddDiscountCodeForm';
 
 export default function AddDiscountCodePage() {
   // Hooks

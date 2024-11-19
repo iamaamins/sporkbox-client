@@ -17,7 +17,7 @@ import ModalContainer from '@components/layout/ModalContainer';
 import StatusUpdateModal from './StatusUpdateModal';
 import { FiDownload } from 'react-icons/fi';
 import { pdf } from '@react-pdf/renderer';
-import Labels from '@components/admin/Labels';
+import Labels from '@components/admin/layout/Labels';
 
 type OrderMap = {
   [key: string]: {

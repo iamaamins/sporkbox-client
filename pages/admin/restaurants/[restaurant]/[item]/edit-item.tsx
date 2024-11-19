@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
-import EditItem from '@components/admin/EditItem';
+import EditItem from '@components/admin/restaurant/EditItem';
 import PageLoader from '@components/layout/PageLoader';
 
 export default function EditItemPage() {

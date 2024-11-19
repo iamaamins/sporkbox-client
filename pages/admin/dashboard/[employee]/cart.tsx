@@ -1,4 +1,4 @@
-import Cart from '@components/admin/Cart';
+import Cart from '@components/admin/dashboard/Cart';
 import PageLoader from '@components/layout/PageLoader';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';

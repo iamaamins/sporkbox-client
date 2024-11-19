@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import ActionModal from './ActionModal';
+import ActionModal from '../layout/ActionModal';
 import { useRouter } from 'next/router';
 import { useData } from '@context/Data';
 import { HiBadgeCheck } from 'react-icons/hi';

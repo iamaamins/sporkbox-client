@@ -3,7 +3,7 @@ import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
 import PageLoader from '@components/layout/PageLoader';
-import AddCompany from '@components/admin/AddCompany';
+import AddCompany from '@components/admin/company/AddCompany';
 
 export default function AddCompanyPage() {
   const router = useRouter();

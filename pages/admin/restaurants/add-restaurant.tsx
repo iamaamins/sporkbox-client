@@ -3,7 +3,7 @@ import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
 import PageLoader from '@components/layout/PageLoader';
-import AddRestaurant from '@components/admin/AddRestaurant';
+import AddRestaurant from '@components/admin/restaurant/AddRestaurant';
 
 export default function AddRestaurantPage() {
   const router = useRouter();

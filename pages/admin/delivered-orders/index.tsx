@@ -3,7 +3,7 @@ import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
 import { useData } from '@context/Data';
-import OrderGroups from '@components/admin/OrderGroups';
+import OrderGroups from '@components/admin/home/OrderGroups';
 import PageLoader from '@components/layout/PageLoader';
 
 export default function DeliveredOrderGroupsPage() {

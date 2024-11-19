@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import ActionModal from './ActionModal';
+import ActionModal from '../layout/ActionModal';
 import { useRouter } from 'next/router';
 import { useData } from '@context/Data';
 import { useAlert } from '@context/Alert';

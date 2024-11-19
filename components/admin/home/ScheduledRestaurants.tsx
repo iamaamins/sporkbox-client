@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useData } from '@context/Data';
 import { useAlert } from '@context/Alert';
-import ActionModal from './ActionModal';
+import ActionModal from '../layout/ActionModal';
 import { FormEvent, useState } from 'react';
 import { CustomAxiosError, Schedule, ScheduledRestaurant } from 'types';
 import {

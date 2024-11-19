@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useData } from '@context/Data';
-import ActionModal from './ActionModal';
+import ActionModal from '../layout/ActionModal';
 import { useAlert } from '@context/Alert';
 import { useEffect, useState } from 'react';
 import { Order, CustomAxiosError, OrdersByRestaurant, OrderGroup } from 'types';

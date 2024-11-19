@@ -1,4 +1,4 @@
-import Dashboard from '@components/admin/Dashboard';
+import Dashboard from '@components/admin/dashboard/Dashboard';
 import PageLoader from '@components/layout/PageLoader';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';

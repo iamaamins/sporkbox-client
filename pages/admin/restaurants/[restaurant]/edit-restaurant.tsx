@@ -1,4 +1,4 @@
-import EditRestaurant from '@components/admin/EditRestaurant';
+import EditRestaurant from '@components/admin/restaurant/EditRestaurant';
 import PageLoader from '@components/layout/PageLoader';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';

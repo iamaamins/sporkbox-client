@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useData } from '@context/Data';
 import { useAlert } from '@context/Alert';
-import SubmitButton from '../layout/SubmitButton';
+import SubmitButton from '../../layout/SubmitButton';
 import { CustomAxiosError, Restaurant } from 'types';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import styles from './ScheduleRestaurantsModal.module.css';

@@ -22,7 +22,7 @@ import {
 } from 'types';
 import ModalContainer from '@components/layout/ModalContainer';
 import { pdf } from '@react-pdf/renderer';
-import Labels from './Labels';
+import Labels from '../layout/Labels';
 import SelectRestaurants from './SelectRestaurants';
 import {
   formatOrderDataToCSV,

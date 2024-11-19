@@ -1,4 +1,4 @@
-import styles from '@components/admin/Customer.module.css';
+import styles from './Customer.module.css';
 import { IdenticalOrderGroup } from 'types';
 import { dateToText, numberToUSD } from '@lib/utils';
 

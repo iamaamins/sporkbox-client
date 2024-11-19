@@ -1,4 +1,4 @@
-import PlaceOrder from '@components/admin/PlaceOrder';
+import PlaceOrder from '@components/admin/dashboard/PlaceOrder';
 import PageLoader from '@components/layout/PageLoader';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';

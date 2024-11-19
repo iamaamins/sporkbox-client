@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
-import Restaurant from '@components/admin/Restaurant';
+import Restaurant from '@components/admin/restaurant/Restaurant';
 import PageLoader from '@components/layout/PageLoader';
 
 export default function RestaurantPage() {

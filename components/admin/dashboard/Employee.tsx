@@ -12,7 +12,7 @@ import { CustomAxiosError, Customer, Order } from 'types';
 import EmployeeOrders from './EmployeeOrders';
 import styles from './Employee.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
-import ActionModal from './ActionModal';
+import ActionModal from '../layout/ActionModal';
 import Link from 'next/link';
 
 type EmployeeWithOrders = {

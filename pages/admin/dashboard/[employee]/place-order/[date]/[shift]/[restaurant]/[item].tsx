@@ -1,4 +1,4 @@
-import PlaceOrderItem from '@components/admin/PlaceOrderItem';
+import PlaceOrderItem from '@components/admin/dashboard/PlaceOrderItem';
 
 export default function ItemPage() {
   return (

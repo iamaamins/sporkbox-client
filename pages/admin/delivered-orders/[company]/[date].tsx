@@ -4,7 +4,7 @@ import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
 import PageLoader from '@components/layout/PageLoader';
-import OrderGroupDetails from '@components/admin/OrderGroupDetails';
+import OrderGroupDetails from '@components/admin/home/OrderGroupDetails';
 
 export default function DeliveredOrderGroupDetailsPage() {
   const router = useRouter();

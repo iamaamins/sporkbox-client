@@ -1,16 +1,16 @@
-import Customers from './Customers';
+import Customers from '../customer/Customers';
 import { CSVLink } from 'react-csv';
 import { useData } from '@context/Data';
 import { useRouter } from 'next/router';
-import ActionModal from './ActionModal';
+import ActionModal from '../layout/ActionModal';
 import { useAlert } from '@context/Alert';
 import { FiDownload } from 'react-icons/fi';
 import Buttons from '@components/layout/Buttons';
 import styles from './Company.module.css';
 import { FormEvent, useEffect, useState } from 'react';
-import ScheduledRestaurants from './ScheduledRestaurants';
+import ScheduledRestaurants from '../home/ScheduledRestaurants';
 import ModalContainer from '@components/layout/ModalContainer';
-import ScheduleRestaurantsModal from '@components/admin/ScheduleRestaurantsModal';
+import ScheduleRestaurantsModal from '@components/admin/company/ScheduleRestaurantsModal';
 import {
   axiosInstance,
   showErrorAlert,

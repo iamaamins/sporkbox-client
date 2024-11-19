@@ -1,4 +1,4 @@
-import Employee from '@components/admin/Employee';
+import Employee from '@components/admin/dashboard/Employee';
 import PageLoader from '@components/layout/PageLoader';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';

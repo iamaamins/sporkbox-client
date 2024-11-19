@@ -13,11 +13,11 @@ import {
   splitTags,
   updateVendors,
 } from '@lib/utils';
-import ActionModal from './ActionModal';
+import ActionModal from '../layout/ActionModal';
 import Buttons from '@components/layout/Buttons';
 import styles from './Item.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
-import Stars from '../layout/Stars';
+import Stars from '../../layout/Stars';
 import { AiFillStar } from 'react-icons/ai';
 
 export default function Item() {

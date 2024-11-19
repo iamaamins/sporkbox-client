@@ -11,11 +11,6 @@
   border-collapse: collapse;
 }
 
-.important a {
-  font-size: 1rem;
-  color: var(--black);
-}
-
 .container th {
   text-align: left;
   padding: 1rem;
@@ -76,6 +71,11 @@
   top: 50%;
   color: var(--gray);
   translate: 0% -50%;
+}
+
+.important a {
+  font-size: 1rem;
+  color: var(--black);
 }
 
 /* Weekly order stat */
