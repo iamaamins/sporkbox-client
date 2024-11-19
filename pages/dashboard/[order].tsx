@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
-import Order from '@components/customer/Order';
+import Order from '@components/customer/dashboard/Order';
 import PageLoader from '@components/layout/PageLoader';
 
 export default function OrderPage() {

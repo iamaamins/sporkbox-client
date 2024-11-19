@@ -1,4 +1,4 @@
-import ForgotPassword from '@components/customer/ForgotPassword';
+import ForgotPassword from '@components/customer/auth/ForgotPassword';
 import PageLoader from '@components/layout/PageLoader';
 import { useUser } from '@context/User';
 import { useRouter } from 'next/router';

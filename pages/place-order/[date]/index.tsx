@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
-import PlaceOrder from '@components/customer/PlaceOrder';
+import PlaceOrder from '@components/customer/ordering/PlaceOrder';
 import PageLoader from '@components/layout/PageLoader';
 
 export default function DatePage() {

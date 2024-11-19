@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
-import Dashboard from '@components/customer/Dashboard';
+import Dashboard from '@components/customer/dashboard/Dashboard';
 import PageLoader from '@components/layout/PageLoader';
 
 export default function DashboardPage() {

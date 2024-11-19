@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { HiMinus, HiPlus } from 'react-icons/hi';
-import styles from '@components/customer/PlaceOrderItem.module.css';
+import styles from '@components/customer/ordering/PlaceOrderItem.module.css';
 import { ChangeEvent, useEffect, useState } from 'react';
 import {
   splitTags,
@@ -29,7 +29,7 @@ import {
 import { useAlert } from '@context/Alert';
 import { AiFillStar } from 'react-icons/ai';
 import { useUser } from '@context/User';
-import AddonsOrRemovableIngredients from '@components/customer/AddonsOrRemovableIngredients';
+import AddonsOrRemovableIngredients from '@components/customer/ordering/AddonsOrRemovableIngredients';
 
 export default function PlaceOrderItem() {
   const initialState = {

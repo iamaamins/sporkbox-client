@@ -18,15 +18,15 @@ import {
   UpcomingRestaurant,
   UpcomingRestaurants,
 } from 'types';
-import styles from '@components/customer/PlaceOrder.module.css';
-import PlaceOrderSort from '@components/customer/PlaceOrderSort';
+import styles from '@components/customer/ordering/PlaceOrder.module.css';
+import PlaceOrderSort from '@components/customer/ordering/PlaceOrderSort';
 import Link from 'next/link';
 import { RiShieldStarFill } from 'react-icons/ri';
 import { IoIosArrowUp } from 'react-icons/io';
 import Image from 'next/image';
 import { AiFillStar } from 'react-icons/ai';
 import ModalContainer from '@components/layout/ModalContainer';
-import PlaceOrderFiltersModal from '@components/customer/PlaceOrderFiltersModal';
+import PlaceOrderFiltersModal from '@components/customer/ordering/PlaceOrderFiltersModal';
 import CartIcon from '@components/layout/CartIcon';
 
 export default function PlaceOrder() {

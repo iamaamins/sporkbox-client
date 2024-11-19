@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useUser } from '@context/User';
 import { useRouter } from 'next/router';
 import PageLoader from '@components/layout/PageLoader';
-import ResetPassword from '@components/customer/ResetPassword';
+import ResetPassword from '@components/customer/auth/ResetPassword';
 
 export default function PassWordResetPage() {
   const router = useRouter();

@@ -7,7 +7,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import styles from '@components/customer/PlaceOrderFiltersModal.module.css';
+import styles from './PlaceOrderFiltersModal.module.css';
 import { useData } from '@context/Data';
 
 type Props = {

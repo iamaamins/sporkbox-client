@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useUser } from '@context/User';
 import { useRouter } from 'next/router';
 import PageLoader from '@components/layout/PageLoader';
-import RegistrationForm from '@components/customer/RegistrationForm';
+import RegistrationForm from '@components/customer/auth/RegistrationForm';
 
 export default function RegisterPage() {
   const router = useRouter();

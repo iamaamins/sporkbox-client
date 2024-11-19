@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
-import Profile from '@components/customer/Profile';
+import Profile from '@components/customer/profile/Profile';
 import PageLoader from '@components/layout/PageLoader';
 
 export default function ProfilePage() {

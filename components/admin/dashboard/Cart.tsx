@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useUser } from '@context/User';
 import { IoMdRemove } from 'react-icons/io';
-import styles from '@components/customer/Cart.module.css';
+import styles from '@components/customer/ordering/Cart.module.css';
 import ButtonLoader from '@components/layout/ButtonLoader';
 import {
   axiosInstance,
