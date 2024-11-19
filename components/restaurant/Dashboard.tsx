@@ -201,7 +201,10 @@ export default function Dashboard() {
         const dateAndCompany = `${date}-${company}`;
 
         if (!orderMap[dateAndCompany]) {
-          orderMap[dateAndCompany] = { orders: [], totalQuantity: 0 };
+          orderMap[dateAndCompany] = {
+            orders: [order],
+            totalQuantity: order.item.quantity,
+          };
         } else {
           orderMap[dateAndCompany].orders.push(order);
           orderMap[dateAndCompany].totalQuantity += order.item.quantity;
