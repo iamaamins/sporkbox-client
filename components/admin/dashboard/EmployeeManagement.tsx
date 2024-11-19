@@ -63,8 +63,8 @@ function Employees() {
             <tr>
               <th>Name</th>
               <th>Email</th>
+              <th className={styles.hide_on_mobile}>Company code</th>
               <th>Status</th>
-              <th>Company code</th>
             </tr>
           </thead>
           <tbody>
@@ -78,8 +78,10 @@ function Employees() {
                   </Link>
                 </td>
                 <td>{employee.email}</td>
+                <td className={styles.hide_on_mobile}>
+                  {employee.companies[0].code}
+                </td>
                 <td>{employee.status}</td>
-                <td>{employee.companies[0].code}</td>
               </tr>
             ))}
           </tbody>
@@ -91,7 +93,7 @@ function Employees() {
   );
 }
 
-type OrderStats = {
+type OrderStat = {
   isLoading: boolean;
   data: {
     date: string;
@@ -103,7 +105,7 @@ function WeeklyOrderStat() {
   const { isAdmin } = useUser();
   const { setAlerts } = useAlert();
   const [currentDate, setCurrentDate] = useState(today);
-  const [orderStat, setOrderStat] = useState<OrderStats>({
+  const [orderStat, setOrderStat] = useState<OrderStat>({
     isLoading: true,
     data: [],
   });
@@ -141,11 +143,10 @@ function WeeklyOrderStat() {
   useEffect(() => {
     async function getWeeklyOrderStat(start: Date, end: Date) {
       try {
-        setOrderStat((prevState) => ({ ...prevState, isLoading: true }));
         const response = await axiosInstance.get(
           `/orders/weekly-stat/${start}/${end}`
         );
-        setOrderStat({ isLoading: false, data: response.data });
+        setOrderStat((prevState) => ({ ...prevState, data: response.data }));
       } catch (err) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       } finally {

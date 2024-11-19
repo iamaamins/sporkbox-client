@@ -47,10 +47,56 @@
   color: var(--gray);
 }
 
+/* Average spend */
+.average_spend h3 {
+  margin-bottom: 1rem;
+}
+
+.period_and_range_selector {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  flex-direction: column;
+}
+
+.period_selector {
+  padding: 0.75rem 0.5rem;
+  border-radius: 0.5rem;
+  width: 12rem;
+  border: 1px solid var(--border_color);
+}
+
+.range_selector {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.range_selector div {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.range_selector div label {
+  font-weight: 500;
+}
+
+.range_selector div input {
+  width: 10rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border_color);
+}
+
 @media (min-width: 768px) {
   .container {
     width: 85%;
     margin: 0 auto;
+  }
+
+  .period_and_range_selector {
+    flex-direction: row;
   }
 }
 

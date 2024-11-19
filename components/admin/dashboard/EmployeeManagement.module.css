@@ -42,6 +42,10 @@
   justify-content: flex-end;
 }
 
+.hide_on_mobile {
+  display: none;
+}
+
 .message {
   font-size: 16px;
   color: var(--gray);
@@ -102,12 +106,17 @@
 .week_picker p {
   font-size: 16px;
   font-weight: 600;
+  text-align: center;
 }
 
 @media (min-width: 768px) {
   .container {
     width: 85%;
     margin: 0 auto;
+  }
+
+  .hide_on_mobile {
+    display: table-cell;
   }
 }
 
