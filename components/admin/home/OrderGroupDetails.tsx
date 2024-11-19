@@ -159,13 +159,13 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
   // Get amounts
   useEffect(() => {
     if (!allUpcomingOrders.isLoading && !allDeliveredOrders.isLoading) {
-      const filterConditions = (order: Order) =>
+      const filterOrders = (order: Order) =>
         order.company.code === router.query.company &&
         dateToMS(order.delivery.date).toString() === router.query.date;
 
       const filteredOrders = [
-        ...allUpcomingOrders.data.filter((order) => filterConditions(order)),
-        ...allDeliveredOrders.data.filter((order) => filterConditions(order)),
+        ...allUpcomingOrders.data.filter(filterOrders),
+        ...allDeliveredOrders.data.filter(filterOrders),
       ];
 
       const paidOrders: Order[] = [];
