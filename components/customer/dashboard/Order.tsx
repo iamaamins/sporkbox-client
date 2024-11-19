@@ -124,19 +124,17 @@ export default function Order() {
 
   // Find the order
   useEffect(() => {
-    if (customerAllOrders.length > 0 && router.isReady) {
+    if (customerAllOrders.length && router.isReady) {
       const order = customerAllOrders.find(
         (customerOrder) => customerOrder._id === router.query.order
       );
-      if (order) {
-        setOrder(order);
-      }
+      if (order) setOrder(order);
     }
-  }, [customerAllOrders, router.isReady]);
+  }, [customerAllOrders, router]);
 
   // Check if item is a favorite
   useEffect(() => {
-    if (order) {
+    if (order && customerFavoriteItems.data.length) {
       setFavoriteItem(
         customerFavoriteItems.data.find(
           (customerFavoriteItem) =>
