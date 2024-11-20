@@ -201,7 +201,7 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
               </tbody>
             </table>
             {router.pathname === '/admin/delivered-orders' &&
-              allDeliveredOrders.data.length === 2500 && (
+              allDeliveredOrders.data.length <= 2500 && (
                 <span className={styles.load_all}>
                   <ActionButton
                     buttonText='Load all orders'
