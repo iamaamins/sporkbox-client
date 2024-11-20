@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import styles from './Pricing.module.css';
 import { useUser } from '@context/User';
 import { axiosInstance, numberToUSD, showErrorAlert } from '@lib/utils';
@@ -9,12 +9,13 @@ export default function Pricing() {
   return (
     <section className={styles.container}>
       <h2>Pricing</h2>
-      <PriceStat />
+      <PaymentStat />
+      <ItemStat />
     </section>
   );
 }
 
-type PriceStat = {
+type PaymentStat = {
   isLoading: boolean;
   data: {
     averageSpent: number;
@@ -22,7 +23,7 @@ type PriceStat = {
     payingEmployeeCount: number;
   } | null;
 };
-function PriceStat() {
+function PaymentStat() {
   const { isAdmin } = useUser();
   const { setAlerts } = useAlert();
   const [period, setPeriod] = useState('7d');
@@ -30,7 +31,7 @@ function PriceStat() {
     start: '',
     end: '',
   });
-  const [priceStat, setPriceStat] = useState<PriceStat>({
+  const [paymentStat, setPaymentStat] = useState<PaymentStat>({
     isLoading: true,
     data: null,
   });
@@ -43,16 +44,16 @@ function PriceStat() {
 
   // Get order data
   useEffect(() => {
-    async function getPriceData(start: string, end: string) {
+    async function getPaymentData(start: string, end: string) {
       try {
         const response = await axiosInstance.get(
-          `/orders/price-stat/${start}/${end}`
+          `/orders/payment-stat/${start}/${end}`
         );
-        setPriceStat((prevState) => ({ ...prevState, data: response.data }));
+        setPaymentStat((prevState) => ({ ...prevState, data: response.data }));
       } catch (err) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       } finally {
-        setPriceStat((prevState) => ({ ...prevState, isLoading: false }));
+        setPaymentStat((prevState) => ({ ...prevState, isLoading: false }));
       }
     }
 
@@ -65,11 +66,11 @@ function PriceStat() {
       start = range.start;
       end = range.end;
     }
-    if (isAdmin && start && end) getPriceData(start, end);
+    if (isAdmin && start && end) getPaymentData(start, end);
   }, [isAdmin, period, range]);
 
   return (
-    <div className={styles.average_spend}>
+    <div className={styles.payment_stat}>
       <form className={styles.period_and_range_selector}>
         <select
           value={period}
@@ -118,9 +119,9 @@ function PriceStat() {
           </div>
         )}
       </form>
-      {priceStat.isLoading ? (
+      {paymentStat.isLoading ? (
         <p className={styles.message}>Loading...</p>
-      ) : priceStat.data ? (
+      ) : paymentStat.data ? (
         <table>
           <thead>
             <tr>
@@ -131,14 +132,138 @@ function PriceStat() {
           </thead>
           <tbody>
             <tr>
-              <td>{numberToUSD(priceStat.data.averageSpent)}</td>
-              <td>{numberToUSD(priceStat.data.averagePaid)}</td>
-              <td>{priceStat.data.payingEmployeeCount}</td>
+              <td>{numberToUSD(paymentStat.data.averageSpent)}</td>
+              <td>{numberToUSD(paymentStat.data.averagePaid)}</td>
+              <td>{paymentStat.data.payingEmployeeCount}</td>
             </tr>
           </tbody>
         </table>
       ) : (
         <p className={styles.message}>No data found</p>
+      )}
+    </div>
+  );
+}
+
+type ItemStat = {
+  items: {
+    count: string;
+    isLoading: boolean;
+  };
+  average: {
+    price: string;
+    isLoading: boolean;
+  };
+};
+
+function ItemStat() {
+  const { isAdmin } = useUser();
+  const { setAlerts } = useAlert();
+  const [price, setPrice] = useState('');
+  const [itemStat, setItemStat] = useState<ItemStat>({
+    items: { count: '', isLoading: false },
+    average: {
+      price: '',
+      isLoading: true,
+    },
+  });
+
+  async function getFilteredItemsCount(e: FormEvent) {
+    e.preventDefault();
+    if (!price) return;
+
+    try {
+      setItemStat((prevState) => ({ ...prevState, isLoading: true }));
+      const response = await axiosInstance.get(
+        `/restaurants/items/count-and-average/${price}`
+      );
+      setItemStat((prevState) => ({
+        ...prevState,
+        items: {
+          ...prevState.items,
+          count: response.data.itemsCount,
+        },
+      }));
+    } catch (err) {
+      console.log(err);
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      setItemStat((prevState) => ({
+        ...prevState,
+        items: { ...prevState.items, isLoading: false },
+      }));
+    }
+  }
+
+  // Get average item price
+  useEffect(() => {
+    async function getAverageItemPrice() {
+      try {
+        setItemStat((prevState) => ({ ...prevState, isLoading: true }));
+        const response = await axiosInstance.get(
+          `/restaurants/items/count-and-average`
+        );
+        setItemStat((prevState) => ({
+          ...prevState,
+          average: {
+            ...prevState.average,
+            price: response.data.averagePrice,
+          },
+        }));
+      } catch (err) {
+        console.log(err);
+        showErrorAlert(err as CustomAxiosError, setAlerts);
+      } finally {
+        setItemStat((prevState) => ({
+          ...prevState,
+          average: { ...prevState.average, isLoading: false },
+        }));
+      }
+    }
+    if (isAdmin) getAverageItemPrice();
+  }, [isAdmin]);
+
+  return (
+    <div className={styles.item_stat}>
+      <h3>Item stat</h3>
+      <form onSubmit={getFilteredItemsCount}>
+        <input
+          type='text'
+          id='price'
+          value={price}
+          placeholder='Enter a price to filter items...'
+          onChange={(e) => {
+            setPrice(e.target.value);
+            if (!e.target.value)
+              setItemStat((prevState) => ({
+                ...prevState,
+                items: {
+                  ...prevState.items,
+                  count: '',
+                },
+              }));
+          }}
+        />
+      </form>
+      {itemStat.items.isLoading ? (
+        <p className={styles.message}>Loading...</p>
+      ) : (
+        itemStat.items.count && (
+          <p className={styles.items_count}>
+            <span>Number of active items</span>
+            <span>{itemStat.items.count}</span>
+          </p>
+        )
+      )}
+      {itemStat.average.isLoading ? (
+        <p className={styles.message}>Loading...</p>
+      ) : (
+        itemStat.average.price && (
+          <p className={styles.average_price}>
+            <span>Average active item price</span>
+            <span>{numberToUSD(+itemStat.average.price)}</span>
+          </p>
+        )
       )}
     </div>
   );
