@@ -57,13 +57,17 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
     byDeliveryDate: false,
   });
 
-  async function handleLoadAllDeliveredOrders() {
+  async function loadAllDeliveredOrders() {
     try {
       setIsLoading(true);
-      const response = await axiosInstance.get(`/orders/delivered/0`);
-      setAllDeliveredOrders(response.data);
+      const response = await axiosInstance.get(
+        `/orders/all-delivered-orders/0`
+      );
+      setAllDeliveredOrders((prevState) => ({
+        ...prevState,
+        data: response.data,
+      }));
     } catch (err) {
-      console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       setIsLoading(false);
@@ -191,13 +195,13 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
                 ))}
               </tbody>
             </table>
-            {router.pathname === '/admin/orders' &&
-              orderGroups.length === 25 && (
+            {router.pathname === '/admin/delivered-orders' &&
+              allDeliveredOrders.data.length <= 2500 && (
                 <span className={styles.load_all}>
                   <ActionButton
                     buttonText='Load all orders'
                     isLoading={isLoading}
-                    handleClick={handleLoadAllDeliveredOrders}
+                    handleClick={loadAllDeliveredOrders}
                   />
                 </span>
               )}
