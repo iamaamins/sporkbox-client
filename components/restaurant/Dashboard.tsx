@@ -128,7 +128,11 @@ export default function Dashboard() {
         });
       }
     }
-    labels.sort((a, b) => a.item.name.localeCompare(b.item.name));
+    labels.sort((a, b) => {
+      const restaurantComp = a.restaurant.localeCompare(b.restaurant);
+      if (restaurantComp) return restaurantComp;
+      return a.item.name.localeCompare(b.item.name);
+    });
 
     const blob = await pdf(<Labels labels={labels} />).toBlob();
     const url = URL.createObjectURL(blob);
