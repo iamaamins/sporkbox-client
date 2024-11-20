@@ -37,7 +37,6 @@ import {
 
 type DataContext = {
   vendors: Vendors;
-  allOrders: Order[];
   companies: Companies;
   customers: Customers;
   upcomingDates: number[];
@@ -100,34 +99,16 @@ export default function DataProvider({ children }: ContextProviderProps) {
   const [vendorUpcomingOrders, setVendorUpcomingOrders] =
     useState<VendorUpcomingOrders>(initialState);
   const [dietaryTags, setDietaryTags] = useState<DietaryTags>(initialState);
-
-  // All admin orders
-  const allOrders = [...allUpcomingOrders.data, ...allDeliveredOrders.data];
-
-  // All customer orders
-  const customerAllOrders: CustomerOrder[] = [
-    ...customerUpcomingOrders.data,
-    ...customerDeliveredOrders.data,
-  ];
-
-  // Group upcoming orders by company and delivery date
-  const upcomingOrderGroups = createOrderGroups(allUpcomingOrders.data);
-
-  // Group delivered orders by company and delivery date
-  const deliveredOrderGroups = createOrderGroups(allDeliveredOrders.data);
-
-  const upcomingDates =
-    !upcomingRestaurants.isLoading && upcomingRestaurants.data.length > 0
-      ? upcomingRestaurants.data
-          .filter(
-            (upcomingRestaurant) =>
-              upcomingRestaurant.schedule.status === 'ACTIVE'
-          )
-          .map((upcomingRestaurant) =>
-            dateToMS(upcomingRestaurant.schedule.date)
-          )
-          .filter((date, index, dates) => dates.indexOf(date) === index)
-      : [];
+  const [upcomingOrderGroups, setUpcomingOrderGroups] = useState<OrderGroup[]>(
+    []
+  );
+  const [deliveredOrderGroups, setDeliveredOrderGroups] = useState<
+    OrderGroup[]
+  >([]);
+  const [upcomingDates, setUpcomingDates] = useState<number[]>([]);
+  const [customerAllOrders, setCustomerAllOrders] = useState<CustomerOrder[]>(
+    []
+  );
 
   async function getDietaryTags() {
     try {
@@ -141,6 +122,44 @@ export default function DataProvider({ children }: ContextProviderProps) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
     }
   }
+
+  // Create data
+  useEffect(() => {
+    if (allUpcomingOrders.data.length) {
+      setUpcomingOrderGroups(createOrderGroups(allUpcomingOrders.data));
+    }
+    if (allDeliveredOrders.data.length) {
+      setDeliveredOrderGroups(createOrderGroups(allDeliveredOrders.data));
+    }
+    if (upcomingRestaurants.data.length) {
+      setUpcomingDates(
+        upcomingRestaurants.data
+          .filter(
+            (upcomingRestaurant) =>
+              upcomingRestaurant.schedule.status === 'ACTIVE'
+          )
+          .map((upcomingRestaurant) =>
+            dateToMS(upcomingRestaurant.schedule.date)
+          )
+          .filter((date, index, dates) => dates.indexOf(date) === index)
+      );
+    }
+    if (
+      customerUpcomingOrders.data.length ||
+      customerDeliveredOrders.data.length
+    ) {
+      setCustomerAllOrders([
+        ...customerUpcomingOrders.data,
+        ...customerDeliveredOrders.data,
+      ]);
+    }
+  }, [
+    allUpcomingOrders,
+    allDeliveredOrders,
+    upcomingRestaurants,
+    customerUpcomingOrders,
+    customerDeliveredOrders,
+  ]);
 
   // Get admin data
   useEffect(() => {
@@ -343,7 +362,6 @@ export default function DataProvider({ children }: ContextProviderProps) {
         vendors,
         setVendors,
         companies,
-        allOrders,
         setCompanies,
         customers,
         dietaryTags,
