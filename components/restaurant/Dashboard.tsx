@@ -9,7 +9,6 @@ import {
   showErrorAlert,
   showSuccessAlert,
   getAddonIngredients,
-  sortOrders,
 } from '@lib/utils';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
@@ -128,7 +127,11 @@ export default function Dashboard() {
         });
       }
     }
-    labels.sort((a, b) => a.item.name.localeCompare(b.item.name));
+    labels.sort((a, b) => {
+      const restaurantComp = a.restaurant.localeCompare(b.restaurant);
+      if (restaurantComp) return restaurantComp;
+      return a.item.name.localeCompare(b.item.name);
+    });
 
     const blob = await pdf(<Labels labels={labels} />).toBlob();
     const url = URL.createObjectURL(blob);
@@ -230,7 +233,7 @@ export default function Dashboard() {
             date: key.split('-')[0],
             company: key.split('-')[1],
             totalQuantity: orderMap[key].totalQuantity,
-            orders: orderMap[key].orders.sort(sortOrders),
+            orders: orderMap[key].orders,
           });
         }
       }
