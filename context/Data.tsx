@@ -37,7 +37,6 @@ import {
 
 type DataContext = {
   vendors: Vendors;
-  allOrders: Order[];
   companies: Companies;
   customers: Customers;
   upcomingDates: number[];
@@ -100,9 +99,6 @@ export default function DataProvider({ children }: ContextProviderProps) {
   const [vendorUpcomingOrders, setVendorUpcomingOrders] =
     useState<VendorUpcomingOrders>(initialState);
   const [dietaryTags, setDietaryTags] = useState<DietaryTags>(initialState);
-
-  // All admin orders
-  const allOrders = [...allUpcomingOrders.data, ...allDeliveredOrders.data];
 
   // All customer orders
   const customerAllOrders: CustomerOrder[] = [
@@ -343,7 +339,6 @@ export default function DataProvider({ children }: ContextProviderProps) {
         vendors,
         setVendors,
         companies,
-        allOrders,
         setCompanies,
         customers,
         dietaryTags,
