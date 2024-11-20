@@ -155,7 +155,6 @@ type ItemStat = {
     isLoading: boolean;
   };
 };
-
 function ItemStat() {
   const { isAdmin } = useUser();
   const { setAlerts } = useAlert();
@@ -173,7 +172,10 @@ function ItemStat() {
     if (!price) return;
 
     try {
-      setItemStat((prevState) => ({ ...prevState, isLoading: true }));
+      setItemStat((prevState) => ({
+        ...prevState,
+        items: { ...prevState.items, isLoading: true },
+      }));
       const response = await axiosInstance.get(
         `/restaurants/items/count-and-average/${price}`
       );
@@ -185,7 +187,6 @@ function ItemStat() {
         },
       }));
     } catch (err) {
-      console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       setItemStat((prevState) => ({
@@ -199,7 +200,6 @@ function ItemStat() {
   useEffect(() => {
     async function getAverageItemPrice() {
       try {
-        setItemStat((prevState) => ({ ...prevState, isLoading: true }));
         const response = await axiosInstance.get(
           `/restaurants/items/count-and-average`
         );
@@ -211,7 +211,6 @@ function ItemStat() {
           },
         }));
       } catch (err) {
-        console.log(err);
         showErrorAlert(err as CustomAxiosError, setAlerts);
       } finally {
         setItemStat((prevState) => ({
