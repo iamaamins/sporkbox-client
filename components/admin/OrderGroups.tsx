@@ -80,14 +80,13 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
   ) {
     e.preventDefault();
     if (!labelFilters) return;
-
-    const orders = [];
+    let orders: Order[] = [];
     for (const group of orderGroups) {
       if (
         group.company.code === labelFilters.companyCode &&
         group.deliveryDate === labelFilters.deliveryDate
       ) {
-        orders.push(...group.orders);
+        orders = group.orders;
       }
     }
 
@@ -115,7 +114,9 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
     labels.sort((a, b) => {
       const restaurantComp = a.restaurant.localeCompare(b.restaurant);
       if (restaurantComp) return restaurantComp;
-      return a.item.name.localeCompare(b.item.name);
+      const itemComp = a.item.name.localeCompare(b.item.name);
+      if (itemComp) return itemComp;
+      return a.customer.lastName.localeCompare(b.customer.lastName);
     });
 
     const blob = await pdf(<Labels labels={labels} />).toBlob();

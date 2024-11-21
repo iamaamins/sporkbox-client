@@ -130,7 +130,9 @@ export default function Dashboard() {
     labels.sort((a, b) => {
       const restaurantComp = a.restaurant.localeCompare(b.restaurant);
       if (restaurantComp) return restaurantComp;
-      return a.item.name.localeCompare(b.item.name);
+      const itemComp = a.item.name.localeCompare(b.item.name);
+      if (itemComp) return itemComp;
+      return a.customer.lastName.localeCompare(b.customer.lastName);
     });
 
     const blob = await pdf(<Labels labels={labels} />).toBlob();
