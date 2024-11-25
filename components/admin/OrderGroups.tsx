@@ -1,18 +1,9 @@
 import { FormEvent, useRef, useState } from 'react';
 import { useData } from '@context/Data';
-import { useRouter } from 'next/router';
-import { useAlert } from '@context/Alert';
 import OrderGroupRow from './OrderGroupRow';
 import styles from './OrderGroups.module.css';
-import ActionButton from '@components/layout/ActionButton';
+import { dateToText, getAddonIngredients } from '@lib/utils';
 import {
-  axiosInstance,
-  dateToText,
-  getAddonIngredients,
-  showErrorAlert,
-} from '@lib/utils';
-import {
-  CustomAxiosError,
   DownloadAbles,
   LabelFilters,
   Order,
@@ -39,10 +30,7 @@ type Props = {
 };
 
 export default function OrderGroups({ slug, title, orderGroups }: Props) {
-  const router = useRouter();
-  const { setAlerts } = useAlert();
   const csvLink = useRef<CSVLink>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [csvOrderGroup, setCSVOrderGroup] = useState<OrderGroup>();
   const [orderCSVFilename, setOrderCSVFilename] = useState('');
@@ -50,29 +38,11 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
   const [labelFilters, setLabelFilters] = useState<LabelFilters>();
   const [orderCSVData, setOrderCSVData] = useState<OrderData[]>([]);
   const [downloadAbles, setDownloadAbles] = useState<DownloadAbles>();
-  const { allUpcomingOrders, allDeliveredOrders, setAllDeliveredOrders } =
-    useData();
+  const { allUpcomingOrders, allDeliveredOrders } = useData();
   const [sorted, setSorted] = useState<SortedOrderGroups>({
     byCompany: false,
     byDeliveryDate: false,
   });
-
-  async function loadAllDeliveredOrders() {
-    try {
-      setIsLoading(true);
-      const response = await axiosInstance.get(
-        `/orders/all-delivered-orders/0`
-      );
-      setAllDeliveredOrders((prevState) => ({
-        ...prevState,
-        data: response.data,
-      }));
-    } catch (err) {
-      showErrorAlert(err as CustomAxiosError, setAlerts);
-    } finally {
-      setIsLoading(false);
-    }
-  }
 
   async function generateAndDownloadLabels(
     e: FormEvent,
@@ -201,16 +171,6 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
                 ))}
               </tbody>
             </table>
-            {router.pathname === '/admin/delivered-orders' &&
-              allDeliveredOrders.data.length <= 2500 && (
-                <span className={styles.load_all}>
-                  <ActionButton
-                    buttonText='Load all orders'
-                    isLoading={isLoading}
-                    handleClick={loadAllDeliveredOrders}
-                  />
-                </span>
-              )}
           </>
         )}
         {orderCSVData && (
