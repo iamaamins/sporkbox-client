@@ -13,6 +13,7 @@ export default function Restaurant() {
       <h2>Restaurant</h2>
       <ScheduledRestaurants />
       <TopRatedRestaurants />
+      <TopRatedItems />
     </section>
   );
 }
@@ -107,12 +108,10 @@ function TopRatedRestaurants() {
   useEffect(() => {
     async function getTopRatedRestaurants() {
       try {
-        const response = await axiosInstance.get(
-          '/orders/top-rated-restaurants'
-        );
+        const response = await axiosInstance.get('/orders/restaurant-stat');
         setTopRatedRestaurants((prevState) => ({
           ...prevState,
-          data: response.data,
+          data: response.data.restaurants,
         }));
       } catch (err) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
@@ -147,6 +146,70 @@ function TopRatedRestaurants() {
               <tr key={index}>
                 <td>{restaurant.name}</td>
                 <td>{restaurant.orderCount}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}
+
+type TopRatedItems = {
+  isLoading: boolean;
+  data: {
+    name: string;
+    orderCount: number;
+  }[];
+};
+function TopRatedItems() {
+  const { isAdmin } = useUser();
+  const { setAlerts } = useAlert();
+  const [topRatedItems, setTopRatedItems] = useState<TopRatedItems>({
+    isLoading: true,
+    data: [],
+  });
+
+  useEffect(() => {
+    async function getTopRatedItems() {
+      try {
+        const response = await axiosInstance.get('/orders/restaurant-stat');
+        setTopRatedItems((prevState) => ({
+          ...prevState,
+          data: response.data.items,
+        }));
+      } catch (err) {
+        showErrorAlert(err as CustomAxiosError, setAlerts);
+      } finally {
+        setTopRatedItems((prevState) => ({
+          ...prevState,
+          isLoading: false,
+        }));
+      }
+    }
+    if (isAdmin) getTopRatedItems();
+  }, [isAdmin]);
+
+  return (
+    <div className={styles.top_rated_items}>
+      <h3>Top rated items</h3>
+      {topRatedItems.isLoading ? (
+        <p className={styles.message}>Loading...</p>
+      ) : topRatedItems.data.length === 0 ? (
+        <p className={styles.message}>No items found</p>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Order count</th>
+            </tr>
+          </thead>
+          <tbody>
+            {topRatedItems.data.map((item, index) => (
+              <tr key={index}>
+                <td>{item.name}</td>
+                <td>{item.orderCount}</td>
               </tr>
             ))}
           </tbody>
