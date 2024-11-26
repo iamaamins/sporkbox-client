@@ -103,6 +103,11 @@
   margin-bottom: 1rem;
 }
 
+/* Top rated items */
+.top_rated_items h3 {
+  margin-bottom: 1rem;
+}
+
 @media (min-width: 768px) {
   .container {
     width: 85%;
