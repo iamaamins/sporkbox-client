@@ -122,7 +122,6 @@ function TopRatedRestaurants() {
         }));
       }
     }
-
     if (isAdmin) getTopRatedRestaurants();
   }, [isAdmin]);
 
