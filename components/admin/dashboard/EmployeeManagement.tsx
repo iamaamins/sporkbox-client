@@ -110,34 +110,19 @@ function WeeklyOrderStat() {
     data: [],
   });
 
-  function goToPreviousWeek() {
-    setCurrentDate(
-      (prevState) =>
-        new Date(
-          prevState.getFullYear(),
-          prevState.getMonth(),
-          prevState.getDate() - 7
-        )
-    );
-  }
-
-  function goToNextWeek() {
-    setCurrentDate((prevState) => {
-      const nextDate = new Date(
-        prevState.getFullYear(),
-        prevState.getMonth(),
-        prevState.getDate() + 7
-      );
-      return nextDate > today ? prevState : nextDate;
-    });
-  }
-
   const startDate = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth(),
     currentDate.getDate() - 6
   );
   const endDate = currentDate;
+
+  const getDate = (date: Date, direction: 'next' | 'prev') =>
+    new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      direction === 'next' ? date.getDate() + 7 : date.getDate() - 7
+    );
 
   // Get weekly order stat
   useEffect(() => {
@@ -157,15 +142,28 @@ function WeeklyOrderStat() {
   }, [isAdmin, currentDate]);
 
   return (
-    <div className={styles.order_stat}>
-      <div className={styles.week_picker}>
-        <button onClick={goToPreviousWeek}>
+    <div>
+      <div className={styles.week_navigator}>
+        <button
+          onClick={() =>
+            setCurrentDate((prevState) => getDate(prevState, 'prev'))
+          }
+        >
           <IoIosArrowRoundBack size={20} /> Prev
         </button>
         <p>
           {dateToText(startDate)} ~ {dateToText(endDate)}
         </p>
-        <button onClick={goToNextWeek}>
+        <button
+          disabled={getDate(currentDate, 'next') > today}
+          onClick={() =>
+            setCurrentDate((prevState) =>
+              getDate(prevState, 'next') > today
+                ? prevState
+                : getDate(prevState, 'next')
+            )
+          }
+        >
           Next <IoIosArrowRoundForward size={20} />
         </button>
       </div>
