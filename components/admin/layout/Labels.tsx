@@ -22,6 +22,10 @@ Font.register({
     },
   ],
 });
+Font.registerEmojiSource({
+  format: 'png',
+  url: 'https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/',
+});
 
 const styles = StyleSheet.create({
   page: {
