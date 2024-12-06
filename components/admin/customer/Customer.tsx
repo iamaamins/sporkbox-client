@@ -35,12 +35,10 @@ export default function Customer() {
       );
       setCustomer((prevState) => ({
         ...prevState,
-        deliveredOrders: response.data
-          .filter(
-            (deliveredOrder) =>
-              deliveredOrder.company._id === router.query.company
-          )
-          .sort(sortOrders),
+        deliveredOrders: response.data.filter(
+          (deliveredOrder) =>
+            deliveredOrder.company._id === router.query.company
+        ),
       }));
     } catch (err) {
       console.log(err);
