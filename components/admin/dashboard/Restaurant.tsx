@@ -12,8 +12,8 @@ export default function Restaurant() {
     <section className={styles.container}>
       <h2>Restaurant</h2>
       <ScheduledRestaurants />
-      <TopRatedRestaurants />
-      <TopRatedItems />
+      <MostLikedRestaurants />
+      <MostLikedItems />
     </section>
   );
 }
@@ -89,18 +89,18 @@ function ScheduledRestaurants() {
   );
 }
 
-type TopRatedRestaurants = {
+type MostLikedRestaurants = {
   isLoading: boolean;
   data: {
     name: string;
     orderCount: number;
   }[];
 };
-function TopRatedRestaurants() {
+function MostLikedRestaurants() {
   const { isAdmin } = useUser();
   const { setAlerts } = useAlert();
-  const [topRatedRestaurants, setTopRatedRestaurants] =
-    useState<TopRatedRestaurants>({
+  const [mostLikedRestaurants, setMostLikedRestaurants] =
+    useState<MostLikedRestaurants>({
       isLoading: true,
       data: [],
     });
@@ -109,14 +109,14 @@ function TopRatedRestaurants() {
     async function getTopRatedRestaurants() {
       try {
         const response = await axiosInstance.get('/orders/restaurant-stat');
-        setTopRatedRestaurants((prevState) => ({
+        setMostLikedRestaurants((prevState) => ({
           ...prevState,
           data: response.data.restaurants,
         }));
       } catch (err) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       } finally {
-        setTopRatedRestaurants((prevState) => ({
+        setMostLikedRestaurants((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
@@ -126,11 +126,11 @@ function TopRatedRestaurants() {
   }, [isAdmin]);
 
   return (
-    <div className={styles.top_rated_restaurants}>
-      <h3>Top rated restaurants</h3>
-      {topRatedRestaurants.isLoading ? (
+    <div className={styles.most_liked_restaurants}>
+      <h3>Most liked restaurants</h3>
+      {mostLikedRestaurants.isLoading ? (
         <p className={styles.message}>Loading...</p>
-      ) : topRatedRestaurants.data.length === 0 ? (
+      ) : mostLikedRestaurants.data.length === 0 ? (
         <p className={styles.message}>No restaurant found</p>
       ) : (
         <table>
@@ -141,7 +141,7 @@ function TopRatedRestaurants() {
             </tr>
           </thead>
           <tbody>
-            {topRatedRestaurants.data.map((restaurant, index) => (
+            {mostLikedRestaurants.data.map((restaurant, index) => (
               <tr key={index}>
                 <td>{restaurant.name}</td>
                 <td>{restaurant.orderCount}</td>
@@ -154,17 +154,17 @@ function TopRatedRestaurants() {
   );
 }
 
-type TopRatedItems = {
+type MostLikedItems = {
   isLoading: boolean;
   data: {
     name: string;
     orderCount: number;
   }[];
 };
-function TopRatedItems() {
+function MostLikedItems() {
   const { isAdmin } = useUser();
   const { setAlerts } = useAlert();
-  const [topRatedItems, setTopRatedItems] = useState<TopRatedItems>({
+  const [mostLikedItems, setMostLikedItems] = useState<MostLikedItems>({
     isLoading: true,
     data: [],
   });
@@ -173,14 +173,14 @@ function TopRatedItems() {
     async function getTopRatedItems() {
       try {
         const response = await axiosInstance.get('/orders/restaurant-stat');
-        setTopRatedItems((prevState) => ({
+        setMostLikedItems((prevState) => ({
           ...prevState,
           data: response.data.items,
         }));
       } catch (err) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       } finally {
-        setTopRatedItems((prevState) => ({
+        setMostLikedItems((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
@@ -190,11 +190,11 @@ function TopRatedItems() {
   }, [isAdmin]);
 
   return (
-    <div className={styles.top_rated_items}>
-      <h3>Top rated items</h3>
-      {topRatedItems.isLoading ? (
+    <div className={styles.most_liked_items}>
+      <h3>Most liked items</h3>
+      {mostLikedItems.isLoading ? (
         <p className={styles.message}>Loading...</p>
-      ) : topRatedItems.data.length === 0 ? (
+      ) : mostLikedItems.data.length === 0 ? (
         <p className={styles.message}>No items found</p>
       ) : (
         <table>
@@ -205,7 +205,7 @@ function TopRatedItems() {
             </tr>
           </thead>
           <tbody>
-            {topRatedItems.data.map((item, index) => (
+            {mostLikedItems.data.map((item, index) => (
               <tr key={index}>
                 <td>{item.name}</td>
                 <td>{item.orderCount}</td>
