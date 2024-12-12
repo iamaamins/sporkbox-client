@@ -40,7 +40,7 @@ function Employees() {
 
   // Get 10 customers
   useEffect(() => {
-    if (customers.data.length > 0 && !query)
+    if (customers.data.length && !query)
       setEmployees(customers.data.slice(0, 10));
   }, [customers, query]);
 
@@ -114,8 +114,10 @@ function WeeklyOrderStat() {
     currentDate.getFullYear(),
     currentDate.getMonth(),
     currentDate.getDate() - 6
-  );
-  const endDate = currentDate;
+  )
+    .toISOString()
+    .split('T')[0];
+  const endDate = currentDate.toISOString().split('T')[0];
 
   const getDate = (date: Date, direction: 'next' | 'prev') =>
     new Date(
@@ -126,7 +128,7 @@ function WeeklyOrderStat() {
 
   // Get weekly order stat
   useEffect(() => {
-    async function getWeeklyOrderStat(start: Date, end: Date) {
+    async function getWeeklyOrderStat(start: string, end: string) {
       try {
         const response = await axiosInstance.get(
           `/orders/weekly-stat/${start}/${end}`
