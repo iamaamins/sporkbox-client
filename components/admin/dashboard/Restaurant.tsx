@@ -158,6 +158,7 @@ type MostLikedItems = {
   isLoading: boolean;
   data: {
     name: string;
+    restaurant: string;
     orderCount: number;
   }[];
 };
@@ -201,6 +202,7 @@ function MostLikedItems() {
           <thead>
             <tr>
               <th>Item</th>
+              <th>Restaurant</th>
               <th>Order count</th>
             </tr>
           </thead>
@@ -208,6 +210,7 @@ function MostLikedItems() {
             {mostLikedItems.data.map((item, index) => (
               <tr key={index}>
                 <td>{item.name}</td>
+                <td>{item.restaurant}</td>
                 <td>{item.orderCount}</td>
               </tr>
             ))}
