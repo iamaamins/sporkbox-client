@@ -9,89 +9,114 @@ import {
   dateToText,
   showErrorAlert,
   showSuccessAlert,
-  updateCustomers,
 } from '@lib/utils';
-import { CustomAxiosError, Customer, UserStatus } from 'types';
-import styles from './Customers.module.css';
+import { CustomAxiosError, Customer, Guest, UserRole, UserStatus } from 'types';
+import styles from './Users.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
 
-type Props = { status?: UserStatus; customers: Customer[] };
+type Props = {
+  users: Customer[] | Guest[];
+  role: UserRole;
+  status?: UserStatus;
+};
 
-export default function Customers({ status, customers }: Props) {
+export default function Users({ users, role, status }: Props) {
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const { setCustomers } = useData();
+  const { setCustomers, setGuests } = useData();
   const [statusUpdatePayload, setStatusUpdatePayload] = useState({
     action: '',
     data: {
-      customerId: '',
-      customerName: '',
+      userId: '',
+      userFirstName: '',
     },
   });
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
-  const [isUpdatingCustomerStatus, setIsUpdatingCustomerStatus] =
-    useState(false);
+  const [isUpdatingUserStatus, setIsUpdatingUserStatus] = useState(false);
 
-  function initiateStatusUpdate(e: FormEvent, customerId: string) {
+  function initiateStatusUpdate(e: FormEvent, userId: string) {
     setShowStatusUpdateModal(true);
     setStatusUpdatePayload({
-      action: e.currentTarget.textContent!,
+      action: e.currentTarget.textContent as string,
       data: {
-        customerId,
-        customerName: customers.find((customer) => customer._id === customerId)
-          ?.firstName!,
+        userId,
+        userFirstName: users.find((user) => user._id === userId)
+          ?.firstName as string,
       },
     });
   }
 
-  async function updateCustomerStatus() {
+  async function updateUserStatus() {
     try {
-      setIsUpdatingCustomerStatus(true);
+      setIsUpdatingUserStatus(true);
+
       const response = await axiosInstance.patch(
-        `/customers/${statusUpdatePayload.data.customerId}/change-customer-status`,
+        `/users/${statusUpdatePayload.data.userId}/change-user-status`,
         { action: statusUpdatePayload.action }
       );
-      updateCustomers(response.data, setCustomers);
+
+      if (response.data.role === 'CUSTOMER') {
+        setCustomers((prevState) => ({
+          ...prevState,
+          data: prevState.data.map((customer) => {
+            if (customer._id !== response.data._id) return customer;
+            return { ...customer, status: response.data.status };
+          }),
+        }));
+      }
+
+      if (response.data.role === 'GUEST') {
+        setGuests((prevState) => ({
+          ...prevState,
+          data: prevState.data.map((guest) => {
+            if (guest._id !== response.data._id) return guest;
+            return { ...guest, status: response.data.status };
+          }),
+        }));
+      }
+
       showSuccessAlert('Status updated', setAlerts);
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      setIsUpdatingCustomerStatus(false);
+      setIsUpdatingUserStatus(false);
       setShowStatusUpdateModal(false);
     }
   }
 
   return (
     <>
-      <table className={styles.customers}>
+      <table className={styles.container}>
         <thead>
           <tr>
             <th>Name</th>
             <th className={styles.hide_on_mobile}>Email</th>
-            <th className={styles.hide_on_mobile}>Registered</th>
+            <th className={styles.hide_on_mobile}>
+              {role === 'CUSTOMER' ? 'Registered' : 'Added'}
+            </th>
             <th>Action</th>
           </tr>
         </thead>
 
         <tbody>
-          {customers.map((customer) => (
-            <tr key={customer._id}>
+          {users.map((user) => (
+            <tr key={user._id}>
               <td className={styles.important}>
                 <Link
-                  href={`/admin/companies/${router.query.company}/${customer._id}`}
+                  href={`/admin/companies/${router.query.company}/${user._id}`}
                 >
                   <a>
-                    {customer.firstName} {customer.lastName}
+                    {user.firstName} {user.lastName}
                   </a>
                 </Link>
               </td>
-              <td className={styles.hide_on_mobile}>{customer.email}</td>
+              <td className={styles.hide_on_mobile}>{user.email}</td>
               <td className={styles.hide_on_mobile}>
-                {dateToText(customer.createdAt)}
+                {dateToText(user.createdAt)}
               </td>
               <td>
                 <Link
-                  href={`/admin/companies/${router.query.company}/${customer._id}/edit-customer`}
+                  href={`/admin/companies/${router.query.company}/${user._id}/edit-user`}
                 >
                   <a className={`${styles.button} ${styles.edit_details}`}>
                     Edit
@@ -100,7 +125,7 @@ export default function Customers({ status, customers }: Props) {
                 {status && (
                   <span
                     className={`${styles.button} ${styles.change_status}`}
-                    onClick={(e) => initiateStatusUpdate(e, customer._id)}
+                    onClick={(e) => initiateStatusUpdate(e, user._id)}
                   >
                     {status === 'ACTIVE' ? 'Archive' : 'Activate'}
                   </span>
@@ -116,10 +141,10 @@ export default function Customers({ status, customers }: Props) {
         setShowModalContainer={setShowStatusUpdateModal}
         component={
           <ActionModal
-            name={statusUpdatePayload.data.customerName}
+            name={statusUpdatePayload.data.userFirstName}
             action={statusUpdatePayload.action}
-            performAction={updateCustomerStatus}
-            isPerformingAction={isUpdatingCustomerStatus}
+            performAction={updateUserStatus}
+            isPerformingAction={isUpdatingUserStatus}
             setShowActionModal={setShowStatusUpdateModal}
           />
         }

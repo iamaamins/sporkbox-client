@@ -1,4 +1,4 @@
-import Customers from '../customer/Customers';
+import Users from '../user/Users';
 import { CSVLink } from 'react-csv';
 import { useData } from '@context/Data';
 import { useRouter } from 'next/router';
@@ -32,7 +32,6 @@ import {
 } from '@lib/csv';
 import ButtonLoader from '@components/layout/ButtonLoader';
 import Link from 'next/link';
-import Guests from '../guest/Guests';
 
 export default function Company() {
   const router = useRouter();
@@ -289,34 +288,37 @@ export default function Company() {
           {activeCustomers.length > 0 && (
             <section className={styles.container}>
               <h2>Active customers</h2>
-              <Customers status='ACTIVE' customers={activeCustomers} />
+              <Users users={activeCustomers} role='CUSTOMER' status='ACTIVE' />
             </section>
           )}
           {archivedCustomers.length > 0 && (
             <section className={styles.container}>
               <h2>Archived customers</h2>
-              <Customers status='ARCHIVED' customers={archivedCustomers} />
+              <Users
+                users={archivedCustomers}
+                role='CUSTOMER'
+                status='ARCHIVED'
+              />
             </section>
           )}
           {unenrolledCustomers.length > 0 && (
             <section className={styles.container}>
               <h2>Unenrolled customers</h2>
-              <Customers customers={unenrolledCustomers} />
+              <Users users={unenrolledCustomers} role='CUSTOMER' />
             </section>
           )}
           {activeGuests.length > 0 && (
             <section className={styles.container}>
               <h2>Active guests</h2>
-              <Guests status='ACTIVE' guests={activeGuests} />
+              <Users users={activeGuests} role='GUEST' status='ACTIVE' />
             </section>
           )}
           {archivedGuests.length > 0 && (
             <section className={styles.container}>
               <h2>Archived guests</h2>
-              <Guests status='ARCHIVED' guests={archivedGuests} />
+              <Users users={archivedGuests} role='GUEST' status='ARCHIVED' />
             </section>
           )}
-
           <ModalContainer
             showModalContainer={showStatusUpdateModal}
             setShowModalContainer={setShowStatusUpdateModal}

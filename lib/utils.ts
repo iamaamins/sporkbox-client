@@ -18,6 +18,8 @@ import {
   DateTotal,
   VendorUpcomingOrder,
   IdenticalOrderGroup,
+  Guests,
+  Guest,
 } from 'types';
 
 export const currentYear = new Date().getFullYear();
@@ -138,29 +140,6 @@ export function createOrderGroups(orders: Order[]) {
 
 export const sortByLastName = (a: Customer, b: Customer) =>
   a.lastName.toLowerCase().localeCompare(b.lastName.toLowerCase());
-
-export function updateCustomers(
-  updatedCustomer: Customer,
-  setCustomers: Dispatch<SetStateAction<Customers>>
-) {
-  setCustomers((prevState) => ({
-    ...prevState,
-    data: prevState.data.map((customer) => {
-      if (customer._id === updatedCustomer._id) {
-        return {
-          ...customer,
-          firstName: updatedCustomer.firstName,
-          lastName: updatedCustomer.lastName,
-          email: updatedCustomer.email,
-          status: updatedCustomer.status,
-          companies: updatedCustomer.companies,
-        };
-      } else {
-        return customer;
-      }
-    }),
-  }));
-}
 
 export function updateCompanies(
   updatedCompany: Company,

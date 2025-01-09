@@ -438,7 +438,7 @@ export type RestaurantFormData = {
   confirmPassword?: string;
 };
 
-export interface CustomerWithCompany extends Omit<Customer, 'companies'> {
+export interface UserWithCompany extends User {
   company: Company;
 }
 

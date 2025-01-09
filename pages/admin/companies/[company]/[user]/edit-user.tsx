@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
+import EditUser from '@components/admin/user/EditUser';
+import PageLoader from '@components/layout/PageLoader';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
-import Customer from '@components/admin/customer/Customer';
-import PageLoader from '@components/layout/PageLoader';
+import { useEffect } from 'react';
 
-export default function CustomerPage() {
+export default function EditUserPage() {
   const router = useRouter();
   const { isUserLoading, isAdmin } = useUser();
 
@@ -16,7 +16,7 @@ export default function CustomerPage() {
   return (
     <main>
       {isUserLoading && <PageLoader />}
-      {isAdmin && <Customer />}
+      {isAdmin && <EditUser />}
     </main>
   );
 }

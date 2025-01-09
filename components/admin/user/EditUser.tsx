@@ -1,104 +1,113 @@
 import { useData } from '@context/Data';
 import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
-import { CustomAxiosError, FormData, Customer } from 'types';
-import styles from './EditCustomer.module.css';
+import { CustomAxiosError, FormData, Customer, Guest } from 'types';
+import styles from './EditUser.module.css';
 import SubmitButton from '@components/layout/SubmitButton';
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import {
-  axiosInstance,
-  showErrorAlert,
-  showSuccessAlert,
-  updateCustomers,
-} from '@lib/utils';
+import { axiosInstance, showErrorAlert, showSuccessAlert } from '@lib/utils';
 
-export default function EditCustomer() {
-  // Initial state
+export default function EditUser() {
   const initialState = {
     email: '',
     lastName: '',
     firstName: '',
   };
 
-  // Hooks
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const { customers, setCustomers } = useData();
+  const { customers, guests, setCustomers, setGuests } = useData();
   const [isLoading, setIsLoading] = useState(false);
-  const [customer, setCustomer] = useState<Customer>();
+  const [user, setUser] = useState<Customer | Guest>();
   const [formData, setFormData] = useState<FormData>(initialState);
 
-  // Destructure form data
   const { firstName, lastName, email } = formData;
 
-  // Get customer
-  useEffect(() => {
-    if (customers.data.length > 0 && router.isReady) {
-      // Get customer
-      const customer = customers.data.find(
-        (customer) => customer._id === router.query.customer
-      );
-
-      if (customer) {
-        // Update states
-        setCustomer(customer);
-        setFormData({
-          firstName: customer.firstName,
-          lastName: customer.lastName,
-          email: customer.email,
-        });
-      }
-    }
-  }, [customers, router.isReady]);
-
-  // Handle change
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    // Update state
     setFormData((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value,
     }));
   }
 
-  // Handle submit
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     try {
-      // Show the loader
       setIsLoading(true);
 
-      // Make request to the backend
       const response = await axiosInstance.patch(
-        `/customers/${router.query.customer}/update-customer-details`,
+        `/users/${router.query.user}/update-user-details`,
         formData
       );
 
-      // Update customers
-      updateCustomers(response.data, setCustomers);
+      if (response.data.role === 'CUSTOMER') {
+        setCustomers((prevState) => ({
+          ...prevState,
+          data: prevState.data.map((customer) => {
+            if (customer._id !== response.data._id) return customer;
+            return {
+              ...customer,
+              firstName: response.data.firstName,
+              lastName: response.data.lastName,
+              email: response.data.email,
+            };
+          }),
+        }));
+      }
 
-      // Show success alert
-      showSuccessAlert('Customer updated', setAlerts);
+      if (response.data.role === 'GUEST') {
+        setGuests((prevState) => ({
+          ...prevState,
+          data: prevState.data.map((guest) => {
+            if (guest._id !== response.data._id) return guest;
+            return {
+              ...guest,
+              firstName: response.data.firstName,
+              lastName: response.data.lastName,
+              email: response.data.email,
+            };
+          }),
+        }));
+      }
 
-      // Redirect to the company page
+      showSuccessAlert('User updated', setAlerts);
       router.push(`/admin/companies/${router.query.company}`);
     } catch (err) {
-      // Log error
-      console.log(err);
-
-      // Show error alert
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      // Remove loader
       setIsLoading(false);
     }
   }
 
+  // Get user
+  useEffect(() => {
+    if (
+      router.isReady &&
+      (customers.data.length > 0 || guests.data.length > 0)
+    ) {
+      const user = [...customers.data, ...guests.data].find(
+        (user) => user._id === router.query.user
+      );
+
+      if (user) {
+        setUser(user);
+        setFormData({
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+        });
+      }
+    }
+  }, [customers, guests, router.isReady]);
+
   return (
-    <section className={styles.edit_customer}>
-      {customers.isLoading && <h2>Loading...</h2>}
-      {!customers.isLoading && !customer && <h2>No customer found</h2>}
-      {customer && (
+    <section className={styles.container}>
+      {(customers.isLoading || guests.isLoading) && <h2>Loading...</h2>}
+      {!customers.isLoading && !guests.isLoading && !user && (
+        <h2>No User found</h2>
+      )}
+      {user && (
         <>
           <h2>Edit the details</h2>
           <form onSubmit={handleSubmit}>

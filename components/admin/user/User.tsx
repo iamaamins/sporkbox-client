@@ -2,9 +2,9 @@ import { useData } from '@context/Data';
 import { useRouter } from 'next/router';
 import { useAlert } from '@context/Alert';
 import { useEffect, useState } from 'react';
-import CustomerOrders from './CustomerOrders';
-import styles from './Customer.module.css';
-import { CustomAxiosError, Company, Order, CustomerWithCompany } from 'types';
+import UserOrders from './UserOrders';
+import styles from './User.module.css';
+import { CustomAxiosError, Company, Order, UserWithCompany } from 'types';
 import {
   axiosInstance,
   showErrorAlert,
@@ -15,14 +15,14 @@ import {
 type CustomerWithOrders = {
   upcomingOrders: Order[];
   deliveredOrders: Order[];
-  data: CustomerWithCompany | null;
+  data: UserWithCompany | null;
 };
 
-export default function Customer() {
+export default function User() {
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const { customers, allUpcomingOrders } = useData();
-  const [customer, setCustomer] = useState<CustomerWithOrders>({
+  const { customers, guests, allUpcomingOrders } = useData();
+  const [user, setUser] = useState<CustomerWithOrders>({
     data: null,
     upcomingOrders: [],
     deliveredOrders: [],
@@ -31,9 +31,9 @@ export default function Customer() {
   async function getDeliveredOrders() {
     try {
       const response = await axiosInstance.get<Order[]>(
-        `/orders/${router.query.customer}/all-delivered-orders`
+        `/orders/${router.query.user}/all-delivered-orders`
       );
-      setCustomer((prevState) => ({
+      setUser((prevState) => ({
         ...prevState,
         deliveredOrders: response.data.filter(
           (deliveredOrder) =>
@@ -41,41 +41,43 @@ export default function Customer() {
         ),
       }));
     } catch (err) {
-      console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     }
   }
 
   // Get customer data and upcoming orders
   useEffect(() => {
-    if (router.isReady && customers.data.length > 0) {
-      const customer = customers.data.find(
-        (customer) => customer._id === router.query.customer
+    if (
+      router.isReady &&
+      (customers.data.length > 0 || guests.data.length > 0)
+    ) {
+      const user = [...customers.data, ...guests.data].find(
+        (user) => user._id === router.query.user
       );
 
-      if (customer) {
-        const { companies, ...rest } = customer;
+      if (user) {
+        const { companies, ...rest } = user;
         const customerWithCompany = {
           ...rest,
           company: companies.find(
             (company) => company._id === router.query.company
           ) as Company,
         };
-        setCustomer((prevState) => ({
+        setUser((prevState) => ({
           ...prevState,
           data: customerWithCompany,
           upcomingOrders: allUpcomingOrders.data
             .filter(
               (upcomingOrder) =>
-                upcomingOrder.customer._id === router.query.customer &&
+                upcomingOrder.customer._id === router.query.user &&
                 upcomingOrder.company._id === router.query.company
             )
             .sort(sortOrders),
         }));
       }
     }
-    if (router.isReady && customer) getDeliveredOrders();
-  }, [router.isReady, customers, allUpcomingOrders]);
+    if (router.isReady && user) getDeliveredOrders();
+  }, [customers, guests, allUpcomingOrders, router.isReady]);
 
   return (
     <>
@@ -83,11 +85,11 @@ export default function Customer() {
         <h2>
           {customers.isLoading
             ? 'Loading...'
-            : !customers.isLoading && !customer
+            : !customers.isLoading && !user
             ? 'No customer found'
             : 'General'}
         </h2>
-        {customer.data && (
+        {user.data && (
           <table>
             <thead>
               <tr>
@@ -100,25 +102,25 @@ export default function Customer() {
             <tbody>
               <tr>
                 <td>
-                  {customer.data.firstName} {customer.data.lastName}
+                  {user.data.firstName} {user.data.lastName}
                 </td>
-                <td>{customer.data.company.name}</td>
-                <td className={styles.shift}>{customer.data.company.shift}</td>
+                <td>{user.data.company.name}</td>
+                <td className={styles.shift}>{user.data.company.shift}</td>
                 <td>
-                  {customer.data.company.address.addressLine2 ? (
+                  {user.data.company.address.addressLine2 ? (
                     <>
-                      {customer.data.company.address.addressLine1},{' '}
-                      {customer.data.company.address.addressLine2},{' '}
-                      {customer.data.company.address.city},{' '}
-                      {customer.data.company.address.state}{' '}
-                      {customer.data.company.address.zip}
+                      {user.data.company.address.addressLine1},{' '}
+                      {user.data.company.address.addressLine2},{' '}
+                      {user.data.company.address.city},{' '}
+                      {user.data.company.address.state}{' '}
+                      {user.data.company.address.zip}
                     </>
                   ) : (
                     <>
-                      {customer.data.company.address.addressLine1},{' '}
-                      {customer.data.company.address.city},{' '}
-                      {customer.data.company.address.state}{' '}
-                      {customer.data.company.address.zip}
+                      {user.data.company.address.addressLine1},{' '}
+                      {user.data.company.address.city},{' '}
+                      {user.data.company.address.state}{' '}
+                      {user.data.company.address.zip}
                     </>
                   )}
                 </td>
@@ -127,19 +129,17 @@ export default function Customer() {
           </table>
         )}
       </section>
-      {customer.upcomingOrders.length > 0 && (
+      {user.upcomingOrders.length > 0 && (
         <section className={styles.container}>
           <h2>Upcoming orders</h2>
-          <CustomerOrders
-            orderGroups={groupIdenticalOrders(customer.upcomingOrders)}
-          />
+          <UserOrders orderGroups={groupIdenticalOrders(user.upcomingOrders)} />
         </section>
       )}
-      {customer.deliveredOrders.length > 0 && (
+      {user.deliveredOrders.length > 0 && (
         <section className={styles.container}>
           <h2>Delivered orders</h2>
-          <CustomerOrders
-            orderGroups={groupIdenticalOrders(customer.deliveredOrders)}
+          <UserOrders
+            orderGroups={groupIdenticalOrders(user.deliveredOrders)}
           />
         </section>
       )}

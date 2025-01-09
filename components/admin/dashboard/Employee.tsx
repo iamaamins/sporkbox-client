@@ -6,7 +6,6 @@ import {
   numberToUSD,
   showErrorAlert,
   showSuccessAlert,
-  updateCustomers,
 } from '@lib/utils';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -57,11 +56,20 @@ export default function Employee() {
   async function updateEmployeeStatus() {
     try {
       setIsUpdatingEmployeeStatus(true);
+
       const response = await axiosInstance.patch(
-        `/customers/${statusUpdatePayload.data.employeeId}/change-customer-status`,
+        `/users/${statusUpdatePayload.data.employeeId}/change-user-status`,
         { action: statusUpdatePayload.action }
       );
-      updateCustomers(response.data, setCustomers);
+
+      setCustomers((prevState) => ({
+        ...prevState,
+        data: prevState.data.map((customer) => {
+          if (customer._id !== response.data._id) return customer;
+          return { ...customer, status: response.data.status };
+        }),
+      }));
+
       showSuccessAlert('Status updated', setAlerts);
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);

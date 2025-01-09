@@ -1,10 +1,10 @@
-import styles from './Customer.module.css';
+import styles from './User.module.css';
 import { IdenticalOrderGroup } from 'types';
 import { dateToText, numberToUSD } from '@lib/utils';
 
 type Props = { orderGroups: IdenticalOrderGroup[] };
 
-export default function CustomerOrders({ orderGroups }: Props) {
+export default function UserOrders({ orderGroups }: Props) {
   return (
     <table>
       <thead>
