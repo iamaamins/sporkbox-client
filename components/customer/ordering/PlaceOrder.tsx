@@ -261,7 +261,7 @@ export default function PlaceOrder() {
         setShowModalContainer={setShowPlaceOrderFilters}
         component={
           <PlaceOrderFiltersModal
-            customer={customer}
+            user={customer}
             restaurants={restaurants}
             setUpdatedRestaurants={setUpdatedRestaurants}
             setShowPlaceOrderFilters={setShowPlaceOrderFilters}
