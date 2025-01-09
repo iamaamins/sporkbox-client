@@ -169,7 +169,7 @@ export default function Cart() {
 
   // Get payable amount
   useEffect(() => {
-    if (router.isReady && cartItems.length && user) {
+    if (router.isReady && cartItems.length && user && user.role !== 'GUEST') {
       const upcomingDateTotalDetails = allOrders
         .filter((order) =>
           cartItems.some(
