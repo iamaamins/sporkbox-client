@@ -1,4 +1,4 @@
-import Users from '../user/Users';
+import Users from './Users';
 import { CSVLink } from 'react-csv';
 import { useData } from '@context/Data';
 import { useRouter } from 'next/router';

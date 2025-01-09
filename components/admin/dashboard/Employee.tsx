@@ -191,6 +191,7 @@ export default function Employee() {
 }
 
 type Props = { orders: Order[]; hasOrderAction?: boolean };
+
 function Orders({ orders, hasOrderAction }: Props) {
   const { setAlerts } = useAlert();
   const { setAllUpcomingOrders } = useData();

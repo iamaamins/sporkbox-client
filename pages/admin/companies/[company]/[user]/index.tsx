@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
-import User from '@components/admin/user/User';
+import User from '@components/admin/company/User';
 import PageLoader from '@components/layout/PageLoader';
 
 export default function CustomerPage() {

@@ -1,4 +1,4 @@
-import EditUser from '@components/admin/user/EditUser';
+import EditUser from '@components/admin/company/EditUser';
 import PageLoader from '@components/layout/PageLoader';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
