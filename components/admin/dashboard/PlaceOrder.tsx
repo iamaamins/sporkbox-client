@@ -14,6 +14,7 @@ import {
   CartItem,
   CustomAxiosError,
   Customer,
+  Guest,
   Item,
   UpcomingRestaurant,
   UpcomingRestaurants,
@@ -45,7 +46,7 @@ export default function PlaceOrder() {
   const [updatedRestaurants, setUpdatedRestaurants] = useState<
     UpcomingRestaurant[]
   >([]);
-  const [employee, setEmployee] = useState<Customer | null>(null);
+  const [user, setUser] = useState<Customer | Guest | null>(null);
   const [upcomingDates, setUpcomingDates] = useState<number[]>([]);
   const [showPlaceOrderFilters, setShowPlaceOrderFilters] = useState(false);
   const [sorted, setSorted] = useState({
@@ -70,7 +71,7 @@ export default function PlaceOrder() {
   }
 
   function isSoldOutItem(item: Item) {
-    const company = employee?.companies.find(
+    const company = user?.companies.find(
       (company) => company.status === 'ACTIVE'
     );
     return item.soldOutStat?.some(
@@ -79,17 +80,17 @@ export default function PlaceOrder() {
     );
   }
 
-  // Get employee details
+  // Get user details
   useEffect(() => {
-    async function getEmployee(employee: string) {
+    async function getUser(userId: string) {
       try {
-        const response = await axiosInstance.get(`/customers/${employee}`);
-        setEmployee(response.data);
+        const response = await axiosInstance.get(`/users/${userId}`);
+        setUser(response.data);
       } catch (err) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
-    if (router.isReady && isAdmin) getEmployee(router.query.employee as string);
+    if (router.isReady && isAdmin) getUser(router.query.user as string);
   }, [isAdmin, router]);
 
   // Get upcoming restaurants and dates
@@ -125,7 +126,7 @@ export default function PlaceOrder() {
     }
 
     if (router.isReady && isAdmin)
-      getUpcomingRestaurantsAndDates(router.query.employee as string);
+      getUpcomingRestaurantsAndDates(router.query.user as string);
   }, [isAdmin, router]);
 
   // Get restaurants
@@ -173,11 +174,11 @@ export default function PlaceOrder() {
 
   // Get cart items
   useEffect(() => {
-    if (router.isReady && isAdmin && employee)
+    if (router.isReady && isAdmin && user)
       setCartItems(
-        JSON.parse(localStorage.getItem(`admin-cart-${employee?._id}`) || '[]')
+        JSON.parse(localStorage.getItem(`admin-cart-${user?._id}`) || '[]')
       );
-  }, [isAdmin, employee, router]);
+  }, [isAdmin, user, router]);
 
   return (
     <>
@@ -204,7 +205,7 @@ export default function PlaceOrder() {
                   Filter
                 </p>
                 <CartIcon
-                  href={`/admin/dashboard/${employee?._id}/cart`}
+                  href={`/admin/dashboard/${user?._id}/cart`}
                   totalCartQuantity={cartItems.reduce(
                     (acc, curr) => acc + curr.quantity,
                     0
@@ -215,7 +216,7 @@ export default function PlaceOrder() {
                 {upcomingDates.map((upcomingDate, index) => (
                   <div key={index}>
                     <Link
-                      href={`/admin/dashboard/${router.query.employee}/place-order/${upcomingDate}`}
+                      href={`/admin/dashboard/${router.query.user}/place-order/${upcomingDate}`}
                     >
                       <a
                         key={index}
@@ -275,7 +276,7 @@ export default function PlaceOrder() {
                             href={
                               !isSoldOutItem(item) &&
                               restaurant.schedule.status === 'ACTIVE'
-                                ? `/admin/dashboard/${router.query.employee}/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`
+                                ? `/admin/dashboard/${router.query.user}/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`
                                 : '#'
                             }
                           >
@@ -358,7 +359,7 @@ export default function PlaceOrder() {
         component={
           <PlaceOrderFiltersModal
             isAdmin={true}
-            customer={employee}
+            user={user}
             restaurants={restaurants}
             setUpdatedRestaurants={setUpdatedRestaurants}
             setShowPlaceOrderFilters={setShowPlaceOrderFilters}

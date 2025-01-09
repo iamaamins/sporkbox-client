@@ -17,7 +17,13 @@ import {
 import { FormEvent, useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
 import { useRouter } from 'next/router';
-import { CartItem, CustomAxiosError, Customer, CustomerOrder } from 'types';
+import {
+  CartItem,
+  CustomAxiosError,
+  Customer,
+  CustomerOrder,
+  Guest,
+} from 'types';
 import { useData } from '@context/Data';
 
 type AppliedDiscount = {
@@ -35,7 +41,7 @@ export default function Cart() {
   const [appliedDiscount, setAppliedDiscount] =
     useState<AppliedDiscount | null>(null);
   const [isApplyingDiscount, setIsApplyingDiscount] = useState(false);
-  const [employee, setEmployee] = useState<Customer>();
+  const [user, setUser] = useState<Customer | Guest>();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [allOrders, setAllOrders] = useState<CustomerOrder[]>([]);
   const [payableAmount, setPayableAmount] = useState(0);
@@ -50,7 +56,7 @@ export default function Cart() {
       );
       setAppliedDiscount(response.data);
       localStorage.setItem(
-        `admin-discount-${employee?._id}`,
+        `admin-discount-${user?._id}`,
         JSON.stringify(response.data)
       );
     } catch (err) {
@@ -62,7 +68,7 @@ export default function Cart() {
 
   function removeDiscount() {
     setAppliedDiscount(null);
-    localStorage.removeItem(`admin-discount-${employee?._id}`);
+    localStorage.removeItem(`admin-discount-${user?._id}`);
   }
 
   function removeItemFromCart(item: CartItem) {
@@ -76,13 +82,13 @@ export default function Cart() {
     );
     setCartItems(updatedCartItems);
     localStorage.setItem(
-      `admin-cart-${employee?._id}`,
+      `admin-cart-${user?._id}`,
       JSON.stringify(updatedCartItems)
     );
   }
 
   async function checkout(discountCodeId?: string) {
-    if (!employee) return showErrorAlert('No employee found', setAlerts);
+    if (!user) return showErrorAlert('No employee found', setAlerts);
     const orderItems = cartItems.map((cartItem) => ({
       itemId: cartItem._id,
       quantity: cartItem.quantity,
@@ -99,14 +105,14 @@ export default function Cart() {
       const response = await axiosInstance.post(`/orders/create-orders`, {
         orderItems,
         discountCodeId,
-        employeeId: employee._id,
+        userId: user._id,
       });
 
       if (typeof response.data === 'string') {
         open(response.data);
       } else {
-        localStorage.removeItem(`admin-cart-${employee._id}`);
-        localStorage.removeItem(`admin-discount-${employee._id}`);
+        localStorage.removeItem(`admin-cart-${user._id}`);
+        localStorage.removeItem(`admin-discount-${user._id}`);
         setAllUpcomingOrders((prevState) => ({
           ...prevState,
           data: [...prevState.data, ...response.data],
@@ -121,50 +127,49 @@ export default function Cart() {
     }
   }
 
-  // Get employee details
+  // Get user details
   useEffect(() => {
-    async function getEmployee(employee: string) {
+    async function getEmployee(userId: string) {
       try {
-        const response = await axiosInstance.get(`/customers/${employee}`);
-        setEmployee(response.data);
+        const response = await axiosInstance.get(`/users/${userId}`);
+        setUser(response.data);
       } catch (err) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
-    if (router.isReady && isAdmin) getEmployee(router.query.employee as string);
+    if (router.isReady && isAdmin) getEmployee(router.query.user as string);
   }, [isAdmin, router]);
 
   // Get cart items
   useEffect(() => {
-    if (router.isReady && isAdmin && employee)
+    if (router.isReady && isAdmin && user)
       setCartItems(
-        JSON.parse(localStorage.getItem(`admin-cart-${employee?._id}`) || '[]')
+        JSON.parse(localStorage.getItem(`admin-cart-${user?._id}`) || '[]')
       );
-  }, [isAdmin, employee, router]);
+  }, [isAdmin, user, router]);
 
-  // Get employee all orders
+  // Get user all orders
   useEffect(() => {
     async function getAllOrders() {
       try {
         const response = await axiosInstance.get(
-          `/orders/${router.query.employee}/all-delivered-orders`
+          `/orders/${router.query.user}/all-delivered-orders`
         );
         const deliveredOrders = response.data;
         const upcomingOrders = allUpcomingOrders.data.filter(
-          (upcomingOrder) =>
-            upcomingOrder.customer._id === router.query.employee
+          (upcomingOrder) => upcomingOrder.customer._id === router.query.user
         );
         setAllOrders([...upcomingOrders, ...deliveredOrders]);
       } catch (err) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
-    if (router.isReady && isAdmin && employee) getAllOrders();
-  }, [isAdmin, employee, router]);
+    if (router.isReady && isAdmin && user) getAllOrders();
+  }, [isAdmin, user, router]);
 
   // Get payable amount
   useEffect(() => {
-    if (router.isReady && cartItems.length && employee) {
+    if (router.isReady && cartItems.length && user) {
       const upcomingDateTotalDetails = allOrders
         .filter((order) =>
           cartItems.some(
@@ -191,7 +196,7 @@ export default function Cart() {
       });
 
       const cartItemDetails = getDateTotal(cartDateTotalDetails);
-      const company = employee.companies.find(
+      const company = user.companies.find(
         (company) => company.status === 'ACTIVE'
       );
       if (company) {
@@ -235,13 +240,11 @@ export default function Cart() {
 
   // Get saved discount
   useEffect(() => {
-    if (router.isReady && isAdmin && employee) {
-      const localDiscount = localStorage.getItem(
-        `admin-discount-${employee?._id}`
-      );
+    if (router.isReady && isAdmin && user) {
+      const localDiscount = localStorage.getItem(`admin-discount-${user?._id}`);
       setAppliedDiscount(localDiscount ? JSON.parse(localDiscount) : null);
     }
-  }, [isAdmin, employee, router]);
+  }, [isAdmin, user, router]);
 
   // Remove discount
   useEffect(() => {
@@ -274,7 +277,7 @@ export default function Cart() {
                   </div>
                 </div>
                 <Link
-                  href={`/place-order/${cartItem.deliveryDate}/${cartItem.shift}/${cartItem.restaurantId}/${cartItem._id}`}
+                  href={`/admin/dashboard/${user?._id}/place-order/${cartItem.deliveryDate}/${cartItem.shift}/${cartItem.restaurantId}/${cartItem._id}`}
                 >
                   <a className={styles.item_details}>
                     <p className={styles.name}>

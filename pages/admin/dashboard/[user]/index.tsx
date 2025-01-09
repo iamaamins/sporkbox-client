@@ -1,11 +1,11 @@
-import Employee from '@components/admin/dashboard/Employee';
+import User from '@components/admin/dashboard/User';
 import PageLoader from '@components/layout/PageLoader';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-export default function EmployeePage() {
+export default function UserPage() {
   const router = useRouter();
   const { isUserLoading, isAdmin } = useUser();
 
@@ -16,7 +16,7 @@ export default function EmployeePage() {
   return (
     <main>
       {isUserLoading && <PageLoader />}
-      {isAdmin && <Employee />}
+      {isAdmin && <User />}
     </main>
   );
 }

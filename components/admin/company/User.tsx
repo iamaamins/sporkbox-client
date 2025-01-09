@@ -12,7 +12,7 @@ import {
   sortOrders,
 } from '@lib/utils';
 
-type CustomerWithOrders = {
+type UserWithOrders = {
   upcomingOrders: Order[];
   deliveredOrders: Order[];
   data: UserWithCompany | null;
@@ -22,7 +22,7 @@ export default function User() {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { customers, guests, allUpcomingOrders } = useData();
-  const [user, setUser] = useState<CustomerWithOrders>({
+  const [user, setUser] = useState<UserWithOrders>({
     data: null,
     upcomingOrders: [],
     deliveredOrders: [],

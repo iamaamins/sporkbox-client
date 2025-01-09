@@ -25,6 +25,7 @@ import {
   CartItem,
   Item,
   Customer,
+  Guest,
 } from 'types';
 import { useAlert } from '@context/Alert';
 import { AiFillStar } from 'react-icons/ai';
@@ -65,7 +66,7 @@ export default function PlaceOrderItem() {
       data: [],
     });
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [employee, setEmployee] = useState<Customer | null>(null);
+  const [user, setUser] = useState<Customer | Guest | null>(null);
 
   function increaseQuantity() {
     setInitialItem((prevState) => ({
@@ -125,7 +126,7 @@ export default function PlaceOrderItem() {
     }
     setCartItems(updatedCartItems);
     localStorage.setItem(
-      `admin-cart-${employee?._id}`,
+      `admin-cart-${user?._id}`,
       JSON.stringify(updatedCartItems)
     );
     router.back();
@@ -185,28 +186,28 @@ export default function PlaceOrderItem() {
     }));
   }
 
-  // Get employee details
+  // Get user details
   useEffect(() => {
-    async function getEmployee(employee: string) {
+    async function getEmployee(userId: string) {
       try {
-        const response = await axiosInstance.get(`/customers/${employee}`);
-        setEmployee(response.data);
+        const response = await axiosInstance.get(`/users/${userId}`);
+        setUser(response.data);
       } catch (err) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
-    if (router.isReady && isAdmin) getEmployee(router.query.employee as string);
+    if (router.isReady && isAdmin) getEmployee(router.query.user as string);
   }, [isAdmin, router]);
 
   // Get cart items
   useEffect(() => {
-    if (router.isReady && isAdmin && employee)
+    if (router.isReady && isAdmin && user)
       setCartItems(
         JSON.parse(
-          localStorage.getItem(`admin-cart-${router.query.employee}`) || '[]'
+          localStorage.getItem(`admin-cart-${router.query.user}`) || '[]'
         )
       );
-  }, [isAdmin, employee, router]);
+  }, [isAdmin, user, router]);
 
   // Get upcoming restaurants
   useEffect(() => {
@@ -228,7 +229,7 @@ export default function PlaceOrderItem() {
     }
 
     if (router.isReady && isAdmin)
-      getUpcomingRestaurants(router.query.employee as string);
+      getUpcomingRestaurants(router.query.user as string);
   }, [isAdmin, router]);
 
   // Get item and date from upcoming restaurants

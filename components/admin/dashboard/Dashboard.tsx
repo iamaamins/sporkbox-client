@@ -1,11 +1,11 @@
-import EmployeeManagement from './EmployeeManagement';
+import UserManagement from './UserManagement';
 import Pricing from './Pricing';
 import Restaurant from './Restaurant';
 
 export default function Dashboard() {
   return (
     <>
-      <EmployeeManagement />
+      <UserManagement />
       <Pricing />
       <Restaurant />
     </>

@@ -9,23 +9,24 @@ import {
 } from '@lib/utils';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { CustomAxiosError, Customer, Order } from 'types';
+import { CustomAxiosError, Customer, Guest, Order } from 'types';
 import styles from './Employee.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
 import ActionModal from '../layout/ActionModal';
 import Link from 'next/link';
 
-type EmployeeWithOrders = {
-  data: Customer | null;
+type UserWithOrders = {
+  data: Customer | Guest | null;
   upcomingOrders: Order[];
   deliveredOrders: Order[];
 };
 
-export default function Employee() {
+export default function User() {
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const { customers, allUpcomingOrders, setCustomers } = useData();
-  const [employee, setEmployee] = useState<EmployeeWithOrders>({
+  const { customers, guests, allUpcomingOrders, setCustomers, setGuests } =
+    useData();
+  const [user, setUser] = useState<UserWithOrders>({
     data: null,
     upcomingOrders: [],
     deliveredOrders: [],
@@ -34,83 +35,91 @@ export default function Employee() {
   const [statusUpdatePayload, setStatusUpdatePayload] = useState({
     action: '',
     data: {
-      employeeId: '',
-      employeeName: '',
+      userId: '',
+      username: '',
     },
   });
-  const [isUpdatingEmployeeStatus, setIsUpdatingEmployeeStatus] =
-    useState(false);
+  const [isUpdatingUserStatus, setIsUpdatingUserStatus] = useState(false);
 
-  function initiateStatusUpdate(employee: Customer | null) {
-    if (!employee) return showErrorAlert('Employee not found', setAlerts);
+  function initiateStatusUpdate(user: Customer | Guest | null) {
+    if (!user) return;
     setShowStatusUpdateModal(true);
     setStatusUpdatePayload({
-      action: employee.status === 'ACTIVE' ? 'Archive' : 'Activate',
+      action: user.status === 'ACTIVE' ? 'Archive' : 'Activate',
       data: {
-        employeeId: employee._id,
-        employeeName: `${employee.firstName} ${employee.lastName}`,
+        userId: user._id,
+        username: `${user.firstName} ${user.lastName}`,
       },
     });
   }
 
-  async function updateEmployeeStatus() {
+  async function updateUserStatus() {
     try {
-      setIsUpdatingEmployeeStatus(true);
+      setIsUpdatingUserStatus(true);
 
       const response = await axiosInstance.patch(
-        `/users/${statusUpdatePayload.data.employeeId}/change-user-status`,
+        `/users/${statusUpdatePayload.data.userId}/change-user-status`,
         { action: statusUpdatePayload.action }
       );
 
-      setCustomers((prevState) => ({
-        ...prevState,
-        data: prevState.data.map((customer) => {
-          if (customer._id !== response.data._id) return customer;
-          return { ...customer, status: response.data.status };
-        }),
-      }));
+      if (response.data.role === 'CUSTOMER') {
+        setCustomers((prevState) => ({
+          ...prevState,
+          data: prevState.data.map((customer) => {
+            if (customer._id !== response.data._id) return customer;
+            return { ...customer, status: response.data.status };
+          }),
+        }));
+      }
+
+      if (response.data.role === 'GUEST') {
+        setGuests((prevState) => ({
+          ...prevState,
+          data: prevState.data.map((guest) => {
+            if (guest._id !== response.data._id) return guest;
+            return { ...guest, status: response.data.status };
+          }),
+        }));
+      }
 
       showSuccessAlert('Status updated', setAlerts);
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      setIsUpdatingEmployeeStatus(false);
+      setIsUpdatingUserStatus(false);
       setShowStatusUpdateModal(false);
     }
   }
 
-  // Get employee data, upcoming orders and delivered orders
+  // Get user data, upcoming orders and delivered orders
   useEffect(() => {
-    async function getEmployeeData() {
+    async function getUserData() {
       try {
-        const employee = customers.data.find(
-          (customer) => customer._id === router.query.employee
+        const user = [...customers.data, ...guests.data].find(
+          (user) => user._id === router.query.user
         );
-        if (!employee) return showErrorAlert('Employee not found', setAlerts);
 
-        const upcomingOrders = allUpcomingOrders.data.filter(
-          (upcomingOrder) => upcomingOrder.customer._id === employee._id
-        );
-        setEmployee((prevState) => ({
-          ...prevState,
-          data: employee,
-          upcomingOrders,
-        }));
+        if (user) {
+          const upcomingOrders = allUpcomingOrders.data.filter(
+            (upcomingOrder) => upcomingOrder.customer._id === user._id
+          );
+          const response = await axiosInstance.get(
+            `/orders/${user._id}/all-delivered-orders`
+          );
 
-        const response = await axiosInstance.get(
-          `/orders/${employee._id}/all-delivered-orders`
-        );
-        const deliveredOrders = response.data;
-        setEmployee((prevState) => ({
-          ...prevState,
-          deliveredOrders,
-        }));
+          setUser((prevState) => ({
+            ...prevState,
+            data: user,
+            upcomingOrders,
+            deliveredOrders: response.data,
+          }));
+        }
       } catch (err) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
-    if (router.isReady && customers.data.length) getEmployeeData();
-  }, [customers, allUpcomingOrders, router]);
+    if (router.isReady && customers.data.length) getUserData();
+  }, [customers, guests, allUpcomingOrders, router.isReady]);
 
   return (
     <>
@@ -118,11 +127,11 @@ export default function Employee() {
         <h2>
           {customers.isLoading
             ? 'Loading...'
-            : !customers.isLoading && !employee
-            ? 'No employee found'
+            : !customers.isLoading && !user
+            ? 'No user found'
             : 'General'}
         </h2>
-        {employee.data && (
+        {user.data && (
           <table>
             <thead>
               <tr>
@@ -135,22 +144,22 @@ export default function Employee() {
             <tbody>
               <tr>
                 <td>
-                  {employee.data.firstName} {employee.data.lastName}
+                  {user.data.firstName} {user.data.lastName}
                 </td>
-                <td className={styles.hide_on_mobile}>{employee.data.email}</td>
+                <td className={styles.hide_on_mobile}>{user.data.email}</td>
                 <td className={styles.hide_on_mobile}>
-                  {employee.data.companies[0].code}
+                  {user.data.companies[0].code}
                 </td>
                 <td>
                   <span
-                    onClick={() => initiateStatusUpdate(employee.data)}
+                    onClick={() => initiateStatusUpdate(user.data)}
                     className={styles.action}
                   >
-                    {employee.data.status === 'ACTIVE' ? 'Archive' : 'Activate'}
+                    {user.data.status === 'ACTIVE' ? 'Archive' : 'Activate'}
                   </span>
-                  {employee.data.status === 'ACTIVE' && (
+                  {user.data.status === 'ACTIVE' && (
                     <Link
-                      href={`/admin/dashboard/${router.query.employee}/place-order/date`}
+                      href={`/admin/dashboard/${router.query.user}/place-order/date`}
                     >
                       <a className={styles.place_order}>Place orders</a>
                     </Link>
@@ -161,16 +170,16 @@ export default function Employee() {
           </table>
         )}
       </section>
-      {employee.upcomingOrders.length > 0 && (
+      {user.upcomingOrders.length > 0 && (
         <section className={styles.container}>
           <h2>Upcoming orders</h2>
-          <Orders hasOrderAction={true} orders={employee.upcomingOrders} />
+          <Orders hasOrderAction={true} orders={user.upcomingOrders} />
         </section>
       )}
-      {employee.deliveredOrders.length > 0 && (
+      {user.deliveredOrders.length > 0 && (
         <section className={styles.container}>
           <h2>Delivered orders</h2>
-          <Orders orders={employee.deliveredOrders} />
+          <Orders orders={user.deliveredOrders} />
         </section>
       )}
       <ModalContainer
@@ -178,10 +187,10 @@ export default function Employee() {
         setShowModalContainer={setShowStatusUpdateModal}
         component={
           <ActionModal
-            name={statusUpdatePayload.data.employeeName}
+            name={statusUpdatePayload.data.username}
             action={statusUpdatePayload.action}
-            performAction={updateEmployeeStatus}
-            isPerformingAction={isUpdatingEmployeeStatus}
+            performAction={updateUserStatus}
+            isPerformingAction={isUpdatingUserStatus}
             setShowActionModal={setShowStatusUpdateModal}
           />
         }

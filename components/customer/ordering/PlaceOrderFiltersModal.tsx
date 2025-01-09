@@ -1,4 +1,4 @@
-import { Customer, UpcomingRestaurant } from 'types';
+import { Customer, Guest, UpcomingRestaurant } from 'types';
 import {
   ChangeEvent,
   Dispatch,
@@ -12,7 +12,7 @@ import { useData } from '@context/Data';
 
 type Props = {
   isAdmin?: boolean;
-  customer: Customer | null;
+  user: Customer | Guest | null;
   restaurants: UpcomingRestaurant[];
   setShowPlaceOrderFilters: Dispatch<SetStateAction<boolean>>;
   setUpdatedRestaurants: Dispatch<SetStateAction<UpcomingRestaurant[]>>;
@@ -20,7 +20,7 @@ type Props = {
 
 export default function PlaceOrderFiltersModal({
   isAdmin,
-  customer,
+  user,
   restaurants,
   setUpdatedRestaurants,
   setShowPlaceOrderFilters,
@@ -78,29 +78,31 @@ export default function PlaceOrderFiltersModal({
 
   function filterItemsOnSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!customer) return;
+    if (!user) return;
     filterItems();
     setShowPlaceOrderFilters(false);
     localStorage.setItem(
-      `${isAdmin && 'admin-'}filters-${customer._id}`,
+      `${isAdmin && 'admin-'}filters-${user._id}`,
       JSON.stringify(selectedFilters)
     );
   }
 
+  // Filter items automatically
   useEffect(() => {
     filterItems();
   }, [restaurants]);
 
+  // Get saved filters
   useEffect(() => {
-    if (customer && customer.foodPreferences) {
+    if (user && 'foodPreferences' in user) {
       const savedFilters = JSON.parse(
         localStorage.getItem(
-          `${isAdmin && 'admin-'}filters-${customer._id}`
+          `${isAdmin && 'admin-'}filters-${user._id}`
         ) as string
       );
-      setSelectedFilters(savedFilters || customer.foodPreferences);
+      setSelectedFilters(savedFilters || user.foodPreferences);
     }
-  }, [customer]);
+  }, [user]);
 
   return (
     <div className={styles.container}>

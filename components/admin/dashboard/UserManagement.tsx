@@ -1,8 +1,8 @@
 import { useData } from '@context/Data';
-import styles from './EmployeeManagement.module.css';
+import styles from './UserManagement.module.css';
 import { IoSearch } from 'react-icons/io5';
 import { FormEvent, useEffect, useState } from 'react';
-import { CustomAxiosError, Customer } from 'types';
+import { CustomAxiosError, Customer, Guest } from 'types';
 import Link from 'next/link';
 import { axiosInstance, dateToText, showErrorAlert } from '@lib/utils';
 import { IoIosArrowRoundBack } from 'react-icons/io';
@@ -13,8 +13,9 @@ import { useAlert } from '@context/Alert';
 export default function EmployeeManagement() {
   return (
     <section className={styles.container}>
-      <h2>Employee management</h2>
+      <h2>User Management</h2>
       <Employees />
+      <Guests />
       <WeeklyOrderStat />
     </section>
   );
@@ -88,6 +89,75 @@ function Employees() {
         </table>
       ) : (
         <p className={styles.message}>No employee found</p>
+      )}
+    </div>
+  );
+}
+
+function Guests() {
+  const { guests: allGuests } = useData();
+  const [query, setQuery] = useState('');
+  const [guests, setGuests] = useState<Guest[]>([]);
+
+  function handleSearch(e: FormEvent) {
+    e.preventDefault();
+    setGuests(
+      allGuests.data.filter(
+        (guest) =>
+          guest.firstName.toLowerCase().includes(query) ||
+          guest.lastName.toLowerCase().includes(query) ||
+          guest.email.toLowerCase().includes(query)
+      )
+    );
+  }
+
+  // Get 10 guests
+  useEffect(() => {
+    if (allGuests.data.length && !query) setGuests(allGuests.data.slice(0, 10));
+  }, [allGuests, query]);
+
+  return (
+    <div className={styles.guests}>
+      <form onSubmit={handleSearch} className={styles.search}>
+        <input
+          type='text'
+          value={query}
+          placeholder='Search guests...'
+          onChange={(e) => setQuery(e.target.value.toLowerCase())}
+        />
+        <IoSearch className={styles.search_icon} size={20} />
+      </form>
+      {allGuests.isLoading ? (
+        <p className={styles.message}>Loading...</p>
+      ) : guests.length > 0 ? (
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Company code</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {guests.map((guest) => (
+              <tr key={guest._id}>
+                <td className={styles.important}>
+                  <Link href={`/admin/dashboard/${guest._id}`}>
+                    <a>
+                      {guest.lastName} {guest.firstName}
+                    </a>
+                  </Link>
+                </td>
+                <td>{guest.email}</td>
+                <td>{guest.companies[0].code}</td>
+                <td>{guest.status}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p className={styles.message}>No guest found</p>
       )}
     </div>
   );
