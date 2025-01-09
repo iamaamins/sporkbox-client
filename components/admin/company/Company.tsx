@@ -30,6 +30,7 @@ import {
   customerCSVHeaders,
 } from '@lib/csv';
 import ButtonLoader from '@components/layout/ButtonLoader';
+import Link from 'next/link';
 
 export default function Company() {
   const router = useRouter();
@@ -226,6 +227,9 @@ export default function Company() {
                   'Send order reminders'
                 )}
               </button>
+              <Link href={`/admin/companies/${router.query.company}/add-guest`}>
+                <a className={styles.add_guest_button}>Add guest</a>
+              </Link>
               <CSVLink
                 data={formatCustomerDataToCSV([
                   ...activeCustomers,

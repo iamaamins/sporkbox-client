@@ -32,28 +32,36 @@
   color: var(--black);
 }
 
+.buttons {
+  display: flex;
+  gap: 1rem 2rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
 .schedule_restaurants_button,
 .customer_info_download_button,
-.order_reminder_button {
+.order_reminder_button,
+.add_guest_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 2.75rem;
   border: none;
   cursor: pointer;
   font-size: 1rem;
   font-weight: 500;
-  margin-top: 1.5rem;
   border-radius: 0.25rem;
 }
 
 .schedule_restaurants_button {
   width: 12rem;
-  margin-right: 2rem;
   background: var(--teal);
   color: var(--almost_white);
 }
 
 .order_reminder_button {
   width: 12rem;
-  margin-right: 2rem;
   background: var(--brown);
   color: var(--almost_white);
 }
@@ -61,6 +69,12 @@
 .customer_info_download_button {
   width: 10rem;
   background: var(--global);
+  color: var(--almost_white);
+}
+
+.add_guest_button {
+  width: 10rem;
+  background: var(--green);
   color: var(--almost_white);
 }
 
@@ -73,21 +87,6 @@
   .container {
     max-width: 85%;
     margin: 0 auto;
-  }
-
-  .buttons {
-    display: flex;
-    align-items: center;
-  }
-
-  .schedule_restaurants_button,
-  .customer_info_download_button,
-  .order_reminder_button {
-    margin-top: 0rem;
-  }
-
-  .schedule_restaurants_button {
-    margin-left: 2rem;
   }
 }
 

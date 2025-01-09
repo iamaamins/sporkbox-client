@@ -45,7 +45,6 @@ export default function AddCompany() {
       showSuccessAlert('Company added', setAlerts);
       router.push('/admin/companies');
     } catch (err) {
-      console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       setIsLoading(false);
@@ -53,7 +52,7 @@ export default function AddCompany() {
   }
 
   return (
-    <section className={styles.add_company}>
+    <section className={styles.container}>
       <h2>Add a company</h2>
       <CompanyForm
         formData={formData}

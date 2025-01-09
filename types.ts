@@ -503,3 +503,9 @@ export type IdenticalOrderGroup = {
   total: number;
   quantity: number;
 };
+
+export type GuestFormData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+};
