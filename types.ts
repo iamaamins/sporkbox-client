@@ -1,21 +1,22 @@
 import { AxiosError } from 'axios';
 import { Dispatch, SetStateAction, ReactNode } from 'react';
 
-export type UserRole = 'ADMIN' | 'VENDOR' | 'CUSTOMER';
+export type UserRole = 'ADMIN' | 'VENDOR' | 'CUSTOMER' | 'GUEST';
+export type UserStatus = 'ACTIVE' | 'ARCHIVED';
 
 interface User {
   _id: string;
+  firstName: string;
+  lastName: string;
   email: string;
   role: UserRole;
-  lastName: string;
-  firstName: string;
+  status: UserStatus;
+  createdAt: string;
 }
 
 export interface Admin extends User {}
 
 export interface Customer extends User {
-  status: 'ACTIVE' | 'ARCHIVED';
-  createdAt: string;
   companies: Company[];
   foodPreferences?: string[];
   subscribedTo: {
@@ -24,9 +25,11 @@ export interface Customer extends User {
   shifts: Exclude<Shift, 'general'>[];
 }
 
+export interface Guest extends User {
+  companies: Company[];
+}
+
 export interface Vendor extends User {
-  status: string;
-  createdAt: string;
   restaurant: Restaurant;
 }
 
@@ -231,6 +234,10 @@ export interface CustomerFavoriteItems extends IsLoading {
 
 export interface Customers extends IsLoading {
   data: Customer[];
+}
+
+export interface Guests extends IsLoading {
+  data: Guest[];
 }
 
 export interface DiscountCodes extends IsLoading {

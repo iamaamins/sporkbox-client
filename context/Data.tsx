@@ -16,9 +16,9 @@ import {
   CustomerUpcomingOrders,
   CustomerDeliveredOrders,
   VendorUpcomingOrders,
-  Order,
   OrderGroup,
   DietaryTags,
+  Guests,
 } from 'types';
 import {
   axiosInstance,
@@ -39,6 +39,7 @@ type DataContext = {
   vendors: Vendors;
   companies: Companies;
   customers: Customers;
+  guests: Guests;
   upcomingDates: number[];
   dietaryTags: DietaryTags;
   discountCodes: DiscountCodes;
@@ -56,6 +57,7 @@ type DataContext = {
   customerDeliveredOrders: CustomerDeliveredOrders;
   setCompanies: Dispatch<SetStateAction<Companies>>;
   setCustomers: Dispatch<SetStateAction<Customers>>;
+  setGuests: Dispatch<SetStateAction<Guests>>;
   setVendorUpcomingOrders: Dispatch<SetStateAction<VendorUpcomingOrders>>;
   setDiscountCodes: Dispatch<SetStateAction<DiscountCodes>>;
   setAllUpcomingOrders: Dispatch<SetStateAction<AllUpcomingOrders>>;
@@ -86,6 +88,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
   const [allDeliveredOrders, setAllDeliveredOrders] =
     useState<AllDeliveredOrders>(initialState);
   const [customers, setCustomers] = useState<Customers>(initialState);
+  const [guests, setGuests] = useState<Guests>(initialState);
   const [customerUpcomingOrders, setCustomerUpcomingOrders] =
     useState<CustomerUpcomingOrders>(initialState);
   const [customerDeliveredOrders, setCustomerDeliveredOrders] =
@@ -239,6 +242,18 @@ export default function DataProvider({ children }: ContextProviderProps) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
+    async function getGuests() {
+      try {
+        const response = await axiosInstance.get('/guests');
+        setGuests({ isLoading: false, data: response.data });
+      } catch (err) {
+        setGuests((prevState) => ({
+          ...prevState,
+          isLoading: false,
+        }));
+        showErrorAlert(err as CustomAxiosError, setAlerts);
+      }
+    }
     async function getDiscountCodes() {
       try {
         const response = await axiosInstance.get('/discount-code');
@@ -262,6 +277,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
       getVendors();
       getDeliveredOrders();
       getCustomers();
+      getGuests();
       getDiscountCodes();
       getDietaryTags();
     }
@@ -364,28 +380,30 @@ export default function DataProvider({ children }: ContextProviderProps) {
         companies,
         setCompanies,
         customers,
-        dietaryTags,
         setCustomers,
+        guests,
+        setGuests,
+        dietaryTags,
         upcomingDates,
         discountCodes,
         setDiscountCodes,
         allUpcomingOrders,
         customerAllOrders,
         allDeliveredOrders,
+        setAllDeliveredOrders,
         upcomingRestaurants,
         setAllUpcomingOrders,
         scheduledRestaurants,
+        setScheduledRestaurants,
         customerFavoriteItems,
+        setCustomerFavoriteItems,
         upcomingOrderGroups,
         deliveredOrderGroups,
         vendorUpcomingOrders,
-        setAllDeliveredOrders,
-        customerUpcomingOrders,
-        customerDeliveredOrders,
-        setScheduledRestaurants,
         setVendorUpcomingOrders,
-        setCustomerFavoriteItems,
+        customerUpcomingOrders,
         setCustomerUpcomingOrders,
+        customerDeliveredOrders,
         setCustomerDeliveredOrders,
       }}
     >

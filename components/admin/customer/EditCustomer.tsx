@@ -97,7 +97,7 @@ export default function EditCustomer() {
   return (
     <section className={styles.edit_customer}>
       {customers.isLoading && <h2>Loading...</h2>}
-      {!customers.isLoading && !customer && <h2>No vendor found</h2>}
+      {!customers.isLoading && !customer && <h2>No customer found</h2>}
       {customer && (
         <>
           <h2>Edit the details</h2>

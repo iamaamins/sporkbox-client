@@ -15,7 +15,7 @@ export default function AddGuest() {
   };
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const {} = useData();
+  const { setGuests } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<GuestFormData>(initialState);
 
@@ -25,10 +25,15 @@ export default function AddGuest() {
     try {
       setIsLoading(true);
 
-      await axiosInstance.post(`/guests/add-guest`, {
+      const response = await axiosInstance.post(`/guests/add-guest`, {
         ...formData,
         companyId: router.query.company,
       });
+
+      setGuests((prevState) => ({
+        ...prevState,
+        data: [...prevState.data, response.data],
+      }));
 
       setFormData(initialState);
       showSuccessAlert('Guest added', setAlerts);

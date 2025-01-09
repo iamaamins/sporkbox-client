@@ -9,89 +9,96 @@ import {
   dateToText,
   showErrorAlert,
   showSuccessAlert,
-  updateCustomers,
 } from '@lib/utils';
-import { CustomAxiosError, Customer, UserStatus } from 'types';
-import styles from './Customers.module.css';
+import { CustomAxiosError, Guest, UserStatus } from 'types';
+import styles from './Guests.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
 
-type Props = { status?: UserStatus; customers: Customer[] };
+type Props = { status: UserStatus; guests: Guest[] };
 
-export default function Customers({ status, customers }: Props) {
+export default function Guests({ status, guests }: Props) {
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const { setCustomers } = useData();
+  const { setGuests } = useData();
   const [statusUpdatePayload, setStatusUpdatePayload] = useState({
     action: '',
     data: {
-      customerId: '',
-      customerName: '',
+      guestId: '',
+      guestName: '',
     },
   });
   const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
-  const [isUpdatingCustomerStatus, setIsUpdatingCustomerStatus] =
-    useState(false);
+  const [isUpdatingGuestStatus, setIsUpdatingGuestStatus] = useState(false);
 
-  function initiateStatusUpdate(e: FormEvent, customerId: string) {
+  function initiateStatusUpdate(e: FormEvent, guestId: string) {
     setShowStatusUpdateModal(true);
     setStatusUpdatePayload({
       action: e.currentTarget.textContent!,
       data: {
-        customerId,
-        customerName: customers.find((customer) => customer._id === customerId)
-          ?.firstName!,
+        guestId,
+        guestName: guests.find((guest) => guest._id === guestId)
+          ?.firstName as string,
       },
     });
   }
 
-  async function updateCustomerStatus() {
+  async function updateGuestStatus() {
     try {
-      setIsUpdatingCustomerStatus(true);
+      setIsUpdatingGuestStatus(true);
+
       const response = await axiosInstance.patch(
-        `/customers/${statusUpdatePayload.data.customerId}/change-customer-status`,
+        `/guests/${statusUpdatePayload.data.guestId}/change-guest-status`,
         { action: statusUpdatePayload.action }
       );
-      updateCustomers(response.data, setCustomers);
+
+      setGuests((prevState) => ({
+        ...prevState,
+        data: prevState.data.map((guest) => {
+          if (guest._id !== response.data._id) return guest;
+          return { ...guest, status: response.data.status };
+        }),
+      }));
+
       showSuccessAlert('Status updated', setAlerts);
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      setIsUpdatingCustomerStatus(false);
+      setIsUpdatingGuestStatus(false);
       setShowStatusUpdateModal(false);
     }
   }
 
   return (
     <>
-      <table className={styles.customers}>
+      <table className={styles.container}>
         <thead>
           <tr>
             <th>Name</th>
             <th className={styles.hide_on_mobile}>Email</th>
-            <th className={styles.hide_on_mobile}>Registered</th>
+            <th className={styles.hide_on_mobile}>Added</th>
             <th>Action</th>
           </tr>
         </thead>
 
         <tbody>
-          {customers.map((customer) => (
-            <tr key={customer._id}>
+          {guests.map((guest) => (
+            <tr key={guest._id}>
               <td className={styles.important}>
                 <Link
-                  href={`/admin/companies/${router.query.company}/${customer._id}`}
+                  href={`/admin/companies/${router.query.company}/${guest._id}`}
                 >
                   <a>
-                    {customer.firstName} {customer.lastName}
+                    {guest.firstName} {guest.lastName}
                   </a>
                 </Link>
               </td>
-              <td className={styles.hide_on_mobile}>{customer.email}</td>
+              <td className={styles.hide_on_mobile}>{guest.email}</td>
               <td className={styles.hide_on_mobile}>
-                {dateToText(customer.createdAt)}
+                {dateToText(guest.createdAt)}
               </td>
               <td>
                 <Link
-                  href={`/admin/companies/${router.query.company}/${customer._id}/edit-customer`}
+                  href={`/admin/companies/${router.query.company}/${guest._id}/edit-guest`}
                 >
                   <a className={`${styles.button} ${styles.edit_details}`}>
                     Edit
@@ -100,7 +107,7 @@ export default function Customers({ status, customers }: Props) {
                 {status && (
                   <span
                     className={`${styles.button} ${styles.change_status}`}
-                    onClick={(e) => initiateStatusUpdate(e, customer._id)}
+                    onClick={(e) => initiateStatusUpdate(e, guest._id)}
                   >
                     {status === 'ACTIVE' ? 'Archive' : 'Activate'}
                   </span>
@@ -116,10 +123,10 @@ export default function Customers({ status, customers }: Props) {
         setShowModalContainer={setShowStatusUpdateModal}
         component={
           <ActionModal
-            name={statusUpdatePayload.data.customerName}
+            name={statusUpdatePayload.data.guestName}
             action={statusUpdatePayload.action}
-            performAction={updateCustomerStatus}
-            isPerformingAction={isUpdatingCustomerStatus}
+            performAction={updateGuestStatus}
+            isPerformingAction={isUpdatingGuestStatus}
             setShowActionModal={setShowStatusUpdateModal}
           />
         }

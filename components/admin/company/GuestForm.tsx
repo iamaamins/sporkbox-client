@@ -9,7 +9,7 @@ interface Props extends FormProps {
   setFormData: Dispatch<SetStateAction<GuestFormData>>;
 }
 
-export default function CompanyForm({
+export default function GuestForm({
   isLoading,
   formData,
   setFormData,

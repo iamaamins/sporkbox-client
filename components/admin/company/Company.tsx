@@ -23,6 +23,7 @@ import {
   Customer,
   CustomAxiosError,
   ScheduledRestaurant,
+  Guest,
 } from 'types';
 import {
   formatCustomerDataToCSV,
@@ -31,6 +32,7 @@ import {
 } from '@lib/csv';
 import ButtonLoader from '@components/layout/ButtonLoader';
 import Link from 'next/link';
+import Guests from '../guest/Guests';
 
 export default function Company() {
   const router = useRouter();
@@ -41,6 +43,7 @@ export default function Company() {
   const {
     companies,
     customers,
+    guests,
     setCompanies,
     allUpcomingOrders,
     scheduledRestaurants,
@@ -54,6 +57,8 @@ export default function Company() {
     []
   );
   const [isSendingOrderReminder, setIsSendingOrderReminder] = useState(false);
+  const [activeGuests, setActiveGuests] = useState<Guest[]>([]);
+  const [archivedGuests, setArchivedGuests] = useState<Guest[]>([]);
 
   function initiateStatusUpdate(e: FormEvent) {
     setShowStatusUpdateModal(true);
@@ -102,7 +107,7 @@ export default function Company() {
     }
   }, [companies, router.isReady]);
 
-  // Get customers and scheduled restaurants
+  // Get customers
   useEffect(() => {
     if (customers.data.length > 0 && router.isReady) {
       setActiveCustomers(
@@ -152,13 +157,43 @@ export default function Company() {
           .sort(sortByLastName)
       );
     }
-    setRestaurants(
-      scheduledRestaurants.data.filter(
-        (scheduledRestaurant) =>
-          scheduledRestaurant.company._id === router.query.company
-      )
-    );
-  }, [customers, scheduledRestaurants, router.isReady]);
+  }, [customers, router.isReady]);
+
+  // Get scheduled restaurants
+  useEffect(() => {
+    if (scheduledRestaurants.data.length > 0 && router.isReady) {
+      setRestaurants(
+        scheduledRestaurants.data.filter(
+          (scheduledRestaurant) =>
+            scheduledRestaurant.company._id === router.query.company
+        )
+      );
+    }
+  }, [scheduledRestaurants, router.isReady]);
+
+  // Get guests
+  useEffect(() => {
+    if (guests.data.length > 0 && router.isReady) {
+      setActiveGuests(
+        guests.data.filter(
+          (guest) =>
+            guest.status === 'ACTIVE' &&
+            guest.companies.some(
+              (company) => company._id === router.query.company
+            )
+        )
+      );
+      setArchivedGuests(
+        guests.data.filter(
+          (guest) =>
+            guest.status === 'ARCHIVED' &&
+            guest.companies.some(
+              (company) => company._id === router.query.company
+            )
+        )
+      );
+    }
+  }, [guests, router.isReady]);
 
   return (
     <>
@@ -254,13 +289,13 @@ export default function Company() {
           {activeCustomers.length > 0 && (
             <section className={styles.container}>
               <h2>Active customers</h2>
-              <Customers status='active' customers={activeCustomers} />
+              <Customers status='ACTIVE' customers={activeCustomers} />
             </section>
           )}
           {archivedCustomers.length > 0 && (
             <section className={styles.container}>
               <h2>Archived customers</h2>
-              <Customers status='archived' customers={archivedCustomers} />
+              <Customers status='ARCHIVED' customers={archivedCustomers} />
             </section>
           )}
           {unenrolledCustomers.length > 0 && (
@@ -269,6 +304,19 @@ export default function Company() {
               <Customers customers={unenrolledCustomers} />
             </section>
           )}
+          {activeGuests.length > 0 && (
+            <section className={styles.container}>
+              <h2>Active guests</h2>
+              <Guests status='ACTIVE' guests={activeGuests} />
+            </section>
+          )}
+          {archivedGuests.length > 0 && (
+            <section className={styles.container}>
+              <h2>Archived guests</h2>
+              <Guests status='ARCHIVED' guests={archivedGuests} />
+            </section>
+          )}
+
           <ModalContainer
             showModalContainer={showStatusUpdateModal}
             setShowModalContainer={setShowStatusUpdateModal}
