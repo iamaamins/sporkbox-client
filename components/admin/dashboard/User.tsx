@@ -119,7 +119,7 @@ export default function User() {
       }
     }
     if (router.isReady && customers.data.length) getUserData();
-  }, [customers, guests, allUpcomingOrders, router.isReady]);
+  }, [customers, guests, allUpcomingOrders, router]);
 
   return (
     <>

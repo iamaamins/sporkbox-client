@@ -51,10 +51,13 @@ export default function Cart() {
     e.preventDefault();
     try {
       setIsApplyingDiscount(true);
+
       const response = await axiosInstance.post(
         `/discount-code/apply/${discountCode}`
       );
+
       setAppliedDiscount(response.data);
+
       localStorage.setItem(
         `admin-discount-${user?._id}`,
         JSON.stringify(response.data)
@@ -240,16 +243,17 @@ export default function Cart() {
 
   // Get saved discount
   useEffect(() => {
-    if (router.isReady && isAdmin && user) {
-      const localDiscount = localStorage.getItem(`admin-discount-${user?._id}`);
-      setAppliedDiscount(localDiscount ? JSON.parse(localDiscount) : null);
+    if (router.isReady && isAdmin && user && user.role !== 'GUEST') {
+      const savedDiscount = localStorage.getItem(`admin-discount-${user?._id}`);
+      setAppliedDiscount(savedDiscount ? JSON.parse(savedDiscount) : null);
     }
   }, [isAdmin, user, router]);
 
   // Remove discount
   useEffect(() => {
-    if (appliedDiscount && payableAmount <= 0) removeDiscount();
-  }, [cartItems]);
+    if (user?.role === 'GUEST' || (appliedDiscount && payableAmount <= 0))
+      removeDiscount();
+  }, [cartItems, user, appliedDiscount, payableAmount]);
 
   return (
     <section className={styles.cart}>
