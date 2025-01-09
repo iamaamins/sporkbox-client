@@ -33,7 +33,7 @@ function Employees() {
         (customer) =>
           customer.firstName.toLowerCase().includes(query) ||
           customer.lastName.toLowerCase().includes(query) ||
-          customer.email.toLocaleUpperCase().includes(query)
+          customer.email.toLowerCase().includes(query)
       )
     );
   }
