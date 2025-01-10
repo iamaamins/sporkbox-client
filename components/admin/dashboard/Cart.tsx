@@ -116,10 +116,12 @@ export default function Cart() {
       } else {
         localStorage.removeItem(`admin-cart-${user._id}`);
         localStorage.removeItem(`admin-discount-${user._id}`);
+
         setAllUpcomingOrders((prevState) => ({
           ...prevState,
           data: [...prevState.data, ...response.data],
         }));
+
         showSuccessAlert('Orders placed', setAlerts);
         router.push('/admin/dashboard');
       }
@@ -243,7 +245,7 @@ export default function Cart() {
 
   // Get saved discount
   useEffect(() => {
-    if (router.isReady && isAdmin && user && user.role !== 'GUEST') {
+    if (router.isReady && isAdmin && user) {
       const savedDiscount = localStorage.getItem(`admin-discount-${user?._id}`);
       setAppliedDiscount(savedDiscount ? JSON.parse(savedDiscount) : null);
     }
@@ -251,9 +253,8 @@ export default function Cart() {
 
   // Remove discount
   useEffect(() => {
-    if (user?.role === 'GUEST' || (appliedDiscount && payableAmount <= 0))
-      removeDiscount();
-  }, [cartItems, user, appliedDiscount, payableAmount]);
+    if (appliedDiscount && payableAmount <= 0) removeDiscount();
+  }, [cartItems]);
 
   return (
     <section className={styles.cart}>
@@ -303,28 +304,29 @@ export default function Cart() {
               </div>
             ))}
           </div>
-          {!appliedDiscount && payableAmount > 0 && (
-            <form
-              onSubmit={applyDiscount}
-              className={styles.apply_discount_form}
-            >
-              <label htmlFor='discountCode'>Discount code</label>
-              <div>
-                <input
-                  type='text'
-                  id='discountCode'
-                  value={discountCode}
-                  onChange={(e) => setDiscountCode(e.target.value)}
-                />
-                <input
-                  type='submit'
-                  value='Apply'
-                  onClick={applyDiscount}
-                  disabled={isApplyingDiscount || !discountCode}
-                />
-              </div>
-            </form>
-          )}
+          {!appliedDiscount &&
+            (payableAmount > 0 || user?.role === 'GUEST') && (
+              <form
+                onSubmit={applyDiscount}
+                className={styles.apply_discount_form}
+              >
+                <label htmlFor='discountCode'>Discount code</label>
+                <div>
+                  <input
+                    type='text'
+                    id='discountCode'
+                    value={discountCode}
+                    onChange={(e) => setDiscountCode(e.target.value)}
+                  />
+                  <input
+                    type='submit'
+                    value='Apply'
+                    onClick={applyDiscount}
+                    disabled={isApplyingDiscount || !discountCode}
+                  />
+                </div>
+              </form>
+            )}
           {appliedDiscount && (
             <div className={styles.applied_discount}>
               <p>
