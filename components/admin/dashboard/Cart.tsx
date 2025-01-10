@@ -8,16 +8,15 @@ import {
   axiosInstance,
   dateToText,
   numberToUSD,
-  getAddonsTotal,
   showErrorAlert,
-  getDateTotal,
-  dateToMS,
   showSuccessAlert,
+  getPayableAmount,
 } from '@lib/utils';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
 import { useRouter } from 'next/router';
 import {
+  AppliedDiscount,
   CartItem,
   CustomAxiosError,
   Customer,
@@ -26,12 +25,6 @@ import {
   Order,
 } from 'types';
 import { useData } from '@context/Data';
-
-type AppliedDiscount = {
-  _id: string;
-  code: string;
-  value: number;
-};
 
 export default function Cart() {
   const router = useRouter();
@@ -155,7 +148,7 @@ export default function Cart() {
       );
   }, [isAdmin, user, router]);
 
-  // Get user all orders
+  // Get all orders
   useEffect(() => {
     async function getAllOrders(userId: string, allUpcomingOrders: Order[]) {
       try {
@@ -186,86 +179,25 @@ export default function Cart() {
   // Get payable amount
   useEffect(() => {
     if (
-      router.isReady &&
       cartItems.length &&
       user &&
       user.role !== 'GUEST' &&
       !allOrders.isLoading
     ) {
-      const upcomingDateTotalDetails = allOrders.data
-        .filter((order) =>
-          cartItems.some(
-            (cartItem) =>
-              cartItem.companyId === order.company._id &&
-              cartItem.deliveryDate === dateToMS(order.delivery.date)
-          )
-        )
-        .map((order) => ({
-          date: dateToMS(order.delivery.date),
-          total: order.item.total - (order.payment?.distributed || 0),
-        }));
-      const upcomingOrderDetails = getDateTotal(upcomingDateTotalDetails);
-
-      const cartDateTotalDetails = cartItems.map((cartItem) => {
-        const optionalAddonsPrice = getAddonsTotal(cartItem.optionalAddons);
-        const requiredAddonsPrice = getAddonsTotal(cartItem.requiredAddons);
-        const totalAddonsPrice =
-          (optionalAddonsPrice || 0) + (requiredAddonsPrice || 0);
-
-        return {
-          date: cartItem.deliveryDate,
-          total: (cartItem.price + totalAddonsPrice) * cartItem.quantity,
-        };
-      });
-
-      const cartItemDetails = getDateTotal(cartDateTotalDetails);
-      const company = user.companies.find(
-        (company) => company.status === 'ACTIVE'
+      const payableAmount = getPayableAmount(
+        allOrders.data,
+        cartItems,
+        user,
+        appliedDiscount?.value || 0
       );
-      if (company) {
-        const shiftBudget = company.shiftBudget;
-        const totalPayableAmount = cartItemDetails
-          .map((cartItemDetail) => {
-            if (
-              !upcomingOrderDetails.some(
-                (upcomingOrderDetail) =>
-                  upcomingOrderDetail.date === cartItemDetail.date
-              )
-            ) {
-              return {
-                date: cartItemDetail.date,
-                payable: cartItemDetail.total - shiftBudget,
-              };
-            } else {
-              const upcomingOrderDetail = upcomingOrderDetails.find(
-                (upcomingOrderDetail) =>
-                  upcomingOrderDetail.date === cartItemDetail.date
-              );
-              const upcomingDayOrderTotal = upcomingOrderDetail?.total || 0;
-
-              return {
-                date: cartItemDetail.date,
-                payable:
-                  upcomingDayOrderTotal >= shiftBudget
-                    ? cartItemDetail.total
-                    : cartItemDetail.total -
-                      (shiftBudget - upcomingDayOrderTotal),
-              };
-            }
-          })
-          .filter((detail) => detail.payable > 0)
-          .reduce((acc, curr) => acc + curr.payable, 0);
-
-        const discountAmount = appliedDiscount?.value || 0;
-        setPayableAmount(totalPayableAmount - discountAmount);
-      }
+      setPayableAmount(payableAmount);
     }
-  }, [allOrders, cartItems, appliedDiscount, router]);
+  }, [user, allOrders, cartItems, appliedDiscount]);
 
   // Get saved discount
   useEffect(() => {
     if (router.isReady && isAdmin && user) {
-      const savedDiscount = localStorage.getItem(`admin-discount-${user?._id}`);
+      const savedDiscount = localStorage.getItem(`admin-discount-${user._id}`);
       setAppliedDiscount(savedDiscount ? JSON.parse(savedDiscount) : null);
     }
   }, [isAdmin, user, router]);

@@ -27,7 +27,8 @@ export default function Order() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [favoriteItem, setFavoriteItem] = useState<CustomerFavoriteItem>();
   const {
-    customerAllOrders,
+    customerUpcomingOrders,
+    customerDeliveredOrders,
     customerFavoriteItems,
     setCustomerFavoriteItems,
     setCustomerUpcomingOrders,
@@ -124,13 +125,18 @@ export default function Order() {
 
   // Find the order
   useEffect(() => {
-    if (customerAllOrders.length && router.isReady) {
-      const order = customerAllOrders.find(
-        (customerOrder) => customerOrder._id === router.query.order
-      );
+    if (
+      router.isReady &&
+      !customerUpcomingOrders.isLoading &&
+      !customerDeliveredOrders.isLoading
+    ) {
+      const order = [
+        ...customerUpcomingOrders.data,
+        ...customerDeliveredOrders.data,
+      ].find((customerOrder) => customerOrder._id === router.query.order);
       if (order) setOrder(order);
     }
-  }, [customerAllOrders, router]);
+  }, [customerUpcomingOrders, customerDeliveredOrders, router]);
 
   // Check if item is a favorite
   useEffect(() => {
@@ -147,7 +153,6 @@ export default function Order() {
   return (
     <section className={styles.order}>
       {!order && <h2>No order found</h2>}
-
       {order && (
         <>
           <div className={styles.order_top}>

@@ -9,93 +9,30 @@ import {
   axiosInstance,
   dateToText,
   numberToUSD,
-  getAddonsTotal,
   showErrorAlert,
-  getDateTotal,
+  getPayableAmount,
 } from '@lib/utils';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
 import { useRouter } from 'next/router';
-
-type AppliedDiscount = {
-  _id: string;
-  code: string;
-  value: number;
-};
+import { useData } from '@context/Data';
+import { AppliedDiscount, CustomerOrder } from 'types';
 
 export default function Cart() {
   const router = useRouter();
-  const {
-    cartItems,
-    isLoading,
-    checkout,
-    removeItemFromCart,
-    upcomingOrderDetails,
-  } = useCart();
   const { customer } = useUser();
   const { setAlerts } = useAlert();
   const [discountCode, setDiscountCode] = useState('');
   const [appliedDiscount, setAppliedDiscount] =
     useState<AppliedDiscount | null>(null);
   const [isApplyingDiscount, setIsApplyingDiscount] = useState(false);
-
-  let payableAmount = 0;
-  if (customer) {
-    const cartDateTotalDetails = cartItems.map((cartItem) => {
-      const optionalAddonsPrice = getAddonsTotal(cartItem.optionalAddons);
-      const requiredAddonsPrice = getAddonsTotal(cartItem.requiredAddons);
-      const totalAddonsPrice =
-        (optionalAddonsPrice || 0) + (requiredAddonsPrice || 0);
-
-      return {
-        date: cartItem.deliveryDate,
-        total: (cartItem.price + totalAddonsPrice) * cartItem.quantity,
-      };
-    });
-
-    const cartItemDetails = getDateTotal(cartDateTotalDetails);
-    const company = customer.companies.find(
-      (company) => company.status === 'ACTIVE'
-    );
-
-    if (company) {
-      const shiftBudget = company.shiftBudget;
-      const totalPayableAmount = cartItemDetails
-        .map((cartItemDetail) => {
-          if (
-            !upcomingOrderDetails.some(
-              (upcomingOrderDetail) =>
-                upcomingOrderDetail.date === cartItemDetail.date
-            )
-          ) {
-            return {
-              date: cartItemDetail.date,
-              payable: cartItemDetail.total - shiftBudget,
-            };
-          } else {
-            const upcomingOrderDetail = upcomingOrderDetails.find(
-              (upcomingOrderDetail) =>
-                upcomingOrderDetail.date === cartItemDetail.date
-            );
-            const upcomingDayOrderTotal = upcomingOrderDetail?.total || 0;
-
-            return {
-              date: cartItemDetail.date,
-              payable:
-                upcomingDayOrderTotal >= shiftBudget
-                  ? cartItemDetail.total
-                  : cartItemDetail.total -
-                    (shiftBudget - upcomingDayOrderTotal),
-            };
-          }
-        })
-        .filter((detail) => detail.payable > 0)
-        .reduce((acc, curr) => acc + curr.payable, 0);
-
-      const discountAmount = appliedDiscount?.value || 0;
-      payableAmount = totalPayableAmount - discountAmount;
-    }
-  }
+  const [payableAmount, setPayableAmount] = useState<number>();
+  const { customerUpcomingOrders, customerDeliveredOrders } = useData();
+  const [allOrders, setAllOrders] = useState<{
+    isLoading: boolean;
+    data: CustomerOrder[];
+  }>({ isLoading: true, data: [] });
+  const { cartItems, isLoading, checkout, removeItemFromCart } = useCart();
 
   async function applyDiscount(e: FormEvent) {
     e.preventDefault();
@@ -123,16 +60,50 @@ export default function Cart() {
     localStorage.removeItem(`discount-${customer?._id}`);
   }
 
-  // Remove discount
+  // Get all orders
   useEffect(() => {
-    if (appliedDiscount && payableAmount <= 0) removeDiscount();
-  }, [cartItems]);
+    if (
+      !customerUpcomingOrders.isLoading &&
+      !customerDeliveredOrders.isLoading
+    ) {
+      setAllOrders({
+        isLoading: false,
+        data: [...customerUpcomingOrders.data, ...customerDeliveredOrders.data],
+      });
+    }
+  }, [customerUpcomingOrders, customerDeliveredOrders]);
+
+  // Get payable amount
+  useEffect(() => {
+    if (cartItems.length && customer && !allOrders.isLoading) {
+      const payableAmount = getPayableAmount(
+        allOrders.data,
+        cartItems,
+        customer,
+        appliedDiscount?.value || 0
+      );
+      setPayableAmount(payableAmount);
+    }
+  }, [customer, allOrders, cartItems, appliedDiscount]);
 
   // Get saved discount
   useEffect(() => {
-    const localDiscount = localStorage.getItem(`discount-${customer?._id}`);
-    setAppliedDiscount(localDiscount ? JSON.parse(localDiscount) : null);
-  }, [customer, router.isReady]);
+    if (router.isReady && customer) {
+      const savedDiscount = localStorage.getItem(`discount-${customer._id}`);
+      setAppliedDiscount(savedDiscount ? JSON.parse(savedDiscount) : null);
+    }
+  }, [customer, router]);
+
+  // Remove discount
+  useEffect(() => {
+    if (
+      appliedDiscount &&
+      payableAmount &&
+      payableAmount <= 0 &&
+      !allOrders.isLoading
+    )
+      removeDiscount();
+  }, [appliedDiscount, payableAmount, allOrders]);
 
   return (
     <section className={styles.cart}>
@@ -184,7 +155,7 @@ export default function Cart() {
               </div>
             ))}
           </div>
-          {!appliedDiscount && payableAmount > 0 && (
+          {!appliedDiscount && payableAmount && payableAmount > 0 && (
             <form
               onSubmit={applyDiscount}
               className={styles.apply_discount_form}
@@ -197,7 +168,6 @@ export default function Cart() {
                   value={discountCode}
                   onChange={(e) => setDiscountCode(e.target.value)}
                 />
-
                 <input
                   type='submit'
                   value='Apply'
@@ -222,7 +192,7 @@ export default function Cart() {
           >
             {isLoading ? (
               <ButtonLoader />
-            ) : payableAmount > 0 ? (
+            ) : payableAmount && payableAmount > 0 ? (
               `Checkout • ${numberToUSD(payableAmount)} USD`
             ) : (
               'Place order'

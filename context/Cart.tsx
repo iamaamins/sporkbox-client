@@ -2,21 +2,8 @@ import { useAlert } from './Alert';
 import { useData } from '@context/Data';
 import { useUser } from '@context/User';
 import { useRouter } from 'next/router';
-import {
-  Item,
-  CartItem,
-  CustomAxiosError,
-  ContextProviderProps,
-  DateTotal,
-} from 'types';
-import {
-  axiosInstance,
-  dateToMS,
-  toUSNumber,
-  showErrorAlert,
-  showSuccessAlert,
-  getDateTotal,
-} from '@lib/utils';
+import { Item, CartItem, CustomAxiosError, ContextProviderProps } from 'types';
+import { axiosInstance, showErrorAlert, showSuccessAlert } from '@lib/utils';
 import {
   useState,
   useEffect,
@@ -29,9 +16,7 @@ import {
 type CartContext = {
   cartItems: CartItem[];
   isLoading: boolean;
-  totalCartPrice: number;
   totalCartQuantity: number;
-  upcomingOrderDetails: DateTotal[];
   removeItemFromCart: (item: CartItem) => void;
   setCartItems: Dispatch<SetStateAction<CartItem[]>>;
   checkout: (discountCodeId?: string) => Promise<void>;
@@ -47,31 +32,8 @@ export default function CartProvider({ children }: ContextProviderProps) {
   const { customer, isCustomer } = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const { customerAllOrders, setCustomerUpcomingOrders } = useData();
-
-  const upcomingDateTotalDetails = customerAllOrders
-    .filter((order) =>
-      cartItems.some(
-        (cartItem) =>
-          cartItem.companyId === order.company._id &&
-          cartItem.deliveryDate === dateToMS(order.delivery.date)
-      )
-    )
-    .map((order) => ({
-      date: dateToMS(order.delivery.date),
-      total: order.item.total - (order.payment?.distributed || 0),
-    }));
-
-  const upcomingOrderDetails = getDateTotal(upcomingDateTotalDetails);
-  const totalCartQuantity = cartItems.reduce(
-    (acc, item) => acc + item.quantity,
-    0
-  );
-  const totalCartPrice = cartItems.reduce(
-    (acc, item) =>
-      toUSNumber(acc + item.addonPrice + item.price * item.quantity),
-    0
-  );
+  const { setCustomerUpcomingOrders } = useData();
+  const [totalCartQuantity, setTotalCartQuantity] = useState(0);
 
   function addItemToCart(initialItem: CartItem, item: Item) {
     if (initialItem.requiredAddons.length < item.requiredAddons.addable) {
@@ -135,7 +97,6 @@ export default function CartProvider({ children }: ContextProviderProps) {
     );
   }
 
-  // Checkout cart
   async function checkout(discountCodeId?: string) {
     if (isCustomer) {
       const orderItems = cartItems.map((cartItem) => ({
@@ -162,15 +123,16 @@ export default function CartProvider({ children }: ContextProviderProps) {
           setCartItems([]);
           localStorage.removeItem(`cart-${customer?._id}`);
           localStorage.removeItem(`discount-${customer?._id}`);
+
           setCustomerUpcomingOrders((prevState) => ({
             ...prevState,
             data: [...prevState.data, ...response.data],
           }));
+
           showSuccessAlert('Orders placed', setAlerts);
           router.push('/dashboard');
         }
       } catch (err) {
-        console.log(err);
         showErrorAlert(err as CustomAxiosError, setAlerts);
       } finally {
         setIsLoading(false);
@@ -179,6 +141,15 @@ export default function CartProvider({ children }: ContextProviderProps) {
       router.push('/login');
     }
   }
+
+  // Get cart total quantity
+  useEffect(() => {
+    if (cartItems.length) {
+      setTotalCartQuantity(
+        cartItems.reduce((acc, item) => acc + item.quantity, 0)
+      );
+    }
+  }, [cartItems]);
 
   // Get cart items from local storage
   useEffect(() => {
@@ -195,10 +166,8 @@ export default function CartProvider({ children }: ContextProviderProps) {
         setCartItems,
         checkout,
         addItemToCart,
-        totalCartPrice,
         totalCartQuantity,
         removeItemFromCart,
-        upcomingOrderDetails,
       }}
     >
       {children}

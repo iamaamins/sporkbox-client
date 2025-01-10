@@ -4,7 +4,6 @@ import {
   Vendors,
   Companies,
   Customers,
-  CustomerOrder,
   DiscountCodes,
   CustomAxiosError,
   AllUpcomingOrders,
@@ -43,7 +42,6 @@ type DataContext = {
   upcomingDates: number[];
   dietaryTags: DietaryTags;
   discountCodes: DiscountCodes;
-  customerAllOrders: CustomerOrder[];
   upcomingOrderGroups: OrderGroup[];
   deliveredOrderGroups: OrderGroup[];
   allUpcomingOrders: AllUpcomingOrders;
@@ -109,9 +107,6 @@ export default function DataProvider({ children }: ContextProviderProps) {
     OrderGroup[]
   >([]);
   const [upcomingDates, setUpcomingDates] = useState<number[]>([]);
-  const [customerAllOrders, setCustomerAllOrders] = useState<CustomerOrder[]>(
-    []
-  );
 
   async function getDietaryTags() {
     try {
@@ -147,22 +142,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
           .filter((date, index, dates) => dates.indexOf(date) === index)
       );
     }
-    if (
-      customerUpcomingOrders.data.length ||
-      customerDeliveredOrders.data.length
-    ) {
-      setCustomerAllOrders([
-        ...customerUpcomingOrders.data,
-        ...customerDeliveredOrders.data,
-      ]);
-    }
-  }, [
-    allUpcomingOrders,
-    allDeliveredOrders,
-    upcomingRestaurants,
-    customerUpcomingOrders,
-    customerDeliveredOrders,
-  ]);
+  }, [allUpcomingOrders, allDeliveredOrders, upcomingRestaurants]);
 
   // Get admin data
   useEffect(() => {
@@ -388,7 +368,6 @@ export default function DataProvider({ children }: ContextProviderProps) {
         discountCodes,
         setDiscountCodes,
         allUpcomingOrders,
-        customerAllOrders,
         allDeliveredOrders,
         setAllDeliveredOrders,
         upcomingRestaurants,

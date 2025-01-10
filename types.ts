@@ -516,3 +516,9 @@ export type GuestFormData = {
   lastName: string;
   email: string;
 };
+
+export type AppliedDiscount = {
+  _id: string;
+  code: string;
+  value: number;
+};

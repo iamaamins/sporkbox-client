@@ -9,7 +9,6 @@ import {
   Vendors,
   Company,
   Customer,
-  Customers,
   Companies,
   Restaurant,
   OrderGroup,
@@ -18,8 +17,9 @@ import {
   DateTotal,
   VendorUpcomingOrder,
   IdenticalOrderGroup,
-  Guests,
   Guest,
+  CustomerOrder,
+  CartItem,
 } from 'types';
 
 export const currentYear = new Date().getFullYear();
@@ -312,4 +312,76 @@ export function getAddonIngredients(addons: string | undefined) {
     ingredients.push(ingredient);
   }
   return ingredients.join(', ');
+}
+
+export function getPayableAmount(
+  orders: CustomerOrder[],
+  cartItems: CartItem[],
+  user: Customer | Guest,
+  discountAmount: number
+) {
+  const upcomingDateTotalDetails = orders
+    .filter((order) =>
+      cartItems.some(
+        (cartItem) =>
+          cartItem.companyId === order.company._id &&
+          cartItem.deliveryDate === dateToMS(order.delivery.date)
+      )
+    )
+    .map((order) => ({
+      date: dateToMS(order.delivery.date),
+      total: order.item.total - (order.payment?.distributed || 0),
+    }));
+  const upcomingOrderDetails = getDateTotal(upcomingDateTotalDetails);
+
+  const cartDateTotalDetails = cartItems.map((cartItem) => {
+    const optionalAddonsPrice = getAddonsTotal(cartItem.optionalAddons);
+    const requiredAddonsPrice = getAddonsTotal(cartItem.requiredAddons);
+    const totalAddonsPrice =
+      (optionalAddonsPrice || 0) + (requiredAddonsPrice || 0);
+
+    return {
+      date: cartItem.deliveryDate,
+      total: (cartItem.price + totalAddonsPrice) * cartItem.quantity,
+    };
+  });
+
+  const cartItemDetails = getDateTotal(cartDateTotalDetails);
+  const company = user.companies.find((company) => company.status === 'ACTIVE');
+
+  if (company) {
+    const shiftBudget = company.shiftBudget;
+    const totalPayableAmount = cartItemDetails
+      .map((cartItemDetail) => {
+        if (
+          !upcomingOrderDetails.some(
+            (upcomingOrderDetail) =>
+              upcomingOrderDetail.date === cartItemDetail.date
+          )
+        ) {
+          return {
+            date: cartItemDetail.date,
+            payable: cartItemDetail.total - shiftBudget,
+          };
+        } else {
+          const upcomingOrderDetail = upcomingOrderDetails.find(
+            (upcomingOrderDetail) =>
+              upcomingOrderDetail.date === cartItemDetail.date
+          );
+          const upcomingDayOrderTotal = upcomingOrderDetail?.total || 0;
+
+          return {
+            date: cartItemDetail.date,
+            payable:
+              upcomingDayOrderTotal >= shiftBudget
+                ? cartItemDetail.total
+                : cartItemDetail.total - (shiftBudget - upcomingDayOrderTotal),
+          };
+        }
+      })
+      .filter((detail) => detail.payable > 0)
+      .reduce((acc, curr) => acc + curr.payable, 0);
+
+    return totalPayableAmount - discountAmount;
+  }
 }
