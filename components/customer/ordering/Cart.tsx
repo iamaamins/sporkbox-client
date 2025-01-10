@@ -46,6 +46,7 @@ export default function Cart() {
       const requiredAddonsPrice = getAddonsTotal(cartItem.requiredAddons);
       const totalAddonsPrice =
         (optionalAddonsPrice || 0) + (requiredAddonsPrice || 0);
+
       return {
         date: cartItem.deliveryDate,
         total: (cartItem.price + totalAddonsPrice) * cartItem.quantity,
@@ -56,6 +57,7 @@ export default function Cart() {
     const company = customer.companies.find(
       (company) => company.status === 'ACTIVE'
     );
+
     if (company) {
       const shiftBudget = company.shiftBudget;
       const totalPayableAmount = cartItemDetails
@@ -76,6 +78,7 @@ export default function Cart() {
                 upcomingOrderDetail.date === cartItemDetail.date
             );
             const upcomingDayOrderTotal = upcomingOrderDetail?.total || 0;
+
             return {
               date: cartItemDetail.date,
               payable:
@@ -120,9 +123,10 @@ export default function Cart() {
     localStorage.removeItem(`discount-${customer?._id}`);
   }
 
+  // Remove discount
   useEffect(() => {
     if (appliedDiscount && payableAmount <= 0) removeDiscount();
-  }, [cartItems]);
+  }, [appliedDiscount, payableAmount]);
 
   // Get saved discount
   useEffect(() => {
@@ -208,7 +212,6 @@ export default function Cart() {
               <p>
                 <span>{appliedDiscount.code}</span> applied
               </p>
-
               <p onClick={removeDiscount}>Remove</p>
             </div>
           )}

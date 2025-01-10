@@ -23,6 +23,7 @@ import {
   Customer,
   CustomerOrder,
   Guest,
+  Order,
 } from 'types';
 import { useData } from '@context/Data';
 
@@ -43,19 +44,20 @@ export default function Cart() {
   const [isApplyingDiscount, setIsApplyingDiscount] = useState(false);
   const [user, setUser] = useState<Customer | Guest>();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [allOrders, setAllOrders] = useState<CustomerOrder[]>([]);
-  const [payableAmount, setPayableAmount] = useState(0);
+  const [allOrders, setAllOrders] = useState<{
+    isLoading: boolean;
+    data: CustomerOrder[];
+  }>({ isLoading: true, data: [] });
+  const [payableAmount, setPayableAmount] = useState<number>();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   async function applyDiscount(e: FormEvent) {
     e.preventDefault();
     try {
       setIsApplyingDiscount(true);
-
       const response = await axiosInstance.post(
         `/discount-code/apply/${discountCode}`
       );
-
       setAppliedDiscount(response.data);
 
       localStorage.setItem(
@@ -91,7 +93,7 @@ export default function Cart() {
   }
 
   async function checkout(discountCodeId?: string) {
-    if (!user) return showErrorAlert('No employee found', setAlerts);
+    if (!user) return showErrorAlert('No user found', setAlerts);
     const orderItems = cartItems.map((cartItem) => ({
       itemId: cartItem._id,
       quantity: cartItem.quantity,
@@ -134,7 +136,7 @@ export default function Cart() {
 
   // Get user details
   useEffect(() => {
-    async function getEmployee(userId: string) {
+    async function getUser(userId: string) {
       try {
         const response = await axiosInstance.get(`/users/${userId}`);
         setUser(response.data);
@@ -142,7 +144,7 @@ export default function Cart() {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
-    if (router.isReady && isAdmin) getEmployee(router.query.user as string);
+    if (router.isReady && isAdmin) getUser(router.query.user as string);
   }, [isAdmin, router]);
 
   // Get cart items
@@ -155,27 +157,42 @@ export default function Cart() {
 
   // Get user all orders
   useEffect(() => {
-    async function getAllOrders() {
+    async function getAllOrders(userId: string, allUpcomingOrders: Order[]) {
       try {
         const response = await axiosInstance.get(
-          `/orders/${router.query.user}/all-delivered-orders`
+          `/orders/${userId}/all-delivered-orders`
         );
+
         const deliveredOrders = response.data;
-        const upcomingOrders = allUpcomingOrders.data.filter(
-          (upcomingOrder) => upcomingOrder.customer._id === router.query.user
+        const upcomingOrders = allUpcomingOrders.filter(
+          (upcomingOrder) => upcomingOrder.customer._id === userId
         );
-        setAllOrders([...upcomingOrders, ...deliveredOrders]);
+
+        setAllOrders((prevState) => ({
+          ...prevState,
+          isLoading: false,
+          data: [...upcomingOrders, ...deliveredOrders],
+        }));
       } catch (err) {
+        setAllOrders((prevState) => ({ ...prevState, isLoading: false }));
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
-    if (router.isReady && isAdmin && user) getAllOrders();
-  }, [isAdmin, user, router]);
+
+    if (router.isReady && isAdmin && user && !allUpcomingOrders.isLoading)
+      getAllOrders(user._id, allUpcomingOrders.data);
+  }, [isAdmin, user, allUpcomingOrders, router]);
 
   // Get payable amount
   useEffect(() => {
-    if (router.isReady && cartItems.length && user && user.role !== 'GUEST') {
-      const upcomingDateTotalDetails = allOrders
+    if (
+      router.isReady &&
+      cartItems.length &&
+      user &&
+      user.role !== 'GUEST' &&
+      !allOrders.isLoading
+    ) {
+      const upcomingDateTotalDetails = allOrders.data
         .filter((order) =>
           cartItems.some(
             (cartItem) =>
@@ -194,6 +211,7 @@ export default function Cart() {
         const requiredAddonsPrice = getAddonsTotal(cartItem.requiredAddons);
         const totalAddonsPrice =
           (optionalAddonsPrice || 0) + (requiredAddonsPrice || 0);
+
         return {
           date: cartItem.deliveryDate,
           total: (cartItem.price + totalAddonsPrice) * cartItem.quantity,
@@ -224,6 +242,7 @@ export default function Cart() {
                   upcomingOrderDetail.date === cartItemDetail.date
               );
               const upcomingDayOrderTotal = upcomingOrderDetail?.total || 0;
+
               return {
                 date: cartItemDetail.date,
                 payable:
@@ -253,8 +272,16 @@ export default function Cart() {
 
   // Remove discount
   useEffect(() => {
-    if (appliedDiscount && payableAmount <= 0) removeDiscount();
-  }, [cartItems]);
+    if (
+      appliedDiscount &&
+      payableAmount &&
+      payableAmount <= 0 &&
+      user &&
+      user.role !== 'GUEST' &&
+      !allOrders.isLoading
+    )
+      removeDiscount();
+  }, [appliedDiscount, payableAmount, user, allOrders]);
 
   return (
     <section className={styles.cart}>
@@ -305,7 +332,8 @@ export default function Cart() {
             ))}
           </div>
           {!appliedDiscount &&
-            (payableAmount > 0 || user?.role === 'GUEST') && (
+            ((payableAmount && payableAmount > 0) ||
+              user?.role === 'GUEST') && (
               <form
                 onSubmit={applyDiscount}
                 className={styles.apply_discount_form}
@@ -342,7 +370,7 @@ export default function Cart() {
           >
             {isCheckingOut ? (
               <ButtonLoader />
-            ) : payableAmount > 0 ? (
+            ) : payableAmount && payableAmount > 0 ? (
               `Checkout • ${numberToUSD(payableAmount)} USD`
             ) : (
               'Place order'
