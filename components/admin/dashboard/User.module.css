@@ -46,8 +46,10 @@
   border: 1px solid var(--orange);
 }
 
-.action {
-  margin-right: 0.5rem;
+.place_order {
+  margin-left: 0.5rem;
+  color: var(--black);
+  border: 1px solid var(--black);
 }
 
 .hide_on_mobile {
