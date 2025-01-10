@@ -15,7 +15,7 @@ import {
 
 type CartContext = {
   cartItems: CartItem[];
-  isLoading: boolean;
+  isCheckingOut: boolean;
   totalCartQuantity: number;
   removeItemFromCart: (item: CartItem) => void;
   setCartItems: Dispatch<SetStateAction<CartItem[]>>;
@@ -29,8 +29,8 @@ export const useCart = () => useContext(CartContext);
 export default function CartProvider({ children }: ContextProviderProps) {
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const { customer, isCustomer } = useUser();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { customer } = useUser();
+  const [isCheckingOut, setIsCheckingOut] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const { setCustomerUpcomingOrders } = useData();
   const [totalCartQuantity, setTotalCartQuantity] = useState(0);
@@ -98,47 +98,45 @@ export default function CartProvider({ children }: ContextProviderProps) {
   }
 
   async function checkout(discountCodeId?: string) {
-    if (isCustomer) {
-      const orderItems = cartItems.map((cartItem) => ({
-        itemId: cartItem._id,
-        quantity: cartItem.quantity,
-        companyId: cartItem.companyId,
-        restaurantId: cartItem.restaurantId,
-        deliveryDate: cartItem.deliveryDate,
-        optionalAddons: cartItem.optionalAddons,
-        requiredAddons: cartItem.requiredAddons,
-        removedIngredients: cartItem.removableIngredients,
-      }));
+    if (!customer) return showErrorAlert('No user found', setAlerts);
 
-      try {
-        setIsLoading(true);
-        const response = await axiosInstance.post(`/orders/create-orders`, {
-          orderItems,
-          discountCodeId,
-        });
+    const orderItems = cartItems.map((cartItem) => ({
+      itemId: cartItem._id,
+      quantity: cartItem.quantity,
+      companyId: cartItem.companyId,
+      restaurantId: cartItem.restaurantId,
+      deliveryDate: cartItem.deliveryDate,
+      optionalAddons: cartItem.optionalAddons,
+      requiredAddons: cartItem.requiredAddons,
+      removedIngredients: cartItem.removableIngredients,
+    }));
 
-        if (typeof response.data === 'string') {
-          open(response.data);
-        } else {
-          setCartItems([]);
-          localStorage.removeItem(`cart-${customer?._id}`);
-          localStorage.removeItem(`discount-${customer?._id}`);
+    try {
+      setIsCheckingOut(true);
+      const response = await axiosInstance.post(`/orders/create-orders`, {
+        orderItems,
+        discountCodeId,
+      });
 
-          setCustomerUpcomingOrders((prevState) => ({
-            ...prevState,
-            data: [...prevState.data, ...response.data],
-          }));
+      if (typeof response.data === 'string') {
+        open(response.data);
+      } else {
+        setCartItems([]);
+        localStorage.removeItem(`cart-${customer._id}`);
+        localStorage.removeItem(`discount-${customer._id}`);
 
-          showSuccessAlert('Orders placed', setAlerts);
-          router.push('/dashboard');
-        }
-      } catch (err) {
-        showErrorAlert(err as CustomAxiosError, setAlerts);
-      } finally {
-        setIsLoading(false);
+        setCustomerUpcomingOrders((prevState) => ({
+          ...prevState,
+          data: [...prevState.data, ...response.data],
+        }));
+
+        showSuccessAlert('Orders placed', setAlerts);
+        router.push('/dashboard');
       }
-    } else {
-      router.push('/login');
+    } catch (err) {
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      setIsCheckingOut(false);
     }
   }
 
@@ -162,7 +160,7 @@ export default function CartProvider({ children }: ContextProviderProps) {
     <CartContext.Provider
       value={{
         cartItems,
-        isLoading,
+        isCheckingOut,
         setCartItems,
         checkout,
         addItemToCart,

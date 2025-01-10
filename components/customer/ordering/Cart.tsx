@@ -32,7 +32,7 @@ export default function Cart() {
     isLoading: boolean;
     data: CustomerOrder[];
   }>({ isLoading: true, data: [] });
-  const { cartItems, isLoading, checkout, removeItemFromCart } = useCart();
+  const { cartItems, isCheckingOut, checkout, removeItemFromCart } = useCart();
 
   async function applyDiscount(e: FormEvent) {
     e.preventDefault();
@@ -186,11 +186,11 @@ export default function Cart() {
             </div>
           )}
           <button
-            disabled={isLoading}
+            disabled={isCheckingOut}
             className={styles.button}
             onClick={() => checkout(appliedDiscount?._id)}
           >
-            {isLoading ? (
+            {isCheckingOut ? (
               <ButtonLoader />
             ) : payableAmount && payableAmount > 0 ? (
               `Checkout • ${numberToUSD(payableAmount)} USD`

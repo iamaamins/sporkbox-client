@@ -87,6 +87,7 @@ export default function Cart() {
 
   async function checkout(discountCodeId?: string) {
     if (!user) return showErrorAlert('No user found', setAlerts);
+
     const orderItems = cartItems.map((cartItem) => ({
       itemId: cartItem._id,
       quantity: cartItem.quantity,
