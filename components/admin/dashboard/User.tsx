@@ -10,7 +10,7 @@ import {
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { CustomAxiosError, Customer, Guest, Order } from 'types';
-import styles from './Employee.module.css';
+import styles from './User.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
 import ActionModal from '../layout/ActionModal';
 import Link from 'next/link';
