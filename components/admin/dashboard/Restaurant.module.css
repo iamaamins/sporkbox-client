@@ -94,6 +94,26 @@
   padding: 0.5rem;
 }
 
+.range_selector {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.range_selector_item {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.range_selector_item input {
+  width: 10rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border_color);
+}
+
 /* Top rated restaurants */
 .most_liked_restaurants {
   margin-bottom: 2rem;

@@ -1,10 +1,10 @@
 import { useData } from '@context/Data';
 import styles from './Restaurant.module.css';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { axiosInstance, dateToText, showErrorAlert } from '@lib/utils';
 import { IoIosArrowRoundBack, IoIosArrowRoundForward } from 'react-icons/io';
 import { useUser } from '@context/User';
-import { CustomAxiosError } from 'types';
+import { Alert, CustomAxiosError } from 'types';
 import { useAlert } from '@context/Alert';
 
 export default function Restaurant() {
@@ -89,6 +89,89 @@ function ScheduledRestaurants() {
   );
 }
 
+function getPastDate(days: number) {
+  return new Date(new Date().setDate(new Date().getDate() - days))
+    .toISOString()
+    .split('T')[0];
+}
+
+async function getRestaurantStat<T>(
+  range: Range,
+  statType: 'restaurants' | 'items',
+  setStat: Dispatch<SetStateAction<T>>,
+  setAlerts: Dispatch<SetStateAction<Alert[]>>
+) {
+  let start = '';
+  let end = '';
+  if (range.start && range.end) {
+    start = range.start;
+    end = range.end;
+  } else {
+    start = getPastDate(60);
+    end = getPastDate(0);
+  }
+
+  try {
+    const response = await axiosInstance.get(
+      `/orders/restaurant-stat/${start}/${end}`
+    );
+
+    setStat((prevState) => ({
+      ...prevState,
+      data: response.data[statType],
+    }));
+  } catch (err) {
+    showErrorAlert(err as CustomAxiosError, setAlerts);
+  } finally {
+    setStat((prevState) => ({
+      ...prevState,
+      isLoading: false,
+    }));
+  }
+}
+
+type Range = { start: string; end: string };
+type DateRangePickerProps = {
+  range: Range;
+  setRange: Dispatch<SetStateAction<Range>>;
+};
+function DateRangePicker({ range, setRange }: DateRangePickerProps) {
+  return (
+    <form className={styles.range_selector}>
+      <div className={styles.range_selector_item}>
+        <label htmlFor='start'>From</label>
+        <input
+          type='date'
+          id='start'
+          max={getPastDate(0)}
+          value={range.start}
+          onChange={(e) =>
+            setRange((prevState) => ({
+              ...prevState,
+              start: e.target.value,
+            }))
+          }
+        />
+      </div>
+      <div className={styles.range_selector_item}>
+        <label htmlFor='end'>To</label>
+        <input
+          type='date'
+          id='end'
+          value={range.end}
+          max={getPastDate(0)}
+          onChange={(e) =>
+            setRange((prevState) => ({
+              ...prevState,
+              end: e.target.value,
+            }))
+          }
+        />
+      </div>
+    </form>
+  );
+}
+
 type MostLikedRestaurants = {
   isLoading: boolean;
   data: {
@@ -104,30 +187,22 @@ function MostLikedRestaurants() {
       isLoading: true,
       data: [],
     });
+  const [range, setRange] = useState({ start: '', end: '' });
 
   useEffect(() => {
-    async function getTopRatedRestaurants() {
-      try {
-        const response = await axiosInstance.get('/orders/restaurant-stat');
-        setMostLikedRestaurants((prevState) => ({
-          ...prevState,
-          data: response.data.restaurants,
-        }));
-      } catch (err) {
-        showErrorAlert(err as CustomAxiosError, setAlerts);
-      } finally {
-        setMostLikedRestaurants((prevState) => ({
-          ...prevState,
-          isLoading: false,
-        }));
-      }
-    }
-    if (isAdmin) getTopRatedRestaurants();
-  }, [isAdmin]);
+    if (isAdmin)
+      getRestaurantStat(
+        range,
+        'restaurants',
+        setMostLikedRestaurants,
+        setAlerts
+      );
+  }, [isAdmin, range]);
 
   return (
     <div className={styles.most_liked_restaurants}>
       <h3>Most liked restaurants</h3>
+      <DateRangePicker range={range} setRange={setRange} />
       {mostLikedRestaurants.isLoading ? (
         <p className={styles.message}>Loading...</p>
       ) : mostLikedRestaurants.data.length === 0 ? (
@@ -169,30 +244,17 @@ function MostLikedItems() {
     isLoading: true,
     data: [],
   });
+  const [range, setRange] = useState({ start: '', end: '' });
 
   useEffect(() => {
-    async function getTopRatedItems() {
-      try {
-        const response = await axiosInstance.get('/orders/restaurant-stat');
-        setMostLikedItems((prevState) => ({
-          ...prevState,
-          data: response.data.items,
-        }));
-      } catch (err) {
-        showErrorAlert(err as CustomAxiosError, setAlerts);
-      } finally {
-        setMostLikedItems((prevState) => ({
-          ...prevState,
-          isLoading: false,
-        }));
-      }
-    }
-    if (isAdmin) getTopRatedItems();
-  }, [isAdmin]);
+    if (isAdmin)
+      getRestaurantStat(range, 'items', setMostLikedItems, setAlerts);
+  }, [isAdmin, range]);
 
   return (
     <div className={styles.most_liked_items}>
       <h3>Most liked items</h3>
+      <DateRangePicker range={range} setRange={setRange} />
       {mostLikedItems.isLoading ? (
         <p className={styles.message}>Loading...</p>
       ) : mostLikedItems.data.length === 0 ? (
