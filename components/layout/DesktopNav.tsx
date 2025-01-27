@@ -18,8 +18,15 @@ export default function DesktopNav() {
   const { totalCartQuantity } = useCart();
   const pathName = useRouter().pathname;
   const [date, setDate] = useState<number>();
-  const { isAdmin, isVendor, isCustomer, setAdmin, setVendor, setCustomer } =
-    useUser();
+  const {
+    isAdmin,
+    isVendor,
+    isCustomer,
+    setAdmin,
+    setVendor,
+    customer,
+    setCustomer,
+  } = useUser();
 
   useEffect(() => {
     if (upcomingDates.length) setDate(upcomingDates[0]);
@@ -53,7 +60,11 @@ export default function DesktopNav() {
 
       <ul className={styles.navigation}>
         {/* Customer nav items */}
-        <li className={!isCustomer ? styles.hide : ''}>
+        <li
+          className={
+            !isCustomer || !customer?.isCompanyAdmin ? styles.hide : ''
+          }
+        >
           <Link href='/company'>
             <a className={pathName === '/company' ? styles.active : ''}>
               Company

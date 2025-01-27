@@ -95,7 +95,7 @@ function Users() {
             {users.map((user) => (
               <tr key={user._id}>
                 <td className={styles.important}>
-                  <Link href={`/admin/dashboard/${user._id}`}>
+                  <Link href={`/company/${user._id}`}>
                     <a>
                       {user.lastName} {user.firstName}
                     </a>
@@ -188,7 +188,7 @@ function Guests() {
             {guests.map((guest) => (
               <tr key={guest._id}>
                 <td className={styles.important}>
-                  <Link href={`/admin/dashboard/${guest._id}`}>
+                  <Link href={`/company/${guest._id}`}>
                     <a>
                       {guest.lastName} {guest.firstName}
                     </a>

@@ -1,11 +1,11 @@
-import Dashboard from '@components/customer/company/Dashboard';
+import User from '@components/customer/company/User';
 import PageLoader from '@components/layout/PageLoader';
 import { useUser } from '@context/User';
 import { checkCompanyAdmin } from '@lib/utils';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-export default function CompanyPage() {
+export default function index() {
   const router = useRouter();
   const { isUserLoading, isCustomer, customer } = useUser();
 
@@ -16,7 +16,7 @@ export default function CompanyPage() {
   return (
     <main>
       {isUserLoading && <PageLoader />}
-      {isCustomer && <Dashboard />}
+      {isCustomer && <User />}
     </main>
   );
 }

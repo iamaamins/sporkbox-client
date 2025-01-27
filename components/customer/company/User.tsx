@@ -12,10 +12,12 @@ import { useEffect, useState } from 'react';
 import { CustomAxiosError, Customer, Guest, Order } from 'types';
 import styles from './User.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
-import ActionModal from '../layout/ActionModal';
+import ActionModal from '@components/admin/layout/ActionModal';
 import Link from 'next/link';
+import { useUser } from '@context/User';
 
 type UserWithOrders = {
+  isLoading: boolean;
   data: Customer | Guest | null;
   upcomingOrders: Order[];
   deliveredOrders: Order[];
@@ -23,10 +25,10 @@ type UserWithOrders = {
 
 export default function User() {
   const router = useRouter();
+  const { customer } = useUser();
   const { setAlerts } = useAlert();
-  const { customers, guests, allUpcomingOrders, setCustomers, setGuests } =
-    useData();
   const [user, setUser] = useState<UserWithOrders>({
+    isLoading: true,
     data: null,
     upcomingOrders: [],
     deliveredOrders: [],
@@ -75,26 +77,6 @@ export default function User() {
         { action: actionPayload.action }
       );
 
-      if (response.data.role === 'CUSTOMER') {
-        setCustomers((prevState) => ({
-          ...prevState,
-          data: prevState.data.map((customer) => {
-            if (customer._id !== response.data._id) return customer;
-            return { ...customer, status: response.data.status };
-          }),
-        }));
-      }
-
-      if (response.data.role === 'GUEST') {
-        setGuests((prevState) => ({
-          ...prevState,
-          data: prevState.data.map((guest) => {
-            if (guest._id !== response.data._id) return guest;
-            return { ...guest, status: response.data.status };
-          }),
-        }));
-      }
-
       showSuccessAlert('Status updated', setAlerts);
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
@@ -113,14 +95,6 @@ export default function User() {
         { action: actionPayload.action }
       );
 
-      setCustomers((prevState) => ({
-        ...prevState,
-        data: prevState.data.map((customer) => {
-          if (customer._id !== response.data._id) return customer;
-          return { ...customer, isCompanyAdmin: response.data.isCompanyAdmin };
-        }),
-      }));
-
       showSuccessAlert('Updated company admin', setAlerts);
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
@@ -132,41 +106,28 @@ export default function User() {
 
   // Get user data, upcoming orders and delivered orders
   useEffect(() => {
-    async function getUserData() {
+    async function getUserData(customer: Customer) {
       try {
-        const user = [...customers.data, ...guests.data].find(
-          (user) => user._id === router.query.user
+        const response = await axiosInstance.get(
+          `/users/${customer.companies[0].code}/${router.query.user}/data`
         );
 
-        if (user) {
-          const upcomingOrders = allUpcomingOrders.data.filter(
-            (upcomingOrder) => upcomingOrder.customer._id === user._id
-          );
-          const response = await axiosInstance.get(
-            `/orders/${user._id}/all-delivered-orders`
-          );
-
-          setUser((prevState) => ({
-            ...prevState,
-            data: user,
-            upcomingOrders,
-            deliveredOrders: response.data,
-          }));
-        }
+        setUser({ isLoading: false, ...response.data });
       } catch (err) {
+        setUser((prevState) => ({ ...prevState, isLoading: false }));
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
-    if (router.isReady && customers.data.length) getUserData();
-  }, [customers, guests, allUpcomingOrders, router]);
+    if (router.isReady && customer) getUserData(customer);
+  }, [customer, router]);
 
   return (
     <>
       <section className={styles.container}>
         <h2>
-          {customers.isLoading
+          {user.isLoading
             ? 'Loading...'
-            : !customers.isLoading && !user
+            : !user.isLoading && !user.data
             ? 'No user found'
             : 'General'}
         </h2>
@@ -209,7 +170,7 @@ export default function User() {
                     )}
                   {user.data.status === 'ACTIVE' && (
                     <Link
-                      href={`/admin/dashboard/${router.query.user}/place-order/date`}
+                      href={`/company/${router.query.user}/place-order/date`}
                     >
                       <a className={styles.place_order}>Place orders</a>
                     </Link>

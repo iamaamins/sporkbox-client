@@ -46,6 +46,15 @@ export function checkUser(
   if (!isUserLoading && !isUser) router.push('/login');
 }
 
+export function checkCompanyAdmin(
+  isUserLoading: boolean,
+  user: Customer | null,
+  router: NextRouter
+) {
+  if (!isUserLoading && !user) return router.push('/login');
+  if (user && !user.isCompanyAdmin) return router.push('/dashboard');
+}
+
 // Update restaurants items
 export function updateVendors(
   updatedVendor: Vendor | Restaurant,

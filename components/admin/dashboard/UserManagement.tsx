@@ -14,22 +14,22 @@ export default function EmployeeManagement() {
   return (
     <section className={styles.container}>
       <h2>User Management</h2>
-      <Employees />
+      <Users />
       <Guests />
       <WeeklyOrderStat />
     </section>
   );
 }
 
-function Employees() {
+function Users() {
   const { customers } = useData();
   const [query, setQuery] = useState('');
-  const [employees, setEmployees] = useState<Customer[]>([]);
+  const [users, setUsers] = useState<Customer[]>([]);
 
   function handleSearch(e: FormEvent) {
     e.preventDefault();
 
-    setEmployees(
+    setUsers(
       customers.data.filter(
         (customer) =>
           customer.firstName.toLowerCase().includes(query) ||
@@ -41,24 +41,23 @@ function Employees() {
 
   // Get 10 customers
   useEffect(() => {
-    if (customers.data.length && !query)
-      setEmployees(customers.data.slice(0, 10));
+    if (customers.data.length && !query) setUsers(customers.data.slice(0, 10));
   }, [customers, query]);
 
   return (
-    <div className={styles.employees}>
+    <div className={styles.users}>
       <form onSubmit={handleSearch} className={styles.search}>
         <input
           type='text'
           value={query}
-          placeholder='Search employees...'
+          placeholder='Search users...'
           onChange={(e) => setQuery(e.target.value.toLowerCase())}
         />
         <IoSearch className={styles.search_icon} size={20} />
       </form>
       {customers.isLoading ? (
         <p className={styles.message}>Loading...</p>
-      ) : employees.length > 0 ? (
+      ) : users.length > 0 ? (
         <table>
           <thead>
             <tr>
@@ -69,7 +68,7 @@ function Employees() {
             </tr>
           </thead>
           <tbody>
-            {employees.map((employee) => (
+            {users.map((employee) => (
               <tr key={employee._id}>
                 <td className={styles.important}>
                   <Link href={`/admin/dashboard/${employee._id}`}>

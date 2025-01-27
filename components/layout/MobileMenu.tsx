@@ -33,8 +33,15 @@ export default function MobileMenu({ isOpen, setIsOpen }: Props) {
   const { setAlerts } = useAlert();
   const { upcomingDates } = useData();
   const [date, setDate] = useState<number>();
-  const { isAdmin, isVendor, isCustomer, setAdmin, setVendor, setCustomer } =
-    useUser();
+  const {
+    isAdmin,
+    isVendor,
+    isCustomer,
+    setAdmin,
+    setVendor,
+    customer,
+    setCustomer,
+  } = useUser();
 
   async function handleSignOut() {
     try {
@@ -68,7 +75,9 @@ export default function MobileMenu({ isOpen, setIsOpen }: Props) {
       <ul className={styles.nav_items}>
         {/* Customer nav items */}
         <li
-          className={!isCustomer ? styles.hide : ''}
+          className={
+            !isCustomer || !customer?.isCompanyAdmin ? styles.hide : ''
+          }
           onClick={() => setIsOpen(false)}
         >
           <Link href={`/company`}>
