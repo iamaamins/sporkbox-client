@@ -40,10 +40,10 @@ export const dateToText = (date: Date | string | number): string =>
 
 export function checkUser(
   isUserLoading: boolean,
-  user: boolean,
+  isUser: boolean,
   router: NextRouter
 ) {
-  if (!isUserLoading && !user) router.push('/login');
+  if (!isUserLoading && !isUser) router.push('/login');
 }
 
 // Update restaurants items

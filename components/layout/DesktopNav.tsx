@@ -52,6 +52,15 @@ export default function DesktopNav() {
       </div>
 
       <ul className={styles.navigation}>
+        {/* Customer nav items */}
+        <li className={!isCustomer ? styles.hide : ''}>
+          <Link href='/company'>
+            <a className={pathName === '/company' ? styles.active : ''}>
+              Company
+            </a>
+          </Link>
+        </li>
+
         <li className={!isCustomer ? styles.hide : ''}>
           <Link href='/profile'>
             <a className={pathName === '/profile' ? styles.active : ''}>
@@ -88,14 +97,6 @@ export default function DesktopNav() {
           <Link href='/contact-us'>
             <a className={pathName === '/contact-us' ? styles.active : ''}>
               Contact
-            </a>
-          </Link>
-        </li>
-
-        <li className={styles.hide}>
-          <Link href='/about-us'>
-            <a className={pathName === '/about-us' ? styles.active : ''}>
-              About us
             </a>
           </Link>
         </li>

@@ -1,0 +1,130 @@
+.container {
+  padding: var(--section_padding);
+}
+
+.container h2,
+.container h3 {
+  margin-bottom: 1rem;
+}
+
+.container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.container th {
+  text-align: left;
+  padding: 1rem;
+}
+
+.container th:last-child {
+  text-align: right;
+}
+
+.container thead tr {
+  background-color: var(--almost_white);
+}
+
+.container tbody tr {
+  border-bottom: 1px solid var(--border_color);
+}
+
+.container td {
+  padding: 1rem;
+  font-weight: 500;
+  color: var(--gray);
+  font-size: 0.9rem;
+}
+
+.container td:last-child {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.hide_on_mobile {
+  display: none;
+}
+
+.message {
+  font-size: 16px;
+  color: var(--gray);
+}
+
+/* Users */
+.users,
+.guests {
+  margin-bottom: 2rem;
+}
+
+.search {
+  position: relative;
+  margin-bottom: 1rem;
+  width: 15rem;
+}
+
+.search input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 3rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border_color);
+}
+
+.search_icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  color: var(--gray);
+  translate: 0% -50%;
+}
+
+.important a {
+  font-size: 1rem;
+  color: var(--black);
+}
+
+/* Weekly order stat */
+.week_navigator {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.week_navigator button {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  background: none;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  border: 1px solid var(--border_color);
+}
+
+.week_navigator p {
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: 85%;
+    margin: 0 auto;
+  }
+
+  .hide_on_mobile {
+    display: table-cell;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    width: 80%;
+    margin: 0 auto;
+  }
+}

@@ -22,6 +22,7 @@ import { AiTwotonePhone, AiTwotoneStar } from 'react-icons/ai';
 import { TbBuildingStore, TbBuildingSkyscraper } from 'react-icons/tb';
 import { currentYear, axiosInstance, showErrorAlert } from '@lib/utils';
 import { MdHome } from 'react-icons/md';
+import { RiBuildingLine } from 'react-icons/ri';
 
 type Props = {
   isOpen: boolean;
@@ -66,6 +67,18 @@ export default function MobileMenu({ isOpen, setIsOpen }: Props) {
     <div className={`${styles.mobile_menu} ${isOpen && styles.open}`}>
       <ul className={styles.nav_items}>
         {/* Customer nav items */}
+        <li
+          className={!isCustomer ? styles.hide : ''}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href={`/company`}>
+            <a>
+              <RiBuildingLine />
+              Company
+            </a>
+          </Link>
+        </li>
+
         <li
           className={!isCustomer ? styles.hide : ''}
           onClick={() => setIsOpen(false)}
