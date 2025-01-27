@@ -49,7 +49,7 @@ export default function PlaceOrderItem() {
     removableIngredients: [],
   };
   const router = useRouter();
-  const { isAdmin } = useUser();
+  const { isCustomer } = useUser();
   const { setAlerts } = useAlert();
   const [item, setItem] = useState<ItemType>();
   const [upcomingRestaurant, setUpcomingRestaurant] =
@@ -126,7 +126,7 @@ export default function PlaceOrderItem() {
     }
     setCartItems(updatedCartItems);
     localStorage.setItem(
-      `admin-cart-${user?._id}`,
+      `company-admin-cart-${user?._id}`,
       JSON.stringify(updatedCartItems)
     );
     router.back();
@@ -191,46 +191,48 @@ export default function PlaceOrderItem() {
     async function getEmployee(userId: string) {
       try {
         const response = await axiosInstance.get(`/users/${userId}`);
+
         setUser(response.data);
       } catch (err) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
-    if (router.isReady && isAdmin) getEmployee(router.query.user as string);
-  }, [isAdmin, router]);
+    if (router.isReady && isCustomer) getEmployee(router.query.user as string);
+  }, [isCustomer, router]);
 
   // Get cart items
   useEffect(() => {
-    if (router.isReady && isAdmin && user)
+    if (router.isReady && isCustomer && user)
       setCartItems(
         JSON.parse(
-          localStorage.getItem(`admin-cart-${router.query.user}`) || '[]'
+          localStorage.getItem(`company-admin-cart-${router.query.user}`) ||
+            '[]'
         )
       );
-  }, [isAdmin, user, router]);
+  }, [isCustomer, user, router]);
 
   // Get upcoming restaurants
   useEffect(() => {
-    async function getUpcomingRestaurants(employee: string) {
+    async function getUpcomingRestaurants(userId: string) {
       try {
         const response = await axiosInstance.get(
-          `/restaurants/upcoming-restaurants/${employee}`
+          `/restaurants/upcoming-restaurants/${userId}`
         );
         const upcomingRestaurants = response.data as UpcomingRestaurant[];
+
         setUpcomingRestaurants({ isLoading: false, data: upcomingRestaurants });
       } catch (err) {
-        showErrorAlert(err as CustomAxiosError, setAlerts);
-      } finally {
         setUpcomingRestaurants((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
+        showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
 
-    if (router.isReady && isAdmin)
+    if (router.isReady && isCustomer)
       getUpcomingRestaurants(router.query.user as string);
-  }, [isAdmin, router]);
+  }, [isCustomer, router]);
 
   // Get item and date from upcoming restaurants
   useEffect(() => {

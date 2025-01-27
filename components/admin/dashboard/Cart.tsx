@@ -105,6 +105,7 @@ export default function Cart() {
         orderItems,
         discountCodeId,
         userId: user._id,
+        orderingFor: user.role === 'GUEST' ? 'GUEST' : 'USER',
       });
 
       if (typeof response.data === 'string') {

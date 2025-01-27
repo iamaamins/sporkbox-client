@@ -12,6 +12,7 @@ import { useData } from '@context/Data';
 
 type Props = {
   isAdmin?: boolean;
+  isCompanyAdmin?: boolean;
   user: Customer | Guest | null;
   restaurants: UpcomingRestaurant[];
   setShowPlaceOrderFilters: Dispatch<SetStateAction<boolean>>;
@@ -20,6 +21,7 @@ type Props = {
 
 export default function PlaceOrderFiltersModal({
   isAdmin,
+  isCompanyAdmin,
   user,
   restaurants,
   setUpdatedRestaurants,
@@ -79,10 +81,15 @@ export default function PlaceOrderFiltersModal({
   function filterItemsOnSubmit(e: FormEvent) {
     e.preventDefault();
     if (!user) return;
+
     filterItems();
     setShowPlaceOrderFilters(false);
+
+    const adminKey = `${isAdmin ? 'admin' : isCompanyAdmin && 'company-admin'}`;
+    const filterKey = `filters-${user._id}`;
+
     localStorage.setItem(
-      `${isAdmin && 'admin-'}filters-${user._id}`,
+      isAdmin || isCompanyAdmin ? `${adminKey}-${filterKey}` : filterKey,
       JSON.stringify(selectedFilters)
     );
   }
@@ -95,9 +102,14 @@ export default function PlaceOrderFiltersModal({
   // Get saved filters
   useEffect(() => {
     if (user && 'foodPreferences' in user) {
+      const adminKey = `${
+        isAdmin ? 'admin' : isCompanyAdmin && 'company-admin'
+      }`;
+      const filterKey = `filters-${user._id}`;
+
       const savedFilters = JSON.parse(
         localStorage.getItem(
-          `${isAdmin && 'admin-'}filters-${user._id}`
+          isAdmin || isCompanyAdmin ? `${adminKey}-${filterKey}` : filterKey
         ) as string
       );
       setSelectedFilters(savedFilters || user.foodPreferences);

@@ -22,15 +22,12 @@ import {
   Customer,
   CustomerOrder,
   Guest,
-  Order,
 } from 'types';
-import { useData } from '@context/Data';
 
 export default function Cart() {
   const router = useRouter();
-  const { isAdmin } = useUser();
+  const { customer } = useUser();
   const { setAlerts } = useAlert();
-  const { allUpcomingOrders, setAllUpcomingOrders } = useData();
   const [discountCode, setDiscountCode] = useState('');
   const [appliedDiscount, setAppliedDiscount] =
     useState<AppliedDiscount | null>(null);
@@ -54,7 +51,7 @@ export default function Cart() {
       setAppliedDiscount(response.data);
 
       localStorage.setItem(
-        `admin-discount-${user?._id}`,
+        `company-admin-discount-${user?._id}`,
         JSON.stringify(response.data)
       );
     } catch (err) {
@@ -66,7 +63,7 @@ export default function Cart() {
 
   function removeDiscount() {
     setAppliedDiscount(null);
-    localStorage.removeItem(`admin-discount-${user?._id}`);
+    localStorage.removeItem(`company-admin-discount-${user?._id}`);
   }
 
   function removeItemFromCart(item: CartItem) {
@@ -80,7 +77,7 @@ export default function Cart() {
     );
     setCartItems(updatedCartItems);
     localStorage.setItem(
-      `admin-cart-${user?._id}`,
+      `company-admin-cart-${user?._id}`,
       JSON.stringify(updatedCartItems)
     );
   }
@@ -105,18 +102,14 @@ export default function Cart() {
         orderItems,
         discountCodeId,
         userId: user._id,
+        orderingFor: user.role === 'GUEST' ? 'GUEST' : 'USER',
       });
 
       if (typeof response.data === 'string') {
         open(response.data);
       } else {
-        localStorage.removeItem(`admin-cart-${user._id}`);
-        localStorage.removeItem(`admin-discount-${user._id}`);
-
-        setAllUpcomingOrders((prevState) => ({
-          ...prevState,
-          data: [...prevState.data, ...response.data],
-        }));
+        localStorage.removeItem(`company-admin-cart-${user._id}`);
+        localStorage.removeItem(`company-admin-discount-${user._id}`);
 
         showSuccessAlert('Orders placed', setAlerts);
         router.push('/admin/dashboard');
@@ -133,39 +126,40 @@ export default function Cart() {
     async function getUser(userId: string) {
       try {
         const response = await axiosInstance.get(`/users/${userId}`);
+
         setUser(response.data);
       } catch (err) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
-    if (router.isReady && isAdmin) getUser(router.query.user as string);
-  }, [isAdmin, router]);
+    if (router.isReady && customer) getUser(router.query.user as string);
+  }, [customer, router]);
 
   // Get cart items
   useEffect(() => {
-    if (router.isReady && isAdmin && user)
+    if (router.isReady && customer && user)
       setCartItems(
-        JSON.parse(localStorage.getItem(`admin-cart-${user?._id}`) || '[]')
+        JSON.parse(
+          localStorage.getItem(`company-admin-cart-${user._id}`) || '[]'
+        )
       );
-  }, [isAdmin, user, router]);
+  }, [customer, user, router]);
 
   // Get all orders
   useEffect(() => {
-    async function getAllOrders(userId: string, allUpcomingOrders: Order[]) {
+    async function getAllOrders(userId: string, customer: Customer) {
       try {
         const response = await axiosInstance.get(
-          `/orders/${userId}/all-delivered-orders`
-        );
-
-        const deliveredOrders = response.data;
-        const upcomingOrders = allUpcomingOrders.filter(
-          (upcomingOrder) => upcomingOrder.customer._id === userId
+          `/users/${customer.companies[0].code}/${userId}/data`
         );
 
         setAllOrders((prevState) => ({
           ...prevState,
           isLoading: false,
-          data: [...upcomingOrders, ...deliveredOrders],
+          data: [
+            ...response.data.upcomingOrders,
+            ...response.data.deliveredOrders,
+          ],
         }));
       } catch (err) {
         setAllOrders((prevState) => ({ ...prevState, isLoading: false }));
@@ -173,9 +167,8 @@ export default function Cart() {
       }
     }
 
-    if (router.isReady && isAdmin && user && !allUpcomingOrders.isLoading)
-      getAllOrders(user._id, allUpcomingOrders.data);
-  }, [isAdmin, user, allUpcomingOrders, router]);
+    if (router.isReady && customer && user) getAllOrders(user._id, customer);
+  }, [customer, user, router]);
 
   // Get payable amount
   useEffect(() => {
@@ -197,11 +190,13 @@ export default function Cart() {
 
   // Get saved discount
   useEffect(() => {
-    if (router.isReady && isAdmin && user) {
-      const savedDiscount = localStorage.getItem(`admin-discount-${user._id}`);
+    if (router.isReady && customer && user) {
+      const savedDiscount = localStorage.getItem(
+        `company-admin-discount-${user._id}`
+      );
       setAppliedDiscount(savedDiscount ? JSON.parse(savedDiscount) : null);
     }
-  }, [isAdmin, user, router]);
+  }, [customer, user, router]);
 
   // Remove discount
   useEffect(() => {
@@ -242,7 +237,7 @@ export default function Cart() {
                   </div>
                 </div>
                 <Link
-                  href={`/admin/dashboard/${user?._id}/place-order/${cartItem.deliveryDate}/${cartItem.shift}/${cartItem.restaurantId}/${cartItem._id}`}
+                  href={`/company/${user?._id}/place-order/${cartItem.deliveryDate}/${cartItem.shift}/${cartItem.restaurantId}/${cartItem._id}`}
                 >
                   <a className={styles.item_details}>
                     <p className={styles.name}>

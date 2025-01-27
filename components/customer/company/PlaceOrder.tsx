@@ -33,7 +33,7 @@ import CartIcon from '@components/layout/CartIcon';
 export default function PlaceOrder() {
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const { isAdmin } = useUser();
+  const { isCustomer } = useUser();
   const [upcomingRestaurants, setUpcomingRestaurants] =
     useState<UpcomingRestaurants>({
       isLoading: true,
@@ -85,23 +85,26 @@ export default function PlaceOrder() {
     async function getUser(userId: string) {
       try {
         const response = await axiosInstance.get(`/users/${userId}`);
+
         setUser(response.data);
       } catch (err) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
-    if (router.isReady && isAdmin) getUser(router.query.user as string);
-  }, [isAdmin, router]);
+    if (router.isReady && isCustomer) getUser(router.query.user as string);
+  }, [isCustomer, router]);
 
   // Get upcoming restaurants and dates
   useEffect(() => {
-    async function getUpcomingRestaurantsAndDates(employee: string) {
+    async function getUpcomingRestaurantsAndDates(userId: string) {
       try {
         const response = await axiosInstance.get(
-          `/restaurants/upcoming-restaurants/${employee}`
+          `/restaurants/upcoming-restaurants/${userId}`
         );
+
         const upcomingRestaurants = response.data as UpcomingRestaurant[];
         setUpcomingRestaurants({ isLoading: false, data: upcomingRestaurants });
+
         setUpcomingDates(
           upcomingRestaurants.length
             ? upcomingRestaurants
@@ -116,18 +119,17 @@ export default function PlaceOrder() {
             : []
         );
       } catch (err) {
-        showErrorAlert(err as CustomAxiosError, setAlerts);
-      } finally {
         setUpcomingRestaurants((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
+        showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
 
-    if (router.isReady && isAdmin)
+    if (router.isReady && isCustomer)
       getUpcomingRestaurantsAndDates(router.query.user as string);
-  }, [isAdmin, router]);
+  }, [isCustomer, router]);
 
   // Get restaurants
   useEffect(() => {
@@ -174,11 +176,13 @@ export default function PlaceOrder() {
 
   // Get cart items
   useEffect(() => {
-    if (router.isReady && isAdmin && user)
+    if (router.isReady && isCustomer && user)
       setCartItems(
-        JSON.parse(localStorage.getItem(`admin-cart-${user?._id}`) || '[]')
+        JSON.parse(
+          localStorage.getItem(`company-admin-cart-${user?._id}`) || '[]'
+        )
       );
-  }, [isAdmin, user, router]);
+  }, [isCustomer, user, router]);
 
   return (
     <>
@@ -205,7 +209,7 @@ export default function PlaceOrder() {
                   Filter
                 </p>
                 <CartIcon
-                  href={`/admin/dashboard/${user?._id}/cart`}
+                  href={`/company/${user?._id}/cart`}
                   totalCartQuantity={cartItems.reduce(
                     (acc, curr) => acc + curr.quantity,
                     0
@@ -216,7 +220,7 @@ export default function PlaceOrder() {
                 {upcomingDates.map((upcomingDate, index) => (
                   <div key={index}>
                     <Link
-                      href={`/admin/dashboard/${router.query.user}/place-order/${upcomingDate}`}
+                      href={`/company/${router.query.user}/place-order/${upcomingDate}`}
                     >
                       <a
                         key={index}
@@ -276,7 +280,7 @@ export default function PlaceOrder() {
                             href={
                               !isSoldOutItem(item) &&
                               restaurant.schedule.status === 'ACTIVE'
-                                ? `/admin/dashboard/${router.query.user}/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`
+                                ? `/company/${router.query.user}/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`
                                 : '#'
                             }
                           >
@@ -358,7 +362,7 @@ export default function PlaceOrder() {
         setShowModalContainer={setShowPlaceOrderFilters}
         component={
           <PlaceOrderFiltersModal
-            isAdmin={true}
+            isCompanyAdmin={true}
             user={user}
             restaurants={restaurants}
             setUpdatedRestaurants={setUpdatedRestaurants}

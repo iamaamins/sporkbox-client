@@ -85,6 +85,7 @@ export default function PlaceOrder() {
     async function getUser(userId: string) {
       try {
         const response = await axiosInstance.get(`/users/${userId}`);
+
         setUser(response.data);
       } catch (err) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
@@ -95,13 +96,15 @@ export default function PlaceOrder() {
 
   // Get upcoming restaurants and dates
   useEffect(() => {
-    async function getUpcomingRestaurantsAndDates(employee: string) {
+    async function getUpcomingRestaurantsAndDates(userId: string) {
       try {
         const response = await axiosInstance.get(
-          `/restaurants/upcoming-restaurants/${employee}`
+          `/restaurants/upcoming-restaurants/${userId}`
         );
+
         const upcomingRestaurants = response.data as UpcomingRestaurant[];
         setUpcomingRestaurants({ isLoading: false, data: upcomingRestaurants });
+
         setUpcomingDates(
           upcomingRestaurants.length
             ? upcomingRestaurants
@@ -116,12 +119,11 @@ export default function PlaceOrder() {
             : []
         );
       } catch (err) {
-        showErrorAlert(err as CustomAxiosError, setAlerts);
-      } finally {
         setUpcomingRestaurants((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
+        showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
 
