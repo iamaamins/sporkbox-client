@@ -38,16 +38,27 @@
 }
 
 .action,
+.admin_action,
 .place_order {
   padding: 4px 8px;
   border-radius: 2rem;
   color: var(--orange);
   cursor: pointer;
+  background-color: transparent;
   border: 1px solid var(--orange);
 }
 
+.admin_action,
 .place_order {
   margin-left: 0.5rem;
+}
+
+.admin_action {
+  color: var(--pink);
+  border: 1px solid var(--pink);
+}
+
+.place_order {
   color: var(--black);
   border: 1px solid var(--black);
 }

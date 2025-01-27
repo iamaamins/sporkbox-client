@@ -23,6 +23,7 @@ export interface Customer extends User {
     orderReminder: boolean;
   };
   shifts: Exclude<Shift, 'general'>[];
+  isCompanyAdmin?: boolean;
 }
 
 export interface Guest extends User {

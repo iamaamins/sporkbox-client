@@ -31,21 +31,34 @@ export default function User() {
     upcomingOrders: [],
     deliveredOrders: [],
   });
-  const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
-  const [statusUpdatePayload, setStatusUpdatePayload] = useState({
+  const [showActionModal, setShowActionModal] = useState(false);
+  const [actionPayload, setActionPayload] = useState({
+    type: '',
     action: '',
     data: {
       userId: '',
       username: '',
     },
   });
-  const [isUpdatingUserStatus, setIsUpdatingUserStatus] = useState(false);
+  const [isPerformingAction, setIsPerformingAction] = useState(false);
 
-  function initiateStatusUpdate(user: Customer | Guest | null) {
+  function initiateAction(
+    user: Customer | Guest | null,
+    type: 'admin' | 'status'
+  ) {
     if (!user) return;
-    setShowStatusUpdateModal(true);
-    setStatusUpdatePayload({
-      action: user.status === 'ACTIVE' ? 'Archive' : 'Activate',
+
+    setShowActionModal(true);
+    setActionPayload({
+      type,
+      action:
+        type === 'admin'
+          ? (user as Customer).isCompanyAdmin
+            ? 'Remove'
+            : 'Make'
+          : user.status === 'ACTIVE'
+          ? 'Archive'
+          : 'Activate',
       data: {
         userId: user._id,
         username: `${user.firstName} ${user.lastName}`,
@@ -55,11 +68,11 @@ export default function User() {
 
   async function updateUserStatus() {
     try {
-      setIsUpdatingUserStatus(true);
+      setIsPerformingAction(true);
 
       const response = await axiosInstance.patch(
-        `/users/${statusUpdatePayload.data.userId}/change-user-status`,
-        { action: statusUpdatePayload.action }
+        `/users/${actionPayload.data.userId}/change-user-status`,
+        { action: actionPayload.action }
       );
 
       if (response.data.role === 'CUSTOMER') {
@@ -86,8 +99,34 @@ export default function User() {
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      setIsUpdatingUserStatus(false);
-      setShowStatusUpdateModal(false);
+      setIsPerformingAction(false);
+      setShowActionModal(false);
+    }
+  }
+
+  async function updateCompanyAdmin() {
+    try {
+      setIsPerformingAction(true);
+
+      const response = await axiosInstance.patch(
+        `/customers/${actionPayload.data.userId}/update-company-admin`,
+        { action: actionPayload.action }
+      );
+
+      setCustomers((prevState) => ({
+        ...prevState,
+        data: prevState.data.map((customer) => {
+          if (customer._id !== response.data._id) return customer;
+          return { ...customer, isCompanyAdmin: response.data.isCompanyAdmin };
+        }),
+      }));
+
+      showSuccessAlert('Updated company admin', setAlerts);
+    } catch (err) {
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      setIsPerformingAction(false);
+      setShowActionModal(false);
     }
   }
 
@@ -151,12 +190,23 @@ export default function User() {
                   {user.data.companies[0].code}
                 </td>
                 <td>
-                  <span
-                    onClick={() => initiateStatusUpdate(user.data)}
+                  <button
+                    onClick={() => initiateAction(user.data, 'status')}
                     className={styles.action}
                   >
                     {user.data.status === 'ACTIVE' ? 'Archive' : 'Activate'}
-                  </span>
+                  </button>
+                  {user.data.status === 'ACTIVE' &&
+                    user.data.role === 'CUSTOMER' && (
+                      <button
+                        className={styles.admin_action}
+                        onClick={() => initiateAction(user.data, 'admin')}
+                      >
+                        {(user.data as Customer).isCompanyAdmin
+                          ? 'Remove as admin'
+                          : 'Make admin'}
+                      </button>
+                    )}
                   {user.data.status === 'ACTIVE' && (
                     <Link
                       href={`/admin/dashboard/${router.query.user}/place-order/date`}
@@ -183,15 +233,23 @@ export default function User() {
         </section>
       )}
       <ModalContainer
-        showModalContainer={showStatusUpdateModal}
-        setShowModalContainer={setShowStatusUpdateModal}
+        showModalContainer={showActionModal}
+        setShowModalContainer={setShowActionModal}
         component={
           <ActionModal
-            name={statusUpdatePayload.data.username}
-            action={statusUpdatePayload.action}
-            performAction={updateUserStatus}
-            isPerformingAction={isUpdatingUserStatus}
-            setShowActionModal={setShowStatusUpdateModal}
+            name={
+              actionPayload.type === 'admin'
+                ? `${actionPayload.data.username} as company admin`
+                : actionPayload.data.username
+            }
+            action={actionPayload.action}
+            performAction={
+              actionPayload.type === 'admin'
+                ? updateCompanyAdmin
+                : updateUserStatus
+            }
+            isPerformingAction={isPerformingAction}
+            setShowActionModal={setShowActionModal}
           />
         }
       />
@@ -290,12 +348,12 @@ function Orders({ orders, hasOrderAction }: Props) {
               <td>{numberToUSD(order.item.total)}</td>
               {hasOrderAction && order.status === 'PROCESSING' && (
                 <td>
-                  <span
+                  <button
                     onClick={() => initiateOrderArchive(order)}
                     className={styles.action}
                   >
                     Archive
-                  </span>
+                  </button>
                 </td>
               )}
             </tr>
