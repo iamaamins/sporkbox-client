@@ -116,7 +116,6 @@ export default function CartProvider({ children }: ContextProviderProps) {
       const response = await axiosInstance.post(`/orders/create-orders`, {
         orderItems,
         discountCodeId,
-        orderingFor: 'SELF',
       });
 
       if (typeof response.data === 'string') {

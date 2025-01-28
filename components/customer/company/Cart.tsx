@@ -101,8 +101,7 @@ export default function Cart() {
       const response = await axiosInstance.post(`/orders/create-orders`, {
         orderItems,
         discountCodeId,
-        userId: user._id,
-        orderingFor: user.role === 'GUEST' ? 'GUEST' : 'USER',
+        orderingForUser: { id: user._id },
       });
 
       if (typeof response.data === 'string') {
