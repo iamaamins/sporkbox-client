@@ -1,5 +1,4 @@
 import { useAlert } from '@context/Alert';
-import { useData } from '@context/Data';
 import {
   axiosInstance,
   dateToText,
@@ -8,7 +7,7 @@ import {
   showSuccessAlert,
 } from '@lib/utils';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { CustomAxiosError, Customer, Guest, Order } from 'types';
 import styles from './User.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
@@ -35,7 +34,6 @@ export default function User() {
   });
   const [showActionModal, setShowActionModal] = useState(false);
   const [actionPayload, setActionPayload] = useState({
-    type: '',
     action: '',
     data: {
       userId: '',
@@ -44,23 +42,12 @@ export default function User() {
   });
   const [isPerformingAction, setIsPerformingAction] = useState(false);
 
-  function initiateAction(
-    user: Customer | Guest | null,
-    type: 'admin' | 'status'
-  ) {
+  function initiateAction(user: Customer | Guest | null) {
     if (!user) return;
 
     setShowActionModal(true);
     setActionPayload({
-      type,
-      action:
-        type === 'admin'
-          ? (user as Customer).isCompanyAdmin
-            ? 'Remove'
-            : 'Make'
-          : user.status === 'ACTIVE'
-          ? 'Archive'
-          : 'Activate',
+      action: user.status === 'ACTIVE' ? 'Archive' : 'Activate',
       data: {
         userId: user._id,
         username: `${user.firstName} ${user.lastName}`,
@@ -77,25 +64,8 @@ export default function User() {
         { action: actionPayload.action }
       );
 
+      setUser((prevState) => ({ ...prevState, data: response.data }));
       showSuccessAlert('Status updated', setAlerts);
-    } catch (err) {
-      showErrorAlert(err as CustomAxiosError, setAlerts);
-    } finally {
-      setIsPerformingAction(false);
-      setShowActionModal(false);
-    }
-  }
-
-  async function updateCompanyAdmin() {
-    try {
-      setIsPerformingAction(true);
-
-      const response = await axiosInstance.patch(
-        `/customers/${actionPayload.data.userId}/update-company-admin`,
-        { action: actionPayload.action }
-      );
-
-      showSuccessAlert('Updated company admin', setAlerts);
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
@@ -152,22 +122,11 @@ export default function User() {
                 </td>
                 <td>
                   <button
-                    onClick={() => initiateAction(user.data, 'status')}
+                    onClick={() => initiateAction(user.data)}
                     className={styles.action}
                   >
                     {user.data.status === 'ACTIVE' ? 'Archive' : 'Activate'}
                   </button>
-                  {user.data.status === 'ACTIVE' &&
-                    user.data.role === 'CUSTOMER' && (
-                      <button
-                        className={styles.admin_action}
-                        onClick={() => initiateAction(user.data, 'admin')}
-                      >
-                        {(user.data as Customer).isCompanyAdmin
-                          ? 'Remove as admin'
-                          : 'Make admin'}
-                      </button>
-                    )}
                   {user.data.status === 'ACTIVE' && (
                     <Link
                       href={`/company/${router.query.user}/place-order/date`}
@@ -184,7 +143,11 @@ export default function User() {
       {user.upcomingOrders.length > 0 && (
         <section className={styles.container}>
           <h2>Upcoming orders</h2>
-          <Orders hasOrderAction={true} orders={user.upcomingOrders} />
+          <Orders
+            orders={user.upcomingOrders}
+            setUser={setUser}
+            hasOrderAction={true}
+          />
         </section>
       )}
       {user.deliveredOrders.length > 0 && (
@@ -198,17 +161,9 @@ export default function User() {
         setShowModalContainer={setShowActionModal}
         component={
           <ActionModal
-            name={
-              actionPayload.type === 'admin'
-                ? `${actionPayload.data.username} as company admin`
-                : actionPayload.data.username
-            }
+            name={actionPayload.data.username}
             action={actionPayload.action}
-            performAction={
-              actionPayload.type === 'admin'
-                ? updateCompanyAdmin
-                : updateUserStatus
-            }
+            performAction={updateUserStatus}
             isPerformingAction={isPerformingAction}
             setShowActionModal={setShowActionModal}
           />
@@ -218,45 +173,57 @@ export default function User() {
   );
 }
 
-type Props = { orders: Order[]; hasOrderAction?: boolean };
+type Props = {
+  orders: Order[];
+  hasOrderAction?: boolean;
+  setUser?: Dispatch<SetStateAction<UserWithOrders>>;
+};
 
-function Orders({ orders, hasOrderAction }: Props) {
+function Orders({ orders, setUser, hasOrderAction }: Props) {
   const { setAlerts } = useAlert();
-  const { setAllUpcomingOrders } = useData();
-  const [showOrderArchiveModal, setShowOrderArchiveModal] = useState(false);
-  const [orderArchivePayload, setOrderArchivePayload] = useState({
+  const [showActionModal, setShowActionModal] = useState(false);
+  const [orderActionPayload, setActionPayload] = useState({
     orderId: '',
     itemName: '',
   });
-  const [isArchivingOrder, setIsArchivingOrder] = useState(false);
+  const [isPerformingAction, setIsPerformingAction] = useState(false);
+
+  function initiateOrderArchive(order: Order) {
+    setShowActionModal(true);
+    setActionPayload({ orderId: order._id, itemName: order.item.name });
+  }
 
   const hasOptionalAddons = orders.some((order) => order.item.optionalAddons);
+
   const hasRequiredAddons = orders.some((order) => order.item.requiredAddons);
+
   const hasRemovedIngredients = orders.some(
     (order) => order.item.removedIngredients
   );
 
-  function initiateOrderArchive(order: Order) {
-    setShowOrderArchiveModal(true);
-    setOrderArchivePayload({ orderId: order._id, itemName: order.item.name });
-  }
-
   async function archiveOrder() {
+    if (!setUser) return;
+
     try {
-      setIsArchivingOrder(true);
+      setIsPerformingAction(true);
+
       const response = await axiosInstance.patch(
-        `/orders/${orderArchivePayload.orderId}/archive`
+        `/orders/${orderActionPayload.orderId}/archive`
       );
-      setAllUpcomingOrders((prevState) => ({
+
+      setUser((prevState) => ({
         ...prevState,
-        data: prevState.data.filter((el) => el._id !== response.data._id),
+        upcomingOrders: prevState.upcomingOrders.filter(
+          (order) => order._id !== response.data._id
+        ),
       }));
+
       showSuccessAlert('Order archived', setAlerts);
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      setShowOrderArchiveModal(false);
-      setIsArchivingOrder(false);
+      setShowActionModal(false);
+      setIsPerformingAction(false);
     }
   }
 
@@ -322,15 +289,15 @@ function Orders({ orders, hasOrderAction }: Props) {
         </tbody>
       </table>
       <ModalContainer
-        showModalContainer={showOrderArchiveModal}
-        setShowModalContainer={setShowOrderArchiveModal}
+        showModalContainer={showActionModal}
+        setShowModalContainer={setShowActionModal}
         component={
           <ActionModal
-            name={orderArchivePayload.itemName}
+            name={orderActionPayload.itemName}
             action='Archive'
             performAction={archiveOrder}
-            isPerformingAction={isArchivingOrder}
-            setShowActionModal={setIsArchivingOrder}
+            isPerformingAction={isPerformingAction}
+            setShowActionModal={setIsPerformingAction}
           />
         }
       />
