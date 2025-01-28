@@ -5,7 +5,7 @@ import { checkCompanyAdmin } from '@lib/utils';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-export default function index() {
+export default function UserPage() {
   const router = useRouter();
   const { isUserLoading, isCustomer, customer } = useUser();
 

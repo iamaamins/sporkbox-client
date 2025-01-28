@@ -7,7 +7,6 @@ import { useEffect } from 'react';
 
 export default function ItemPage() {
   const router = useRouter();
-
   const { isUserLoading, customer, isCustomer } = useUser();
 
   useEffect(() => {

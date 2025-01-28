@@ -15,7 +15,6 @@ export default function CartPage() {
 
   return (
     <main>
-      {' '}
       {isUserLoading && <PageLoader />}
       {isCustomer && <Cart />}
     </main>

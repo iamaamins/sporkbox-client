@@ -51,8 +51,8 @@ export function checkCompanyAdmin(
   user: Customer | null,
   router: NextRouter
 ) {
-  if (!isUserLoading && !user) return router.push('/login');
-  if (user && !user.isCompanyAdmin) return router.push('/dashboard');
+  if (!isUserLoading && !user) router.push('/login');
+  if (user && !user.isCompanyAdmin) router.push('/dashboard');
 }
 
 // Update restaurants items
