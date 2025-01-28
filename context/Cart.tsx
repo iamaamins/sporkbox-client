@@ -113,6 +113,7 @@ export default function CartProvider({ children }: ContextProviderProps) {
 
     try {
       setIsCheckingOut(true);
+
       const response = await axiosInstance.post(`/orders/create-orders`, {
         orderItems,
         discountCodeId,

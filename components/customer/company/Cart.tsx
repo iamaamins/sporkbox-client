@@ -98,6 +98,7 @@ export default function Cart() {
 
     try {
       setIsCheckingOut(true);
+
       const response = await axiosInstance.post(`/orders/create-orders`, {
         orderItems,
         discountCodeId,
@@ -111,7 +112,7 @@ export default function Cart() {
         localStorage.removeItem(`company-admin-discount-${user._id}`);
 
         showSuccessAlert('Orders placed', setAlerts);
-        router.push('/admin/dashboard');
+        router.push('/company');
       }
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
