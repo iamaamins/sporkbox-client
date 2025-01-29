@@ -1,7 +1,12 @@
 import { FormEvent, useEffect, useState } from 'react';
 import styles from './Pricing.module.css';
 import { useUser } from '@context/User';
-import { axiosInstance, numberToUSD, showErrorAlert } from '@lib/utils';
+import {
+  axiosInstance,
+  getPastDate,
+  numberToUSD,
+  showErrorAlert,
+} from '@lib/utils';
 import { CustomAxiosError } from 'types';
 import { useAlert } from '@context/Alert';
 
@@ -35,12 +40,6 @@ function PaymentStat() {
     isLoading: true,
     data: null,
   });
-
-  function getPastDate(days: number) {
-    return new Date(new Date().setDate(new Date().getDate() - days))
-      .toISOString()
-      .split('T')[0];
-  }
 
   // Get order data
   useEffect(() => {

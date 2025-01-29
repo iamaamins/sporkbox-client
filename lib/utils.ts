@@ -394,3 +394,9 @@ export function getPayableAmount(
     return totalPayableAmount - discountAmount;
   }
 }
+
+export function getPastDate(days: number) {
+  return new Date(new Date().setDate(new Date().getDate() - days))
+    .toISOString()
+    .split('T')[0];
+}
