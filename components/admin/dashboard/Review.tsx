@@ -117,38 +117,44 @@ export default function Review() {
       ) : (
         review.data && (
           <div className={styles.tables}>
-            <table>
-              <thead>
-                <tr>
-                  <th>Number of reviews</th>
-                  <th>Average rating</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{review.data.reviewCount}</td>
-                  <td>{review.data.averageRating}</td>
-                </tr>
-              </tbody>
-            </table>
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Rating</th>
-                  <th>Comment</th>
-                </tr>
-              </thead>
-              <tbody>
-                {review.data.reviews.map((el) => (
-                  <tr key={el._id}>
-                    <td>{dateToText(el.date)}</td>
-                    <td>{el.rating}</td>
-                    <td>{el.comment}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            {review.data.reviewCount > 0 ? (
+              <>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Number of reviews</th>
+                      <th>Average rating</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{review.data.reviewCount}</td>
+                      <td>{review.data.averageRating}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Rating</th>
+                      <th>Comment</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {review.data.reviews.map((el) => (
+                      <tr key={el._id}>
+                        <td>{dateToText(el.date)}</td>
+                        <td>{el.rating}</td>
+                        <td>{el.comment}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </>
+            ) : (
+              <p className={styles.message}>No reviews found</p>
+            )}
           </div>
         )
       )}
