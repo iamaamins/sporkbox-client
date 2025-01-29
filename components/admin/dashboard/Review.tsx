@@ -129,7 +129,7 @@ export default function Review() {
                   <tbody>
                     <tr>
                       <td>{review.data.reviewCount}</td>
-                      <td>{review.data.averageRating}</td>
+                      <td>{review.data.averageRating.toFixed(2)}</td>
                     </tr>
                   </tbody>
                 </table>
