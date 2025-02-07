@@ -16,6 +16,8 @@ type Review = {
     reviews: {
       _id: string;
       date: string;
+      restaurant: string;
+      item: string;
       rating: number;
       comment: string;
     }[];
@@ -137,6 +139,8 @@ export default function Review() {
                   <thead>
                     <tr>
                       <th>Date</th>
+                      <th>Restaurant</th>
+                      <th>Item</th>
                       <th>Rating</th>
                       <th>Comment</th>
                     </tr>
@@ -145,6 +149,8 @@ export default function Review() {
                     {review.data.reviews.map((el) => (
                       <tr key={el._id}>
                         <td>{dateToText(el.date)}</td>
+                        <td>{el.restaurant}</td>
+                        <td>{el.item}</td>
                         <td>{el.rating}</td>
                         <td>{el.comment}</td>
                       </tr>
