@@ -23,13 +23,15 @@
   margin-bottom: 0.75rem;
 }
 
-.item input {
+.item input,
+.item select {
   padding: 12px;
   border-radius: 0.25rem;
   border: 1px solid var(--border_color);
 }
 
-.item input:focus {
+.item input:focus,
+.item select:focus {
   outline: none;
   border: 1px solid var(--teal);
 }

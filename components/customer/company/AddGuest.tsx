@@ -1,27 +1,28 @@
 import { useRouter } from 'next/router';
 import styles from './AddGuest.module.css';
 import { useAlert } from '@context/Alert';
-import { useData } from '@context/Data';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { axiosInstance, showErrorAlert, showSuccessAlert } from '@lib/utils';
 import { CustomAxiosError } from 'types';
 import SubmitButton from '@components/layout/SubmitButton';
+import { useUser } from '@context/User';
 
 export default function AddGuest() {
   const initialState = {
     firstName: '',
     lastName: '',
     email: '',
+    companyId: '',
   };
+  const { customer } = useUser();
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const { setGuests } = useData();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState(initialState);
 
-  const { firstName, lastName, email } = formData;
+  const { firstName, lastName, email, companyId } = formData;
 
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+  function handleChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value,
@@ -34,20 +35,12 @@ export default function AddGuest() {
     try {
       setIsLoading(true);
 
-      const response = await axiosInstance.post(
-        `/guests/add/${router.query.company}`,
-        formData
-      );
-
-      setGuests((prevState) => ({
-        ...prevState,
-        data: [...prevState.data, response.data],
-      }));
+      await axiosInstance.post(`/guests/add/${companyId}`, formData);
 
       setFormData(initialState);
       showSuccessAlert('Guest added', setAlerts);
 
-      router.push(`/admin/companies/${router.query.company}`);
+      router.push('/company');
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
@@ -90,6 +83,20 @@ export default function AddGuest() {
             value={email}
             onChange={handleChange}
           />
+        </div>
+
+        <div className={styles.item}>
+          <label htmlFor='companyId'>Shift*</label>
+          <select id='companyId' value={companyId} onChange={handleChange}>
+            <option>Please select a shift</option>
+            {customer?.companies.map((company) => (
+              <option value={company._id} key={company._id}>
+                {`${company.shift
+                  .slice(0, 1)
+                  .toUpperCase()}${company.shift.slice(1)}`}
+              </option>
+            ))}
+          </select>
         </div>
 
         <SubmitButton text='Add guest' isLoading={isLoading} />

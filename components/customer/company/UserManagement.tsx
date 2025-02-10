@@ -163,15 +163,21 @@ function Guests() {
 
   return (
     <div className={styles.guests}>
-      <form onSubmit={handleSearch} className={styles.search}>
-        <input
-          type='text'
-          value={query}
-          placeholder='Search guests...'
-          onChange={(e) => setQuery(e.target.value.toLowerCase())}
-        />
-        <IoSearch className={styles.search_icon} size={20} />
-      </form>
+      <div className={styles.guest_search_and_add}>
+        <form onSubmit={handleSearch} className={styles.search}>
+          <input
+            type='text'
+            value={query}
+            placeholder='Search guests...'
+            onChange={(e) => setQuery(e.target.value.toLowerCase())}
+          />
+          <IoSearch className={styles.search_icon} size={20} />
+        </form>
+        <Link href='/company/add-guest'>
+          <a className={styles.add_guest_button}>Add guest</a>
+        </Link>
+      </div>
+
       {allGuests.isLoading ? (
         <p className={styles.message}>Loading...</p>
       ) : guests.length > 0 ? (
