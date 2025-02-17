@@ -211,6 +211,7 @@ export function groupIdenticalOrders(orders: Order[]): IdenticalOrderGroup[] {
       order.restaurant._id +
       order.item._id +
       order.item.requiredAddons +
+      order.item.extraRequiredAddons +
       order.item.optionalAddons +
       order.item.removedIngredients;
 
@@ -228,6 +229,7 @@ export function groupIdenticalOrders(orders: Order[]): IdenticalOrderGroup[] {
         item: {
           name: order.item.name,
           requiredAddons: order.item.requiredAddons,
+          extraRequiredAddons: order.item.extraRequiredAddons,
           optionalAddons: order.item.optionalAddons,
           removedIngredients: order.item.removedIngredients,
         },
@@ -250,6 +252,12 @@ export function sortOrders<T extends Order | VendorUpcomingOrder>(a: T, b: T) {
   const requiredAddonsB = b.item.requiredAddons || '';
   const requiredAddonsComp = requiredAddonsA.localeCompare(requiredAddonsB);
   if (requiredAddonsComp) return requiredAddonsComp;
+
+  const extraRequiredAddonsA = a.item.extraRequiredAddons || '';
+  const extraRequiredAddonsB = b.item.extraRequiredAddons || '';
+  const extraRequiredAddonsComp =
+    extraRequiredAddonsA.localeCompare(extraRequiredAddonsB);
+  if (extraRequiredAddonsComp) return extraRequiredAddonsComp;
 
   const optionalAddonsA = a.item.optionalAddons || '';
   const optionalAddonsB = b.item.optionalAddons || '';
@@ -346,8 +354,14 @@ export function getPayableAmount(
   const cartDateTotalDetails = cartItems.map((cartItem) => {
     const optionalAddonsPrice = getAddonsTotal(cartItem.optionalAddons);
     const requiredAddonsPrice = getAddonsTotal(cartItem.requiredAddons);
+    const extraRequiredAddonsPrice = getAddonsTotal(
+      cartItem.extraRequiredAddons
+    );
+
     const totalAddonsPrice =
-      (optionalAddonsPrice || 0) + (requiredAddonsPrice || 0);
+      (optionalAddonsPrice || 0) +
+      (requiredAddonsPrice || 0) +
+      (extraRequiredAddonsPrice || 0);
 
     return {
       date: cartItem.deliveryDate,

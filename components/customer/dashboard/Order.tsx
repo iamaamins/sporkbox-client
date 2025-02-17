@@ -220,6 +220,15 @@ export default function Order() {
                     </>
                   )}
 
+                  {order.item.extraRequiredAddons && (
+                    <>
+                      <p className={styles.title}>Extra required addons</p>
+                      <p className={styles.addons}>
+                        {order.item.extraRequiredAddons}
+                      </p>
+                    </>
+                  )}
+
                   {order.item.removedIngredients && (
                     <>
                       <p className={styles.title}>Removed ingredients</p>
@@ -268,6 +277,15 @@ export default function Order() {
                       <p className={styles.title}>Required addons</p>
                       <p className={styles.addons}>
                         {order.item.requiredAddons}
+                      </p>
+                    </>
+                  )}
+
+                  {order.item.extraRequiredAddons && (
+                    <>
+                      <p className={styles.title}>Extra required addons</p>
+                      <p className={styles.addons}>
+                        {order.item.extraRequiredAddons}
                       </p>
                     </>
                   )}

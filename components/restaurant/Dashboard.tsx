@@ -122,6 +122,7 @@ export default function Dashboard() {
             name: order.item.name,
             optional: getAddonIngredients(order.item.optionalAddons),
             required: getAddonIngredients(order.item.requiredAddons),
+            extraRequired: getAddonIngredients(order.item.extraRequiredAddons),
             removed: getAddonIngredients(order.item.removedIngredients),
           },
         });
@@ -130,13 +131,16 @@ export default function Dashboard() {
     labels.sort((a, b) => {
       const restaurantComp = a.restaurant.localeCompare(b.restaurant);
       if (restaurantComp) return restaurantComp;
+
       const itemComp = a.item.name.localeCompare(b.item.name);
       if (itemComp) return itemComp;
+
       return a.customer.lastName.localeCompare(b.customer.lastName);
     });
 
     const blob = await pdf(<Labels labels={labels} />).toBlob();
     const url = URL.createObjectURL(blob);
+
     const a = document.createElement('a');
     a.href = url;
     a.download = `Labels - ${dateToText(+date)}.pdf`;
@@ -146,9 +150,10 @@ export default function Dashboard() {
   type IdenticalItemGroup = {
     item: {
       name: string;
-      requiredAddons?: string;
-      optionalAddons?: string;
-      removedIngredients?: string;
+      requiredAddons: string;
+      extraRequiredAddons: string;
+      optionalAddons: string;
+      removedIngredients: string;
     };
     quantity: number;
   };
@@ -158,6 +163,7 @@ export default function Dashboard() {
       const key =
         order.item._id +
         order.item.requiredAddons +
+        order.item.extraRequiredAddons +
         order.item.optionalAddons +
         order.item.removedIngredients;
 
@@ -166,6 +172,7 @@ export default function Dashboard() {
           item: {
             name: order.item.name,
             requiredAddons: order.item.requiredAddons,
+            extraRequiredAddons: order.item.extraRequiredAddons,
             optionalAddons: order.item.optionalAddons,
             removedIngredients: order.item.removedIngredients,
           },
@@ -292,7 +299,8 @@ export default function Dashboard() {
                         <td>{group.quantity}</td>
                         <td>
                           {group.item.optionalAddons}{' '}
-                          {group.item.requiredAddons}
+                          {group.item.requiredAddons}{' '}
+                          {group.item.extraRequiredAddons}
                         </td>
                         <td>{group.item.removedIngredients}</td>
                       </tr>

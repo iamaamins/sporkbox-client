@@ -171,6 +171,7 @@ export type VendorUpcomingOrderItem = {
   quantity: number;
   optionalAddons: string;
   requiredAddons: string;
+  extraRequiredAddons: string;
   removedIngredients: string;
 };
 
@@ -333,9 +334,10 @@ export type Order = {
     description: string;
     quantity: number;
     total: number;
-    optionalAddons?: string;
-    requiredAddons?: string;
-    removedIngredients?: string;
+    optionalAddons: string;
+    requiredAddons: string;
+    extraRequiredAddons: string;
+    removedIngredients: string;
   };
 };
 
@@ -347,9 +349,10 @@ export interface CustomerOrder {
     total: number;
     image: string;
     quantity: number;
-    optionalAddons?: string;
-    requiredAddons?: string;
-    removedIngredients?: string;
+    optionalAddons: string;
+    requiredAddons: string;
+    extraRequiredAddons: string;
+    removedIngredients: string;
   };
   payment?: {
     distributed: number;
@@ -514,9 +517,10 @@ export type IdenticalOrderGroup = {
   };
   item: {
     name: string;
-    requiredAddons?: string;
-    optionalAddons?: string;
-    removedIngredients?: string;
+    requiredAddons: string;
+    extraRequiredAddons: string;
+    optionalAddons: string;
+    removedIngredients: string;
   };
   total: number;
   quantity: number;

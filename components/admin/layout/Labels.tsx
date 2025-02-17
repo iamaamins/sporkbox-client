@@ -78,6 +78,7 @@ type Label = {
   item: {
     name: string;
     required: string;
+    extraRequired: string;
     removed: string;
     optional: string;
   };
@@ -114,11 +115,14 @@ export default function Labels({ labels }: Props) {
           const restaurant = label.restaurant.trim();
           const item = label.item.name.trim();
           const required = label.item.required.trim();
+          const extraRequired = label.item.extraRequired.trim();
           const removed = label.item.removed.trim();
           const optional = label.item.optional.trim();
-          const requiredRemoved = `${required} ${removed}`.trim();
 
+          const requiredRemoved =
+            `${required} ${extraRequired} ${removed}`.trim();
           const hasOptionalTexts = !!requiredRemoved || !!optional;
+
           const lineWidth = styles.line.width;
 
           const fontSize = Math.min(
