@@ -96,6 +96,7 @@ export default function Cart() {
       deliveryDate: cartItem.deliveryDate,
       optionalAddons: cartItem.optionalAddons,
       requiredAddons: cartItem.requiredAddons,
+      extraRequiredAddons: cartItem.extraRequiredAddons,
       removedIngredients: cartItem.removableIngredients,
     }));
 

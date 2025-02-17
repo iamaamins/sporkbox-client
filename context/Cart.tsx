@@ -42,6 +42,14 @@ export default function CartProvider({ children }: ContextProviderProps) {
         setAlerts
       );
     }
+    if (
+      initialItem.extraRequiredAddons.length < item.extraRequiredAddons.addable
+    ) {
+      return showErrorAlert(
+        `Please add ${item.extraRequiredAddons.addable} extra required addons`,
+        setAlerts
+      );
+    }
 
     let updatedCartItems: CartItem[] = [];
     if (
@@ -66,6 +74,7 @@ export default function CartProvider({ children }: ContextProviderProps) {
             addonPrice: initialItem.addonPrice,
             optionalAddons: initialItem.optionalAddons,
             requiredAddons: initialItem.requiredAddons,
+            extraRequiredAddons: initialItem.extraRequiredAddons,
             removableIngredients: initialItem.removableIngredients,
           };
         } else {
@@ -108,6 +117,7 @@ export default function CartProvider({ children }: ContextProviderProps) {
       deliveryDate: cartItem.deliveryDate,
       optionalAddons: cartItem.optionalAddons,
       requiredAddons: cartItem.requiredAddons,
+      extraRequiredAddons: cartItem.extraRequiredAddons,
       removedIngredients: cartItem.removableIngredients,
     }));
 
@@ -143,11 +153,9 @@ export default function CartProvider({ children }: ContextProviderProps) {
 
   // Get cart total quantity
   useEffect(() => {
-    if (cartItems.length) {
-      setTotalCartQuantity(
-        cartItems.reduce((acc, item) => acc + item.quantity, 0)
-      );
-    }
+    setTotalCartQuantity(
+      cartItems.reduce((acc, item) => acc + item.quantity, 0)
+    );
   }, [cartItems]);
 
   // Get cart items from local storage

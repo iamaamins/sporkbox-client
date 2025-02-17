@@ -124,6 +124,18 @@ export default function Item() {
                   </p>
                 </>
               )}
+              {item.extraRequiredAddons.addons && (
+                <>
+                  <p className={styles.title}>
+                    Extra required addons - {item.extraRequiredAddons.addable}{' '}
+                    addable
+                  </p>
+                  <p className={styles.ingredients}>
+                    {formatAddons(item.extraRequiredAddons.addons).join(', ')}
+                  </p>
+                </>
+              )}
+
               {item.removableIngredients && (
                 <div>
                   <p className={styles.title}>Removable ingredients</p>

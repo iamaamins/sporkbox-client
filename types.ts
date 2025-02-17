@@ -284,6 +284,7 @@ export interface CartItem {
   deliveryDate: number;
   optionalAddons: string[];
   requiredAddons: string[];
+  extraRequiredAddons: string[];
   removableIngredients: string[];
 }
 
@@ -460,6 +461,7 @@ export interface RemovableIngredients extends Addons {}
 export type AddonsOrRemovableIngredientsType =
   | 'requiredAddons'
   | 'optionalAddons'
+  | 'extraRequiredAddons'
   | 'removableIngredients';
 
 export type SetAddonsOrRemovableIngredients = Dispatch<

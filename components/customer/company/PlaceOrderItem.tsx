@@ -46,6 +46,7 @@ export default function PlaceOrderItem() {
     deliveryDate: 0,
     optionalAddons: [],
     requiredAddons: [],
+    extraRequiredAddons: [],
     removableIngredients: [],
   };
   const router = useRouter();
@@ -56,6 +57,7 @@ export default function PlaceOrderItem() {
     useState<UpcomingRestaurant>();
   const [optionalAddons, setOptionalAddons] = useState<Addons>();
   const [requiredAddons, setRequiredAddons] = useState<Addons>();
+  const [extraRequiredAddons, setExtraRequiredAddons] = useState<Addons>();
   const [removableIngredients, setRemovableIngredients] =
     useState<RemovableIngredients>();
   const [initialItem, setInitialItem] = useState<InitialItem>(initialState);
@@ -93,6 +95,14 @@ export default function PlaceOrderItem() {
         setAlerts
       );
     }
+    if (
+      initialItem.extraRequiredAddons.length < item.extraRequiredAddons.addable
+    ) {
+      return showErrorAlert(
+        `Please add ${item.extraRequiredAddons.addable} extra required addons`,
+        setAlerts
+      );
+    }
 
     let updatedCartItems: CartItem[] = [];
     if (
@@ -117,6 +127,7 @@ export default function PlaceOrderItem() {
             addonPrice: initialItem.addonPrice,
             optionalAddons: initialItem.optionalAddons,
             requiredAddons: initialItem.requiredAddons,
+            extraRequiredAddons: initialItem.extraRequiredAddons,
             removableIngredients: initialItem.removableIngredients,
           };
         } else {
@@ -140,7 +151,9 @@ export default function PlaceOrderItem() {
     dataType: AddonsOrRemovableIngredientsType
   ) {
     if (
-      (dataType === 'optionalAddons' || dataType === 'requiredAddons') &&
+      (dataType === 'optionalAddons' ||
+        dataType === 'requiredAddons' ||
+        dataType === 'extraRequiredAddons') &&
       item &&
       item[dataType].addable === initialItem[dataType].length &&
       e.target.checked
@@ -170,7 +183,9 @@ export default function PlaceOrderItem() {
     setInitialItem((prevState) => ({
       ...prevState,
       addonPrice:
-        (dataType === 'optionalAddons' || dataType === 'requiredAddons') &&
+        (dataType === 'optionalAddons' ||
+          dataType === 'requiredAddons' ||
+          dataType === 'extraRequiredAddons') &&
         e.target.name.split('-').length > 1
           ? e.target.checked
             ? prevState.addonPrice +
@@ -263,6 +278,7 @@ export default function PlaceOrderItem() {
             price: item.price,
             optionalAddons: [],
             requiredAddons: [],
+            extraRequiredAddons: [],
             removableIngredients: [],
             restaurantId: upcomingRestaurant._id,
             shift: upcomingRestaurant.company.shift,
@@ -283,6 +299,7 @@ export default function PlaceOrderItem() {
               addonPrice: itemInCart.addonPrice,
               optionalAddons: itemInCart.optionalAddons,
               requiredAddons: itemInCart.requiredAddons,
+              extraRequiredAddons: itemInCart.extraRequiredAddons,
               removableIngredients: itemInCart.removableIngredients,
             });
           } else {
@@ -312,6 +329,22 @@ export default function PlaceOrderItem() {
                   return { ...acc, [ingredient]: false };
                 }
               }, {})
+            );
+          }
+
+          if (item.extraRequiredAddons.addons) {
+            setExtraRequiredAddons(
+              formatAddons(item.extraRequiredAddons.addons).reduce(
+                (acc, curr) => {
+                  const ingredient = curr.trim();
+                  if (itemInCart?.extraRequiredAddons.includes(ingredient)) {
+                    return { ...acc, [ingredient]: true };
+                  } else {
+                    return { ...acc, [ingredient]: false };
+                  }
+                },
+                {}
+              )
             );
           }
 
@@ -394,6 +427,22 @@ export default function PlaceOrderItem() {
                         data={requiredAddons}
                         setData={setRequiredAddons}
                         dataType='requiredAddons'
+                        handleChange={changeAddonsOrRemovableIngredients}
+                      />
+                    )}
+                  </div>
+                )}
+                {item.extraRequiredAddons.addons && (
+                  <div className={styles.required_addons}>
+                    <p>
+                      Extra required add-ons - must choose{' '}
+                      {item.extraRequiredAddons.addable}
+                    </p>
+                    {extraRequiredAddons && (
+                      <AddonsOrRemovableIngredients
+                        data={extraRequiredAddons}
+                        setData={setExtraRequiredAddons}
+                        dataType='extraRequiredAddons'
                         handleChange={changeAddonsOrRemovableIngredients}
                       />
                     )}
