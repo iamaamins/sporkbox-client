@@ -29,6 +29,10 @@ export default function EditItem() {
       addons: '',
       addable: 0,
     },
+    extraRequiredAddons: {
+      addons: '',
+      addable: 0,
+    },
     removableIngredients: '',
   };
 
@@ -49,6 +53,7 @@ export default function EditItem() {
     description,
     optionalAddons,
     requiredAddons,
+    extraRequiredAddons,
     removableIngredients,
   } = formData;
 
@@ -68,6 +73,7 @@ export default function EditItem() {
           description: item.description,
           optionalAddons: item.optionalAddons,
           requiredAddons: item.requiredAddons,
+          extraRequiredAddons: item.extraRequiredAddons,
           removableIngredients: item.removableIngredients,
           tags: splitTags(item.tags).filter((currTag) =>
             dietaryTags.data.includes(currTag)
@@ -89,6 +95,7 @@ export default function EditItem() {
     data.append('description', description);
     data.append('optionalAddons', JSON.stringify(optionalAddons));
     data.append('requiredAddons', JSON.stringify(requiredAddons));
+    data.append('extraRequiredAddons', JSON.stringify(extraRequiredAddons));
     data.append('removableIngredients', removableIngredients as string);
 
     try {
@@ -101,6 +108,7 @@ export default function EditItem() {
 
       updateVendors(response.data, setVendors);
       showSuccessAlert('Item updated', setAlerts);
+
       router.push(`/admin/restaurants/${router.query.restaurant}`);
     } catch (err) {
       console.log(err);

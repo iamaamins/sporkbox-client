@@ -110,6 +110,10 @@ export type Item = {
     addons: string;
     addable: number;
   };
+  extraRequiredAddons: {
+    addons: string;
+    addable: number;
+  };
   reviews: Review[];
   averageRating?: number;
   popularityIndex?: number;
@@ -415,6 +419,10 @@ export interface ItemFormData {
     addable: number;
   };
   requiredAddons: {
+    addons: string;
+    addable: number;
+  };
+  extraRequiredAddons: {
     addons: string;
     addable: number;
   };

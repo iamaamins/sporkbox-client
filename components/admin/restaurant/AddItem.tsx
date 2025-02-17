@@ -27,6 +27,10 @@ export default function AddItem() {
       addons: '',
       addable: 0,
     },
+    extraRequiredAddons: {
+      addons: '',
+      addable: 0,
+    },
     removableIngredients: '',
   };
 
@@ -45,6 +49,7 @@ export default function AddItem() {
     description,
     optionalAddons,
     requiredAddons,
+    extraRequiredAddons,
     removableIngredients,
   } = formData;
 
@@ -69,6 +74,7 @@ export default function AddItem() {
     data.append('description', description);
     data.append('optionalAddons', JSON.stringify(optionalAddons));
     data.append('requiredAddons', JSON.stringify(requiredAddons));
+    data.append('extraRequiredAddons', JSON.stringify(extraRequiredAddons));
     data.append('removableIngredients', removableIngredients as string);
 
     try {
@@ -81,6 +87,7 @@ export default function AddItem() {
 
       updateVendors(response.data, setVendors);
       setFormData(initialState);
+
       showSuccessAlert('Item added', setAlerts);
       router.push(`/admin/restaurants/${router.query.restaurant}`);
     } catch (err) {
