@@ -110,7 +110,7 @@ export default function Cart() {
       });
 
       if (typeof response.data === 'string') {
-        open(response.data);
+        location.replace(response.data);
       } else {
         localStorage.removeItem(`admin-cart-${user._id}`);
         localStorage.removeItem(`admin-discount-${user._id}`);

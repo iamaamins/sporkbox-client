@@ -107,7 +107,7 @@ export default function Cart() {
       });
 
       if (typeof response.data === 'string') {
-        open(response.data);
+        location.replace(response.data);
       } else {
         localStorage.removeItem(`company-admin-cart-${user._id}`);
         localStorage.removeItem(`company-admin-discount-${user._id}`);

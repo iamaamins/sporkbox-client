@@ -128,7 +128,7 @@ export default function CartProvider({ children }: ContextProviderProps) {
       });
 
       if (typeof response.data === 'string') {
-        open(response.data);
+        location.replace(response.data);
       } else {
         setCartItems([]);
         localStorage.removeItem(`cart-${customer._id}`);
