@@ -407,6 +407,7 @@ export function getPayableAmount(
 
     return totalPayableAmount - discountAmount;
   }
+  return 0;
 }
 
 export function getPastDate(days: number) {

@@ -26,7 +26,7 @@ export default function Cart() {
   const [appliedDiscount, setAppliedDiscount] =
     useState<AppliedDiscount | null>(null);
   const [isApplyingDiscount, setIsApplyingDiscount] = useState(false);
-  const [payableAmount, setPayableAmount] = useState<number>();
+  const [payableAmount, setPayableAmount] = useState<number>(0);
   const { customerUpcomingOrders, customerDeliveredOrders } = useData();
   const [allOrders, setAllOrders] = useState<{
     isLoading: boolean;
@@ -155,7 +155,7 @@ export default function Cart() {
               </div>
             ))}
           </div>
-          {!appliedDiscount && payableAmount && payableAmount > 0 && (
+          {!appliedDiscount && payableAmount > 0 && (
             <form
               onSubmit={applyDiscount}
               className={styles.apply_discount_form}
