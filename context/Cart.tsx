@@ -38,7 +38,7 @@ export default function CartProvider({ children }: ContextProviderProps) {
   function addItemToCart(initialItem: CartItem, item: Item) {
     if (initialItem.requiredAddons.length < item.requiredAddons.addable) {
       return showErrorAlert(
-        `Please add ${item.requiredAddons.addable} required addons`,
+        `Please add ${item.requiredAddons.addable} req. add-on 1`,
         setAlerts
       );
     }
@@ -46,7 +46,7 @@ export default function CartProvider({ children }: ContextProviderProps) {
       initialItem.extraRequiredAddons.length < item.extraRequiredAddons.addable
     ) {
       return showErrorAlert(
-        `Please add ${item.extraRequiredAddons.addable} extra required addons`,
+        `Please add ${item.extraRequiredAddons.addable} req. add-on 2`,
         setAlerts
       );
     }

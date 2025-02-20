@@ -12,8 +12,8 @@ export default function UserOrders({ orderGroups }: Props) {
           <th>Date</th>
           <th>Item</th>
           <th className={styles.hide_on_mobile}>Optional addons</th>
-          <th className={styles.hide_on_mobile}>Required addons</th>
-          <th className={styles.hide_on_mobile}>Extra required addons</th>
+          <th className={styles.hide_on_mobile}>Req. add-on 1</th>
+          <th className={styles.hide_on_mobile}>Req. add-on 2</th>
           <th className={styles.hide_on_mobile}>Removed</th>
           <th>Quantity</th>
           <th className={styles.hide_on_mobile}>Restaurant</th>

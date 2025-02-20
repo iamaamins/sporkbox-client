@@ -157,7 +157,7 @@ export default function Labels({ labels }: Props) {
                 </Text>
                 <Text style={[styles.line, { fontSize }]}>
                   {hasRequiredAndRemoved
-                    ? `${required} ${extraRequired} . ${removed}`
+                    ? `${required} ${extraRequired} - ${removed}`
                     : `${requiredRemoved}`}
                 </Text>
                 <Text style={[styles.line, { fontSize }]}>{optional}</Text>

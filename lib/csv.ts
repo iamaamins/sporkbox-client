@@ -75,11 +75,11 @@ export const orderCSVHeaders = [
     key: 'optionalAddons',
   },
   {
-    label: 'Required addons',
+    label: 'Req. add-on 1',
     key: 'requiredAddons',
   },
   {
-    label: 'Extra required addons',
+    label: 'Req. add-on 2',
     key: 'extraRequiredAddons',
   },
   {

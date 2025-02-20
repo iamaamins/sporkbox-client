@@ -141,7 +141,7 @@ export default function ItemForm({
       </div>
       <div className={styles.addons}>
         <div>
-          <label htmlFor='requiredAddons'>Required addons </label>
+          <label htmlFor='requiredAddons'>Req. add-on 1</label>
           <input
             type='text'
             name='addons'
@@ -152,7 +152,7 @@ export default function ItemForm({
           />
         </div>
         <div>
-          <label htmlFor='requiredAddable'>Required addable</label>
+          <label htmlFor='requiredAddable'>Req. add-on 1 addable</label>
           <input
             type='number'
             name='addable'
@@ -165,7 +165,7 @@ export default function ItemForm({
       </div>
       <div className={styles.addons}>
         <div>
-          <label htmlFor='extraRequiredAddons'>Extra required addons</label>
+          <label htmlFor='extraRequiredAddons'>Req. add-on 2</label>
           <input
             type='text'
             name='addons'
@@ -176,7 +176,7 @@ export default function ItemForm({
           />
         </div>
         <div>
-          <label htmlFor='extraRequiredAddons'>Extra required addable</label>
+          <label htmlFor='extraRequiredAddons'>Req. add-on 2 addable</label>
           <input
             type='number'
             name='addable'

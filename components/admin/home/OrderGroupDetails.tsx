@@ -249,10 +249,8 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                   <tr>
                     <th className={styles.hide_on_mobile}>Shift</th>
                     <th>Dish</th>
-                    <th className={styles.hide_on_mobile}>Required addons</th>
-                    <th className={styles.hide_on_mobile}>
-                      Extra required addons
-                    </th>
+                    <th className={styles.hide_on_mobile}>Req. add-on 1</th>
+                    <th className={styles.hide_on_mobile}>Req. add-on 2</th>
                     <th className={styles.hide_on_mobile}>Optional addons</th>
                     <th className={styles.hide_on_mobile}>Removed</th>
                     <th>Item price</th>

@@ -213,7 +213,7 @@ export default function Order() {
 
                   {order.item.requiredAddons && (
                     <>
-                      <p className={styles.title}>Required addons</p>
+                      <p className={styles.title}>Req. add-on 1</p>
                       <p className={styles.addons}>
                         {order.item.requiredAddons}
                       </p>
@@ -222,7 +222,7 @@ export default function Order() {
 
                   {order.item.extraRequiredAddons && (
                     <>
-                      <p className={styles.title}>Extra required addons</p>
+                      <p className={styles.title}>Req. add-on 2</p>
                       <p className={styles.addons}>
                         {order.item.extraRequiredAddons}
                       </p>
@@ -274,7 +274,7 @@ export default function Order() {
 
                   {order.item.requiredAddons && (
                     <>
-                      <p className={styles.title}>Required addons</p>
+                      <p className={styles.title}>Req. add-on 1</p>
                       <p className={styles.addons}>
                         {order.item.requiredAddons}
                       </p>
@@ -283,7 +283,7 @@ export default function Order() {
 
                   {order.item.extraRequiredAddons && (
                     <>
-                      <p className={styles.title}>Extra required addons</p>
+                      <p className={styles.title}>Req. add-on 2</p>
                       <p className={styles.addons}>
                         {order.item.extraRequiredAddons}
                       </p>

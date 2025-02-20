@@ -117,7 +117,7 @@ export default function Item() {
               {item.requiredAddons.addons && (
                 <>
                   <p className={styles.title}>
-                    Required addons - {item.requiredAddons.addable} addable
+                    Req. add-on 1 - {item.requiredAddons.addable} addable
                   </p>
                   <p className={styles.ingredients}>
                     {formatAddons(item.requiredAddons.addons).join(', ')}
@@ -127,8 +127,7 @@ export default function Item() {
               {item.extraRequiredAddons.addons && (
                 <>
                   <p className={styles.title}>
-                    Extra required addons - {item.extraRequiredAddons.addable}{' '}
-                    addable
+                    Req. add-on 2 - {item.extraRequiredAddons.addable} addable
                   </p>
                   <p className={styles.ingredients}>
                     {formatAddons(item.extraRequiredAddons.addons).join(', ')}
