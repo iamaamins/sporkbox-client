@@ -39,8 +39,8 @@ export default function PlaceOrderItem() {
     restaurantId: '',
     deliveryDate: 0,
     optionalAddons: [],
-    requiredAddonOne: [],
-    requiredAddonTwo: [],
+    requiredAddonsOne: [],
+    requiredAddonsTwo: [],
     removableIngredients: [],
   };
   const router = useRouter();
@@ -51,8 +51,8 @@ export default function PlaceOrderItem() {
   const [upcomingRestaurant, setUpcomingRestaurant] =
     useState<UpcomingRestaurant>();
   const [optionalAddons, setOptionalAddons] = useState<Addons>();
-  const [requiredAddonOne, setRequiredAddonOne] = useState<Addons>();
-  const [requiredAddonTwo, setRequiredAddonTwo] = useState<Addons>();
+  const [requiredAddonsOne, setRequiredAddonsOne] = useState<Addons>();
+  const [requiredAddonsTwo, setRequiredAddonsTwo] = useState<Addons>();
   const [removableIngredients, setRemovableIngredients] =
     useState<RemovableIngredients>();
   const [initialItem, setInitialItem] = useState<InitialItem>(initialState);
@@ -86,8 +86,8 @@ export default function PlaceOrderItem() {
   ) {
     if (
       (dataType === 'optionalAddons' ||
-        dataType === 'requiredAddonOne' ||
-        dataType === 'requiredAddonTwo') &&
+        dataType === 'requiredAddonsOne' ||
+        dataType === 'requiredAddonsTwo') &&
       item &&
       item[dataType].addable === initialItem[dataType].length &&
       e.target.checked
@@ -118,8 +118,8 @@ export default function PlaceOrderItem() {
       ...prevState,
       addonPrice:
         (dataType === 'optionalAddons' ||
-          dataType === 'requiredAddonOne' ||
-          dataType === 'requiredAddonTwo') &&
+          dataType === 'requiredAddonsOne' ||
+          dataType === 'requiredAddonsTwo') &&
         e.target.name.split('-').length > 1
           ? e.target.checked
             ? prevState.addonPrice +
@@ -163,8 +163,8 @@ export default function PlaceOrderItem() {
             name: item.name,
             price: item.price,
             optionalAddons: [],
-            requiredAddonOne: [],
-            requiredAddonTwo: [],
+            requiredAddonsOne: [],
+            requiredAddonsTwo: [],
             removableIngredients: [],
             restaurantId: upcomingRestaurant._id,
             shift: upcomingRestaurant.company.shift,
@@ -184,8 +184,8 @@ export default function PlaceOrderItem() {
               quantity: itemInCart.quantity,
               addonPrice: itemInCart.addonPrice,
               optionalAddons: itemInCart.optionalAddons,
-              requiredAddonOne: itemInCart.requiredAddonOne,
-              requiredAddonTwo: itemInCart.requiredAddonTwo,
+              requiredAddonsOne: itemInCart.requiredAddonsOne,
+              requiredAddonsTwo: itemInCart.requiredAddonsTwo,
               removableIngredients: itemInCart.removableIngredients,
             });
           } else {
@@ -205,29 +205,35 @@ export default function PlaceOrderItem() {
             );
           }
 
-          if (item.requiredAddonOne.addons) {
-            setRequiredAddonOne(
-              formatAddons(item.requiredAddonOne.addons).reduce((acc, curr) => {
-                const ingredient = curr.trim();
-                if (itemInCart?.requiredAddonOne.includes(ingredient)) {
-                  return { ...acc, [ingredient]: true };
-                } else {
-                  return { ...acc, [ingredient]: false };
-                }
-              }, {})
+          if (item.requiredAddonsOne.addons) {
+            setRequiredAddonsOne(
+              formatAddons(item.requiredAddonsOne.addons).reduce(
+                (acc, curr) => {
+                  const ingredient = curr.trim();
+                  if (itemInCart?.requiredAddonsOne.includes(ingredient)) {
+                    return { ...acc, [ingredient]: true };
+                  } else {
+                    return { ...acc, [ingredient]: false };
+                  }
+                },
+                {}
+              )
             );
           }
 
-          if (item.requiredAddonTwo.addons) {
-            setRequiredAddonTwo(
-              formatAddons(item.requiredAddonTwo.addons).reduce((acc, curr) => {
-                const ingredient = curr.trim();
-                if (itemInCart?.requiredAddonTwo.includes(ingredient)) {
-                  return { ...acc, [ingredient]: true };
-                } else {
-                  return { ...acc, [ingredient]: false };
-                }
-              }, {})
+          if (item.requiredAddonsTwo.addons) {
+            setRequiredAddonsTwo(
+              formatAddons(item.requiredAddonsTwo.addons).reduce(
+                (acc, curr) => {
+                  const ingredient = curr.trim();
+                  if (itemInCart?.requiredAddonsTwo.includes(ingredient)) {
+                    return { ...acc, [ingredient]: true };
+                  } else {
+                    return { ...acc, [ingredient]: false };
+                  }
+                },
+                {}
+              )
             );
           }
 
@@ -299,33 +305,33 @@ export default function PlaceOrderItem() {
                     )}
                   </div>
                 )}
-                {item.requiredAddonOne.addons && (
+                {item.requiredAddonsOne.addons && (
                   <div className={styles.required_addons}>
                     <p>
                       Required add-ons - must choose{' '}
-                      {item.requiredAddonOne.addable}
+                      {item.requiredAddonsOne.addable}
                     </p>
-                    {requiredAddonOne && (
+                    {requiredAddonsOne && (
                       <AddonsOrRemovableIngredients
-                        data={requiredAddonOne}
-                        setData={setRequiredAddonOne}
-                        dataType='requiredAddonOne'
+                        data={requiredAddonsOne}
+                        setData={setRequiredAddonsOne}
+                        dataType='requiredAddonsOne'
                         handleChange={changeAddonsOrRemovableIngredients}
                       />
                     )}
                   </div>
                 )}
-                {item.requiredAddonTwo.addons && (
+                {item.requiredAddonsTwo.addons && (
                   <div className={styles.required_addons}>
                     <p>
                       Extra required add-ons - must choose{' '}
-                      {item.requiredAddonTwo.addable}
+                      {item.requiredAddonsTwo.addable}
                     </p>
-                    {requiredAddonTwo && (
+                    {requiredAddonsTwo && (
                       <AddonsOrRemovableIngredients
-                        data={requiredAddonTwo}
-                        setData={setRequiredAddonTwo}
-                        dataType='requiredAddonTwo'
+                        data={requiredAddonsTwo}
+                        setData={setRequiredAddonsTwo}
+                        dataType='requiredAddonsTwo'
                         handleChange={changeAddonsOrRemovableIngredients}
                       />
                     )}

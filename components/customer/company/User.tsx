@@ -195,12 +195,12 @@ function Orders({ orders, setUser, hasOrderAction }: Props) {
 
   const hasOptionalAddons = orders.some((order) => order.item.optionalAddons);
 
-  const hasRequiredAddonOne = orders.some(
-    (order) => order.item.requiredAddonOne
+  const hasRequiredAddonsOne = orders.some(
+    (order) => order.item.requiredAddonsOne
   );
 
-  const hasRequiredAddonTwo = orders.some(
-    (order) => order.item.requiredAddonTwo
+  const hasRequiredAddonsTwo = orders.some(
+    (order) => order.item.requiredAddonsTwo
   );
 
   const hasRemovedIngredients = orders.some(
@@ -243,10 +243,10 @@ function Orders({ orders, setUser, hasOrderAction }: Props) {
             {hasOptionalAddons && (
               <th className={styles.hide_on_mobile}>Optional addons</th>
             )}
-            {hasRequiredAddonOne && (
+            {hasRequiredAddonsOne && (
               <th className={styles.hide_on_mobile}>Req. add-on 1</th>
             )}
-            {hasRequiredAddonTwo && (
+            {hasRequiredAddonsTwo && (
               <th className={styles.hide_on_mobile}>Req. add-on 2</th>
             )}
             {hasRemovedIngredients && (
@@ -268,14 +268,14 @@ function Orders({ orders, setUser, hasOrderAction }: Props) {
                   {order.item.optionalAddons}
                 </td>
               )}
-              {hasRequiredAddonOne && (
+              {hasRequiredAddonsOne && (
                 <td className={`${styles.hide_on_mobile} ${styles.addons}`}>
-                  {order.item.requiredAddonOne}
+                  {order.item.requiredAddonsOne}
                 </td>
               )}
-              {hasRequiredAddonTwo && (
+              {hasRequiredAddonsTwo && (
                 <td className={`${styles.hide_on_mobile} ${styles.addons}`}>
-                  {order.item.requiredAddonTwo}
+                  {order.item.requiredAddonsTwo}
                 </td>
               )}
               {hasRemovedIngredients && (

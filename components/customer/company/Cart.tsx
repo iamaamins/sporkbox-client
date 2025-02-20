@@ -92,8 +92,8 @@ export default function Cart() {
       restaurantId: cartItem.restaurantId,
       deliveryDate: cartItem.deliveryDate,
       optionalAddons: cartItem.optionalAddons,
-      requiredAddonOne: cartItem.requiredAddonOne,
-      requiredAddonTwo: cartItem.requiredAddonTwo,
+      requiredAddonsOne: cartItem.requiredAddonsOne,
+      requiredAddonsTwo: cartItem.requiredAddonsTwo,
       removedIngredients: cartItem.removableIngredients,
     }));
 

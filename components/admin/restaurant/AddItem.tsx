@@ -23,11 +23,11 @@ export default function AddItem() {
       addons: '',
       addable: 0,
     },
-    requiredAddonOne: {
+    requiredAddonsOne: {
       addons: '',
       addable: 0,
     },
-    requiredAddonTwo: {
+    requiredAddonsTwo: {
       addons: '',
       addable: 0,
     },
@@ -48,8 +48,8 @@ export default function AddItem() {
     tags,
     description,
     optionalAddons,
-    requiredAddonOne,
-    requiredAddonTwo,
+    requiredAddonsOne,
+    requiredAddonsTwo,
     removableIngredients,
   } = formData;
 
@@ -73,8 +73,8 @@ export default function AddItem() {
     data.append('index', index as string);
     data.append('description', description);
     data.append('optionalAddons', JSON.stringify(optionalAddons));
-    data.append('requiredAddonOne', JSON.stringify(requiredAddonOne));
-    data.append('requiredAddonTwo', JSON.stringify(requiredAddonTwo));
+    data.append('requiredAddonsOne', JSON.stringify(requiredAddonsOne));
+    data.append('requiredAddonsTwo', JSON.stringify(requiredAddonsTwo));
     data.append('removableIngredients', removableIngredients as string);
 
     try {

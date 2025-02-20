@@ -270,12 +270,12 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                         <td
                           className={`${styles.ingredients} ${styles.hide_on_mobile}`}
                         >
-                          {group.item.requiredAddonOne}
+                          {group.item.requiredAddonsOne}
                         </td>
                         <td
                           className={`${styles.ingredients} ${styles.hide_on_mobile}`}
                         >
-                          {group.item.requiredAddonTwo}
+                          {group.item.requiredAddonsTwo}
                         </td>
                         <td
                           className={`${styles.ingredients} ${styles.hide_on_mobile}`}

@@ -25,11 +25,11 @@ export default function EditItem() {
       addons: '',
       addable: 0,
     },
-    requiredAddonOne: {
+    requiredAddonsOne: {
       addons: '',
       addable: 0,
     },
-    requiredAddonTwo: {
+    requiredAddonsTwo: {
       addons: '',
       addable: 0,
     },
@@ -52,8 +52,8 @@ export default function EditItem() {
     tags,
     description,
     optionalAddons,
-    requiredAddonOne,
-    requiredAddonTwo,
+    requiredAddonsOne,
+    requiredAddonsTwo,
     removableIngredients,
   } = formData;
 
@@ -72,8 +72,8 @@ export default function EditItem() {
           image: item.image,
           description: item.description,
           optionalAddons: item.optionalAddons,
-          requiredAddonOne: item.requiredAddonOne,
-          requiredAddonTwo: item.requiredAddonTwo,
+          requiredAddonsOne: item.requiredAddonsOne,
+          requiredAddonsTwo: item.requiredAddonsTwo,
           removableIngredients: item.removableIngredients,
           tags: splitTags(item.tags).filter((currTag) =>
             dietaryTags.data.includes(currTag)
@@ -94,8 +94,8 @@ export default function EditItem() {
     image && data.append('image', image);
     data.append('description', description);
     data.append('optionalAddons', JSON.stringify(optionalAddons));
-    data.append('requiredAddonOne', JSON.stringify(requiredAddonOne));
-    data.append('requiredAddonTwo', JSON.stringify(requiredAddonTwo));
+    data.append('requiredAddonsOne', JSON.stringify(requiredAddonsOne));
+    data.append('requiredAddonsTwo', JSON.stringify(requiredAddonsTwo));
     data.append('removableIngredients', removableIngredients as string);
 
     try {

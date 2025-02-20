@@ -29,10 +29,10 @@ export default function UserOrders({ orderGroups }: Props) {
               {group.item.optionalAddons}
             </td>
             <td className={`${styles.hide_on_mobile} ${styles.addons}`}>
-              {group.item.requiredAddonOne}
+              {group.item.requiredAddonsOne}
             </td>
             <td className={`${styles.hide_on_mobile} ${styles.addons}`}>
-              {group.item.requiredAddonTwo}
+              {group.item.requiredAddonsTwo}
             </td>
             <td
               className={`${styles.hide_on_mobile} ${styles.removed_ingredients}`}

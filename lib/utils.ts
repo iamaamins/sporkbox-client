@@ -210,8 +210,8 @@ export function groupIdenticalOrders(orders: Order[]): IdenticalOrderGroup[] {
       order.delivery.date +
       order.restaurant._id +
       order.item._id +
-      order.item.requiredAddonOne +
-      order.item.requiredAddonTwo +
+      order.item.requiredAddonsOne +
+      order.item.requiredAddonsTwo +
       order.item.optionalAddons +
       order.item.removedIngredients;
 
@@ -228,8 +228,8 @@ export function groupIdenticalOrders(orders: Order[]): IdenticalOrderGroup[] {
         },
         item: {
           name: order.item.name,
-          requiredAddonOne: order.item.requiredAddonOne,
-          requiredAddonTwo: order.item.requiredAddonTwo,
+          requiredAddonsOne: order.item.requiredAddonsOne,
+          requiredAddonsTwo: order.item.requiredAddonsTwo,
           optionalAddons: order.item.optionalAddons,
           removedIngredients: order.item.removedIngredients,
         },
@@ -248,18 +248,18 @@ export function sortOrders<T extends Order | VendorUpcomingOrder>(a: T, b: T) {
   const itemNameComp = a.item.name.localeCompare(b.item.name);
   if (itemNameComp) return itemNameComp;
 
-  const requiredAddonOneA = a.item.requiredAddonOne || '';
-  const requiredAddonOneB = b.item.requiredAddonOne || '';
-  const requiredAddonOneComp =
-    requiredAddonOneA.localeCompare(requiredAddonOneB);
-  if (requiredAddonOneComp) return requiredAddonOneComp;
+  const requiredAddonsOneA = a.item.requiredAddonsOne || '';
+  const requiredAddonsOneB = b.item.requiredAddonsOne || '';
+  const requiredAddonsOneComp =
+    requiredAddonsOneA.localeCompare(requiredAddonsOneB);
+  if (requiredAddonsOneComp) return requiredAddonsOneComp;
 
-  const extraRequiredAddonTwoA = a.item.requiredAddonTwo || '';
-  const extraRequiredAddonTwoB = b.item.requiredAddonTwo || '';
-  const extraRequiredAddonTwoComp = extraRequiredAddonTwoA.localeCompare(
-    extraRequiredAddonTwoB
+  const extraRequiredAddonsTwoA = a.item.requiredAddonsTwo || '';
+  const extraRequiredAddonsTwoB = b.item.requiredAddonsTwo || '';
+  const extraRequiredAddonsTwoComp = extraRequiredAddonsTwoA.localeCompare(
+    extraRequiredAddonsTwoB
   );
-  if (extraRequiredAddonTwoComp) return extraRequiredAddonTwoComp;
+  if (extraRequiredAddonsTwoComp) return extraRequiredAddonsTwoComp;
 
   const optionalAddonsA = a.item.optionalAddons || '';
   const optionalAddonsB = b.item.optionalAddons || '';
@@ -355,17 +355,17 @@ export function getPayableAmount(
 
   const cartDateTotalDetails = cartItems.map((cartItem) => {
     const optionalAddonsPrice = getAddonsTotal(cartItem.optionalAddons);
-    const requiredAddonOnePrice = getAddonsTotal(cartItem.requiredAddonOne);
-    const requiredAddonTwoPrice = getAddonsTotal(cartItem.requiredAddonTwo);
+    const requiredAddonsOnePrice = getAddonsTotal(cartItem.requiredAddonsOne);
+    const requiredAddonsTwoPrice = getAddonsTotal(cartItem.requiredAddonsTwo);
 
-    const totalAddonPrice =
+    const totalAddonsPrice =
       (optionalAddonsPrice || 0) +
-      (requiredAddonOnePrice || 0) +
-      (requiredAddonTwoPrice || 0);
+      (requiredAddonsOnePrice || 0) +
+      (requiredAddonsTwoPrice || 0);
 
     return {
       date: cartItem.deliveryDate,
-      total: (cartItem.price + totalAddonPrice) * cartItem.quantity,
+      total: (cartItem.price + totalAddonsPrice) * cartItem.quantity,
     };
   });
 

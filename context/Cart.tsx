@@ -36,15 +36,15 @@ export default function CartProvider({ children }: ContextProviderProps) {
   const [totalCartQuantity, setTotalCartQuantity] = useState(0);
 
   function addItemToCart(initialItem: CartItem, item: Item) {
-    if (initialItem.requiredAddonOne.length < item.requiredAddonOne.addable) {
+    if (initialItem.requiredAddonsOne.length < item.requiredAddonsOne.addable) {
       return showErrorAlert(
-        `Please add ${item.requiredAddonOne.addable} req. add-on 1`,
+        `Please add ${item.requiredAddonsOne.addable} req. add-on 1`,
         setAlerts
       );
     }
-    if (initialItem.requiredAddonTwo.length < item.requiredAddonTwo.addable) {
+    if (initialItem.requiredAddonsTwo.length < item.requiredAddonsTwo.addable) {
       return showErrorAlert(
-        `Please add ${item.requiredAddonTwo.addable} req. add-on 2`,
+        `Please add ${item.requiredAddonsTwo.addable} req. add-on 2`,
         setAlerts
       );
     }
@@ -71,8 +71,8 @@ export default function CartProvider({ children }: ContextProviderProps) {
             quantity: initialItem.quantity,
             addonPrice: initialItem.addonPrice,
             optionalAddons: initialItem.optionalAddons,
-            requiredAddonOne: initialItem.requiredAddonOne,
-            requiredAddonTwo: initialItem.requiredAddonTwo,
+            requiredAddonsOne: initialItem.requiredAddonsOne,
+            requiredAddonsTwo: initialItem.requiredAddonsTwo,
             removableIngredients: initialItem.removableIngredients,
           };
         } else {
@@ -114,8 +114,8 @@ export default function CartProvider({ children }: ContextProviderProps) {
       restaurantId: cartItem.restaurantId,
       deliveryDate: cartItem.deliveryDate,
       optionalAddons: cartItem.optionalAddons,
-      requiredAddonOne: cartItem.requiredAddonOne,
-      requiredAddonTwo: cartItem.requiredAddonTwo,
+      requiredAddonsOne: cartItem.requiredAddonsOne,
+      requiredAddonsTwo: cartItem.requiredAddonsTwo,
       removedIngredients: cartItem.removableIngredients,
     }));
 
