@@ -118,10 +118,11 @@ export default function Labels({ labels }: Props) {
           const extraRequired = label.item.extraRequired.trim();
           const removed = label.item.removed.trim();
           const optional = label.item.optional.trim();
-
           const requiredRemoved =
             `${required} ${extraRequired} ${removed}`.trim();
+
           const hasOptionalTexts = !!requiredRemoved || !!optional;
+          const hasRequiredAndRemoved = (required || extraRequired) && removed;
 
           const lineWidth = styles.line.width;
 
@@ -155,7 +156,9 @@ export default function Labels({ labels }: Props) {
                   {item}
                 </Text>
                 <Text style={[styles.line, { fontSize }]}>
-                  {requiredRemoved}
+                  {hasRequiredAndRemoved
+                    ? `${required} ${extraRequired} . ${removed}`
+                    : `${requiredRemoved}`}
                 </Text>
                 <Text style={[styles.line, { fontSize }]}>{optional}</Text>
               </View>
