@@ -36,17 +36,15 @@ export default function CartProvider({ children }: ContextProviderProps) {
   const [totalCartQuantity, setTotalCartQuantity] = useState(0);
 
   function addItemToCart(initialItem: CartItem, item: Item) {
-    if (initialItem.requiredAddons.length < item.requiredAddons.addable) {
+    if (initialItem.requiredAddonOne.length < item.requiredAddonOne.addable) {
       return showErrorAlert(
-        `Please add ${item.requiredAddons.addable} req. add-on 1`,
+        `Please add ${item.requiredAddonOne.addable} req. add-on 1`,
         setAlerts
       );
     }
-    if (
-      initialItem.extraRequiredAddons.length < item.extraRequiredAddons.addable
-    ) {
+    if (initialItem.requiredAddonTwo.length < item.requiredAddonTwo.addable) {
       return showErrorAlert(
-        `Please add ${item.extraRequiredAddons.addable} req. add-on 2`,
+        `Please add ${item.requiredAddonTwo.addable} req. add-on 2`,
         setAlerts
       );
     }
@@ -73,8 +71,8 @@ export default function CartProvider({ children }: ContextProviderProps) {
             quantity: initialItem.quantity,
             addonPrice: initialItem.addonPrice,
             optionalAddons: initialItem.optionalAddons,
-            requiredAddons: initialItem.requiredAddons,
-            extraRequiredAddons: initialItem.extraRequiredAddons,
+            requiredAddonOne: initialItem.requiredAddonOne,
+            requiredAddonTwo: initialItem.requiredAddonTwo,
             removableIngredients: initialItem.removableIngredients,
           };
         } else {
@@ -116,8 +114,8 @@ export default function CartProvider({ children }: ContextProviderProps) {
       restaurantId: cartItem.restaurantId,
       deliveryDate: cartItem.deliveryDate,
       optionalAddons: cartItem.optionalAddons,
-      requiredAddons: cartItem.requiredAddons,
-      extraRequiredAddons: cartItem.extraRequiredAddons,
+      requiredAddonOne: cartItem.requiredAddonOne,
+      requiredAddonTwo: cartItem.requiredAddonTwo,
       removedIngredients: cartItem.removableIngredients,
     }));
 

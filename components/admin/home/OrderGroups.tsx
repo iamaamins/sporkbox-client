@@ -74,10 +74,8 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
             item: {
               name: order.item.name,
               optional: getAddonIngredients(order.item.optionalAddons),
-              required: getAddonIngredients(order.item.requiredAddons),
-              extraRequired: getAddonIngredients(
-                order.item.extraRequiredAddons
-              ),
+              requiredOne: getAddonIngredients(order.item.requiredAddonOne),
+              requiredTwo: getAddonIngredients(order.item.requiredAddonTwo),
               removed: getAddonIngredients(order.item.removedIngredients),
             },
           });

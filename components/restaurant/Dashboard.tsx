@@ -121,8 +121,8 @@ export default function Dashboard() {
           item: {
             name: order.item.name,
             optional: getAddonIngredients(order.item.optionalAddons),
-            required: getAddonIngredients(order.item.requiredAddons),
-            extraRequired: getAddonIngredients(order.item.extraRequiredAddons),
+            requiredOne: getAddonIngredients(order.item.requiredAddonOne),
+            requiredTwo: getAddonIngredients(order.item.requiredAddonTwo),
             removed: getAddonIngredients(order.item.removedIngredients),
           },
         });
@@ -150,8 +150,8 @@ export default function Dashboard() {
   type IdenticalItemGroup = {
     item: {
       name: string;
-      requiredAddons: string;
-      extraRequiredAddons: string;
+      requiredAddonOne: string;
+      requiredAddonTwo: string;
       optionalAddons: string;
       removedIngredients: string;
     };
@@ -162,8 +162,8 @@ export default function Dashboard() {
     for (const order of orders) {
       const key =
         order.item._id +
-        order.item.requiredAddons +
-        order.item.extraRequiredAddons +
+        order.item.requiredAddonOne +
+        order.item.requiredAddonTwo +
         order.item.optionalAddons +
         order.item.removedIngredients;
 
@@ -171,8 +171,8 @@ export default function Dashboard() {
         orderMap[key] = {
           item: {
             name: order.item.name,
-            requiredAddons: order.item.requiredAddons,
-            extraRequiredAddons: order.item.extraRequiredAddons,
+            requiredAddonOne: order.item.requiredAddonOne,
+            requiredAddonTwo: order.item.requiredAddonTwo,
             optionalAddons: order.item.optionalAddons,
             removedIngredients: order.item.removedIngredients,
           },
@@ -299,8 +299,8 @@ export default function Dashboard() {
                         <td>{group.quantity}</td>
                         <td>
                           {group.item.optionalAddons}{' '}
-                          {group.item.requiredAddons}{' '}
-                          {group.item.extraRequiredAddons}
+                          {group.item.requiredAddonOne}{' '}
+                          {group.item.requiredAddonTwo}
                         </td>
                         <td>{group.item.removedIngredients}</td>
                       </tr>

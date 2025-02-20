@@ -77,8 +77,8 @@ type Label = {
   restaurant: string;
   item: {
     name: string;
-    required: string;
-    extraRequired: string;
+    requiredOne: string;
+    requiredTwo: string;
     removed: string;
     optional: string;
   };
@@ -114,15 +114,15 @@ export default function Labels({ labels }: Props) {
           }`.trim();
           const restaurant = label.restaurant.trim();
           const item = label.item.name.trim();
-          const required = label.item.required.trim();
-          const extraRequired = label.item.extraRequired.trim();
+          const requiredOne = label.item.requiredOne.trim();
+          const requiredTwo = label.item.requiredTwo.trim();
           const removed = label.item.removed.trim();
           const optional = label.item.optional.trim();
           const requiredRemoved =
-            `${required} ${extraRequired} ${removed}`.trim();
+            `${requiredOne} ${requiredTwo} ${removed}`.trim();
 
           const hasOptionalTexts = !!requiredRemoved || !!optional;
-          const hasRequiredAndRemoved = (required || extraRequired) && removed;
+          const hasRequiredAndRemoved = (requiredOne || requiredTwo) && removed;
 
           const lineWidth = styles.line.width;
 
@@ -157,7 +157,7 @@ export default function Labels({ labels }: Props) {
                 </Text>
                 <Text style={[styles.line, { fontSize }]}>
                   {hasRequiredAndRemoved
-                    ? `${required} ${extraRequired} - ${removed}`
+                    ? `${requiredOne} ${requiredTwo} - ${removed}`
                     : `${requiredRemoved}`}
                 </Text>
                 <Text style={[styles.line, { fontSize }]}>{optional}</Text>
