@@ -315,10 +315,10 @@ function Orders({ orders, hasOrderAction }: Props) {
               <th className={styles.hide_on_mobile}>Optional addons</th>
             )}
             {hasRequiredAddonsOne && (
-              <th className={styles.hide_on_mobile}>Req. add-on 1</th>
+              <th className={styles.hide_on_mobile}>RA1</th>
             )}
             {hasRequiredAddonsTwo && (
-              <th className={styles.hide_on_mobile}>Req. add-on 2</th>
+              <th className={styles.hide_on_mobile}>RA2</th>
             )}
             {hasRemovedIngredients && (
               <th className={styles.hide_on_mobile}>Removed</th>
