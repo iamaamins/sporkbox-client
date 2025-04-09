@@ -120,9 +120,9 @@ function getPastDate(days: number) {
     .split('T')[0];
 }
 
-async function getRestaurantStat<T>(
+async function getMostLikedStat<T>(
   range: Range,
-  statType: 'restaurants' | 'items',
+  type: 'restaurant' | 'item',
   customer: Customer,
   setStat: Dispatch<SetStateAction<T>>,
   setAlerts: Dispatch<SetStateAction<Alert[]>>
@@ -139,20 +139,14 @@ async function getRestaurantStat<T>(
 
   try {
     const response = await axiosInstance.get(
-      `/orders/${customer.companies[0].code}/restaurant-stat/${start}/${end}`
+      `/orders/${customer.companies[0].code}/${type}-stat/${start}/${end}`
     );
 
-    setStat((prevState) => ({
-      ...prevState,
-      data: response.data[statType],
-    }));
+    setStat((prevState) => ({ ...prevState, data: response.data }));
   } catch (err) {
     showErrorAlert(err as CustomAxiosError, setAlerts);
   } finally {
-    setStat((prevState) => ({
-      ...prevState,
-      isLoading: false,
-    }));
+    setStat((prevState) => ({ ...prevState, isLoading: false }));
   }
 }
 
@@ -217,9 +211,9 @@ function MostLikedRestaurants() {
 
   useEffect(() => {
     if (customer)
-      getRestaurantStat(
+      getMostLikedStat(
         range,
-        'restaurants',
+        'restaurant',
         customer,
         setMostLikedRestaurants,
         setAlerts
@@ -275,7 +269,7 @@ function MostLikedItems() {
 
   useEffect(() => {
     if (customer)
-      getRestaurantStat(range, 'items', customer, setMostLikedItems, setAlerts);
+      getMostLikedStat(range, 'item', customer, setMostLikedItems, setAlerts);
   }, [customer, range]);
 
   return (
