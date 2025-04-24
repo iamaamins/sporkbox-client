@@ -78,7 +78,7 @@ export default function Cart() {
 
   // Get payable amount
   useEffect(() => {
-    if (cartItems.length && customer && !allOrders.isLoading) {
+    if (customer && cartItems.length && !allOrders.isLoading) {
       const totalPayable = getTotalPayable(allOrders.data, cartItems, customer);
 
       setPayable({

@@ -29,26 +29,30 @@ export default function Cart() {
   const { customer } = useUser();
   const { setAlerts } = useAlert();
   const [discountCode, setDiscountCode] = useState('');
-  const [appliedDiscount, setAppliedDiscount] =
-    useState<AppliedDiscount | null>(null);
-  const [isApplyingDiscount, setIsApplyingDiscount] = useState(false);
   const [user, setUser] = useState<Customer | Guest>();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [allOrders, setAllOrders] = useState<{
     isLoading: boolean;
     data: CustomerOrder[];
   }>({ isLoading: true, data: [] });
-  const [payableAmount, setPayableAmount] = useState<number>(0);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [payable, setPayable] = useState({ has: true, net: 0, total: 0 });
+  const [discount, setDiscount] = useState<{
+    isApplying: boolean;
+    data: AppliedDiscount | null;
+  }>({ isApplying: false, data: null });
 
   async function applyDiscount(e: FormEvent) {
     e.preventDefault();
+
     try {
-      setIsApplyingDiscount(true);
+      setDiscount((prevState) => ({ ...prevState, isApplying: true }));
+
       const response = await axiosInstance.post(
         `/discount-code/apply/${discountCode}`
       );
-      setAppliedDiscount(response.data);
+
+      setDiscount((prevState) => ({ ...prevState, data: response.data }));
 
       localStorage.setItem(
         `company-admin-discount-${user?._id}`,
@@ -57,12 +61,12 @@ export default function Cart() {
     } catch (err) {
       showErrorAlert('Invalid discount code', setAlerts);
     } finally {
-      setIsApplyingDiscount(false);
+      setDiscount((prevState) => ({ ...prevState, isApplying: false }));
     }
   }
 
   function removeDiscount() {
-    setAppliedDiscount(null);
+    setDiscount((prevState) => ({ ...prevState, data: null }));
     localStorage.removeItem(`company-admin-discount-${user?._id}`);
   }
 
@@ -174,20 +178,20 @@ export default function Cart() {
   // Get payable amount
   useEffect(() => {
     if (
-      cartItems.length &&
       user &&
       user.role !== 'GUEST' &&
+      cartItems.length &&
       !allOrders.isLoading
     ) {
-      const payableAmount = getTotalPayable(
-        allOrders.data,
-        cartItems,
-        user,
-        appliedDiscount?.value || 0
-      );
-      setPayableAmount(payableAmount);
+      const totalPayable = getTotalPayable(allOrders.data, cartItems, user);
+
+      setPayable({
+        has: !!totalPayable,
+        total: totalPayable,
+        net: totalPayable - (discount.data?.value || 0),
+      });
     }
-  }, [user, allOrders, cartItems, appliedDiscount]);
+  }, [user, allOrders, cartItems, discount]);
 
   // Get saved discount
   useEffect(() => {
@@ -195,22 +199,25 @@ export default function Cart() {
       const savedDiscount = localStorage.getItem(
         `company-admin-discount-${user._id}`
       );
-      setAppliedDiscount(savedDiscount ? JSON.parse(savedDiscount) : null);
+
+      setDiscount((prevState) => ({
+        ...prevState,
+        data: savedDiscount ? JSON.parse(savedDiscount) : null,
+      }));
     }
   }, [customer, user, router]);
 
   // Remove discount
   useEffect(() => {
     if (
-      appliedDiscount &&
-      payableAmount &&
-      payableAmount <= 0 &&
       user &&
       user.role !== 'GUEST' &&
+      discount.data &&
+      !payable.has &&
       !allOrders.isLoading
     )
       removeDiscount();
-  }, [appliedDiscount, payableAmount, user, allOrders]);
+  }, [user, allOrders, discount, payable]);
 
   return (
     <section className={styles.cart}>
@@ -260,33 +267,32 @@ export default function Cart() {
               </div>
             ))}
           </div>
-          {!appliedDiscount &&
-            (payableAmount > 0 || user?.role === 'GUEST') && (
-              <form
-                onSubmit={applyDiscount}
-                className={styles.apply_discount_form}
-              >
-                <label htmlFor='discountCode'>Discount code</label>
-                <div>
-                  <input
-                    type='text'
-                    id='discountCode'
-                    value={discountCode}
-                    onChange={(e) => setDiscountCode(e.target.value)}
-                  />
-                  <input
-                    type='submit'
-                    value='Apply'
-                    onClick={applyDiscount}
-                    disabled={isApplyingDiscount || !discountCode}
-                  />
-                </div>
-              </form>
-            )}
-          {appliedDiscount && (
+          {!discount.data && (payable.total > 0 || user?.role === 'GUEST') && (
+            <form
+              onSubmit={applyDiscount}
+              className={styles.apply_discount_form}
+            >
+              <label htmlFor='discountCode'>Discount code</label>
+              <div>
+                <input
+                  type='text'
+                  id='discountCode'
+                  value={discountCode}
+                  onChange={(e) => setDiscountCode(e.target.value)}
+                />
+                <input
+                  type='submit'
+                  value='Apply'
+                  onClick={applyDiscount}
+                  disabled={discount.isApplying || !discountCode}
+                />
+              </div>
+            </form>
+          )}
+          {discount.data && (
             <div className={styles.applied_discount}>
               <p>
-                <span>{appliedDiscount.code}</span> applied
+                <span>{discount.data.code}</span> applied
               </p>
               <p onClick={removeDiscount}>Remove</p>
             </div>
@@ -294,12 +300,12 @@ export default function Cart() {
           <button
             disabled={isCheckingOut}
             className={styles.button}
-            onClick={() => checkout(appliedDiscount?._id)}
+            onClick={() => checkout(discount.data?._id)}
           >
             {isCheckingOut ? (
               <ButtonLoader />
-            ) : payableAmount && payableAmount > 0 ? (
-              `Checkout • ${numberToUSD(payableAmount)} USD`
+            ) : payable.net > 0 ? (
+              `Checkout • ${numberToUSD(payable.net)} USD`
             ) : (
               'Place order'
             )}
