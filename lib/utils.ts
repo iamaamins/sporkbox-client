@@ -333,11 +333,10 @@ export function getAddonIngredients(addons: string | undefined) {
   return ingredients.join(', ');
 }
 
-export function getPayableAmount(
+export function getTotalPayable(
   orders: CustomerOrder[],
   cartItems: CartItem[],
-  user: Customer | Guest,
-  discountAmount: number
+  user: Customer | Guest
 ) {
   const upcomingDateTotalDetails = orders
     .filter((order) =>
@@ -374,7 +373,7 @@ export function getPayableAmount(
 
   if (company) {
     const shiftBudget = company.shiftBudget;
-    const totalPayableAmount = cartItemDetails
+    const totalPayable = cartItemDetails
       .map((cartItemDetail) => {
         if (
           !upcomingOrderDetails.some(
@@ -405,7 +404,7 @@ export function getPayableAmount(
       .filter((detail) => detail.payable > 0)
       .reduce((acc, curr) => acc + curr.payable, 0);
 
-    return totalPayableAmount - discountAmount;
+    return totalPayable;
   }
   return 0;
 }

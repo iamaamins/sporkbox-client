@@ -10,7 +10,7 @@ import {
   numberToUSD,
   showErrorAlert,
   showSuccessAlert,
-  getPayableAmount,
+  getTotalPayable,
 } from '@lib/utils';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
@@ -179,7 +179,7 @@ export default function Cart() {
       user.role !== 'GUEST' &&
       !allOrders.isLoading
     ) {
-      const payableAmount = getPayableAmount(
+      const payableAmount = getTotalPayable(
         allOrders.data,
         cartItems,
         user,

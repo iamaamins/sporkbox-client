@@ -10,7 +10,7 @@ import {
   dateToText,
   numberToUSD,
   showErrorAlert,
-  getPayableAmount,
+  getTotalPayable,
 } from '@lib/utils';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
@@ -76,7 +76,7 @@ export default function Cart() {
   // Get payable amount
   useEffect(() => {
     if (cartItems.length && customer && !allOrders.isLoading) {
-      const payableAmount = getPayableAmount(
+      const payableAmount = getTotalPayable(
         allOrders.data,
         cartItems,
         customer,
