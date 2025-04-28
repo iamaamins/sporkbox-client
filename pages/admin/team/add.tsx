@@ -1,4 +1,4 @@
-import AddAdmin from '@components/admin/admin/AddAdmin';
+import AddAdmin from '@components/admin/team/AddAdmin';
 import PageLoader from '@components/layout/PageLoader';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';

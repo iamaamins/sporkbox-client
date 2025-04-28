@@ -1,0 +1,61 @@
+.container {
+  padding: var(--section_padding);
+}
+
+.container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.container th {
+  text-align: left;
+  padding: 1rem;
+}
+
+.container th:last-child,
+.container td:last-child {
+  text-align: right;
+}
+
+.container thead tr {
+  background-color: var(--almost_white);
+}
+
+.container td {
+  padding: 1rem;
+  font-weight: 500;
+  color: var(--gray);
+  font-size: 0.9rem;
+}
+
+.important a {
+  color: var(--black);
+  font-size: 1rem;
+}
+
+.restaurants span {
+  display: block;
+  padding: 2px 0px;
+}
+
+.hide_on_mobile {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 85%;
+    margin: 0 auto;
+  }
+
+  .hide_on_mobile {
+    display: table-cell;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 80%;
+    margin: 0 auto;
+  }
+}

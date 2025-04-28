@@ -18,6 +18,7 @@ import {
   OrderGroup,
   DietaryTags,
   Guests,
+  DriverOrders,
 } from 'types';
 import {
   axiosInstance,
@@ -46,6 +47,7 @@ type DataContext = {
   deliveredOrderGroups: OrderGroup[];
   allUpcomingOrders: AllUpcomingOrders;
   allDeliveredOrders: AllDeliveredOrders;
+  driverOrders: DriverOrders;
   upcomingRestaurants: UpcomingRestaurants;
   vendorUpcomingOrders: VendorUpcomingOrders;
   scheduledRestaurants: ScheduledRestaurants;
@@ -69,14 +71,11 @@ type DataContext = {
 const DataContext = createContext({} as DataContext);
 export const useData = () => useContext(DataContext);
 
-const initialState = {
-  data: [],
-  isLoading: true,
-};
+const initialState = { data: [], isLoading: true };
 
 export default function DataProvider({ children }: ContextProviderProps) {
   const { setAlerts } = useAlert();
-  const { isAdmin, isVendor, isCustomer, customer } = useUser();
+  const { isAdmin, isVendor, isCustomer, isDriver, customer } = useUser();
   const [allUpcomingOrders, setAllUpcomingOrders] =
     useState<AllUpcomingOrders>(initialState);
   const [scheduledRestaurants, setScheduledRestaurants] =
@@ -107,6 +106,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
     OrderGroup[]
   >([]);
   const [upcomingDates, setUpcomingDates] = useState<number[]>([]);
+  const [driverOrders, setDriverOrders] = useState<DriverOrders>(initialState);
 
   async function getDietaryTags() {
     try {
@@ -341,7 +341,6 @@ export default function DataProvider({ children }: ContextProviderProps) {
         );
         setVendorUpcomingOrders({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         setVendorUpcomingOrders((prevState) => ({
           ...prevState,
           isLoading: false,
@@ -351,6 +350,24 @@ export default function DataProvider({ children }: ContextProviderProps) {
     }
     if (isVendor) getUpcomingOrders();
   }, [isVendor]);
+
+  // Get drivers data
+  useEffect(() => {
+    async function getDriverOrders() {
+      try {
+        const response = await axiosInstance.get('/orders/driver-orders');
+
+        setDriverOrders({ isLoading: false, data: response.data });
+      } catch (err) {
+        setDriverOrders((prevState) => ({
+          ...prevState,
+          isLoading: false,
+        }));
+        showErrorAlert(err as CustomAxiosError, setAlerts);
+      }
+    }
+    if (isDriver) getDriverOrders();
+  }, [isDriver]);
 
   return (
     <DataContext.Provider
@@ -369,6 +386,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
         setDiscountCodes,
         allUpcomingOrders,
         allDeliveredOrders,
+        driverOrders,
         setAllDeliveredOrders,
         upcomingRestaurants,
         setAllUpcomingOrders,

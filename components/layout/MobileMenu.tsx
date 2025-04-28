@@ -6,7 +6,6 @@ import {
   MdLogout,
   MdDiscount,
   MdSpaceDashboard,
-  MdAdminPanelSettings,
   MdOutlineRestaurantMenu,
 } from 'react-icons/md';
 import { useData } from '@context/Data';
@@ -38,8 +37,10 @@ export default function MobileMenu({ isOpen, setIsOpen }: Props) {
     isAdmin,
     isVendor,
     isCustomer,
+    isDriver,
     setAdmin,
     setVendor,
+    setDriver,
     customer,
     setCustomer,
   } = useUser();
@@ -47,20 +48,20 @@ export default function MobileMenu({ isOpen, setIsOpen }: Props) {
   async function handleSignOut() {
     try {
       await axiosInstance.post(`/users/logout`, {});
+
       if (isAdmin) setAdmin(null);
       if (isVendor) setVendor(null);
       if (isCustomer) setCustomer(null);
+      if (isDriver) setDriver(null);
+
       setIsOpen(false);
     } catch (err) {
-      console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     }
   }
 
   useEffect(() => {
-    if (upcomingDates.length > 0) {
-      setDate(upcomingDates[0]);
-    }
+    if (upcomingDates.length > 0) setDate(upcomingDates[0]);
   }, [upcomingDates]);
 
   // Disable body scroll if MobileMenu is open
@@ -235,7 +236,9 @@ export default function MobileMenu({ isOpen, setIsOpen }: Props) {
         </li>
 
         <li
-          className={isAdmin || isVendor || isCustomer ? styles.hide : ''}
+          className={
+            isAdmin || isVendor || isCustomer || isDriver ? styles.hide : ''
+          }
           onClick={() => setIsOpen(false)}
         >
           <Link href='/login'>
@@ -265,7 +268,9 @@ export default function MobileMenu({ isOpen, setIsOpen }: Props) {
         </li>
 
         <li
-          className={!isAdmin && !isVendor && !isCustomer ? styles.hide : ''}
+          className={
+            !isAdmin && !isVendor && !isCustomer && !isDriver ? styles.hide : ''
+          }
           onClick={handleSignOut}
         >
           <span>
