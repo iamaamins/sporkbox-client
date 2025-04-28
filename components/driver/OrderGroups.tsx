@@ -30,7 +30,7 @@ export default function OrderGroups() {
             </thead>
             <tbody>
               {orderGroups.map((orderGroup, index) => (
-                <tr key={index} className={styles.container}>
+                <tr key={index}>
                   <td className={styles.important}>
                     <Link
                       href={`/driver/orders/${

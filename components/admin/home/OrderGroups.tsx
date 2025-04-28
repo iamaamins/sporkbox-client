@@ -161,7 +161,7 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
 
   return (
     <>
-      <section className={styles.orders_groups}>
+      <section className={styles.container}>
         {(allUpcomingOrders.isLoading || allDeliveredOrders.isLoading) && (
           <h2>Loading...</h2>
         )}
@@ -191,7 +191,7 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
               </thead>
               <tbody>
                 {orderGroups.map((orderGroup, index) => (
-                  <tr key={index} className={styles.orders_group_row}>
+                  <tr key={index}>
                     <td className={styles.important}>
                       <Link
                         href={`/admin/${slug}/${
