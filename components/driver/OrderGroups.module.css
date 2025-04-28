@@ -21,6 +21,10 @@
   background-color: var(--almost_white);
 }
 
+.container tbody tr {
+  border-bottom: 1px solid var(--border_color);
+}
+
 .container td {
   padding: 1rem;
   font-weight: 500;
