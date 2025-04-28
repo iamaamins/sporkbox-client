@@ -27,6 +27,46 @@
   background-color: var(--almost_white);
 }
 
+.orders_groups tbody tr {
+  border-bottom: 1px solid var(--border_color);
+}
+
+.orders_groups tbody tr td {
+  padding: 1rem;
+  font-weight: 500;
+  color: var(--gray);
+  font-size: 0.9rem;
+}
+
+.orders_groups tbody tr td:last-child {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.orders_groups tbody tr td:last-child span {
+  cursor: pointer;
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  color: var(--orange);
+}
+
+.orders_groups tbody tr td:last-child svg {
+  font-size: 18px;
+}
+
+.important a {
+  color: var(--black);
+  font-size: 1rem;
+}
+
+.restaurants span {
+  display: block;
+  padding: 2px 0px;
+}
+
 .hide_on_mobile {
   display: none;
 }

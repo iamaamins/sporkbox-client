@@ -91,7 +91,7 @@ export default function AddAdmin() {
           <select id='role' value={role} onChange={handleChange}>
             <option value='please select a role'>Please select a role</option>
             <option value='ADMIN'>Admin</option>
-            <option value='DELIVERY_DRIVER'>Delivery Driver</option>
+            <option value='DRIVER'>Delivery Driver</option>
           </select>
         </div>
 
