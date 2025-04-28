@@ -23,6 +23,7 @@ import { TbBuildingStore, TbBuildingSkyscraper } from 'react-icons/tb';
 import { currentYear, axiosInstance, showErrorAlert } from '@lib/utils';
 import { MdHome } from 'react-icons/md';
 import { RiBuildingLine } from 'react-icons/ri';
+import { AiOutlineTeam } from 'react-icons/ai';
 
 type Props = {
   isOpen: boolean;
@@ -192,9 +193,9 @@ export default function MobileMenu({ isOpen, setIsOpen }: Props) {
           className={!isAdmin ? styles.hide : ''}
           onClick={() => setIsOpen(false)}
         >
-          <Link href='/admin/add-admin'>
+          <Link href='/admin/team'>
             <a>
-              <MdAdminPanelSettings /> Add admin
+              <AiOutlineTeam /> Team
             </a>
           </Link>
         </li>
