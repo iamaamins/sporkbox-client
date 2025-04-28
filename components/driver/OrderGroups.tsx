@@ -17,46 +17,44 @@ export default function OrderGroups() {
           : 'Orders'}
       </h2>
       {orderGroups.length > 0 && (
-        <>
-          <table>
-            <thead>
-              <tr>
-                <th>Delivery date</th>
-                <th className={styles.hide_on_mobile}>Company code</th>
-                <th className={styles.hide_on_mobile}>Restaurant</th>
-                <th>Headcount</th>
-                <th>Orders</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orderGroups.map((orderGroup, index) => (
-                <tr key={index}>
-                  <td className={styles.important}>
-                    <Link
-                      href={`/driver/orders/${
-                        orderGroup.company.code
-                      }/${dateToMS(orderGroup.deliveryDate)}`}
-                    >
-                      <a>{dateToText(orderGroup.deliveryDate)} </a>
-                    </Link>
-                  </td>
-                  <td className={styles.hide_on_mobile}>
-                    {orderGroup.company.code}
-                  </td>
-                  <td
-                    className={`${styles.restaurants} ${styles.hide_on_mobile}`}
+        <table>
+          <thead>
+            <tr>
+              <th>Delivery date</th>
+              <th className={styles.hide_on_mobile}>Company code</th>
+              <th className={styles.hide_on_mobile}>Restaurant</th>
+              <th>Headcount</th>
+              <th>Orders</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orderGroups.map((orderGroup, index) => (
+              <tr key={index}>
+                <td className={styles.important}>
+                  <Link
+                    href={`/driver/orders/${orderGroup.company.code}/${dateToMS(
+                      orderGroup.deliveryDate
+                    )}`}
                   >
-                    {orderGroup.restaurants.map((restaurant) => (
-                      <span key={restaurant}>{restaurant}</span>
-                    ))}
-                  </td>
-                  <td>{orderGroup.customers.length}</td>
-                  <td>{orderGroup.orders.length}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </>
+                    <a>{dateToText(orderGroup.deliveryDate)} </a>
+                  </Link>
+                </td>
+                <td className={styles.hide_on_mobile}>
+                  {orderGroup.company.code}
+                </td>
+                <td
+                  className={`${styles.restaurants} ${styles.hide_on_mobile}`}
+                >
+                  {orderGroup.restaurants.map((restaurant) => (
+                    <span key={restaurant}>{restaurant}</span>
+                  ))}
+                </td>
+                <td>{orderGroup.customers.length}</td>
+                <td>{orderGroup.orders.length}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </section>
   );

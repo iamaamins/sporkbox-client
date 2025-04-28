@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useData } from '@context/Data';
-import ActionModal from '../layout/ActionModal';
+import ActionModal from '../admin/layout/ActionModal';
 import { useAlert } from '@context/Alert';
 import { useEffect, useState } from 'react';
 import { Order, CustomAxiosError, OrdersByRestaurant, OrderGroup } from 'types';
@@ -13,123 +13,81 @@ import {
   numberToUSD,
   sortOrders,
   groupIdenticalOrders,
+  createOrderGroups,
 } from '@lib/utils';
 import styles from './OrderGroupDetails.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
 
-type Props = { isLoading: boolean; orderGroups: OrderGroup[] };
 type DeliverOrdersPayload = { orders: Order[]; restaurantName: string };
 
-export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
+export default function OrderGroupDetails() {
   const router = useRouter();
   const { setAlerts } = useAlert();
-  const [orderId, setOrderId] = useState('');
-  const [amount, setAmount] = useState({
-    paid: 0,
-    total: 0,
-    discount: 0,
-  });
-  const {
-    allUpcomingOrders,
-    setAllUpcomingOrders,
-    allDeliveredOrders,
-    setAllDeliveredOrders,
-  } = useData();
-  const [isUpdatingOrdersStatus, setIsUpdatingOrdersStatus] = useState(false);
+  const { driverOrders, setDriverOrders } = useData();
+  //   const [amount, setAmount] = useState({
+  //     paid: 0,
+  //     total: 0,
+  //     discount: 0,
+  //   });
+  const [isDeliveringOrders, setIsDeliveringOrders] = useState(false);
   const [ordersByRestaurants, setOrdersByRestaurants] = useState<
     OrdersByRestaurant[]
   >([]);
-  const [statusUpdatePayload, setStatusUpdatePayload] =
+  const [deliverOrderPayload, setDeliverOrdersPayload] =
     useState<DeliverOrdersPayload>({
       orders: [],
       restaurantName: '',
     });
   const [showDeliveryModal, setShowDeliveryModal] = useState(false);
-  const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
-  const [isUpdatingOrderStatus, setIsUpdatingOrderStatus] = useState(false);
+
+  const orderGroups = createOrderGroups(driverOrders.data);
+  const date = dateToText(+(router.query.date as string));
+
+  const getOrdersQuantity = (orders: Order[]) =>
+    orders.reduce((acc, curr) => acc + curr.item.quantity, 0);
 
   function initiateOrdersDelivery(orders: Order[], restaurantName: string) {
     setShowDeliveryModal(true);
-    setStatusUpdatePayload({
+    setDeliverOrdersPayload({
       orders,
       restaurantName,
     });
   }
 
   async function deliverOrders() {
-    const orderIds = statusUpdatePayload.orders.map((order) => order._id);
+    const orderIds = deliverOrderPayload.orders.map((order) => order._id);
 
     try {
-      setIsUpdatingOrdersStatus(true);
-      await axiosInstance.patch('/orders/deliver', {
-        orderIds,
-      });
+      setIsDeliveringOrders(true);
+
+      await axiosInstance.patch('/orders/deliver', { orderIds });
+
       setOrdersByRestaurants((prevState) =>
         prevState.filter(
           (ordersByRestaurant) =>
             ordersByRestaurant.restaurantName !==
-            statusUpdatePayload.restaurantName
+            deliverOrderPayload.restaurantName
         )
       );
-      setAllUpcomingOrders((prevState) => ({
+
+      setDriverOrders((prevState) => ({
         ...prevState,
         data: prevState.data.filter((order) => !orderIds.includes(order._id)),
       }));
-      setAllDeliveredOrders((prevState) => ({
-        ...prevState,
-        data: [
-          ...prevState.data,
-          ...statusUpdatePayload.orders.map((order) => ({
-            ...order,
-            status: 'DELIVERED',
-          })),
-        ],
-      }));
+
       showSuccessAlert('Orders delivered', setAlerts);
       ordersByRestaurants.length === 1 && router.push('/admin');
     } catch (err) {
-      console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      setIsUpdatingOrdersStatus(false);
+      setIsDeliveringOrders(false);
       setShowDeliveryModal(false);
     }
   }
 
-  function initiateStatusUpdate(orderId: string) {
-    setShowStatusUpdateModal(true);
-    setOrderId(orderId);
-  }
-
-  async function updateStatus() {
-    try {
-      setIsUpdatingOrderStatus(true);
-      await axiosInstance.patch(`/orders/${orderId}/archive`);
-      setAllUpcomingOrders((prevState) => ({
-        ...prevState,
-        data: prevState.data.filter((order) => order._id !== orderId),
-      }));
-      showSuccessAlert('Order archived', setAlerts);
-      ordersByRestaurants
-        .map((ordersByRestaurant) => ordersByRestaurant.orders)
-        .flat().length === 1 && router.push('/admin');
-    } catch (err) {
-      console.log(err);
-      showErrorAlert(err as CustomAxiosError, setAlerts);
-    } finally {
-      setIsUpdatingOrderStatus(false);
-      setShowStatusUpdateModal(false);
-    }
-  }
-
-  const date = dateToText(+(router.query.date as string));
-
-  const getOrdersQuantity = (orders: Order[]) =>
-    orders.reduce((acc, curr) => acc + curr.item.quantity, 0);
-
-  // Separate order for each restaurant
+  // Separate orders for each restaurant
   useEffect(() => {
-    if (!isLoading && router.isReady) {
+    if (router.isReady && orderGroups.length > 0) {
       const orderGroup = orderGroups.find(
         (orderGroup) =>
           orderGroup.company.code === router.query.company &&
@@ -154,44 +112,46 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
         );
       }
     }
-  }, [router.isReady, isLoading, orderGroups]);
+  }, [router.isReady, orderGroups]);
 
-  // Get amounts
-  useEffect(() => {
-    if (!allUpcomingOrders.isLoading && !allDeliveredOrders.isLoading) {
-      const filterOrders = (order: Order) =>
-        order.company.code === router.query.company &&
-        dateToMS(order.delivery.date).toString() === router.query.date;
+  //   // Get amounts
+  //   useEffect(() => {
+  //     if (!allUpcomingOrders.isLoading && !allDeliveredOrders.isLoading) {
+  //       const filterOrders = (order: Order) =>
+  //         order.company.code === router.query.company &&
+  //         dateToMS(order.delivery.date).toString() === router.query.date;
 
-      const filteredOrders = [
-        ...allUpcomingOrders.data.filter(filterOrders),
-        ...allDeliveredOrders.data.filter(filterOrders),
-      ];
+  //       const filteredOrders = [
+  //         ...allUpcomingOrders.data.filter(filterOrders),
+  //         ...allDeliveredOrders.data.filter(filterOrders),
+  //       ];
 
-      const paidOrders: Order[] = [];
-      for (const order of filteredOrders) {
-        if (order.payment) paidOrders.push(order);
-      }
-      setAmount({
-        paid: paidOrders.reduce(
-          (acc, curr) => acc + (curr.payment?.distributed || 0),
-          0
-        ),
-        discount: filteredOrders.reduce(
-          (acc, curr) => acc + (curr.discount?.distributed || 0),
-          0
-        ),
-        total: filteredOrders.reduce((acc, curr) => acc + curr.item.total, 0),
-      });
-    }
-  }, [allUpcomingOrders, allDeliveredOrders]);
+  //       const paidOrders: Order[] = [];
+  //       for (const order of filteredOrders) {
+  //         if (order.payment) paidOrders.push(order);
+  //       }
+  //       setAmount({
+  //         paid: paidOrders.reduce(
+  //           (acc, curr) => acc + (curr.payment?.distributed || 0),
+  //           0
+  //         ),
+  //         discount: filteredOrders.reduce(
+  //           (acc, curr) => acc + (curr.discount?.distributed || 0),
+  //           0
+  //         ),
+  //         total: filteredOrders.reduce((acc, curr) => acc + curr.item.total, 0),
+  //       });
+  //     }
+  //   }, [allUpcomingOrders, allDeliveredOrders]);
 
   return (
     <section className={styles.container}>
       <h2>
-        {isLoading
-          ? 'Loading....'
-          : !isLoading && ordersByRestaurants.length === 0 && 'No orders found'}
+        {driverOrders.isLoading
+          ? 'Loading...'
+          : !driverOrders.isLoading &&
+            ordersByRestaurants.length === 0 &&
+            'No orders found'}
       </h2>
 
       {ordersByRestaurants.length > 0 && (
@@ -330,7 +290,6 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                     <th className={styles.hide_on_mobile}>Email</th>
                     <th className={styles.hide_on_mobile}>Shift</th>
                     <th>Dish</th>
-                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -348,64 +307,35 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                         {order.company.shift}
                       </td>
                       <td>{order.item.name}</td>
-                      <td>
-                        {order.status === 'PROCESSING' ? (
-                          <span
-                            className={styles.archive}
-                            onClick={(e) => initiateStatusUpdate(order._id)}
-                          >
-                            Archive
-                          </span>
-                        ) : (
-                          <span>Delivered</span>
-                        )}
-                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           ))}
-          <div>
-            <h2>Charge information - {date}</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Reimbursed</th>
-                  <th>Discount</th>
-                  <th>Paid</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    {numberToUSD(
-                      amount.total - (amount.paid + amount.discount)
-                    )}
-                  </td>
-                  <td>{numberToUSD(amount.discount)}</td>
-                  <td>{numberToUSD(amount.paid)}</td>
-                  <td>{numberToUSD(amount.total)}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          {/* <h2>Charge information - {date}</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Reimbursed</th>
+                <th>Discount</th>
+                <th>Paid</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  {numberToUSD(amount.total - (amount.paid + amount.discount))}
+                </td>
+                <td>{numberToUSD(amount.discount)}</td>
+                <td>{numberToUSD(amount.paid)}</td>
+                <td>{numberToUSD(amount.total)}</td>
+              </tr>
+            </tbody>
+          </table> */}
         </>
       )}
-      <ModalContainer
-        showModalContainer={showStatusUpdateModal}
-        setShowModalContainer={setShowStatusUpdateModal}
-        component={
-          <ActionModal
-            name='this order'
-            action='Archive'
-            performAction={updateStatus}
-            isPerformingAction={isUpdatingOrderStatus}
-            setShowActionModal={setShowStatusUpdateModal}
-          />
-        }
-      />
       <ModalContainer
         showModalContainer={showDeliveryModal}
         setShowModalContainer={setShowDeliveryModal}
@@ -414,7 +344,7 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
             name='delivery emails'
             action='send'
             performAction={deliverOrders}
-            isPerformingAction={isUpdatingOrdersStatus}
+            isPerformingAction={isDeliveringOrders}
             setShowActionModal={setShowDeliveryModal}
           />
         }

@@ -53,8 +53,7 @@
   justify-content: flex-end;
 }
 
-.send_email,
-.archive {
+.send_email {
   display: flex;
   align-items: center;
   justify-content: center;
