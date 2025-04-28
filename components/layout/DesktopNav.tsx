@@ -158,9 +158,9 @@ export default function DesktopNav() {
         </li>
 
         <li className={!isAdmin ? styles.hide : ''}>
-          <Link href='/admin/add-admin'>
-            <a className={pathName === '/admin/add-admin' ? styles.active : ''}>
-              Add admin
+          <Link href='/admin/team'>
+            <a className={pathName === '/admin/team' ? styles.active : ''}>
+              Team
             </a>
           </Link>
         </li>
