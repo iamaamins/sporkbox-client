@@ -66,6 +66,7 @@ type DataContext = {
   setCustomerDeliveredOrders: Dispatch<SetStateAction<CustomerDeliveredOrders>>;
   setScheduledRestaurants: Dispatch<SetStateAction<ScheduledRestaurants>>;
   setCustomerFavoriteItems: Dispatch<SetStateAction<CustomerFavoriteItems>>;
+  setDriverOrders: Dispatch<SetStateAction<DriverOrders>>;
 };
 
 const DataContext = createContext({} as DataContext);
@@ -390,6 +391,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
         setAllDeliveredOrders,
         upcomingRestaurants,
         setAllUpcomingOrders,
+        setDriverOrders,
         scheduledRestaurants,
         setScheduledRestaurants,
         customerFavoriteItems,
