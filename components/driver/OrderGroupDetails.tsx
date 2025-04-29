@@ -24,11 +24,6 @@ export default function OrderGroupDetails() {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const { driverOrders, setDriverOrders } = useData();
-  //   const [amount, setAmount] = useState({
-  //     paid: 0,
-  //     total: 0,
-  //     discount: 0,
-  //   });
   const [isDeliveringOrders, setIsDeliveringOrders] = useState(false);
   const [ordersByRestaurants, setOrdersByRestaurants] = useState<
     OrdersByRestaurant[]
@@ -76,7 +71,7 @@ export default function OrderGroupDetails() {
       }));
 
       showSuccessAlert('Orders delivered', setAlerts);
-      ordersByRestaurants.length === 1 && router.push('/admin');
+      ordersByRestaurants.length === 1 && router.push('/driver');
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
@@ -113,36 +108,6 @@ export default function OrderGroupDetails() {
       }
     }
   }, [router.isReady, orderGroups]);
-
-  //   // Get amounts
-  //   useEffect(() => {
-  //     if (!allUpcomingOrders.isLoading && !allDeliveredOrders.isLoading) {
-  //       const filterOrders = (order: Order) =>
-  //         order.company.code === router.query.company &&
-  //         dateToMS(order.delivery.date).toString() === router.query.date;
-
-  //       const filteredOrders = [
-  //         ...allUpcomingOrders.data.filter(filterOrders),
-  //         ...allDeliveredOrders.data.filter(filterOrders),
-  //       ];
-
-  //       const paidOrders: Order[] = [];
-  //       for (const order of filteredOrders) {
-  //         if (order.payment) paidOrders.push(order);
-  //       }
-  //       setAmount({
-  //         paid: paidOrders.reduce(
-  //           (acc, curr) => acc + (curr.payment?.distributed || 0),
-  //           0
-  //         ),
-  //         discount: filteredOrders.reduce(
-  //           (acc, curr) => acc + (curr.discount?.distributed || 0),
-  //           0
-  //         ),
-  //         total: filteredOrders.reduce((acc, curr) => acc + curr.item.total, 0),
-  //       });
-  //     }
-  //   }, [allUpcomingOrders, allDeliveredOrders]);
 
   return (
     <section className={styles.container}>
@@ -313,27 +278,6 @@ export default function OrderGroupDetails() {
               </table>
             </div>
           ))}
-          {/* <h2>Charge information - {date}</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Reimbursed</th>
-                <th>Discount</th>
-                <th>Paid</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  {numberToUSD(amount.total - (amount.paid + amount.discount))}
-                </td>
-                <td>{numberToUSD(amount.discount)}</td>
-                <td>{numberToUSD(amount.paid)}</td>
-                <td>{numberToUSD(amount.total)}</td>
-              </tr>
-            </tbody>
-          </table> */}
         </>
       )}
       <ModalContainer
