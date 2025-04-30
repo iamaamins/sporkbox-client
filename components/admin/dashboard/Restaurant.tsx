@@ -95,9 +95,9 @@ function getPastDate(days: number) {
     .split('T')[0];
 }
 
-async function getRestaurantStat<T>(
+async function getMostLikedStat<T>(
   range: Range,
-  statType: 'restaurants' | 'items',
+  type: 'restaurant' | 'item',
   setStat: Dispatch<SetStateAction<T>>,
   setAlerts: Dispatch<SetStateAction<Alert[]>>
 ) {
@@ -113,20 +113,14 @@ async function getRestaurantStat<T>(
 
   try {
     const response = await axiosInstance.get(
-      `/orders/restaurant-stat/${start}/${end}`
+      `/orders/${type}-stat/${start}/${end}`
     );
 
-    setStat((prevState) => ({
-      ...prevState,
-      data: response.data[statType],
-    }));
+    setStat((prevState) => ({ ...prevState, data: response.data }));
   } catch (err) {
     showErrorAlert(err as CustomAxiosError, setAlerts);
   } finally {
-    setStat((prevState) => ({
-      ...prevState,
-      isLoading: false,
-    }));
+    setStat((prevState) => ({ ...prevState, isLoading: false }));
   }
 }
 
@@ -183,20 +177,12 @@ function MostLikedRestaurants() {
   const { isAdmin } = useUser();
   const { setAlerts } = useAlert();
   const [mostLikedRestaurants, setMostLikedRestaurants] =
-    useState<MostLikedRestaurants>({
-      isLoading: true,
-      data: [],
-    });
+    useState<MostLikedRestaurants>({ isLoading: true, data: [] });
   const [range, setRange] = useState({ start: '', end: '' });
 
   useEffect(() => {
     if (isAdmin)
-      getRestaurantStat(
-        range,
-        'restaurants',
-        setMostLikedRestaurants,
-        setAlerts
-      );
+      getMostLikedStat(range, 'restaurant', setMostLikedRestaurants, setAlerts);
   }, [isAdmin, range]);
 
   return (
@@ -247,8 +233,7 @@ function MostLikedItems() {
   const [range, setRange] = useState({ start: '', end: '' });
 
   useEffect(() => {
-    if (isAdmin)
-      getRestaurantStat(range, 'items', setMostLikedItems, setAlerts);
+    if (isAdmin) getMostLikedStat(range, 'item', setMostLikedItems, setAlerts);
   }, [isAdmin, range]);
 
   return (

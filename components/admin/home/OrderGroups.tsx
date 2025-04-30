@@ -74,7 +74,8 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
             item: {
               name: order.item.name,
               optional: getAddonIngredients(order.item.optionalAddons),
-              required: getAddonIngredients(order.item.requiredAddons),
+              requiredOne: getAddonIngredients(order.item.requiredAddonsOne),
+              requiredTwo: getAddonIngredients(order.item.requiredAddonsTwo),
               removed: getAddonIngredients(order.item.removedIngredients),
             },
           });
@@ -84,13 +85,16 @@ export default function OrderGroups({ slug, title, orderGroups }: Props) {
     labels.sort((a, b) => {
       const restaurantComp = a.restaurant.localeCompare(b.restaurant);
       if (restaurantComp) return restaurantComp;
+
       const itemComp = a.item.name.localeCompare(b.item.name);
       if (itemComp) return itemComp;
+
       return a.customer.lastName.localeCompare(b.customer.lastName);
     });
 
     const blob = await pdf(<Labels labels={labels} />).toBlob();
     const url = URL.createObjectURL(blob);
+
     const a = document.createElement('a');
     a.href = url;
     a.download = `Labels - ${dateToText(labelFilters.deliveryDate)}.pdf`;

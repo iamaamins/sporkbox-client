@@ -75,8 +75,12 @@ export const orderCSVHeaders = [
     key: 'optionalAddons',
   },
   {
-    label: 'Required addons',
-    key: 'requiredAddons',
+    label: 'Req. add-on 1',
+    key: 'requiredAddonsOne',
+  },
+  {
+    label: 'Req. add-on 2',
+    key: 'requiredAddonsTwo',
   },
   {
     label: 'Removed ingredients',
@@ -109,7 +113,8 @@ export const formatOrderDataToCSV = (orderGroup: OrderGroup) =>
       firstName: curr.customer.firstName,
       restaurantName: curr.restaurant.name,
       optionalAddons: curr.item.optionalAddons,
-      requiredAddons: curr.item.requiredAddons,
+      requiredAddonsOne: curr.item.requiredAddonsOne,
+      requiredAddonsTwo: curr.item.requiredAddonsTwo,
       removedIngredients: curr.item.removedIngredients,
       deliveryDate: dateToText(curr.delivery.date),
       shift: `${curr.company.shift[0].toUpperCase()}${curr.company.shift.slice(

@@ -249,7 +249,8 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                   <tr>
                     <th className={styles.hide_on_mobile}>Shift</th>
                     <th>Dish</th>
-                    <th className={styles.hide_on_mobile}>Required addons</th>
+                    <th className={styles.hide_on_mobile}>RA1</th>
+                    <th className={styles.hide_on_mobile}>RA2</th>
                     <th className={styles.hide_on_mobile}>Optional addons</th>
                     <th className={styles.hide_on_mobile}>Removed</th>
                     <th>Item price</th>
@@ -269,7 +270,12 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                         <td
                           className={`${styles.ingredients} ${styles.hide_on_mobile}`}
                         >
-                          {group.item.requiredAddons}
+                          {group.item.requiredAddonsOne}
+                        </td>
+                        <td
+                          className={`${styles.ingredients} ${styles.hide_on_mobile}`}
+                        >
+                          {group.item.requiredAddonsTwo}
                         </td>
                         <td
                           className={`${styles.ingredients} ${styles.hide_on_mobile}`}
@@ -288,6 +294,7 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                   )}
                   <tr className={styles.total}>
                     <td>Total</td>
+                    <td className={styles.hide_on_mobile}></td>
                     <td className={styles.hide_on_mobile}></td>
                     <td className={styles.hide_on_mobile}></td>
                     <td className={styles.hide_on_mobile}></td>

@@ -36,9 +36,15 @@ export default function CartProvider({ children }: ContextProviderProps) {
   const [totalCartQuantity, setTotalCartQuantity] = useState(0);
 
   function addItemToCart(initialItem: CartItem, item: Item) {
-    if (initialItem.requiredAddons.length < item.requiredAddons.addable) {
+    if (initialItem.requiredAddonsOne.length < item.requiredAddonsOne.addable) {
       return showErrorAlert(
-        `Please add ${item.requiredAddons.addable} required addons`,
+        `Please add ${item.requiredAddonsOne.addable} req. add-on 1`,
+        setAlerts
+      );
+    }
+    if (initialItem.requiredAddonsTwo.length < item.requiredAddonsTwo.addable) {
+      return showErrorAlert(
+        `Please add ${item.requiredAddonsTwo.addable} req. add-on 2`,
         setAlerts
       );
     }
@@ -65,7 +71,8 @@ export default function CartProvider({ children }: ContextProviderProps) {
             quantity: initialItem.quantity,
             addonPrice: initialItem.addonPrice,
             optionalAddons: initialItem.optionalAddons,
-            requiredAddons: initialItem.requiredAddons,
+            requiredAddonsOne: initialItem.requiredAddonsOne,
+            requiredAddonsTwo: initialItem.requiredAddonsTwo,
             removableIngredients: initialItem.removableIngredients,
           };
         } else {
@@ -107,7 +114,8 @@ export default function CartProvider({ children }: ContextProviderProps) {
       restaurantId: cartItem.restaurantId,
       deliveryDate: cartItem.deliveryDate,
       optionalAddons: cartItem.optionalAddons,
-      requiredAddons: cartItem.requiredAddons,
+      requiredAddonsOne: cartItem.requiredAddonsOne,
+      requiredAddonsTwo: cartItem.requiredAddonsTwo,
       removedIngredients: cartItem.removableIngredients,
     }));
 
@@ -120,7 +128,7 @@ export default function CartProvider({ children }: ContextProviderProps) {
       });
 
       if (typeof response.data === 'string') {
-        open(response.data);
+        location.replace(response.data);
       } else {
         setCartItems([]);
         localStorage.removeItem(`cart-${customer._id}`);
@@ -143,11 +151,9 @@ export default function CartProvider({ children }: ContextProviderProps) {
 
   // Get cart total quantity
   useEffect(() => {
-    if (cartItems.length) {
-      setTotalCartQuantity(
-        cartItems.reduce((acc, item) => acc + item.quantity, 0)
-      );
-    }
+    setTotalCartQuantity(
+      cartItems.reduce((acc, item) => acc + item.quantity, 0)
+    );
   }, [cartItems]);
 
   // Get cart items from local storage

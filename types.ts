@@ -106,7 +106,11 @@ export type Item = {
     addons: string;
     addable: number;
   };
-  requiredAddons: {
+  requiredAddonsOne: {
+    addons: string;
+    addable: number;
+  };
+  requiredAddonsTwo: {
     addons: string;
     addable: number;
   };
@@ -166,7 +170,8 @@ export type VendorUpcomingOrderItem = {
   name: string;
   quantity: number;
   optionalAddons: string;
-  requiredAddons: string;
+  requiredAddonsOne: string;
+  requiredAddonsTwo: string;
   removedIngredients: string;
 };
 
@@ -279,7 +284,8 @@ export interface CartItem {
   restaurantId: string;
   deliveryDate: number;
   optionalAddons: string[];
-  requiredAddons: string[];
+  requiredAddonsOne: string[];
+  requiredAddonsTwo: string[];
   removableIngredients: string[];
 }
 
@@ -328,9 +334,10 @@ export type Order = {
     description: string;
     quantity: number;
     total: number;
-    optionalAddons?: string;
-    requiredAddons?: string;
-    removedIngredients?: string;
+    optionalAddons: string;
+    requiredAddonsOne: string;
+    requiredAddonsTwo: string;
+    removedIngredients: string;
   };
 };
 
@@ -342,9 +349,10 @@ export interface CustomerOrder {
     total: number;
     image: string;
     quantity: number;
-    optionalAddons?: string;
-    requiredAddons?: string;
-    removedIngredients?: string;
+    optionalAddons: string;
+    requiredAddonsOne: string;
+    requiredAddonsTwo: string;
+    removedIngredients: string;
   };
   payment?: {
     distributed: number;
@@ -414,7 +422,11 @@ export interface ItemFormData {
     addons: string;
     addable: number;
   };
-  requiredAddons: {
+  requiredAddonsOne: {
+    addons: string;
+    addable: number;
+  };
+  requiredAddonsTwo: {
     addons: string;
     addable: number;
   };
@@ -450,8 +462,9 @@ export interface Addons {
 export interface RemovableIngredients extends Addons {}
 
 export type AddonsOrRemovableIngredientsType =
-  | 'requiredAddons'
+  | 'requiredAddonsOne'
   | 'optionalAddons'
+  | 'requiredAddonsTwo'
   | 'removableIngredients';
 
 export type SetAddonsOrRemovableIngredients = Dispatch<
@@ -482,9 +495,9 @@ export type OrderData = {
   firstName: string;
   deliveryDate: string;
   restaurantName: string;
-  optionalAddons?: string;
-  requiredAddons?: string;
-  removedIngredients?: string;
+  optionalAddons: string;
+  requiredAddonsOne: string;
+  removedIngredients: string;
 };
 
 export type LabelFilters = {
@@ -504,9 +517,10 @@ export type IdenticalOrderGroup = {
   };
   item: {
     name: string;
-    requiredAddons?: string;
-    optionalAddons?: string;
-    removedIngredients?: string;
+    requiredAddonsOne: string;
+    requiredAddonsTwo: string;
+    optionalAddons: string;
+    removedIngredients: string;
   };
   total: number;
   quantity: number;

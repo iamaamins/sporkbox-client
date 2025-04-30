@@ -39,7 +39,8 @@ export default function PlaceOrderItem() {
     restaurantId: '',
     deliveryDate: 0,
     optionalAddons: [],
-    requiredAddons: [],
+    requiredAddonsOne: [],
+    requiredAddonsTwo: [],
     removableIngredients: [],
   };
   const router = useRouter();
@@ -50,7 +51,8 @@ export default function PlaceOrderItem() {
   const [upcomingRestaurant, setUpcomingRestaurant] =
     useState<UpcomingRestaurant>();
   const [optionalAddons, setOptionalAddons] = useState<Addons>();
-  const [requiredAddons, setRequiredAddons] = useState<Addons>();
+  const [requiredAddonsOne, setRequiredAddonsOne] = useState<Addons>();
+  const [requiredAddonsTwo, setRequiredAddonsTwo] = useState<Addons>();
   const [removableIngredients, setRemovableIngredients] =
     useState<RemovableIngredients>();
   const [initialItem, setInitialItem] = useState<InitialItem>(initialState);
@@ -83,7 +85,9 @@ export default function PlaceOrderItem() {
     dataType: AddonsOrRemovableIngredientsType
   ) {
     if (
-      (dataType === 'optionalAddons' || dataType === 'requiredAddons') &&
+      (dataType === 'optionalAddons' ||
+        dataType === 'requiredAddonsOne' ||
+        dataType === 'requiredAddonsTwo') &&
       item &&
       item[dataType].addable === initialItem[dataType].length &&
       e.target.checked
@@ -113,7 +117,9 @@ export default function PlaceOrderItem() {
     setInitialItem((prevState) => ({
       ...prevState,
       addonPrice:
-        (dataType === 'optionalAddons' || dataType === 'requiredAddons') &&
+        (dataType === 'optionalAddons' ||
+          dataType === 'requiredAddonsOne' ||
+          dataType === 'requiredAddonsTwo') &&
         e.target.name.split('-').length > 1
           ? e.target.checked
             ? prevState.addonPrice +
@@ -157,7 +163,8 @@ export default function PlaceOrderItem() {
             name: item.name,
             price: item.price,
             optionalAddons: [],
-            requiredAddons: [],
+            requiredAddonsOne: [],
+            requiredAddonsTwo: [],
             removableIngredients: [],
             restaurantId: upcomingRestaurant._id,
             shift: upcomingRestaurant.company.shift,
@@ -177,7 +184,8 @@ export default function PlaceOrderItem() {
               quantity: itemInCart.quantity,
               addonPrice: itemInCart.addonPrice,
               optionalAddons: itemInCart.optionalAddons,
-              requiredAddons: itemInCart.requiredAddons,
+              requiredAddonsOne: itemInCart.requiredAddonsOne,
+              requiredAddonsTwo: itemInCart.requiredAddonsTwo,
               removableIngredients: itemInCart.removableIngredients,
             });
           } else {
@@ -197,16 +205,35 @@ export default function PlaceOrderItem() {
             );
           }
 
-          if (item.requiredAddons.addons) {
-            setRequiredAddons(
-              formatAddons(item.requiredAddons.addons).reduce((acc, curr) => {
-                const ingredient = curr.trim();
-                if (itemInCart?.requiredAddons.includes(ingredient)) {
-                  return { ...acc, [ingredient]: true };
-                } else {
-                  return { ...acc, [ingredient]: false };
-                }
-              }, {})
+          if (item.requiredAddonsOne.addons) {
+            setRequiredAddonsOne(
+              formatAddons(item.requiredAddonsOne.addons).reduce(
+                (acc, curr) => {
+                  const ingredient = curr.trim();
+                  if (itemInCart?.requiredAddonsOne.includes(ingredient)) {
+                    return { ...acc, [ingredient]: true };
+                  } else {
+                    return { ...acc, [ingredient]: false };
+                  }
+                },
+                {}
+              )
+            );
+          }
+
+          if (item.requiredAddonsTwo.addons) {
+            setRequiredAddonsTwo(
+              formatAddons(item.requiredAddonsTwo.addons).reduce(
+                (acc, curr) => {
+                  const ingredient = curr.trim();
+                  if (itemInCart?.requiredAddonsTwo.includes(ingredient)) {
+                    return { ...acc, [ingredient]: true };
+                  } else {
+                    return { ...acc, [ingredient]: false };
+                  }
+                },
+                {}
+              )
             );
           }
 
@@ -278,17 +305,33 @@ export default function PlaceOrderItem() {
                     )}
                   </div>
                 )}
-                {item.requiredAddons.addons && (
+                {item.requiredAddonsOne.addons && (
                   <div className={styles.required_addons}>
                     <p>
                       Required add-ons - must choose{' '}
-                      {item.requiredAddons.addable}
+                      {item.requiredAddonsOne.addable}
                     </p>
-                    {requiredAddons && (
+                    {requiredAddonsOne && (
                       <AddonsOrRemovableIngredients
-                        data={requiredAddons}
-                        setData={setRequiredAddons}
-                        dataType='requiredAddons'
+                        data={requiredAddonsOne}
+                        setData={setRequiredAddonsOne}
+                        dataType='requiredAddonsOne'
+                        handleChange={changeAddonsOrRemovableIngredients}
+                      />
+                    )}
+                  </div>
+                )}
+                {item.requiredAddonsTwo.addons && (
+                  <div className={styles.required_addons}>
+                    <p>
+                      Extra required add-ons - must choose{' '}
+                      {item.requiredAddonsTwo.addable}
+                    </p>
+                    {requiredAddonsTwo && (
+                      <AddonsOrRemovableIngredients
+                        data={requiredAddonsTwo}
+                        setData={setRequiredAddonsTwo}
+                        dataType='requiredAddonsTwo'
                         handleChange={changeAddonsOrRemovableIngredients}
                       />
                     )}
@@ -331,16 +374,6 @@ export default function PlaceOrderItem() {
               </button>
             </div>
           </div>
-          {/* {item.reviews.length > 0 && (
-            <div className={styles.reviews}>
-              {item.reviews.map((review) => (
-                <div className={styles.review} key={review._id}>
-                  <p>{review.comment}</p>
-                  <Stars rating={review.rating} />
-                </div>
-              ))}
-            </div>
-          )} */}
         </>
       )}
     </section>

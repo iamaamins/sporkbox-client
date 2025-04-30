@@ -25,7 +25,11 @@ export default function EditItem() {
       addons: '',
       addable: 0,
     },
-    requiredAddons: {
+    requiredAddonsOne: {
+      addons: '',
+      addable: 0,
+    },
+    requiredAddonsTwo: {
       addons: '',
       addable: 0,
     },
@@ -48,7 +52,8 @@ export default function EditItem() {
     tags,
     description,
     optionalAddons,
-    requiredAddons,
+    requiredAddonsOne,
+    requiredAddonsTwo,
     removableIngredients,
   } = formData;
 
@@ -67,7 +72,8 @@ export default function EditItem() {
           image: item.image,
           description: item.description,
           optionalAddons: item.optionalAddons,
-          requiredAddons: item.requiredAddons,
+          requiredAddonsOne: item.requiredAddonsOne,
+          requiredAddonsTwo: item.requiredAddonsTwo,
           removableIngredients: item.removableIngredients,
           tags: splitTags(item.tags).filter((currTag) =>
             dietaryTags.data.includes(currTag)
@@ -88,7 +94,8 @@ export default function EditItem() {
     image && data.append('image', image);
     data.append('description', description);
     data.append('optionalAddons', JSON.stringify(optionalAddons));
-    data.append('requiredAddons', JSON.stringify(requiredAddons));
+    data.append('requiredAddonsOne', JSON.stringify(requiredAddonsOne));
+    data.append('requiredAddonsTwo', JSON.stringify(requiredAddonsTwo));
     data.append('removableIngredients', removableIngredients as string);
 
     try {
@@ -101,6 +108,7 @@ export default function EditItem() {
 
       updateVendors(response.data, setVendors);
       showSuccessAlert('Item updated', setAlerts);
+
       router.push(`/admin/restaurants/${router.query.restaurant}`);
     } catch (err) {
       console.log(err);

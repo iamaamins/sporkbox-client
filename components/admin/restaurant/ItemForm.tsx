@@ -4,7 +4,7 @@ import { RiDeleteBinLine } from 'react-icons/ri';
 import { FormProps, ItemFormData } from 'types';
 import styles from './ItemForm.module.css';
 import SubmitButton from '@components/layout/SubmitButton';
-import { formatImageName, splitTags } from '@lib/utils';
+import { formatImageName } from '@lib/utils';
 import React, {
   ChangeEvent,
   Dispatch,
@@ -41,7 +41,8 @@ export default function ItemForm({
     image,
     description,
     optionalAddons,
-    requiredAddons,
+    requiredAddonsOne,
+    requiredAddonsTwo,
     removableIngredients,
   } = formData;
 
@@ -56,7 +57,7 @@ export default function ItemForm({
 
   function handleChangeAddons(
     e: ChangeEvent<HTMLInputElement>,
-    addons: 'optionalAddons' | 'requiredAddons'
+    addons: 'optionalAddons' | 'requiredAddonsOne' | 'requiredAddonsTwo'
   ) {
     const name = e.target.name;
     const value = e.target.value;
@@ -140,25 +141,49 @@ export default function ItemForm({
       </div>
       <div className={styles.addons}>
         <div>
-          <label htmlFor='requiredAddons'>Required addons</label>
+          <label htmlFor='requiredAddonsOne'>Req. add-on 1</label>
           <input
             type='text'
             name='addons'
-            id='requiredAddons'
-            value={requiredAddons.addons}
+            id='requiredAddonsOne'
+            value={requiredAddonsOne.addons}
             placeholder='E.g. Cheese - 2, Mayo - 0'
-            onChange={(e) => handleChangeAddons(e, 'requiredAddons')}
+            onChange={(e) => handleChangeAddons(e, 'requiredAddonsOne')}
           />
         </div>
         <div>
-          <label htmlFor='requiredAddable'>Required addable</label>
+          <label htmlFor='requiredAddable'>Req. add-on 1 addable</label>
           <input
             type='number'
             name='addable'
             id='requiredAddable'
             placeholder='E.g. 0'
-            value={requiredAddons.addable}
-            onChange={(e) => handleChangeAddons(e, 'requiredAddons')}
+            value={requiredAddonsOne.addable}
+            onChange={(e) => handleChangeAddons(e, 'requiredAddonsOne')}
+          />
+        </div>
+      </div>
+      <div className={styles.addons}>
+        <div>
+          <label htmlFor='requiredAddonsTwo'>Req. add-on 2</label>
+          <input
+            type='text'
+            name='addons'
+            id='requiredAddonsTwo'
+            value={requiredAddonsTwo.addons}
+            placeholder='E.g. Cheese - 2, Mayo - 0'
+            onChange={(e) => handleChangeAddons(e, 'requiredAddonsTwo')}
+          />
+        </div>
+        <div>
+          <label htmlFor='requiredAddonsTwo'>Req. add-on 2 addable</label>
+          <input
+            type='number'
+            name='addable'
+            id='requiredAddonsTwo'
+            placeholder='E.g. 0'
+            value={requiredAddonsTwo.addable}
+            onChange={(e) => handleChangeAddons(e, 'requiredAddonsTwo')}
           />
         </div>
       </div>

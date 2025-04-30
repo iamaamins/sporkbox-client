@@ -114,16 +114,27 @@ export default function Item() {
                   </p>
                 </>
               )}
-              {item.requiredAddons.addons && (
+              {item.requiredAddonsOne.addons && (
                 <>
                   <p className={styles.title}>
-                    Required addons - {item.requiredAddons.addable} addable
+                    Req. add-on 1 - {item.requiredAddonsOne.addable} addable
                   </p>
                   <p className={styles.ingredients}>
-                    {formatAddons(item.requiredAddons.addons).join(', ')}
+                    {formatAddons(item.requiredAddonsOne.addons).join(', ')}
                   </p>
                 </>
               )}
+              {item.requiredAddonsTwo.addons && (
+                <>
+                  <p className={styles.title}>
+                    Req. add-on 2 - {item.requiredAddonsTwo.addable} addable
+                  </p>
+                  <p className={styles.ingredients}>
+                    {formatAddons(item.requiredAddonsTwo.addons).join(', ')}
+                  </p>
+                </>
+              )}
+
               {item.removableIngredients && (
                 <div>
                   <p className={styles.title}>Removable ingredients</p>

@@ -210,7 +210,8 @@ export function groupIdenticalOrders(orders: Order[]): IdenticalOrderGroup[] {
       order.delivery.date +
       order.restaurant._id +
       order.item._id +
-      order.item.requiredAddons +
+      order.item.requiredAddonsOne +
+      order.item.requiredAddonsTwo +
       order.item.optionalAddons +
       order.item.removedIngredients;
 
@@ -227,7 +228,8 @@ export function groupIdenticalOrders(orders: Order[]): IdenticalOrderGroup[] {
         },
         item: {
           name: order.item.name,
-          requiredAddons: order.item.requiredAddons,
+          requiredAddonsOne: order.item.requiredAddonsOne,
+          requiredAddonsTwo: order.item.requiredAddonsTwo,
           optionalAddons: order.item.optionalAddons,
           removedIngredients: order.item.removedIngredients,
         },
@@ -246,10 +248,18 @@ export function sortOrders<T extends Order | VendorUpcomingOrder>(a: T, b: T) {
   const itemNameComp = a.item.name.localeCompare(b.item.name);
   if (itemNameComp) return itemNameComp;
 
-  const requiredAddonsA = a.item.requiredAddons || '';
-  const requiredAddonsB = b.item.requiredAddons || '';
-  const requiredAddonsComp = requiredAddonsA.localeCompare(requiredAddonsB);
-  if (requiredAddonsComp) return requiredAddonsComp;
+  const requiredAddonsOneA = a.item.requiredAddonsOne || '';
+  const requiredAddonsOneB = b.item.requiredAddonsOne || '';
+  const requiredAddonsOneComp =
+    requiredAddonsOneA.localeCompare(requiredAddonsOneB);
+  if (requiredAddonsOneComp) return requiredAddonsOneComp;
+
+  const extraRequiredAddonsTwoA = a.item.requiredAddonsTwo || '';
+  const extraRequiredAddonsTwoB = b.item.requiredAddonsTwo || '';
+  const extraRequiredAddonsTwoComp = extraRequiredAddonsTwoA.localeCompare(
+    extraRequiredAddonsTwoB
+  );
+  if (extraRequiredAddonsTwoComp) return extraRequiredAddonsTwoComp;
 
   const optionalAddonsA = a.item.optionalAddons || '';
   const optionalAddonsB = b.item.optionalAddons || '';
@@ -323,11 +333,10 @@ export function getAddonIngredients(addons: string | undefined) {
   return ingredients.join(', ');
 }
 
-export function getPayableAmount(
+export function getTotalPayable(
   orders: CustomerOrder[],
   cartItems: CartItem[],
-  user: Customer | Guest,
-  discountAmount: number
+  user: Customer | Guest
 ) {
   const upcomingDateTotalDetails = orders
     .filter((order) =>
@@ -345,9 +354,13 @@ export function getPayableAmount(
 
   const cartDateTotalDetails = cartItems.map((cartItem) => {
     const optionalAddonsPrice = getAddonsTotal(cartItem.optionalAddons);
-    const requiredAddonsPrice = getAddonsTotal(cartItem.requiredAddons);
+    const requiredAddonsOnePrice = getAddonsTotal(cartItem.requiredAddonsOne);
+    const requiredAddonsTwoPrice = getAddonsTotal(cartItem.requiredAddonsTwo);
+
     const totalAddonsPrice =
-      (optionalAddonsPrice || 0) + (requiredAddonsPrice || 0);
+      (optionalAddonsPrice || 0) +
+      (requiredAddonsOnePrice || 0) +
+      (requiredAddonsTwoPrice || 0);
 
     return {
       date: cartItem.deliveryDate,
@@ -360,7 +373,7 @@ export function getPayableAmount(
 
   if (company) {
     const shiftBudget = company.shiftBudget;
-    const totalPayableAmount = cartItemDetails
+    const totalPayable = cartItemDetails
       .map((cartItemDetail) => {
         if (
           !upcomingOrderDetails.some(
@@ -391,8 +404,9 @@ export function getPayableAmount(
       .filter((detail) => detail.payable > 0)
       .reduce((acc, curr) => acc + curr.payable, 0);
 
-    return totalPayableAmount - discountAmount;
+    return totalPayable;
   }
+  return 0;
 }
 
 export function getPastDate(days: number) {

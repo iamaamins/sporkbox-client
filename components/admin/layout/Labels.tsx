@@ -77,7 +77,8 @@ type Label = {
   restaurant: string;
   item: {
     name: string;
-    required: string;
+    requiredOne: string;
+    requiredTwo: string;
     removed: string;
     optional: string;
   };
@@ -113,12 +114,16 @@ export default function Labels({ labels }: Props) {
           }`.trim();
           const restaurant = label.restaurant.trim();
           const item = label.item.name.trim();
-          const required = label.item.required.trim();
+          const requiredOne = label.item.requiredOne.trim();
+          const requiredTwo = label.item.requiredTwo.trim();
           const removed = label.item.removed.trim();
           const optional = label.item.optional.trim();
-          const requiredRemoved = `${required} ${removed}`.trim();
+          const requiredRemoved =
+            `${requiredOne} ${requiredTwo} ${removed}`.trim();
 
           const hasOptionalTexts = !!requiredRemoved || !!optional;
+          const hasRequiredAndRemoved = (requiredOne || requiredTwo) && removed;
+
           const lineWidth = styles.line.width;
 
           const fontSize = Math.min(
@@ -151,7 +156,9 @@ export default function Labels({ labels }: Props) {
                   {item}
                 </Text>
                 <Text style={[styles.line, { fontSize }]}>
-                  {requiredRemoved}
+                  {hasRequiredAndRemoved
+                    ? `${requiredOne} ${requiredTwo} - ${removed}`
+                    : `${requiredRemoved}`}
                 </Text>
                 <Text style={[styles.line, { fontSize }]}>{optional}</Text>
               </View>
