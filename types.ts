@@ -151,6 +151,7 @@ export type Company = {
   createdAt: string;
   shiftBudget: number;
   status: 'ACTIVE' | 'ARCHIVED';
+  slackChannelId?: string;
 };
 
 export type DiscountCode = {
@@ -413,6 +414,7 @@ export type CompanyFormData = {
   shiftBudget: number;
   addressLine1: string;
   addressLine2?: string;
+  slackChannelId?: string;
 };
 
 export interface ItemFormData {

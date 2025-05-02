@@ -22,6 +22,7 @@ export default function EditCompany() {
     shiftBudget: 0,
     addressLine1: '',
     addressLine2: '',
+    slackChannelId: '',
   };
   const router = useRouter();
   const { setAlerts } = useAlert();
@@ -47,6 +48,7 @@ export default function EditCompany() {
           shiftBudget: company.shiftBudget,
           addressLine1: company.address.addressLine1,
           addressLine2: company.address.addressLine2,
+          slackChannelId: company.slackChannelId,
         });
       }
     }
@@ -57,15 +59,17 @@ export default function EditCompany() {
 
     try {
       setIsLoading(true);
+
       const response = await axiosInstance.patch(
         `/companies/${company?._id}/update-company-details`,
         formData
       );
+
       updateCompanies(response.data, setCompanies);
       showSuccessAlert('Company updated', setAlerts);
+
       router.push(`/admin/companies/${response.data._id}`);
     } catch (err) {
-      console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       setIsLoading(false);
