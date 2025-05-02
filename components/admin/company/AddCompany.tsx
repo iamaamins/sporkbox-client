@@ -24,7 +24,7 @@ export default function AddCompany() {
     shiftBudget: 0,
     addressLine1: '',
     addressLine2: '',
-    slackChannelId: '',
+    slackChannel: '',
   };
   const router = useRouter();
   const { setAlerts } = useAlert();

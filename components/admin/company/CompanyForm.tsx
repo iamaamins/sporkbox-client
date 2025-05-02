@@ -29,7 +29,7 @@ export default function CompanyForm({
     shiftBudget,
     addressLine1,
     addressLine2,
-    slackChannelId,
+    slackChannel,
   } = formData;
 
   function handleChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
@@ -125,11 +125,11 @@ export default function CompanyForm({
       </div>
 
       <div className={styles.item}>
-        <label htmlFor='slackChannelId'>Slack channel ID</label>
+        <label htmlFor='slackChannel'>Slack channel</label>
         <input
           type='text'
-          id='slackChannelId'
-          value={slackChannelId}
+          id='slackChannel'
+          value={slackChannel}
           onChange={handleChange}
         />
       </div>

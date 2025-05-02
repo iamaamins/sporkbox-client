@@ -22,7 +22,7 @@ export default function EditCompany() {
     shiftBudget: 0,
     addressLine1: '',
     addressLine2: '',
-    slackChannelId: '',
+    slackChannel: '',
   };
   const router = useRouter();
   const { setAlerts } = useAlert();
@@ -48,7 +48,7 @@ export default function EditCompany() {
           shiftBudget: company.shiftBudget,
           addressLine1: company.address.addressLine1,
           addressLine2: company.address.addressLine2,
-          slackChannelId: company.slackChannelId,
+          slackChannel: company.slackChannel,
         });
       }
     }

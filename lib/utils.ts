@@ -169,7 +169,7 @@ export function updateCompanies(
               website: updatedCompany.website,
               address: updatedCompany.address,
               shiftBudget: updatedCompany.shiftBudget,
-              slackChannelId: updatedCompany.slackChannelId,
+              slackChannel: updatedCompany.slackChannel,
             };
           } else {
             return company;
