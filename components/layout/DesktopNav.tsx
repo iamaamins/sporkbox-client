@@ -22,8 +22,10 @@ export default function DesktopNav() {
     isAdmin,
     isVendor,
     isCustomer,
+    isDriver,
     setAdmin,
     setVendor,
+    setDriver,
     customer,
     setCustomer,
   } = useUser();
@@ -35,11 +37,12 @@ export default function DesktopNav() {
   async function handleSignOut() {
     try {
       await axiosInstance.post(`/users/logout`, {});
+
       if (isAdmin) setAdmin(null);
       if (isVendor) setVendor(null);
       if (isCustomer) setCustomer(null);
+      if (isDriver) setDriver(null);
     } catch (err) {
-      console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     }
   }
@@ -158,9 +161,9 @@ export default function DesktopNav() {
         </li>
 
         <li className={!isAdmin ? styles.hide : ''}>
-          <Link href='/admin/add-admin'>
-            <a className={pathName === '/admin/add-admin' ? styles.active : ''}>
-              Add admin
+          <Link href='/admin/team'>
+            <a className={pathName === '/admin/team' ? styles.active : ''}>
+              Team
             </a>
           </Link>
         </li>
@@ -194,7 +197,7 @@ export default function DesktopNav() {
         <button
           onClick={handleSignOut}
           className={`${styles.sign_out} ${
-            !isAdmin && !isVendor && !isCustomer && styles.hide
+            !isAdmin && !isVendor && !isCustomer && !isDriver && styles.hide
           }`}
         >
           Sign out
@@ -203,7 +206,7 @@ export default function DesktopNav() {
         <Link href='/login'>
           <a
             className={`${styles.sing_in} ${
-              (isAdmin || isVendor || isCustomer) && styles.hide
+              (isAdmin || isVendor || isCustomer || isDriver) && styles.hide
             }`}
           >
             Sign in

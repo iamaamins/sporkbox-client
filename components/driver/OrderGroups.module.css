@@ -2,13 +2,8 @@
   padding: var(--section_padding);
 }
 
-.container h2 {
-  margin-bottom: 1rem;
-}
-
 .container table {
   width: 100%;
-  margin-bottom: 2rem;
   border-collapse: collapse;
 }
 
@@ -17,7 +12,8 @@
   padding: 1rem;
 }
 
-.container th:last-child {
+.container th:last-child,
+.container td:last-child {
   text-align: right;
 }
 
@@ -25,45 +21,25 @@
   background-color: var(--almost_white);
 }
 
+.container tbody tr {
+  border-bottom: 1px solid var(--border_color);
+}
+
 .container td {
   padding: 1rem;
   font-weight: 500;
   color: var(--gray);
   font-size: 0.9rem;
-  border-bottom: 1px solid var(--border_color);
 }
 
-.shift {
-  text-transform: capitalize;
-}
-
-.ingredients {
-  text-transform: capitalize;
-}
-
-.total td {
-  font-size: 1rem;
-  font-weight: 500;
+.important a {
   color: var(--black);
+  font-size: 1rem;
 }
 
-.container td:last-child {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.send_email,
-.archive {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 5rem;
-  height: 1.75rem;
-  border-radius: 2rem;
-  cursor: pointer;
-  color: var(--orange);
-  border: 1px solid var(--orange);
+.restaurants span {
+  display: block;
+  padding: 2px 0px;
 }
 
 .hide_on_mobile {

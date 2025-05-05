@@ -7,14 +7,11 @@ import styles from './LoginForm.module.css';
 import SubmitButton from '@components/layout/SubmitButton';
 import { axiosInstance, showErrorAlert } from '@lib/utils';
 
-const initialSate = {
-  email: '',
-  password: '',
-};
-
 export default function LoginForm() {
+  const initialSate = { email: '', password: '' };
+
   const { setAlerts } = useAlert();
-  const { setAdmin, setVendor, setCustomer } = useUser();
+  const { setAdmin, setVendor, setCustomer, setDriver } = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(initialSate);
 
@@ -32,17 +29,16 @@ export default function LoginForm() {
 
     try {
       setIsLoading(true);
+
       const response = await axiosInstance.post(`/users/login`, formData);
-      setFormData({
-        email: '',
-        password: '',
-      });
+
+      setFormData(initialSate);
 
       if (response.data.role === 'ADMIN') setAdmin(response.data);
       if (response.data.role === 'VENDOR') setVendor(response.data);
       if (response.data.role === 'CUSTOMER') setCustomer(response.data);
+      if (response.data.role === 'DRIVER') setDriver(response.data);
     } catch (err) {
-      console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       setIsLoading(false);
