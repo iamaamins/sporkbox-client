@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { Dispatch, SetStateAction, ReactNode } from 'react';
 
-export type UserRole = 'ADMIN' | 'VENDOR' | 'CUSTOMER' | 'GUEST';
+export type UserRole = 'ADMIN' | 'VENDOR' | 'CUSTOMER' | 'GUEST' | 'DRIVER';
 export type UserStatus = 'ACTIVE' | 'ARCHIVED';
 
 interface User {
@@ -151,6 +151,7 @@ export type Company = {
   createdAt: string;
   shiftBudget: number;
   status: 'ACTIVE' | 'ARCHIVED';
+  slackChannel?: string;
 };
 
 export type DiscountCode = {
@@ -252,6 +253,10 @@ export interface DiscountCodes extends IsLoading {
 
 export interface DietaryTags extends IsLoading {
   data: string[];
+}
+
+export interface DriverOrders extends IsLoading {
+  data: Order[];
 }
 
 export type OrderGroup = {
@@ -409,6 +414,7 @@ export type CompanyFormData = {
   shiftBudget: number;
   addressLine1: string;
   addressLine2?: string;
+  slackChannel?: string;
 };
 
 export interface ItemFormData {

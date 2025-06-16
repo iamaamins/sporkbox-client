@@ -122,7 +122,7 @@ export const createSlug = (text: string) =>
 export function createOrderGroups(orders: Order[]) {
   const groupMap: Record<string, OrderGroup> = {};
   for (const order of orders) {
-    const key = order.company.code + order.delivery.date;
+    const key = `${order.delivery.date}-${order.company.code}`;
     if (!groupMap[key]) {
       groupMap[key] = {
         orders: [order],
@@ -169,6 +169,7 @@ export function updateCompanies(
               website: updatedCompany.website,
               address: updatedCompany.address,
               shiftBudget: updatedCompany.shiftBudget,
+              slackChannel: updatedCompany.slackChannel,
             };
           } else {
             return company;

@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
+import Admins from '@components/admin/team/Admins';
+import PageLoader from '@components/layout/PageLoader';
 import { useUser } from '@context/User';
 import { checkUser } from '@lib/utils';
 import { useRouter } from 'next/router';
-import AddAdmin from '@components/admin/admin/AddAdmin';
-import PageLoader from '@components/layout/PageLoader';
+import { useEffect } from 'react';
 
-export default function CreateAdminPage() {
+export default function AdminsPage() {
   const router = useRouter();
   const { isUserLoading, isAdmin } = useUser();
 
@@ -16,7 +16,7 @@ export default function CreateAdminPage() {
   return (
     <main>
       {isUserLoading && <PageLoader />}
-      {isAdmin && <AddAdmin />}
+      {isAdmin && <Admins />}
     </main>
   );
 }
