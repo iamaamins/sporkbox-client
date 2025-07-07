@@ -53,13 +53,20 @@
   justify-content: flex-end;
 }
 
-.send_email,
-.archive {
+.delivery_buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.deliver,
+.archive,
+.mark_delivered {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 5rem;
-  height: 1.75rem;
+  width: fit-content;
+  padding: 4px 8px;
   border-radius: 2rem;
   cursor: pointer;
   color: var(--orange);

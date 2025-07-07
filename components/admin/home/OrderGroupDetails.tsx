@@ -18,7 +18,12 @@ import styles from './OrderGroupDetails.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
 
 type Props = { isLoading: boolean; orderGroups: OrderGroup[] };
-type DeliverOrdersPayload = { orders: Order[]; restaurantName: string };
+type DeliveryAction = 'deliver' | 'mark delivered';
+type OrderDeliveryPayload = {
+  action: DeliveryAction;
+  orders: Order[];
+  restaurantName: string;
+};
 
 export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
   const router = useRouter();
@@ -35,90 +40,101 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
     allDeliveredOrders,
     setAllDeliveredOrders,
   } = useData();
-  const [isUpdatingOrdersStatus, setIsUpdatingOrdersStatus] = useState(false);
+  const [isDeliveringOrders, setIsDeliveringOrders] = useState(false);
   const [ordersByRestaurants, setOrdersByRestaurants] = useState<
     OrdersByRestaurant[]
   >([]);
-  const [statusUpdatePayload, setStatusUpdatePayload] =
-    useState<DeliverOrdersPayload>({
+  const [orderDeliveryPayload, setOrderDeliveryPayload] =
+    useState<OrderDeliveryPayload>({
+      action: 'deliver',
       orders: [],
       restaurantName: '',
     });
   const [showDeliveryModal, setShowDeliveryModal] = useState(false);
-  const [showStatusUpdateModal, setShowStatusUpdateModal] = useState(false);
-  const [isUpdatingOrderStatus, setIsUpdatingOrderStatus] = useState(false);
+  const [showArchiveModal, setShowArchiveModal] = useState(false);
+  const [isArchivingOrder, setIsArchivingOrder] = useState(false);
 
-  function initiateOrdersDelivery(orders: Order[], restaurantName: string) {
+  function initiateOrdersDelivery(
+    action: DeliveryAction,
+    orders: Order[],
+    restaurantName: string
+  ) {
     setShowDeliveryModal(true);
-    setStatusUpdatePayload({
-      orders,
-      restaurantName,
-    });
+    setOrderDeliveryPayload({ action, orders, restaurantName });
   }
 
   async function deliverOrders() {
-    const orderIds = statusUpdatePayload.orders.map((order) => order._id);
+    const orderIds = orderDeliveryPayload.orders.map((order) => order._id);
 
     try {
-      setIsUpdatingOrdersStatus(true);
+      setIsDeliveringOrders(true);
+
       await axiosInstance.patch('/orders/deliver', {
+        action: orderDeliveryPayload.action,
         orderIds,
       });
+
       setOrdersByRestaurants((prevState) =>
         prevState.filter(
           (ordersByRestaurant) =>
             ordersByRestaurant.restaurantName !==
-            statusUpdatePayload.restaurantName
+            orderDeliveryPayload.restaurantName
         )
       );
+
       setAllUpcomingOrders((prevState) => ({
         ...prevState,
         data: prevState.data.filter((order) => !orderIds.includes(order._id)),
       }));
+
       setAllDeliveredOrders((prevState) => ({
         ...prevState,
         data: [
           ...prevState.data,
-          ...statusUpdatePayload.orders.map((order) => ({
+          ...orderDeliveryPayload.orders.map((order) => ({
             ...order,
             status: 'DELIVERED',
           })),
         ],
       }));
-      showSuccessAlert('Orders delivered', setAlerts);
+
+      showSuccessAlert(
+        orderDeliveryPayload.action === 'deliver'
+          ? 'Orders delivered'
+          : 'Orders marked as delivered',
+        setAlerts
+      );
+
       ordersByRestaurants.length === 1 && router.push('/admin');
     } catch (err) {
-      console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      setIsUpdatingOrdersStatus(false);
+      setIsDeliveringOrders(false);
       setShowDeliveryModal(false);
     }
   }
 
-  function initiateStatusUpdate(orderId: string) {
-    setShowStatusUpdateModal(true);
-    setOrderId(orderId);
-  }
-
-  async function updateStatus() {
+  async function archiveOrder() {
     try {
-      setIsUpdatingOrderStatus(true);
+      setIsArchivingOrder(true);
+
       await axiosInstance.patch(`/orders/${orderId}/archive`);
+
       setAllUpcomingOrders((prevState) => ({
         ...prevState,
         data: prevState.data.filter((order) => order._id !== orderId),
       }));
+
       showSuccessAlert('Order archived', setAlerts);
+
       ordersByRestaurants
         .map((ordersByRestaurant) => ordersByRestaurant.orders)
         .flat().length === 1 && router.push('/admin');
     } catch (err) {
-      console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      setIsUpdatingOrderStatus(false);
-      setShowStatusUpdateModal(false);
+      setIsArchivingOrder(false);
+      setShowArchiveModal(false);
     }
   }
 
@@ -223,17 +239,32 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                       {ordersByRestaurant.orders.every(
                         (order) => order.status === 'PROCESSING'
                       ) ? (
-                        <span
-                          className={styles.send_email}
-                          onClick={() =>
-                            initiateOrdersDelivery(
-                              ordersByRestaurant.orders,
-                              ordersByRestaurant.restaurantName
-                            )
-                          }
-                        >
-                          Deliver
-                        </span>
+                        <div className={styles.delivery_buttons}>
+                          <span
+                            className={styles.deliver}
+                            onClick={() =>
+                              initiateOrdersDelivery(
+                                'deliver',
+                                ordersByRestaurant.orders,
+                                ordersByRestaurant.restaurantName
+                              )
+                            }
+                          >
+                            Deliver
+                          </span>
+                          <span
+                            className={styles.mark_delivered}
+                            onClick={() =>
+                              initiateOrdersDelivery(
+                                'mark delivered',
+                                ordersByRestaurant.orders,
+                                ordersByRestaurant.restaurantName
+                              )
+                            }
+                          >
+                            Mark Delivered
+                          </span>
+                        </div>
                       ) : (
                         <span>Delivered</span>
                       )}
@@ -352,7 +383,10 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                         {order.status === 'PROCESSING' ? (
                           <span
                             className={styles.archive}
-                            onClick={(e) => initiateStatusUpdate(order._id)}
+                            onClick={() => {
+                              setOrderId(orderId);
+                              setShowArchiveModal(true);
+                            }}
                           >
                             Archive
                           </span>
@@ -394,15 +428,15 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
         </>
       )}
       <ModalContainer
-        showModalContainer={showStatusUpdateModal}
-        setShowModalContainer={setShowStatusUpdateModal}
+        showModalContainer={showArchiveModal}
+        setShowModalContainer={setShowArchiveModal}
         component={
           <ActionModal
             name='this order'
-            action='Archive'
-            performAction={updateStatus}
-            isPerformingAction={isUpdatingOrderStatus}
-            setShowActionModal={setShowStatusUpdateModal}
+            action='archive'
+            performAction={archiveOrder}
+            isPerformingAction={isArchivingOrder}
+            setShowActionModal={setShowArchiveModal}
           />
         }
       />
@@ -411,10 +445,14 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
         setShowModalContainer={setShowDeliveryModal}
         component={
           <ActionModal
-            name='delivery emails'
-            action='send'
+            name='notifications'
+            action={
+              orderDeliveryPayload.action === 'deliver'
+                ? 'deliver these orders and send'
+                : 'deliver these orders without sending'
+            }
             performAction={deliverOrders}
-            isPerformingAction={isUpdatingOrdersStatus}
+            isPerformingAction={isDeliveringOrders}
             setShowActionModal={setShowDeliveryModal}
           />
         }
