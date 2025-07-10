@@ -262,7 +262,7 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                               )
                             }
                           >
-                            Mark Delivered
+                            Mark delivered
                           </span>
                         </div>
                       ) : (
