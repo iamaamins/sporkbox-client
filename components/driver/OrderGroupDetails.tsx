@@ -18,7 +18,7 @@ import {
 import styles from './OrderGroupDetails.module.css';
 import ModalContainer from '@components/layout/ModalContainer';
 
-type DeliverOrdersPayload = { orders: Order[]; restaurantName: string };
+type OrderDeliveryPayload = { orders: Order[]; restaurantName: string };
 
 export default function OrderGroupDetails() {
   const router = useRouter();
@@ -28,8 +28,8 @@ export default function OrderGroupDetails() {
   const [ordersByRestaurants, setOrdersByRestaurants] = useState<
     OrdersByRestaurant[]
   >([]);
-  const [deliverOrderPayload, setDeliverOrdersPayload] =
-    useState<DeliverOrdersPayload>({
+  const [orderDeliveryPayload, setOrderDeliveryPayload] =
+    useState<OrderDeliveryPayload>({
       orders: [],
       restaurantName: '',
     });
@@ -43,25 +43,25 @@ export default function OrderGroupDetails() {
 
   function initiateOrdersDelivery(orders: Order[], restaurantName: string) {
     setShowDeliveryModal(true);
-    setDeliverOrdersPayload({
-      orders,
-      restaurantName,
-    });
+    setOrderDeliveryPayload({ orders, restaurantName });
   }
 
   async function deliverOrders() {
-    const orderIds = deliverOrderPayload.orders.map((order) => order._id);
+    const orderIds = orderDeliveryPayload.orders.map((order) => order._id);
 
     try {
       setIsDeliveringOrders(true);
 
-      await axiosInstance.patch('/orders/deliver', { orderIds });
+      await axiosInstance.patch('/orders/deliver', {
+        action: 'deliver',
+        orderIds,
+      });
 
       setOrdersByRestaurants((prevState) =>
         prevState.filter(
           (ordersByRestaurant) =>
             ordersByRestaurant.restaurantName !==
-            deliverOrderPayload.restaurantName
+            orderDeliveryPayload.restaurantName
         )
       );
 
