@@ -117,6 +117,7 @@ export default function Dashboard() {
             lastName: order.customer.lastName,
             shift: order.company.shift,
           },
+          deliveryDate: order.delivery.date,
           restaurant: order.restaurant.name,
           item: {
             name: order.item.name,
