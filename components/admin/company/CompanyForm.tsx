@@ -51,9 +51,7 @@ export default function CompanyForm({
       {showShiftAndCodeField && (
         <div className={styles.item}>
           <select id='shift' value={shift} onChange={handleChange}>
-            <option hidden value='Please select a shift'>
-              Please select a shift
-            </option>
+            <option hidden>Please select a shift</option>
             <option value='day'>Day</option>
             <option value='night'>Night</option>
           </select>

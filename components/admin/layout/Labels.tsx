@@ -74,6 +74,7 @@ type Label = {
     lastName: string;
     shift: string;
   };
+  deliveryDate: string;
   restaurant: string;
   item: {
     name: string;
@@ -148,7 +149,15 @@ export default function Labels({ labels }: Props) {
                   <Text style={[styles.bold, styles.capitalize, { fontSize }]}>
                     {label.customer.shift === 'night'
                       ? label.customer.shift
-                      : categorizeLastName(label.customer.lastName)}
+                      : categorizeLastName(label.customer.lastName)}{' '}
+                    -{' '}
+                  </Text>
+                  <Text style={{ fontSize }}>
+                    {new Date(label.deliveryDate)
+                      .toUTCString()
+                      .split(' ')
+                      .slice(1, 3)
+                      .join(' ')}
                   </Text>
                 </View>
                 <Text style={[styles.line, { fontSize }]}>{restaurant}</Text>

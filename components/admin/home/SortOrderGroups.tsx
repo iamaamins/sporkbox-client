@@ -9,7 +9,6 @@ type Props = {
 };
 
 export default function SortOrderGroups({ setSorted, orderGroups }: Props) {
-  // Hooks
   const [category, setCategory] = useState('');
 
   useEffect(() => {
@@ -45,9 +44,7 @@ export default function SortOrderGroups({ setSorted, orderGroups }: Props) {
         value={category}
         onChange={(e) => setCategory(e.target.value)}
       >
-        <option hidden aria-hidden>
-          Sort orders
-        </option>
+        <option hidden>Sort orders</option>
         <option value='company'>By company</option>
         <option value='deliveryDate'>By delivery date</option>
       </select>
