@@ -1,4 +1,4 @@
-import { categorizeLastName } from '@lib/utils';
+import { categorizeLastName, dateToText } from '@lib/utils';
 import {
   Document,
   Page,
@@ -54,6 +54,9 @@ const styles = StyleSheet.create({
   },
   name_shift: {
     marginBottom: 5,
+    flexDirection: 'row',
+  },
+  restaurant_date: {
     flexDirection: 'row',
   },
   line: {
@@ -149,18 +152,15 @@ export default function Labels({ labels }: Props) {
                   <Text style={[styles.bold, styles.capitalize, { fontSize }]}>
                     {label.customer.shift === 'night'
                       ? label.customer.shift
-                      : categorizeLastName(label.customer.lastName)}{' '}
-                    -{' '}
-                  </Text>
-                  <Text style={{ fontSize }}>
-                    {new Date(label.deliveryDate)
-                      .toUTCString()
-                      .split(' ')
-                      .slice(1, 3)
-                      .join(' ')}
+                      : categorizeLastName(label.customer.lastName)}
                   </Text>
                 </View>
-                <Text style={[styles.line, { fontSize }]}>{restaurant}</Text>
+                <View style={[styles.restaurant_date, styles.line]}>
+                  <Text style={{ fontSize }}>{restaurant} - </Text>
+                  <Text style={{ fontSize }}>
+                    {dateToText(label.deliveryDate).split(', ')[1]}
+                  </Text>
+                </View>
                 <Text style={[styles.line, styles.bold, { fontSize }]}>
                   {item}
                 </Text>
