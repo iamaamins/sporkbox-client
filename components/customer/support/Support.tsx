@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import styles from './Support.module.css';
-
 import { MdOutlineSentimentVerySatisfied } from 'react-icons/md';
 import { MdSentimentVerySatisfied } from 'react-icons/md';
 import { MdOutlineSentimentSatisfiedAlt } from 'react-icons/md';
@@ -10,7 +9,6 @@ import { MdOutlineSentimentVeryDissatisfied } from 'react-icons/md';
 import { useUser } from '@context/User';
 import { useState } from 'react';
 import { FAQ_DATA } from 'data/FAQ';
-import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import Link from 'next/link';
 
