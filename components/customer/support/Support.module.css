@@ -1,0 +1,166 @@
+.container {
+  display: flex;
+  gap: 3rem;
+  flex-direction: column;
+  padding: var(--section_padding);
+}
+
+.feedback {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-direction: column;
+}
+
+.feedback h1,
+.feedback p {
+  text-align: center;
+  color: var(--teal);
+}
+
+.ratings {
+  gap: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.ratings svg {
+  cursor: pointer;
+}
+
+.survey_and_slack {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.survey_button {
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  font-weight: 700;
+  border: none;
+  line-height: 1;
+  color: var(--white);
+  border-radius: 5rem;
+  background-image: linear-gradient(to right, #ff7f91, #ffdfa4);
+}
+
+.slack_channel_link {
+  width: 15rem;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: var(--black);
+}
+
+.slack_channel_link p:first-child {
+  font-weight: 600;
+}
+
+.slack_logo {
+  width: 12rem;
+}
+
+.slack_channel_link p:last-child {
+  font-size: 1.5rem;
+}
+
+.question {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 2rem;
+  margin: 0.75rem 0;
+  font-weight: 600;
+  background-color: #fdeacd;
+}
+
+.arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  rotate: 0deg;
+  transition: transform 0.3s ease-in-out;
+}
+
+.arrow.rotate {
+  transform: rotate(180deg);
+}
+
+.question p {
+  font-size: 1.5rem;
+}
+
+.answer {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  padding: 0 1.5rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.answer.open {
+  opacity: 90;
+  max-height: fit-content;
+}
+
+.answer.item {
+  padding-bottom: 1.25rem;
+}
+
+.detailed_feedback {
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.detailed_feedback_button {
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 1rem 1.5rem;
+  font-weight: 700;
+  border: none;
+  line-height: 1;
+  color: var(--white);
+  border-radius: 1rem;
+  background-color: var(--teal);
+}
+
+@media (min-width: 768px) {
+  .container {
+    margin: 0 auto;
+    max-width: 650px;
+  }
+
+  .survey_and_slack {
+    gap: 2rem;
+    flex-direction: row;
+  }
+
+  .slack_channel_link {
+    width: 15rem;
+  }
+
+  .answer {
+    padding: 0 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 900px;
+  }
+
+  .answer {
+    padding: 0 5rem;
+  }
+}

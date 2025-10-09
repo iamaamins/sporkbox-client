@@ -100,14 +100,14 @@ export default function DesktopNav() {
         </li>
 
         <li className={!isCustomer ? styles.hide : ''}>
-          <Link href={`/favorite`}>
+          <Link href='/favorite'>
             <a className={pathName === '/favorite' ? styles.active : ''}>
               Favorite
             </a>
           </Link>
         </li>
 
-        <li className={isAdmin ? styles.hide : ''}>
+        <li className={!isCustomer ? styles.hide : ''}>
           <Link href='/support'>
             <a className={pathName === '/support' ? styles.active : ''}>
               Support
