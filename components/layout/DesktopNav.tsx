@@ -108,9 +108,9 @@ export default function DesktopNav() {
         </li>
 
         <li className={isAdmin ? styles.hide : ''}>
-          <Link href='/contact-us'>
-            <a className={pathName === '/contact-us' ? styles.active : ''}>
-              Contact
+          <Link href='/support'>
+            <a className={pathName === '/support' ? styles.active : ''}>
+              Support
             </a>
           </Link>
         </li>

@@ -1,8 +1,8 @@
 import { MdEmail } from 'react-icons/md';
 import { IoIosCall } from 'react-icons/io';
-import styles from './Contact.module.css';
+import styles from './Support.module.css';
 
-export default function Contact() {
+export default function Support() {
   return (
     <section className={styles.contact}>
       <div className={styles.top}>

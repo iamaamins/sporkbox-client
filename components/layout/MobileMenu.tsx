@@ -252,9 +252,9 @@ export default function MobileMenu({ isOpen, setIsOpen }: Props) {
           className={isAdmin ? styles.hide : ''}
           onClick={() => setIsOpen(false)}
         >
-          <Link href='/contact-us'>
+          <Link href='/support'>
             <a>
-              <AiTwotonePhone /> Contact
+              <AiTwotonePhone /> Support
             </a>
           </Link>
         </li>
