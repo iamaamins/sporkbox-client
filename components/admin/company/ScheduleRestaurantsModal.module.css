@@ -42,8 +42,7 @@
 }
 
 .restaurant label {
-  font-size: 0.9rem;
-  color: var(--gray);
+  font-weight: 500;
   margin-left: 0.5rem;
 }
 

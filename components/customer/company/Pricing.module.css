@@ -32,7 +32,6 @@
   padding: 1rem;
   font-weight: 500;
   color: var(--gray);
-  font-size: 0.9rem;
 }
 
 .container td:last-child {
@@ -47,7 +46,6 @@
 }
 
 .message {
-  font-size: 16px;
   color: var(--gray);
 }
 

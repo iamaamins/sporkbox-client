@@ -26,7 +26,6 @@
 .container td {
   font-weight: 500;
   color: var(--gray);
-  font-size: 0.9rem;
 }
 
 .container td:last-child {
@@ -35,7 +34,6 @@
 
 .important a {
   color: var(--black);
-  font-size: 1rem;
 }
 
 .hide_on_mobile {

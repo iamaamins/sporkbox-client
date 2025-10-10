@@ -55,7 +55,7 @@
 .copyright {
   position: sticky;
   bottom: 1rem;
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
   color: var(--gray);
 }
