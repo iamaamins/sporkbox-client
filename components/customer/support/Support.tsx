@@ -72,7 +72,11 @@ export default function Support() {
                 Join the Slack channel for instant delivery notifications!
               </p>
               <div className={styles.slack_logo}>
-                <Image src='/layout/slack-logo.png' width={1600} height={407} />
+                <Image
+                  src='/customer/slack-logo.png'
+                  width={1600}
+                  height={407}
+                />
               </div>
               <p className={styles.company_name}>Twist Wilsonville</p>
             </a>

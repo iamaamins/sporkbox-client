@@ -1,38 +1,68 @@
 import { useEffect, useState } from 'react';
 import { useUser } from '@context/User';
-import {
-  axiosInstance,
-  numberToUSD,
-  showErrorAlert,
-  showSuccessAlert,
-} from '@lib/utils';
+import { axiosInstance, showErrorAlert, showSuccessAlert } from '@lib/utils';
 import styles from './Profile.module.css';
 import { CustomAxiosError, Shift } from 'types';
 import { useAlert } from '@context/Alert';
-import FoodPreferences from './FoodPreferences';
 import { PiSunFill } from 'react-icons/pi';
 import { PiMoonStarsFill } from 'react-icons/pi';
+import { useData } from '@context/Data';
+import Image from 'next/image';
 
 export default function Profile() {
   const { customer, setCustomer } = useUser();
   const { setAlerts } = useAlert();
-  const [isLoading, setIsLoading] = useState(false);
-  const [showShiftChangeModal, setShowShiftChangeModal] = useState(false);
-  const [showFoodPreferencesModal, setShowFoodPreferencesModal] =
+  const { dietaryTags } = useData();
+  const [isUpdatingEmailSubscriptions, setIsUpdatingEmailSubscriptions] =
     useState(false);
-
+  const [isSwitchingShift, setIsSwitchingShift] = useState(false);
   const [shift, setShift] = useState<Shift | null>(null);
+  const [preferences, setPreferences] = useState<string[]>([]);
 
   const isSubscribed =
     customer && Object.values(customer.subscribedTo).includes(true);
 
   const company = customer?.companies.find((el) => el.status === 'ACTIVE');
 
-  async function handleEmailSubscriptions() {
+  async function updateDietaryPreferences(tag: string) {
+    if (!customer) return;
+
+    const updatedPreferences = preferences.includes(tag)
+      ? preferences.filter((preference) => preference !== tag)
+      : [...preferences, tag];
+
+    try {
+      const response = await axiosInstance.patch(
+        `/customers/${customer._id}/update-food-preferences`,
+        { preferences: updatedPreferences }
+      );
+
+      setCustomer(
+        (prevState) =>
+          prevState && {
+            ...prevState,
+            foodPreferences: response.data.foodPreferences,
+          }
+      );
+
+      localStorage.setItem(
+        `filters-${customer._id}`,
+        JSON.stringify(preferences)
+      );
+      setPreferences(updatedPreferences);
+
+      showSuccessAlert('Preferences updated', setAlerts);
+    } catch (err) {
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    }
+  }
+
+  async function updateEmailSubscriptions() {
     if (!customer) return;
 
     try {
-      setIsLoading(true);
+      setIsUpdatingEmailSubscriptions(true);
+
       const response = await axiosInstance.patch(
         `/customers/${customer._id}/update-email-subscriptions`,
         {
@@ -51,11 +81,15 @@ export default function Profile() {
       showSuccessAlert('Subscriptions updated', setAlerts);
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      setIsUpdatingEmailSubscriptions(false);
     }
   }
 
   async function switchShift() {
     try {
+      setIsSwitchingShift(true);
+
       const response = await axiosInstance.patch(
         `/customers/${customer?._id}/${customer?.companies[0].code}/change-customer-shift`,
         { shift: shift === 'night' ? 'day' : 'night' }
@@ -71,15 +105,21 @@ export default function Profile() {
       showSuccessAlert('Shift updated', setAlerts);
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      setIsSwitchingShift(false);
     }
   }
+
+  const isMatchedTag = (tag: string) => preferences.includes(tag);
 
   useEffect(() => {
     if (customer) {
       const activeCompany = customer.companies.find(
         (company) => company.status === 'ACTIVE'
       );
-      activeCompany && setShift(activeCompany.shift);
+
+      if (activeCompany) setShift(activeCompany.shift);
+      if (customer.foodPreferences) setPreferences(customer.foodPreferences);
     }
   }, [customer]);
 
@@ -89,6 +129,7 @@ export default function Profile() {
         <div className={styles.shift}>
           <h2>Shift</h2>
           <button
+            disabled={isSwitchingShift}
             onClick={switchShift}
             className={`${styles.shift_switcher} ${
               shift === 'night' ? styles.night : styles.day
@@ -121,8 +162,31 @@ export default function Profile() {
             </div>
           </button>
         </div>
-        <div className={styles.preferences}>
+        <div className={styles.dietary_preferences}>
           <h2>My Dietary Preferences</h2>
+          <div className={styles.preference_icons}>
+            {dietaryTags.data.map((tag, index) => (
+              <div
+                key={index}
+                onClick={() => updateDietaryPreferences(tag)}
+                className={`${styles.preference_icon} ${
+                  isMatchedTag(tag) && styles.matched
+                }`}
+              >
+                <Image
+                  width={48}
+                  height={48}
+                  alt={`${tag} icon`}
+                  src={`/customer/${tag.toLowerCase().replace(' ', '-')}.png`}
+                />
+              </div>
+            ))}
+          </div>
+          <p>
+            Click the icon to toggle your meal preference on or off. These
+            filters will then apply whenever you are browsing available
+            restaurants.
+          </p>
         </div>
       </div>
     </section>

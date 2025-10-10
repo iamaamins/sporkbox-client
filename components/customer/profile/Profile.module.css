@@ -103,6 +103,38 @@
   transform: translateX(0);
 }
 
-.preferences h2 {
+.dietary_preferences {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.dietary_preferences h2,
+.dietary_preferences p {
   color: var(--teal);
+}
+
+.preference_icons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.preference_icon {
+  cursor: pointer;
+}
+
+.preference_icon.matched img {
+  border-radius: 100%;
+  background-color: #ffd19b;
+}
+
+.dietary_preferences p {
+  max-width: 650px;
+  font-weight: 500;
 }
