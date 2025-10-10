@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useUser } from '@context/User';
 import { axiosInstance, showErrorAlert, showSuccessAlert } from '@lib/utils';
 import styles from './Profile.module.css';
-import { CustomAxiosError, Shift } from 'types';
+import { CustomAxiosError, CustomerOrder, Shift } from 'types';
 import { useAlert } from '@context/Alert';
 import { PiSunFill } from 'react-icons/pi';
 import { PiMoonStarsFill } from 'react-icons/pi';
@@ -14,7 +14,8 @@ import { FaUserCircle } from 'react-icons/fa';
 export default function Profile() {
   const { customer, setCustomer } = useUser();
   const { setAlerts } = useAlert();
-  const { dietaryTags } = useData();
+  const { dietaryTags, customerUpcomingOrders, customerDeliveredOrders } =
+    useData();
   const [isUpdatingEmailSubscriptions, setIsUpdatingEmailSubscriptions] =
     useState(false);
   const [isSwitchingShift, setIsSwitchingShift] = useState(false);
@@ -112,6 +113,23 @@ export default function Profile() {
     }
   }
 
+  function getTotalItemsOrdered(
+    upcomingOrders: CustomerOrder[],
+    deliveredOrders: CustomerOrder[]
+  ) {
+    const upcomingItemsCount = upcomingOrders.reduce(
+      (acc, curr) => acc + curr.item.quantity,
+      0
+    );
+
+    const deliveredItemsCount = deliveredOrders.reduce(
+      (acc, curr) => acc + curr.item.quantity,
+      0
+    );
+
+    return upcomingItemsCount + deliveredItemsCount;
+  }
+
   const isMatchedTag = (tag: string) => preferences.includes(tag);
 
   useEffect(() => {
@@ -124,6 +142,8 @@ export default function Profile() {
       if (customer.foodPreferences) setPreferences(customer.foodPreferences);
     }
   }, [customer]);
+
+  console.log(customerDeliveredOrders);
 
   return (
     <section className={styles.container}>
@@ -192,7 +212,7 @@ export default function Profile() {
         </div>
 
         <div className={styles.tools}>
-          <Link href='/customer/change-password'>
+          <Link href='/change-password'>
             <a className={styles.change_password_link}>
               <FaUserCircle size={100} color='#cfcfcf' />
               <p>Change password</p>
@@ -215,6 +235,35 @@ export default function Profile() {
           </Link>
         </div>
       </div>
+
+      {!customerUpcomingOrders.isLoading &&
+        !customerDeliveredOrders.isLoading && (
+          <div className={styles.food_stats}>
+            <h2>My Food Stats</h2>
+            <div className={styles.stats}>
+              <div className={styles.stat}>
+                <h3>Orders Placed</h3>
+                <p>
+                  {customerUpcomingOrders.data.length +
+                    customerDeliveredOrders.data.length}
+                </p>
+              </div>
+              <div className={styles.stat}>
+                <h3>Items Ordered</h3>
+                <p>
+                  {getTotalItemsOrdered(
+                    customerUpcomingOrders.data,
+                    customerDeliveredOrders.data
+                  )}
+                </p>
+              </div>
+              <div className={styles.stat}>
+                <h3>Average Rating</h3>
+                <p>4.2</p>
+              </div>
+            </div>
+          </div>
+        )}
     </section>
   );
 }
