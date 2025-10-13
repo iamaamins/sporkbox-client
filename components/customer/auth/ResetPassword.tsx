@@ -51,25 +51,29 @@ export default function ResetPassword() {
       <p className={styles.title}>Reset password?</p>
       <form onSubmit={handleSubmit}>
         <div className={styles.item}>
-          <label htmlFor='password'>Password</label>
+          <label htmlFor='password'>Password*</label>
           <input
+            required
             type='password'
             id='password'
             value={password}
             onChange={handleChange}
+            placeholder='Type your password'
           />
         </div>
 
         <div className={styles.item}>
           <label htmlFor='confirmPassword'>
-            Confirm password{' '}
+            Confirm password*{' '}
             {!arePasswordsMatched && " - Passwords don't match"}
           </label>
           <input
+            required
             type='password'
             id='confirmPassword'
             value={confirmPassword}
             onChange={handleChange}
+            placeholder='Type your password again'
           />
         </div>
 
