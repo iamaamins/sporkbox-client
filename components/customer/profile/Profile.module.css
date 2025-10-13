@@ -237,6 +237,7 @@
 .most_liked {
   display: flex;
   gap: 2rem;
+  flex-direction: column;
   align-items: center;
 }
 
@@ -266,8 +267,53 @@
   line-height: 1.25;
 }
 
+.recent_orders {
+  border-radius: 1rem;
+  padding: 1rem;
+  background-color: #f2f0e9;
+}
+
+.recent_orders h2 {
+  text-align: center;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}
+
+.recent_orders table {
+  text-align: center;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.recent_orders table th,
+.recent_orders table td {
+  padding: 0.75rem 0.5rem;
+}
+
+.recent_orders table td {
+  font-weight: 500;
+}
+
+.recent_orders table td:first-child {
+  font-weight: 400;
+  color: var(--gray);
+}
+
 @media (min-width: 768px) {
   .stats {
     flex-direction: row;
+  }
+
+  .most_liked {
+    flex-direction: row;
+  }
+
+  .recent_orders {
+    padding: 1rem 2rem;
+  }
+
+  .recent_orders table th,
+  .recent_orders table td {
+    padding: 1rem;
   }
 }

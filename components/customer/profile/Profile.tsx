@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useUser } from '@context/User';
-import { axiosInstance, showErrorAlert, showSuccessAlert } from '@lib/utils';
+import {
+  axiosInstance,
+  dateToText,
+  showErrorAlert,
+  showSuccessAlert,
+} from '@lib/utils';
 import styles from './Profile.module.css';
 import { CustomAxiosError, CustomerOrder, Shift } from 'types';
 import { useAlert } from '@context/Alert';
@@ -31,8 +36,6 @@ export default function Profile() {
 
   const isSubscribed =
     customer && Object.values(customer.subscribedTo).includes(true);
-
-  const company = customer?.companies.find((el) => el.status === 'ACTIVE');
 
   async function updateDietaryPreferences(tag: string) {
     if (!customer) return;
@@ -137,8 +140,14 @@ export default function Profile() {
     return upcomingItemsCount + deliveredItemsCount;
   }
 
+  const getRecentOrders = (
+    deliveredOrders: CustomerOrder[],
+    upcomingOrders: CustomerOrder[]
+  ) => [...deliveredOrders.slice(0, 5), ...upcomingOrders.slice(0, 5)];
+
   const isMatchedTag = (tag: string) => preferences.includes(tag);
 
+  // Set shift and dietary preferences
   useEffect(() => {
     if (customer) {
       const activeCompany = customer.companies.find(
@@ -150,6 +159,7 @@ export default function Profile() {
     }
   }, [customer]);
 
+  // Get most liked restaurants and items
   useEffect(() => {
     async function getMostLikedRestaurantsAndItems() {
       try {
@@ -314,6 +324,39 @@ export default function Profile() {
                 ))}
               </ol>
             </div>
+          </div>
+        )}
+
+      {!customerUpcomingOrders.isLoading &&
+        !customerDeliveredOrders.isLoading && (
+          <div className={styles.recent_orders}>
+            <h2>Recent Orders</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Restaurant</th>
+                  <th>Item</th>
+                  <th>Quantity</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {getRecentOrders(
+                  customerDeliveredOrders.data,
+                  customerUpcomingOrders.data
+                ).map((order) => (
+                  <tr key={order._id}>
+                    <td className={styles.important}>
+                      {dateToText(order.delivery.date)}
+                    </td>
+                    <td>{order.restaurant.name}</td>
+                    <td>{order.item.name}</td>
+                    <td>{order.item.quantity}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
     </section>
