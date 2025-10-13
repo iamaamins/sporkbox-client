@@ -2,7 +2,6 @@ import Image from 'next/image';
 import styles from './Support.module.css';
 import { MdOutlineSentimentVerySatisfied } from 'react-icons/md';
 import { MdSentimentVerySatisfied } from 'react-icons/md';
-import { MdOutlineSentimentSatisfiedAlt } from 'react-icons/md';
 import { MdOutlineSentimentDissatisfied } from 'react-icons/md';
 import { MdSentimentNeutral } from 'react-icons/md';
 import { MdOutlineSentimentVeryDissatisfied } from 'react-icons/md';
@@ -39,27 +38,22 @@ export default function Support() {
             color='#85d273'
             title='Satisfied'
           />
-          <MdOutlineSentimentSatisfiedAlt
-            size={48}
-            color='#afd55c'
-            title='Happy'
-          />
-          <MdSentimentNeutral size={48} color='#fbe118' title='Undecided' />
+          <MdSentimentNeutral size={48} color='#fbe118' title='Neither' />
           <MdOutlineSentimentDissatisfied
             size={48}
             color='#fba831'
-            title='Not happy'
+            title='Somewhat unsatisfied'
           />
           <MdOutlineSentimentVeryDissatisfied
             size={48}
             color='#ff6449'
-            title='Angry'
+            title='Very unsatisfied'
           />
         </div>
         <p>We want to hear what you think!</p>
       </div>
 
-      {customer && customer.companies[0].code === 'octib' && (
+      {customer && customer.companies[0].code === 'twist' && (
         <div className={styles.survey_and_slack}>
           <Link href='/'>
             <a className={styles.survey_button}>
