@@ -216,6 +216,56 @@
   line-height: 1;
 }
 
+.mood_vibe {
+  text-align: center;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  background-color: #f2f0e9;
+}
+
+.mood_vibe h2 {
+  font-weight: 400;
+  font-size: 1.75rem;
+}
+
+.mood_vibe p {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.most_liked {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.most_liked_restaurants,
+.most_liked_items {
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  background-color: #f2f0e9;
+}
+
+.most_liked h3 {
+  font-weight: 400;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.most_liked ol {
+  padding: 0rem 2rem;
+}
+
+.most_liked ol li {
+  list-style: decimal;
+  margin: 0.25rem 0;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.25;
+}
+
 @media (min-width: 768px) {
   .stats {
     flex-direction: row;

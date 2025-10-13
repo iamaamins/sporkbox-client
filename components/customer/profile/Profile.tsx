@@ -10,10 +10,12 @@ import { useData } from '@context/Data';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaUserCircle } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 
 export default function Profile() {
-  const { customer, setCustomer } = useUser();
+  const router = useRouter();
   const { setAlerts } = useAlert();
+  const { customer, setCustomer } = useUser();
   const { dietaryTags, customerUpcomingOrders, customerDeliveredOrders } =
     useData();
   const [isUpdatingEmailSubscriptions, setIsUpdatingEmailSubscriptions] =
@@ -21,6 +23,11 @@ export default function Profile() {
   const [isSwitchingShift, setIsSwitchingShift] = useState(false);
   const [shift, setShift] = useState<Shift | null>(null);
   const [preferences, setPreferences] = useState<string[]>([]);
+  const [mostLiked, setMostLiked] = useState<{
+    isLoading: boolean;
+    restaurants: string[];
+    items: string[];
+  }>({ isLoading: true, restaurants: [], items: [] });
 
   const isSubscribed =
     customer && Object.values(customer.subscribedTo).includes(true);
@@ -143,7 +150,25 @@ export default function Profile() {
     }
   }, [customer]);
 
-  console.log(customerDeliveredOrders);
+  useEffect(() => {
+    async function getMostLikedRestaurantsAndItems() {
+      try {
+        const response = await axiosInstance.get(
+          '/orders/me/most-liked-restaurants-and-items'
+        );
+
+        setMostLiked({
+          isLoading: false,
+          restaurants: response.data.restaurants,
+          items: response.data.items,
+        });
+      } catch (err) {
+        setMostLiked((prevState) => ({ ...prevState, isLoading: false }));
+        showErrorAlert(err as CustomAxiosError, setAlerts);
+      }
+    }
+    if (router.isReady) getMostLikedRestaurantsAndItems();
+  }, [router]);
 
   return (
     <section className={styles.container}>
@@ -261,6 +286,33 @@ export default function Profile() {
                 <h3>Average Rating</h3>
                 <p>4.2</p>
               </div>
+            </div>
+          </div>
+        )}
+      <div className={styles.mood_vibe}>
+        <h2>My Food Vibe</h2>
+        <p>So Fresh, So Clean</p>
+      </div>
+
+      {!mostLiked.isLoading &&
+        mostLiked.restaurants.length > 0 &&
+        mostLiked.items.length > 0 && (
+          <div className={styles.most_liked}>
+            <div className={styles.most_liked_restaurants}>
+              <h3>Most Liked Restaurants</h3>
+              <ol>
+                {mostLiked.restaurants.map((restaurant, index) => (
+                  <li key={index}>{restaurant}</li>
+                ))}
+              </ol>
+            </div>
+            <div className={styles.most_liked_items}>
+              <h3>Most Liked Items</h3>
+              <ol>
+                {mostLiked.items.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ol>
             </div>
           </div>
         )}
