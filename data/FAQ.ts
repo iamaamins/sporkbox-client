@@ -6,7 +6,7 @@ export const FAQ_DATA = [
     ],
   },
   {
-    question: 'Can I test FeatWiz for free??',
+    question: 'Can I test FeatWiz for free?',
     answer: [
       'Yes, create an account to start a free trial. No credit card required.',
     ],
