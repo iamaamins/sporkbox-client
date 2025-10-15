@@ -33,6 +33,12 @@ export default function Profile() {
     restaurants: string[];
     items: string[];
   }>({ isLoading: true, restaurants: [], items: [] });
+  const [foodStats, setFoodStats] = useState({
+    isLoading: true,
+    orderCount: 0,
+    itemCount: 0,
+    restaurantCount: 0,
+  });
 
   const isSubscribed =
     customer && Object.values(customer.subscribedTo).includes(true);
@@ -123,23 +129,6 @@ export default function Profile() {
     }
   }
 
-  function getTotalItemsOrdered(
-    upcomingOrders: CustomerOrder[],
-    deliveredOrders: CustomerOrder[]
-  ) {
-    const upcomingItemsCount = upcomingOrders.reduce(
-      (acc, curr) => acc + curr.item.quantity,
-      0
-    );
-
-    const deliveredItemsCount = deliveredOrders.reduce(
-      (acc, curr) => acc + curr.item.quantity,
-      0
-    );
-
-    return upcomingItemsCount + deliveredItemsCount;
-  }
-
   const getRecentOrders = (
     deliveredOrders: CustomerOrder[],
     upcomingOrders: CustomerOrder[]
@@ -159,25 +148,36 @@ export default function Profile() {
     }
   }, [customer]);
 
-  // Get most liked restaurants and items
+  // Get food stats and most liked restaurants and items
   useEffect(() => {
+    async function getFoodStats() {
+      try {
+        const response = await axiosInstance.get('/orders/me/food-stats');
+
+        setFoodStats({ isLoading: false, ...response.data });
+      } catch (err) {
+        setFoodStats((prevState) => ({ ...prevState, isLoading: false }));
+        showErrorAlert(err as CustomAxiosError, setAlerts);
+      }
+    }
+
     async function getMostLikedRestaurantsAndItems() {
       try {
         const response = await axiosInstance.get(
           '/orders/me/most-liked-restaurants-and-items'
         );
 
-        setMostLiked({
-          isLoading: false,
-          restaurants: response.data.restaurants,
-          items: response.data.items,
-        });
+        setMostLiked({ isLoading: false, ...response.data });
       } catch (err) {
         setMostLiked((prevState) => ({ ...prevState, isLoading: false }));
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
-    if (router.isReady) getMostLikedRestaurantsAndItems();
+
+    if (router.isReady) {
+      getFoodStats();
+      getMostLikedRestaurantsAndItems();
+    }
   }, [router]);
 
   return (
@@ -271,34 +271,25 @@ export default function Profile() {
         </div>
       </div>
 
-      {!customerUpcomingOrders.isLoading &&
-        !customerDeliveredOrders.isLoading && (
-          <div className={styles.food_stats}>
-            <h2>My Food Stats</h2>
-            <div className={styles.stats}>
-              <div className={styles.stat}>
-                <h3>Orders Placed</h3>
-                <p>
-                  {customerUpcomingOrders.data.length +
-                    customerDeliveredOrders.data.length}
-                </p>
-              </div>
-              <div className={styles.stat}>
-                <h3>Items Ordered</h3>
-                <p>
-                  {getTotalItemsOrdered(
-                    customerUpcomingOrders.data,
-                    customerDeliveredOrders.data
-                  )}
-                </p>
-              </div>
-              <div className={styles.stat}>
-                <h3>Average Rating</h3>
-                <p>4.2</p>
-              </div>
+      {!foodStats.isLoading && (
+        <div className={styles.food_stats}>
+          <h2>My Food Stats</h2>
+          <div className={styles.stats}>
+            <div className={styles.stat}>
+              <h3>Orders Placed</h3>
+              <p>{foodStats.orderCount}</p>
+            </div>
+            <div className={styles.stat}>
+              <h3>Items Ordered</h3>
+              <p>{foodStats.itemCount}</p>
+            </div>
+            <div className={styles.stat}>
+              <h3>Restaurants Tried</h3>
+              <p>{foodStats.restaurantCount}</p>
             </div>
           </div>
-        )}
+        </div>
+      )}
       <div className={styles.mood_vibe}>
         <h2>My Food Vibe</h2>
         <p>So Fresh, So Clean</p>
