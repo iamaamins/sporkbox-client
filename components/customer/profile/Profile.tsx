@@ -190,7 +190,7 @@ export default function Profile() {
       try {
         const response = await axiosInstance.post<
           { orderId: string; rating: number }[]
-        >('/orders/me/reviewed-orders', { orderIds: reviewedOrderIds });
+        >('/orders/me/rating-data', { orderIds: reviewedOrderIds });
 
         setRecentOrders({
           isLoading: false,
@@ -397,7 +397,6 @@ export default function Profile() {
                 <th>Review</th>
               </tr>
             </thead>
-
             <tbody>
               {recentOrders.data.map((order) => (
                 <tr key={order._id}>
