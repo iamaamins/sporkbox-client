@@ -16,6 +16,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaUserCircle } from 'react-icons/fa';
 import { useRouter } from 'next/router';
+import Stars from '@components/layout/Stars';
+
+type RecentOrders = {
+  isLoading: boolean;
+  data: {
+    _id: string;
+    date: string;
+    restaurant: string;
+    item: string;
+    status: string;
+    rating?: number;
+  }[];
+};
 
 export default function Profile() {
   const router = useRouter();
@@ -38,6 +51,10 @@ export default function Profile() {
     orderCount: 0,
     itemCount: 0,
     restaurantCount: 0,
+  });
+  const [recentOrders, setRecentOrders] = useState<RecentOrders>({
+    isLoading: true,
+    data: [],
   });
 
   const isSubscribed =
@@ -129,11 +146,6 @@ export default function Profile() {
     }
   }
 
-  const getRecentOrders = (
-    deliveredOrders: CustomerOrder[],
-    upcomingOrders: CustomerOrder[]
-  ) => [...deliveredOrders.slice(0, 5), ...upcomingOrders.slice(0, 5)];
-
   const isMatchedTag = (tag: string) => preferences.includes(tag);
 
   // Set shift and dietary preferences
@@ -147,6 +159,61 @@ export default function Profile() {
       if (customer.foodPreferences) setPreferences(customer.foodPreferences);
     }
   }, [customer]);
+
+  // Prepare recent orders
+  useEffect(() => {
+    async function prepareRecentOrders(
+      upcomingOrders: CustomerOrder[],
+      deliveredOrders: CustomerOrder[]
+    ) {
+      const recentDeliveredOrders = deliveredOrders.slice(0, 5);
+      const recentUpcomingOrders = upcomingOrders.slice(0, 5);
+
+      const recentOrders = [
+        ...recentDeliveredOrders,
+        ...recentUpcomingOrders,
+      ].map((order) => ({
+        _id: order._id,
+        status: order.status,
+        date: order.delivery.date,
+        restaurant: order.restaurant.name,
+        item: order.item.name,
+      }));
+
+      const reviewedOrderIds = recentDeliveredOrders
+        .filter((order) => order.isReviewed)
+        .map((order) => order._id);
+
+      if (!reviewedOrderIds.length)
+        return setRecentOrders({ isLoading: false, data: recentOrders });
+
+      try {
+        const response = await axiosInstance.post<
+          { orderId: string; rating: number }[]
+        >('/orders/me/reviewed-orders', { orderIds: reviewedOrderIds });
+
+        setRecentOrders({
+          isLoading: false,
+          data: recentOrders.map((order) => {
+            const reviewedOrder = response.data.find(
+              (data) => data.orderId === order._id
+            );
+            if (!reviewedOrder) return order;
+            return { ...order, rating: reviewedOrder.rating };
+          }),
+        });
+      } catch (err) {
+        setRecentOrders((prevState) => ({ ...prevState, isLoading: false }));
+        showErrorAlert(err as CustomAxiosError, setAlerts);
+      }
+    }
+
+    if (!customerUpcomingOrders.isLoading && !customerDeliveredOrders.isLoading)
+      prepareRecentOrders(
+        customerUpcomingOrders.data,
+        customerDeliveredOrders.data
+      );
+  }, [customerUpcomingOrders, customerDeliveredOrders]);
 
   // Get food stats and most liked restaurants and items
   useEffect(() => {
@@ -318,38 +385,44 @@ export default function Profile() {
           </div>
         )}
 
-      {!customerUpcomingOrders.isLoading &&
-        !customerDeliveredOrders.isLoading && (
-          <div className={styles.recent_orders}>
-            <h2>Recent Orders</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Restaurant</th>
-                  <th>Item</th>
-                  <th>Quantity</th>
-                </tr>
-              </thead>
+      {!recentOrders.isLoading && (
+        <div className={styles.recent_orders}>
+          <h2>Recent Orders</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Restaurant</th>
+                <th>Item</th>
+                <th>Review</th>
+              </tr>
+            </thead>
 
-              <tbody>
-                {getRecentOrders(
-                  customerDeliveredOrders.data,
-                  customerUpcomingOrders.data
-                ).map((order) => (
-                  <tr key={order._id}>
-                    <td className={styles.important}>
-                      {dateToText(order.delivery.date)}
+            <tbody>
+              {recentOrders.data.map((order) => (
+                <tr key={order._id}>
+                  <td className={styles.important}>{dateToText(order.date)}</td>
+                  <td>{order.restaurant}</td>
+                  <td>{order.item}</td>
+                  {order.status === 'PROCESSING' ? (
+                    <td>PROCESSING</td>
+                  ) : order.rating ? (
+                    <td>
+                      <Stars rating={order.rating} />
                     </td>
-                    <td>{order.restaurant.name}</td>
-                    <td>{order.item.name}</td>
-                    <td>{order.item.quantity}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+                  ) : (
+                    <td>
+                      <Link href={`/dashboard/${order._id}`}>
+                        <a className={styles.not_reviewed}>NOT REVIEWED</a>
+                      </Link>
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </section>
   );
 }
