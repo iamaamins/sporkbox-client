@@ -290,7 +290,7 @@ export default function Profile() {
           </div>
         </div>
       )}
-      <div className={styles.mood_vibe}>
+      <div className={styles.food_vibe}>
         <h2>My Food Vibe</h2>
         <p>So Fresh, So Clean</p>
       </div>

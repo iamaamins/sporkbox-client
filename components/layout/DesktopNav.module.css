@@ -28,7 +28,6 @@
   }
 
   .navigation li a {
-    opacity: 0.8;
     color: var(--grey);
     padding: 0.5rem 1rem;
     transition: 250ms ease-in-out;
@@ -36,7 +35,7 @@
 
   .navigation li a:hover,
   .active {
-    font-weight: 500;
+    font-weight: 700;
     color: var(--black);
   }
 

@@ -51,12 +51,12 @@
   transform: translateY(-50%);
   font-weight: 600;
   font-size: 18px;
+  color: var(--white);
   transition: opacity 350ms;
 }
 
 .label.night {
   left: 0.75rem;
-  color: var(--white);
 }
 
 .label.night.hide {
@@ -136,7 +136,6 @@
 
 .dietary_preferences p {
   max-width: 650px;
-  font-weight: 500;
 }
 
 .tools {
@@ -153,6 +152,7 @@
   color: var(--black);
   text-align: center;
   font-size: 1.25rem;
+  font-weight: 100;
 }
 
 .change_password_link svg {
@@ -168,6 +168,7 @@
   width: 15rem;
   height: auto;
   display: flex;
+  gap: 0.25rem;
   flex-direction: column;
   align-items: center;
   text-align: center;
@@ -176,14 +177,19 @@
 
 .slack_channel_link p:first-child {
   font-weight: 600;
+  line-height: 1.25;
 }
 
 .slack_logo {
   width: 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .slack_channel_link p:last-child {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1;
 }
 
 .food_stats {
@@ -207,30 +213,30 @@
 }
 
 .stat h3 {
-  font-weight: 400;
+  font-weight: 100;
 }
 
 .stat p {
   font-size: 3rem;
-  font-weight: 700;
+  font-weight: 900;
   line-height: 1;
 }
 
-.mood_vibe {
+.food_vibe {
   text-align: center;
   padding: 1rem 2rem;
   border-radius: 1rem;
   background-color: #f2f0e9;
 }
 
-.mood_vibe h2 {
-  font-weight: 400;
+.food_vibe h2 {
+  font-weight: 100;
   font-size: 1.75rem;
 }
 
-.mood_vibe p {
+.food_vibe p {
   font-size: 3.5rem;
-  font-weight: 700;
+  font-weight: 900;
   line-height: 1.25;
 }
 
@@ -249,7 +255,7 @@
 }
 
 .most_liked h3 {
-  font-weight: 400;
+  font-weight: 100;
   font-size: 1.5rem;
   text-align: center;
   margin-bottom: 1rem;
@@ -262,7 +268,7 @@
 .most_liked ol li {
   list-style: decimal;
   margin: 0.25rem 0;
-  font-weight: 700;
+  font-weight: 900;
   font-size: 2rem;
   line-height: 1.25;
 }
@@ -275,7 +281,7 @@
 
 .recent_orders h2 {
   text-align: center;
-  font-weight: 400;
+  font-weight: 100;
   margin-bottom: 0.5rem;
 }
 
@@ -295,8 +301,7 @@
 }
 
 .recent_orders table td:first-child {
-  font-weight: 400;
-  color: var(--gray);
+  font-weight: 200;
 }
 
 @media (min-width: 768px) {
