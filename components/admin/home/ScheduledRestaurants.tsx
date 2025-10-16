@@ -74,7 +74,7 @@ export default function ScheduledRestaurants({
       const response = await axiosInstance.patch(
         `/restaurants/${statusUpdatePayload.restaurant._id}/${dateToMS(
           statusUpdatePayload.date
-        )}/${statusUpdatePayload.companyCode}/change-schedule-status`,
+        )}/${statusUpdatePayload.companyCode}/update-schedule-status`,
         { action: statusUpdatePayload.action }
       );
       const schedule = response.data.find(

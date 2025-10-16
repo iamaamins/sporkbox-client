@@ -92,7 +92,7 @@ export default function Support() {
       try {
         const response = await axiosInstance.get<
           { _id: string; name: string }[]
-        >('/restaurants/active');
+        >('/restaurants/active/support');
         setRestaurants({ isLoading: false, data: response.data });
       } catch (err) {
         setRestaurants((prevState) => ({ ...prevState, isLoading: false }));
