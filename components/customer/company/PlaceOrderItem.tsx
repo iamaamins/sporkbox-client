@@ -229,7 +229,7 @@ export default function PlaceOrderItem() {
     async function getUpcomingRestaurants(userId: string) {
       try {
         const response = await axiosInstance.get(
-          `/restaurants/upcoming-restaurants/${userId}`
+          `/restaurants/upcoming/${userId}`
         );
         const upcomingRestaurants = response.data as UpcomingRestaurant[];
 

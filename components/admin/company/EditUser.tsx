@@ -37,7 +37,7 @@ export default function EditUser() {
       setIsLoading(true);
 
       const response = await axiosInstance.patch(
-        `/users/${router.query.user}/update-user-details`,
+        `/users/${router.query.user}/update`,
         formData
       );
 

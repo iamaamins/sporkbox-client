@@ -149,7 +149,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
   useEffect(() => {
     async function getUpcomingOrders() {
       try {
-        const response = await axiosInstance.get(`/orders/all-upcoming-orders`);
+        const response = await axiosInstance.get(`/orders/upcoming`);
         setAllUpcomingOrders({ isLoading: false, data: response.data });
       } catch (err) {
         setAllUpcomingOrders((prevState) => ({
@@ -161,9 +161,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
     }
     async function getScheduledRestaurants() {
       try {
-        const response = await axiosInstance.get(
-          `/restaurants/scheduled-restaurants`
-        );
+        const response = await axiosInstance.get(`/restaurants/scheduled`);
         setScheduledRestaurants({ isLoading: false, data: response.data });
       } catch (err) {
         setScheduledRestaurants((prevState) => ({
@@ -199,9 +197,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
     }
     async function getDeliveredOrders() {
       try {
-        const response = await axiosInstance.get(
-          `/orders/all-delivered-orders/2500`
-        );
+        const response = await axiosInstance.get(`/orders/delivered/2500`);
         setAllDeliveredOrders({ isLoading: false, data: response.data });
       } catch (err) {
         setAllDeliveredOrders((prevState) => ({
@@ -268,7 +264,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
   useEffect(() => {
     async function getUpcomingOrders() {
       try {
-        const response = await axiosInstance.get(`/orders/me/upcoming-orders`);
+        const response = await axiosInstance.get(`/orders/me/upcoming`);
         setCustomerUpcomingOrders({ isLoading: false, data: response.data });
       } catch (err) {
         setCustomerUpcomingOrders((prevState) => ({
@@ -280,9 +276,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
     }
     async function getDeliveredOrders() {
       try {
-        const response = await axiosInstance.get(
-          `/orders/me/delivered-orders/25`
-        );
+        const response = await axiosInstance.get(`/orders/me/delivered/25`);
         setCustomerDeliveredOrders({ isLoading: false, data: response.data });
       } catch (err) {
         setCustomerDeliveredOrders((prevState) => ({
@@ -317,9 +311,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
   useEffect(() => {
     async function getUpcomingRestaurants() {
       try {
-        const response = await axiosInstance.get(
-          `/restaurants/upcoming-restaurants`
-        );
+        const response = await axiosInstance.get(`/restaurants/me/upcoming`);
         setUpcomingRestaurants({ isLoading: false, data: response.data });
       } catch (err) {
         console.log(err);
@@ -337,9 +329,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
   useEffect(() => {
     async function getUpcomingOrders() {
       try {
-        const response = await axiosInstance.get(
-          `/orders/vendor/upcoming-orders`
-        );
+        const response = await axiosInstance.get(`/orders/vendor/upcoming`);
         setVendorUpcomingOrders({ isLoading: false, data: response.data });
       } catch (err) {
         setVendorUpcomingOrders((prevState) => ({

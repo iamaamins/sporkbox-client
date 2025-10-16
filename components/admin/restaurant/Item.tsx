@@ -49,7 +49,7 @@ export default function Item() {
     try {
       setIsUpdatingItemStatus(true);
       const response = await axiosInstance.patch(
-        `/restaurants/${router.query.restaurant}/${router.query.item}/change-item-status`,
+        `/restaurants/${router.query.restaurant}/${router.query.item}/change-status`,
         { action: statusUpdatePayload.action }
       );
       updateVendors(response.data, setVendors);

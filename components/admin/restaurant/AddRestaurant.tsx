@@ -67,7 +67,7 @@ export default function AddRestaurant() {
 
     try {
       setIsLoading(true);
-      const response = await axiosInstance.post(`/vendors/add-vendor`, data, {
+      const response = await axiosInstance.post(`/vendors/add`, data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       setVendors((prevState) => ({

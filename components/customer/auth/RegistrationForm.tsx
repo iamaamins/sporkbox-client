@@ -38,7 +38,7 @@ export default function RegistrationForm() {
     try {
       setIsLoading(true);
       const response = await axiosInstance.post(
-        `/customers/register-customer`,
+        `/customers/register`,
         formData
       );
 

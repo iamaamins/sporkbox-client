@@ -61,7 +61,7 @@ export default function EditCompany() {
       setIsLoading(true);
 
       const response = await axiosInstance.patch(
-        `/companies/${company?._id}/update-company-details`,
+        `/companies/${company?._id}/update`,
         formData
       );
 

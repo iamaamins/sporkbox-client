@@ -136,7 +136,7 @@ export default function ScheduledRestaurants({
     try {
       setIsRemovingSchedule(true);
       await axiosInstance.patch(
-        `/restaurants/${scheduleRemovalPayload.restaurant._id}/${scheduleRemovalPayload.schedule._id}/remove-schedule`
+        `/restaurants/${scheduleRemovalPayload.restaurant._id}/${scheduleRemovalPayload.schedule._id}/remove`
       );
       setScheduledRestaurants((prevState) => ({
         ...prevState,

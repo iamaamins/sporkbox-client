@@ -127,7 +127,7 @@ export default function Profile() {
       setIsSwitchingShift(true);
 
       const response = await axiosInstance.patch(
-        `/customers/${customer?._id}/${customer?.companies[0].code}/change-customer-shift`,
+        `/customers/${customer?._id}/${customer?.companies[0].code}/update-shift`,
         { shift: shift === 'night' ? 'day' : 'night' }
       );
 

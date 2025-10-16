@@ -51,7 +51,7 @@ export default function Users({ users, role, status }: Props) {
       setIsUpdatingUserStatus(true);
 
       const response = await axiosInstance.patch(
-        `/users/${statusUpdatePayload.data.userId}/change-user-status`,
+        `/users/${statusUpdatePayload.data.userId}/update-status`,
         { action: statusUpdatePayload.action }
       );
 

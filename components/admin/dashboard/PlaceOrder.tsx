@@ -99,7 +99,7 @@ export default function PlaceOrder() {
     async function getUpcomingRestaurantsAndDates(userId: string) {
       try {
         const response = await axiosInstance.get(
-          `/restaurants/upcoming-restaurants/${userId}`
+          `/restaurants/upcoming/${userId}`
         );
 
         const upcomingRestaurants = response.data as UpcomingRestaurant[];

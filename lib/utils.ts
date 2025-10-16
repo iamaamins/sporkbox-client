@@ -97,15 +97,15 @@ export const getDay = (date: number | string) =>
 
 export async function handleRemoveFromFavorite(
   setAlerts: Dispatch<SetStateAction<Alert[]>>,
-  itemId: string,
+  favoriteId: string,
   setCustomerFavoriteItems: Dispatch<SetStateAction<CustomerFavoriteItems>>
 ) {
   try {
-    await axiosInstance.delete(`/favorites/${itemId}/remove-from-favorite`);
+    await axiosInstance.delete(`/favorites/${favoriteId}/remove`);
     setCustomerFavoriteItems((prevState) => ({
       ...prevState,
       data: prevState.data.filter(
-        (customerFavoriteItem) => customerFavoriteItem._id !== itemId
+        (customerFavoriteItem) => customerFavoriteItem._id !== favoriteId
       ),
     }));
     showSuccessAlert('Favorite removed', setAlerts);

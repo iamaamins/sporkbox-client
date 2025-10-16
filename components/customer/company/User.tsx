@@ -60,7 +60,7 @@ export default function User() {
       setIsPerformingAction(true);
 
       const response = await axiosInstance.patch(
-        `/users/${actionPayload.data.userId}/change-user-status`,
+        `/users/${actionPayload.data.userId}/update-status`,
         { action: actionPayload.action }
       );
 
