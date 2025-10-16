@@ -52,6 +52,7 @@
   width: 15rem;
   height: auto;
   display: flex;
+  gap: 0.25rem;
   flex-direction: column;
   align-items: center;
   text-align: center;
@@ -60,14 +61,42 @@
 
 .slack_channel_link p:first-child {
   font-weight: 600;
+  line-height: 1.25;
 }
 
 .slack_logo {
   width: 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .slack_channel_link p:last-child {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.issue {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.issue form {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 100%;
+  flex-direction: column;
+}
+
+.issue form select,
+.issue form input,
+.issue form textarea {
+  padding: 12px;
+  border-radius: 0.25rem;
+  border: 1px solid var(--border_color);
 }
 
 .question {
