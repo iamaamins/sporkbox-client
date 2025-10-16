@@ -86,17 +86,47 @@
 
 .issue form {
   display: flex;
-  gap: 0.5rem;
-  max-width: 100%;
+  gap: 1rem;
+  align-items: center;
   flex-direction: column;
+}
+
+.issue form .item {
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  text-align: left;
+}
+
+.issue form label {
+  font-weight: 500;
 }
 
 .issue form select,
 .issue form input,
 .issue form textarea {
   padding: 12px;
-  border-radius: 0.25rem;
+  border-radius: 1rem;
+  width: 100%;
   border: 1px solid var(--border_color);
+}
+
+.issue form button {
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  height: 3.25rem;
+  font-weight: 500;
+  font-size: 1.25rem;
+  border-radius: 1rem;
+  background: var(--teal);
+  color: var(--almost_white);
+  transition: all 150ms ease-in-out;
+}
+
+.disabled {
+  pointer-events: none;
 }
 
 .question {
@@ -177,6 +207,11 @@
 
   .slack_channel_link {
     width: 15rem;
+  }
+
+  .issue {
+    width: 500px;
+    margin: 0 auto;
   }
 
   .answer {

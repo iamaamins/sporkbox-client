@@ -6,14 +6,21 @@ import { MdOutlineSentimentDissatisfied } from 'react-icons/md';
 import { MdSentimentNeutral } from 'react-icons/md';
 import { MdOutlineSentimentVeryDissatisfied } from 'react-icons/md';
 import { useUser } from '@context/User';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { FAQ_DATA } from 'data/FAQ';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { axiosInstance, showErrorAlert } from '@lib/utils';
+import {
+  axiosInstance,
+  getPastDate,
+  showErrorAlert,
+  showSuccessAlert,
+} from '@lib/utils';
 import { CustomAxiosError, FormData } from 'types';
 import { useAlert } from '@context/Alert';
+import SubmitButton from '@components/layout/SubmitButton';
+import ButtonLoader from '@components/layout/ButtonLoader';
 
 type Restaurants = {
   isLoading: boolean;
@@ -35,6 +42,7 @@ export default function Support() {
     restaurant: '',
     message: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const { issue, date, restaurant, message } = formData;
 
@@ -55,6 +63,30 @@ export default function Support() {
     }));
   }
 
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+
+    if (!issue || !date || !restaurant || !message)
+      return showErrorAlert('Please provide the required fields', setAlerts);
+
+    try {
+      setIsLoading(true);
+
+      await axiosInstance.post('/feedback/issue', {
+        issue,
+        date,
+        restaurant,
+        message,
+      });
+
+      showSuccessAlert('Feedback submitted', setAlerts);
+    } catch (err) {
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   useEffect(() => {
     async function getActiveRestaurants() {
       try {
@@ -69,8 +101,6 @@ export default function Support() {
     }
     if (router.isReady) getActiveRestaurants();
   }, [router]);
-
-  console.log(formData);
 
   return (
     <section className={styles.container}>
@@ -133,61 +163,90 @@ export default function Support() {
           <p>Report it here.</p>
         </div>
 
-        <form>
-          <select id='issue' value={issue} onChange={handleChange}>
-            <option hidden value='What is your issue about'>
-              What is your issue about?
-            </option>
-            <option value='Missing Meal'>
-              Missing Meal (not present at delivery; excluded if later found or
-              identified as theft)
-            </option>
-            <option value='Incorrect Meal'>
-              Incorrect Meal (delivered but does not match order)
-            </option>
-            <option value='Late Delivery'>
-              Late Delivery (outside the service window defined in SLA §2)
-            </option>
-            <option value='Foreign Object'>
-              Foreign Object / Immediate Quality Issue (reported at time of
-              delivery)
-            </option>
-            <option value='Portion Size Concern'>
-              Portion Size Concern (feedback only, not KPI failure)
-            </option>
-            <option value='Other'>
-              Other (recorded but only counted if recategorized into a KPI
-              category)
-            </option>
-          </select>
-          <input
-            type='date'
-            id='date'
-            value={date}
-            onChange={handleChange}
-            placeholder='Hello'
-          />
-          {!restaurants.isLoading && restaurants.data.length > 0 && (
-            <select id='restaurant' value={restaurant} onChange={handleChange}>
-              <option hidden value='Which restaurant was involved?'>
-                Which restaurant was involved?
+        <form onSubmit={handleSubmit}>
+          <div className={styles.item}>
+            <label htmlFor='issue'>What is your issue about?*</label>
+            <select required id='issue' value={issue} onChange={handleChange}>
+              <option hidden value='select'>
+                ---Select---
               </option>
-              <option value='Not Applicable'>Not Applicable</option>
-              {restaurants.data.map((restaurant) => (
-                <option value={restaurant._id} key={restaurant._id}>
-                  {restaurant.name}
-                </option>
-              ))}
+              <option value='Missing Meal'>
+                Missing Meal (not present at delivery; excluded if later found
+                or identified as theft)
+              </option>
+              <option value='Incorrect Meal'>
+                Incorrect Meal (delivered but does not match order)
+              </option>
+              <option value='Late Delivery'>
+                Late Delivery (outside the service window defined in SLA §2)
+              </option>
+              <option value='Foreign Object'>
+                Foreign Object / Immediate Quality Issue (reported at time of
+                delivery)
+              </option>
+              <option value='Portion Size Concern'>
+                Portion Size Concern (feedback only, not KPI failure)
+              </option>
+              <option value='Other'>
+                Other (recorded but only counted if recategorized into a KPI
+                category)
+              </option>
             </select>
+          </div>
+          <div className={styles.item}>
+            <label htmlFor='date'>When did you experience this issue?*</label>
+            <input
+              required
+              type='date'
+              id='date'
+              value={date}
+              onChange={handleChange}
+              max={getPastDate(0)}
+            />
+          </div>
+          {!restaurants.isLoading && restaurants.data.length > 0 && (
+            <div className={styles.item}>
+              <label htmlFor='restaurant'>
+                Which restaurant was involved?*
+              </label>
+              <select
+                required
+                id='restaurant'
+                value={restaurant}
+                onChange={handleChange}
+              >
+                <option hidden value='select'>
+                  --Select---
+                </option>
+                <option value='Not Applicable'>Not Applicable</option>
+                {restaurants.data.map((restaurant) => (
+                  <option value={restaurant._id} key={restaurant._id}>
+                    {restaurant.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           )}
-          <textarea
-            cols={20}
-            rows={10}
-            id='message'
-            value={message}
-            onChange={handleChange}
-            placeholder='Tell us more'
-          />
+          <div className={styles.item}>
+            <label htmlFor='message'>Message*</label>
+            <textarea
+              required
+              cols={20}
+              rows={10}
+              id='message'
+              value={message}
+              onChange={handleChange}
+              placeholder='Tell us more'
+            />
+          </div>
+          <button
+            type='submit'
+            className={`${styles.submit_button} ${
+              isLoading && styles.disabled
+            }`}
+          >
+            {isLoading ? <ButtonLoader /> : 'Submit'}
+          </button>
         </form>
       </div>
 
@@ -227,15 +286,6 @@ export default function Support() {
             </li>
           ))}
         </ul>
-      </div>
-
-      <div className={styles.detailed_feedback}>
-        <h2>Have an issue?</h2>
-        <Link href='/'>
-          <a className={styles.detailed_feedback_button}>
-            Leave Detailed <br /> Feedback
-          </a>
-        </Link>
       </div>
     </section>
   );
