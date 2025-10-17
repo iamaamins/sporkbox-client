@@ -32,7 +32,6 @@
   padding: 1rem;
   font-weight: 500;
   color: var(--gray);
-  font-size: 0.9rem;
 }
 
 .container td:last-child {
@@ -43,7 +42,6 @@
 }
 
 .message {
-  font-size: 16px;
   color: var(--gray);
 }
 
@@ -85,7 +83,6 @@
 
 .date {
   font-weight: 600;
-  font-size: 16px;
   padding: 0.5rem;
   border-bottom: 1px solid var(--border_color);
 }

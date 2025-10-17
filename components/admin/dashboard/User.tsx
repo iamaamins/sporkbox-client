@@ -71,7 +71,7 @@ export default function User() {
       setIsPerformingAction(true);
 
       const response = await axiosInstance.patch(
-        `/users/${actionPayload.data.userId}/change-user-status`,
+        `/users/${actionPayload.data.userId}/update-status`,
         { action: actionPayload.action }
       );
 
@@ -143,7 +143,7 @@ export default function User() {
             (upcomingOrder) => upcomingOrder.customer._id === user._id
           );
           const response = await axiosInstance.get(
-            `/orders/${user._id}/all-delivered-orders`
+            `/orders/${user._id}/delivered`
           );
 
           setUser((prevState) => ({

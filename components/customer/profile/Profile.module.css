@@ -1,108 +1,335 @@
-.profile {
+.container {
+  display: flex;
+  gap: 3rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: var(--section_padding);
 }
 
-.profile h2 {
-  margin-bottom: 1rem;
-}
-
-.details {
-  margin-bottom: 1rem;
-}
-
-.details p {
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-}
-
-.details p span {
-  font-weight: 400;
-  color: var(--gray);
+.shift_preferences_tools {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  flex-direction: column;
 }
 
 .shift {
-  text-transform: capitalize;
-}
-
-.buttons {
   display: flex;
   gap: 1rem;
   align-items: center;
-  flex-wrap: wrap;
-  margin-top: 1rem;
 }
 
-.buttons button {
+.shift h2 {
+  padding: 0.25rem 1rem;
+  border-radius: 1rem;
+  color: var(--global);
+  background-color: var(--black);
+}
+
+.shift_switcher {
+  position: relative;
+  width: 8.25rem;
+  height: 3.75rem;
+  border-radius: 5rem;
   border: none;
-  display: flex;
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: 500;
-  height: 2.75rem;
-  min-width: 10rem;
-  align-items: center;
-  padding: 0rem 1.15rem;
-  border-radius: 0.25rem;
-  justify-content: center;
-  background: var(--black);
-  color: var(--almost_white);
+  transition: background-color 350ms;
 }
 
-.order_timeline,
-.instruction {
+.shift_switcher.day {
+  background-color: #facc15;
+}
+
+.shift_switcher.night {
+  background-color: #4f46e5;
+}
+
+.label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--white);
+  transition: opacity 350ms;
+}
+
+.label.night {
+  left: 0.75rem;
+}
+
+.label.night.hide {
+  opacity: 0;
+}
+
+.label.night.show {
+  opacity: 1;
+}
+
+.label.day {
+  right: 0.75rem;
+}
+
+.label.day.hide {
+  opacity: 0;
+}
+
+.label.day.show {
+  opacity: 1;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 100%;
+  background-color: var(--white);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transition: transform 350ms;
+}
+
+.toggle.night {
+  transform: translateX(4.5rem);
+}
+
+.toggle.day {
+  transform: translateX(0);
+}
+
+.dietary_preferences {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.dietary_preferences h2,
+.dietary_preferences p {
+  color: var(--teal);
+}
+
+.preference_icons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.preference_icon {
+  cursor: pointer;
+}
+
+.preference_icon.matched img {
+  border-radius: 100%;
+  background-color: #ffd19b;
+}
+
+.dietary_preferences p {
+  max-width: 650px;
+}
+
+.tools {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.change_password_link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--black);
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 100;
+}
+
+.change_password_link svg {
+  border-radius: 100%;
+  border: 3px solid transparent;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-image: linear-gradient(var(--almost_white), var(--almost_white)),
+    linear-gradient(calc(2.25rad), #f6b046 20%, #893285 80%);
+}
+
+.slack_channel_link {
+  width: 15rem;
+  height: auto;
+  display: flex;
+  gap: 0.25rem;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: var(--black);
+}
+
+.slack_channel_link p:first-child {
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.slack_logo {
+  width: 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slack_channel_link p:last-child {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.food_stats {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stats {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.stat {
+  text-align: center;
+  padding: 1.5rem 2rem;
+  border-radius: 1rem;
+  background-color: #f2f0e9;
+}
+
+.stat h3 {
+  font-weight: 100;
+}
+
+.stat p {
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.food_vibe {
+  text-align: center;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  background-color: #f2f0e9;
+}
+
+.food_vibe h2 {
+  font-weight: 100;
+  font-size: 1.75rem;
+}
+
+.food_vibe p {
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.most_liked {
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  align-items: center;
+}
+
+.most_liked_restaurants,
+.most_liked_items {
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  background-color: #f2f0e9;
+}
+
+.most_liked h3 {
+  font-weight: 100;
+  font-size: 1.5rem;
+  text-align: center;
   margin-bottom: 1rem;
 }
 
-.title {
-  font-weight: 600;
-  font-size: 18px;
+.most_liked ol {
+  padding: 0rem 2rem;
+}
+
+.most_liked ol li {
+  list-style: decimal;
+  margin: 0.25rem 0;
+  font-weight: 900;
+  font-size: 2rem;
+  line-height: 1.25;
+}
+
+.recent_orders {
+  border-radius: 1rem;
+  padding: 1rem;
+  background-color: #f2f0e9;
+}
+
+.recent_orders h2 {
+  text-align: center;
+  font-weight: 100;
   margin-bottom: 0.5rem;
 }
 
-.timeline_items p {
-  margin-bottom: 6px;
+.recent_orders table {
+  text-align: center;
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.timeline_items p:last-child {
-  margin-bottom: 0px;
+.recent_orders table th,
+.recent_orders table td {
+  padding: 0.75rem 0.5rem;
 }
 
-.instruction p {
-  font-size: 16px;
-  margin-bottom: 0.25rem;
+.recent_orders table td {
+  font-weight: 500;
 }
 
-.instruction ul li {
-  margin-left: 1.5rem;
-  list-style: disc;
-  margin-bottom: 6px;
+.recent_orders table td:first-child,
+.recent_orders table td:last-child {
+  font-weight: 200;
 }
 
-.instruction ul li a {
-  color: var(--orange);
-}
-
-.video_link {
-  display: block;
-  margin-bottom: 1rem;
-  color: var(--teal);
-  font-weight: 600;
+.not_reviewed {
+  color: var(--black);
   text-decoration: underline;
 }
 
 @media (min-width: 768px) {
-  .profile {
-    max-width: 34rem;
-    margin: 0 auto;
+  .dietary_preferences h2,
+  .food_stats h2 {
+    font-size: 3.25rem;
   }
-}
 
-@media (min-width: 1024px) {
-  .profile {
-    max-width: 65rem;
-    margin: 0 auto;
-    display: grid;
-    gap: 3rem;
-    grid-template-columns: 2.5fr 4fr;
+  .stats {
+    flex-direction: row;
+  }
+
+  .most_liked {
+    flex-direction: row;
+  }
+
+  .recent_orders {
+    padding: 1rem 2rem;
+  }
+
+  .recent_orders table th,
+  .recent_orders table td {
+    padding: 1rem;
   }
 }

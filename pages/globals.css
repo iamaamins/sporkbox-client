@@ -1,37 +1,20 @@
 @font-face {
   font-family: 'Raleway';
+  font-weight: 100 900;
   font-style: normal;
-  font-weight: 400;
-  src: local(''), url('/fonts/raleway-v28-latin-regular.woff2') format('woff2'),
-    url('/fonts/raleway-v28-latin-regular.woff') format('woff');
-  font-display: fallback;
+  font-display: swap;
+  src: url('/fonts/Raleway-VariableFont_wght.ttf') format('truetype-variations'),
+    url('/fonts/Raleway-VariableFont_wght.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'Raleway';
-  font-style: normal;
-  font-weight: 500;
-  src: local(''), url('/fonts/raleway-v28-latin-500.woff2') format('woff2'),
-    url('/fonts/raleway-v28-latin-500.woff') format('woff');
-  font-display: fallback;
-}
-
-@font-face {
-  font-family: 'Raleway';
-  font-style: normal;
-  font-weight: 600;
-  src: local(''), url('/fonts/raleway-v28-latin-600.woff2') format('woff2'),
-    url('/fonts/raleway-v28-latin-600.woff') format('woff');
-  font-display: fallback;
-}
-
-@font-face {
-  font-family: 'Raleway';
-  font-style: normal;
-  font-weight: 700;
-  src: local(''), url('/fonts/raleway-v28-latin-700.woff2') format('woff2'),
-    url('/fonts/raleway-v28-latin-700.woff') format('woff');
-  font-display: fallback;
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+  src: url('/fonts/Raleway-Italic-VariableFont_wght.ttf')
+      format('truetype-variations'),
+    url('/fonts/Raleway-Italic-VariableFont_wght.ttf') format('truetype');
 }
 
 :root {
@@ -66,7 +49,7 @@ html,
 body {
   max-width: 1256px;
   margin: 0 auto;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   color: var(--black);
   font-family: 'Raleway', sans-serif;
@@ -75,6 +58,7 @@ body {
 
 h1,
 h2 {
+  font-weight: 800;
   line-height: 1.5em;
 }
 
@@ -107,6 +91,7 @@ li {
 input,
 select,
 textarea {
+  font-size: 1rem;
   border: none;
   border-radius: 0px;
 }

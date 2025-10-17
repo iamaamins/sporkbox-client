@@ -134,6 +134,17 @@ export default function MobileMenu({ isOpen, setIsOpen }: Props) {
           </Link>
         </li>
 
+        <li
+          className={!isCustomer ? styles.hide : ''}
+          onClick={() => setIsOpen(false)}
+        >
+          <Link href='/support'>
+            <a>
+              <AiTwotonePhone /> Support
+            </a>
+          </Link>
+        </li>
+
         {/* Admin nav items */}
         <li
           className={!isAdmin ? styles.hide : ''}
@@ -244,25 +255,6 @@ export default function MobileMenu({ isOpen, setIsOpen }: Props) {
           <Link href='/login'>
             <a>
               <IoLogIn /> Sign in
-            </a>
-          </Link>
-        </li>
-
-        <li
-          className={isAdmin ? styles.hide : ''}
-          onClick={() => setIsOpen(false)}
-        >
-          <Link href='/contact-us'>
-            <a>
-              <AiTwotonePhone /> Contact
-            </a>
-          </Link>
-        </li>
-
-        <li className={styles.hide} onClick={() => setIsOpen(false)}>
-          <Link href='/about-us'>
-            <a>
-              <MdGroups /> About us
             </a>
           </Link>
         </li>

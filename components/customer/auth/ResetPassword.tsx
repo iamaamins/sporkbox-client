@@ -7,19 +7,15 @@ import SubmitButton from '@components/layout/SubmitButton';
 import styles from './ResetPassword.module.css';
 import { axiosInstance, showErrorAlert, showSuccessAlert } from '@lib/utils';
 
-const initialState = {
-  password: '',
-  confirmPassword: '',
-};
-
 export default function ResetPassword() {
   const router = useRouter();
   const { setAlerts } = useAlert();
   const [isLoading, setIsLoading] = useState(false);
+  const initialState = { password: '', confirmPassword: '' };
   const [formData, setFormData] = useState<FormData>(initialState);
 
   const { password, confirmPassword } = formData;
-  const passwordsMatch = password === confirmPassword;
+  const arePasswordsMatched = password === confirmPassword;
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     setFormData((prevState) => ({
@@ -33,15 +29,17 @@ export default function ResetPassword() {
 
     try {
       setIsLoading(true);
+
       const response = await axiosInstance.patch(
         `/users/reset-password/${router.query.user}/${router.query.token}`,
         { password }
       );
+
       setFormData(initialState);
       showSuccessAlert(response.data, setAlerts);
+
       router.push('/login');
     } catch (err) {
-      console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       setIsLoading(false);
@@ -49,28 +47,33 @@ export default function ResetPassword() {
   }
 
   return (
-    <section className={styles.reset_password}>
+    <section className={styles.container}>
       <p className={styles.title}>Reset password?</p>
       <form onSubmit={handleSubmit}>
         <div className={styles.item}>
-          <label htmlFor='password'>Password</label>
+          <label htmlFor='password'>Password*</label>
           <input
+            required
             type='password'
             id='password'
             value={password}
             onChange={handleChange}
+            placeholder='Type your password'
           />
         </div>
 
         <div className={styles.item}>
           <label htmlFor='confirmPassword'>
-            Confirm password {!passwordsMatch && " - Passwords don't match"}
+            Confirm password*{' '}
+            {!arePasswordsMatched && " - Passwords don't match"}
           </label>
           <input
+            required
             type='password'
             id='confirmPassword'
             value={confirmPassword}
             onChange={handleChange}
+            placeholder='Type your password again'
           />
         </div>
 

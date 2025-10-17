@@ -104,7 +104,7 @@ export default function Cart() {
     try {
       setIsCheckingOut(true);
 
-      const response = await axiosInstance.post(`/orders/create-orders`, {
+      const response = await axiosInstance.post(`/orders/create`, {
         orderItems,
         discountCodeId,
         orderingForUser: { id: user._id },

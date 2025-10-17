@@ -19,7 +19,7 @@ export default function Dashboard() {
   async function handleLoadAllDeliveredOrders() {
     try {
       setIsLoading(true);
-      const response = await axiosInstance.get(`/orders/me/delivered-orders/0`);
+      const response = await axiosInstance.get(`/orders/me/delivered/0`);
       setCustomerDeliveredOrders((prevState) => ({
         ...prevState,
         data: response.data,

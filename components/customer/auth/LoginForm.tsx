@@ -8,11 +8,10 @@ import SubmitButton from '@components/layout/SubmitButton';
 import { axiosInstance, showErrorAlert } from '@lib/utils';
 
 export default function LoginForm() {
-  const initialSate = { email: '', password: '' };
-
   const { setAlerts } = useAlert();
   const { setAdmin, setVendor, setCustomer, setDriver } = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const initialSate = { email: '', password: '' };
   const [formData, setFormData] = useState<FormData>(initialSate);
 
   const { email, password } = formData;
@@ -50,22 +49,26 @@ export default function LoginForm() {
       <p className={styles.title}>Sign in to your account</p>
       <form onSubmit={handleSubmit}>
         <div className={styles.item}>
-          <label htmlFor='email'>Your email</label>
+          <label htmlFor='email'>Your email*</label>
           <input
+            required
             type='email'
             id='email'
             value={email}
             onChange={handleChange}
+            placeholder='Type your email address'
           />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor='password'>Password</label>
+          <label htmlFor='password'>Password*</label>
           <input
+            required
             type='password'
             id='password'
             value={password}
             onChange={handleChange}
+            placeholder='Type your password'
           />
         </div>
 

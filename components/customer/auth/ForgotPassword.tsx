@@ -37,11 +37,13 @@ export default function ForgotPassword() {
       <p className={styles.title}>Forgot password?</p>
       <form onSubmit={handleSubmit}>
         <div className={styles.item}>
-          <label htmlFor='email'>Your email</label>
+          <label htmlFor='email'>Your email*</label>
           <input
+            required
             type='email'
             id='email'
             value={email}
+            placeholder='Type your email address'
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>

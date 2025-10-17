@@ -103,7 +103,7 @@ export default function EditRestaurant() {
     try {
       setIsLoading(true);
       const response = await axiosInstance.patch(
-        `/vendors/${vendor?._id}/update-vendor-details`,
+        `/vendors/${vendor?._id}/update`,
         data,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );

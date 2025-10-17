@@ -38,7 +38,7 @@ export default function AddAdmin() {
     try {
       setIsLoading(true);
 
-      await axiosInstance.post('/admins/add-admin', formData);
+      await axiosInstance.post('/admins/add', formData);
 
       setFormData(initialState);
       showSuccessAlert('Admin added', setAlerts);

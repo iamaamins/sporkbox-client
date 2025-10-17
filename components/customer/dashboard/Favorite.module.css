@@ -39,7 +39,6 @@
 
 .dates a {
   margin-right: 8px;
-  font-size: 0.9rem;
   padding: 4px 8px;
   border-radius: 2rem;
   color: var(--orange);
@@ -72,10 +71,6 @@
   justify-content: center;
   background: var(--orange);
   color: var(--almost_white);
-}
-
-.cover_image svg {
-  font-size: 16px;
 }
 
 @media (min-width: 768px) {

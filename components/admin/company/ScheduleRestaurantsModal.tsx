@@ -60,10 +60,7 @@ export default function ScheduleRestaurantsModal() {
     try {
       setIsLoading(true);
       const data = { ...formData, companyId: router.query.company };
-      const response = await axiosInstance.post(
-        '/restaurants/schedule-restaurants',
-        data
-      );
+      const response = await axiosInstance.post('/restaurants/schedule', data);
       setScheduledRestaurants((prevState) => ({
         ...prevState,
         data: [...prevState.data, ...response.data],

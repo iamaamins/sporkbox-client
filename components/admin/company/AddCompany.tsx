@@ -37,10 +37,7 @@ export default function AddCompany() {
 
     try {
       setIsLoading(true);
-      const response = await axiosInstance.post(
-        `/companies/add-company`,
-        formData
-      );
+      const response = await axiosInstance.post(`/companies/add`, formData);
       updateCompanies(response.data, setCompanies);
       setFormData(initialState);
       showSuccessAlert('Company added', setAlerts);
