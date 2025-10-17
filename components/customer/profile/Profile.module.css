@@ -311,6 +311,11 @@
 }
 
 @media (min-width: 768px) {
+  .dietary_preferences h2,
+  .food_stats h2 {
+    font-size: 3.25rem;
+  }
+
   .stats {
     flex-direction: row;
   }
