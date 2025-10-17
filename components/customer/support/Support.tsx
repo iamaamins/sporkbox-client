@@ -148,7 +148,7 @@ export default function Support() {
         <p>We want to hear what you think!</p>
       </div>
 
-      {customer && customer.companies[0].code === 'octib' && (
+      {customer && customer.companies[0].code === 'twist' && (
         <div className={styles.survey_and_slack}>
           <Link href='https://docs.google.com/forms/d/e/1FAIpQLSc7EbMUO3fGcU5R7Xe3YV98fsV9GBRSo4uHBdYgSCZdrvDCPA/viewform?usp=header'>
             <a target='_blank' className={styles.survey_button}>
