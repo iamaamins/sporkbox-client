@@ -125,7 +125,7 @@
   transition: all 150ms ease-in-out;
 }
 
-.disabled {
+.issue form button.disabled {
   pointer-events: none;
 }
 
@@ -172,26 +172,6 @@
 
 .answer.item {
   padding-bottom: 1.25rem;
-}
-
-.detailed_feedback {
-  display: flex;
-  gap: 0.5rem;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.detailed_feedback_button {
-  text-align: center;
-  font-size: 1.5rem;
-  padding: 1rem 1.5rem;
-  font-weight: 700;
-  border: none;
-  line-height: 1;
-  color: var(--white);
-  border-radius: 1rem;
-  background-color: var(--teal);
 }
 
 @media (min-width: 768px) {

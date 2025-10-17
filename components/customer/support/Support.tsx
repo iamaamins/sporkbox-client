@@ -19,7 +19,6 @@ import {
 } from '@lib/utils';
 import { CustomAxiosError, FormData } from 'types';
 import { useAlert } from '@context/Alert';
-import SubmitButton from '@components/layout/SubmitButton';
 import ButtonLoader from '@components/layout/ButtonLoader';
 
 type Restaurants = {
@@ -28,6 +27,12 @@ type Restaurants = {
 };
 
 export default function Support() {
+  const initialState = {
+    category: '',
+    date: '',
+    restaurantId: '',
+    message: '',
+  };
   const router = useRouter();
   const { customer } = useUser();
   const { setAlerts } = useAlert();
@@ -36,15 +41,10 @@ export default function Support() {
     data: [],
   });
   const [openQuestions, setOpenQuestions] = useState<number[]>([]);
-  const [formData, setFormData] = useState<FormData>({
-    issue: '',
-    date: '',
-    restaurant: '',
-    message: '',
-  });
+  const [formData, setFormData] = useState<FormData>(initialState);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { issue, date, restaurant, message } = formData;
+  const { category, date, restaurantId, message } = formData;
 
   function toggleFAQ(index: number) {
     setOpenQuestions((prevState) =>
@@ -63,23 +63,30 @@ export default function Support() {
     }));
   }
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  async function submitGeneralFeedback(rating: number) {
+    try {
+      const response = await axiosInstance.post('/feedback/general', {
+        data: { rating },
+      });
 
-    if (!issue || !date || !restaurant || !message)
-      return showErrorAlert('Please provide the required fields', setAlerts);
+      showSuccessAlert(response.data, setAlerts);
+    } catch (err) {
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    }
+  }
+
+  async function submitIssueFeedback(e: FormEvent) {
+    e.preventDefault();
 
     try {
       setIsLoading(true);
 
-      await axiosInstance.post('/feedback/issue', {
-        issue,
-        date,
-        restaurant,
-        message,
+      const response = await axiosInstance.post('/feedback/issue', {
+        data: formData,
       });
 
-      showSuccessAlert('Feedback submitted', setAlerts);
+      setFormData(initialState);
+      showSuccessAlert(response.data, setAlerts);
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
@@ -111,22 +118,31 @@ export default function Support() {
             size={48}
             color='#56cd8c'
             title='Very satisfied'
+            onClick={() => submitGeneralFeedback(5)}
           />
           <MdSentimentVerySatisfied
             size={48}
             color='#85d273'
             title='Satisfied'
+            onClick={() => submitGeneralFeedback(4)}
           />
-          <MdSentimentNeutral size={48} color='#fbe118' title='Neither' />
+          <MdSentimentNeutral
+            size={48}
+            color='#fbe118'
+            title='Neither'
+            onClick={() => submitGeneralFeedback(3)}
+          />
           <MdOutlineSentimentDissatisfied
             size={48}
             color='#fba831'
             title='Somewhat unsatisfied'
+            onClick={() => submitGeneralFeedback(2)}
           />
           <MdOutlineSentimentVeryDissatisfied
             size={48}
             color='#ff6449'
             title='Very unsatisfied'
+            onClick={() => submitGeneralFeedback(1)}
           />
         </div>
         <p>We want to hear what you think!</p>
@@ -134,8 +150,8 @@ export default function Support() {
 
       {customer && customer.companies[0].code === 'octib' && (
         <div className={styles.survey_and_slack}>
-          <Link href='/'>
-            <a className={styles.survey_button}>
+          <Link href='https://docs.google.com/forms/d/e/1FAIpQLSc7EbMUO3fGcU5R7Xe3YV98fsV9GBRSo4uHBdYgSCZdrvDCPA/viewform?usp=header'>
+            <a target='_blank' className={styles.survey_button}>
               Take The Spork Box <br /> Satisfaction Survey
             </a>
           </Link>
@@ -163,10 +179,15 @@ export default function Support() {
           <p>Report it here.</p>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={submitIssueFeedback}>
           <div className={styles.item}>
-            <label htmlFor='issue'>What is your issue about?*</label>
-            <select required id='issue' value={issue} onChange={handleChange}>
+            <label htmlFor='category'>What is your issue about?*</label>
+            <select
+              required
+              id='category'
+              value={category}
+              onChange={handleChange}
+            >
               <option hidden value='select'>
                 ---Select---
               </option>
@@ -180,11 +201,11 @@ export default function Support() {
               <option value='Late Delivery'>
                 Late Delivery (outside the service window defined in SLA §2)
               </option>
-              <option value='Foreign Object'>
+              <option value='Quality Issue'>
                 Foreign Object / Immediate Quality Issue (reported at time of
                 delivery)
               </option>
-              <option value='Portion Size Concern'>
+              <option value='Portion Size'>
                 Portion Size Concern (feedback only, not KPI failure)
               </option>
               <option value='Other'>
@@ -211,8 +232,8 @@ export default function Support() {
               </label>
               <select
                 required
-                id='restaurant'
-                value={restaurant}
+                id='restaurantId'
+                value={restaurantId}
                 onChange={handleChange}
               >
                 <option hidden value='select'>
@@ -240,6 +261,7 @@ export default function Support() {
             />
           </div>
           <button
+            disabled={isLoading}
             type='submit'
             className={`${styles.submit_button} ${
               isLoading && styles.disabled
