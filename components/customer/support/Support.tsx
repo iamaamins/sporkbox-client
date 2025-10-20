@@ -30,7 +30,7 @@ export default function Support() {
   const initialState = {
     category: '',
     date: '',
-    restaurantId: '',
+    restaurant: '',
     message: '',
   };
   const router = useRouter();
@@ -44,7 +44,7 @@ export default function Support() {
   const [formData, setFormData] = useState<FormData>(initialState);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { category, date, restaurantId, message } = formData;
+  const { category, date, restaurant, message } = formData;
 
   function toggleFAQ(index: number) {
     setOpenQuestions((prevState) =>
@@ -192,26 +192,21 @@ export default function Support() {
                 ---Select---
               </option>
               <option value='Missing Meal'>
-                Missing Meal (not present at delivery; excluded if later found
-                or identified as theft)
+                Missing Meal (not present at delivery)
               </option>
               <option value='Incorrect Meal'>
                 Incorrect Meal (delivered but does not match order)
               </option>
               <option value='Late Delivery'>
-                Late Delivery (outside the service window defined in SLA §2)
+                Late Delivery (delivered after 12:30pm)
               </option>
               <option value='Quality Issue'>
-                Foreign Object / Immediate Quality Issue (reported at time of
-                delivery)
+                Quality Issue (damaged meal, foreign object, etc.)
               </option>
               <option value='Portion Size'>
-                Portion Size Concern (feedback only, not KPI failure)
+                Portion Size Concern (please attach photo)
               </option>
-              <option value='Other'>
-                Other (recorded but only counted if recategorized into a KPI
-                category)
-              </option>
+              <option value='Other'>Other</option>
             </select>
           </div>
           <div className={styles.item}>
@@ -232,8 +227,8 @@ export default function Support() {
               </label>
               <select
                 required
-                id='restaurantId'
-                value={restaurantId}
+                id='restaurant'
+                value={restaurant}
                 onChange={handleChange}
               >
                 <option hidden value='select'>
