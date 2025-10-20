@@ -4,11 +4,16 @@ import {
   dateToText,
   getPastDate,
   showErrorAlert,
+  showSuccessAlert,
 } from '@lib/utils';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { CustomAxiosError } from 'types';
 import styles from './Issues.module.css';
 import { useUser } from '@context/User';
+import { FaRegCircle } from 'react-icons/fa';
+import { FaCircleCheck } from 'react-icons/fa6';
+import { FaCircleXmark } from 'react-icons/fa6';
+import ModalContainer from '@components/layout/ModalContainer';
 
 type Issue = {
   _id: string;
@@ -17,9 +22,10 @@ type Issue = {
   issue: {
     category: string;
     date: string;
-    restaurant: { _id: string; name: string };
+    restaurant: { _id: string; name: string } | null;
     message: string;
     isValidated: boolean;
+    isRejected: boolean;
   };
 };
 type IssueStat = { complaintRate: number; orderAccuracy: number };
@@ -40,6 +46,17 @@ export default function Issues() {
   });
   const [period, setPeriod] = useState('7d');
   const [range, setRange] = useState({ start: '', end: '' });
+  const [issueUpdatePayload, setIssueUpdatePayload] = useState({
+    id: '',
+    user: '',
+    category: '',
+  });
+  const [showIssueUpdateModal, setShowIssueUpdateModal] = useState(false);
+
+  function initiateIssueUpdate(id: string, user: string, category: string) {
+    setIssueUpdatePayload({ id, user, category });
+    setShowIssueUpdateModal(true);
+  }
 
   useEffect(() => {
     async function getIssueStatAndData(start: string, end: string) {
@@ -152,9 +169,9 @@ export default function Issues() {
                 <tr>
                   <th>Date</th>
                   <th>Restaurant</th>
-                  <th>User</th>
+                  <th className={styles.hide_on_mobile}>User</th>
                   <th>Category</th>
-                  <th>Comment</th>
+                  <th className={styles.hide_on_mobile}>Comment</th>
                   <th>Validated</th>
                 </tr>
               </thead>
@@ -162,13 +179,37 @@ export default function Issues() {
                 {issues.data.map((el) => (
                   <tr key={el._id}>
                     <td>{dateToText(el.issue.date)}</td>
-                    <td>{el.issue.restaurant.name}</td>
-                    <td>
+                    <td>{el.issue.restaurant?.name || 'Not Applicable'}</td>
+                    <td className={styles.hide_on_mobile}>
                       {el.customer.firstName} {el.customer.lastName}
                     </td>
                     <td>{el.issue.category}</td>
-                    <td>{el.issue.message}</td>
-                    <td>{el.issue.isValidated}</td>
+                    <td className={styles.hide_on_mobile}>
+                      {el.issue.message}
+                    </td>
+                    <td
+                      className={`${styles.issue_status} ${
+                        (el.issue.isValidated || el.issue.isRejected) &&
+                        styles.updated
+                      }`}
+                      onClick={() =>
+                        !el.issue.isValidated &&
+                        !el.issue.isRejected &&
+                        initiateIssueUpdate(
+                          el._id,
+                          `${el.customer.firstName} ${el.customer.lastName}`,
+                          el.issue.category
+                        )
+                      }
+                    >
+                      {el.issue.isRejected ? (
+                        <FaCircleXmark />
+                      ) : el.issue.isValidated ? (
+                        <FaCircleCheck />
+                      ) : (
+                        !el.issue.isValidated && <FaRegCircle />
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -176,6 +217,81 @@ export default function Issues() {
           )}
         </div>
       )}
+      <ModalContainer
+        component={
+          <IssueUpdateModal
+            issueUpdatePayload={issueUpdatePayload}
+            setIssues={setIssues}
+            setShowIssueUpdateModal={setShowIssueUpdateModal}
+          />
+        }
+        showModalContainer={showIssueUpdateModal}
+        setShowModalContainer={setShowIssueUpdateModal}
+      />
     </section>
+  );
+}
+
+function IssueUpdateModal({
+  issueUpdatePayload,
+  setIssues,
+  setShowIssueUpdateModal,
+}: {
+  issueUpdatePayload: { id: string; user: string; category: string };
+  setIssues: Dispatch<SetStateAction<Issues>>;
+  setShowIssueUpdateModal: Dispatch<SetStateAction<boolean>>;
+}) {
+  const { setAlerts } = useAlert();
+  const [isUpdatingIssue, setIsUpdatingIssue] = useState(false);
+
+  async function updateIssue(issueId: string, action: 'validate' | 'reject') {
+    try {
+      setIsUpdatingIssue(true);
+
+      const response = await axiosInstance.patch(
+        `/feedback/issue/${issueId}/${action}`
+      );
+
+      setIssues((prevState) => {
+        if (!prevState.data) return prevState;
+
+        const updatedIssues = prevState.data.map((el) => {
+          if (el._id !== response.data._id) return el;
+          return { ...response.data, issue: response.data.issue };
+        });
+
+        return { ...prevState, data: updatedIssues };
+      });
+
+      showSuccessAlert('Issue updated successfully.', setAlerts);
+    } catch (err) {
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      setIsUpdatingIssue(false);
+      setShowIssueUpdateModal(false);
+    }
+  }
+
+  return (
+    <div className={styles.issue_update_modal}>
+      <p>
+        Update {issueUpdatePayload.category} issue reported by{' '}
+        {issueUpdatePayload.user}
+      </p>
+      <div className={styles.buttons}>
+        <button
+          disabled={isUpdatingIssue}
+          onClick={() => updateIssue(issueUpdatePayload.id, 'validate')}
+        >
+          Validate
+        </button>
+        <button
+          disabled={isUpdatingIssue}
+          onClick={() => updateIssue(issueUpdatePayload.id, 'reject')}
+        >
+          Reject
+        </button>
+      </div>
+    </div>
   );
 }
