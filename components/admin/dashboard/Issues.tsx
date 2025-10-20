@@ -14,6 +14,7 @@ import { FaRegCircle } from 'react-icons/fa';
 import { FaCircleCheck } from 'react-icons/fa6';
 import { FaCircleXmark } from 'react-icons/fa6';
 import ModalContainer from '@components/layout/ModalContainer';
+import Link from 'next/link';
 
 type Issue = {
   _id: string;
@@ -24,6 +25,7 @@ type Issue = {
     date: string;
     restaurant: { _id: string; name: string } | null;
     message: string;
+    image?: string;
     isValidated: boolean;
     isRejected: boolean;
   };
@@ -172,7 +174,10 @@ export default function Issues() {
                   <th className={styles.hide_on_mobile}>User</th>
                   <th>Category</th>
                   <th className={styles.hide_on_mobile}>Comment</th>
-                  <th>Validated</th>
+                  {issues.data.some((el) => el.issue.image) && (
+                    <th className={styles.hide_on_mobile}>Image</th>
+                  )}
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -187,6 +192,13 @@ export default function Issues() {
                     <td className={styles.hide_on_mobile}>
                       {el.issue.message}
                     </td>
+                    {el.issue.image && (
+                      <td className={styles.hide_on_mobile}>
+                        <Link href={el.issue.image}>
+                          <a target='_blank'>View image</a>
+                        </Link>
+                      </td>
+                    )}
                     <td
                       className={`${styles.issue_status} ${
                         (el.issue.isValidated || el.issue.isRejected) &&
