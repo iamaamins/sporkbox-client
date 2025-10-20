@@ -13,21 +13,32 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
   axiosInstance,
+  formatImageName,
   getPastDate,
   showErrorAlert,
   showSuccessAlert,
 } from '@lib/utils';
-import { CustomAxiosError, FormData } from 'types';
+import { CustomAxiosError } from 'types';
 import { useAlert } from '@context/Alert';
 import ButtonLoader from '@components/layout/ButtonLoader';
+import { FiUpload } from 'react-icons/fi';
+import { RiDeleteBinLine } from 'react-icons/ri';
 
 type Restaurants = {
   isLoading: boolean;
   data: { _id: string; name: string }[];
 };
 
+type FormData = {
+  category: string;
+  date: string;
+  restaurant: string;
+  message: string;
+  file?: File;
+};
+
 export default function Support() {
-  const initialState = {
+  const initialState: FormData = {
     category: '',
     date: '',
     restaurant: '',
@@ -44,7 +55,7 @@ export default function Support() {
   const [formData, setFormData] = useState<FormData>(initialState);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { category, date, restaurant, message } = formData;
+  const { category, date, restaurant, message, file } = formData;
 
   function toggleFAQ(index: number) {
     setOpenQuestions((prevState) =>
@@ -66,7 +77,7 @@ export default function Support() {
   async function submitGeneralFeedback(rating: number) {
     try {
       const response = await axiosInstance.post('/feedback/general', {
-        data: { rating },
+        rating,
       });
 
       showSuccessAlert(response.data, setAlerts);
@@ -78,11 +89,18 @@ export default function Support() {
   async function submitIssueFeedback(e: FormEvent) {
     e.preventDefault();
 
+    const data = new FormData();
+    data.append('category', category);
+    data.append('date', date);
+    data.append('restaurant', restaurant);
+    data.append('message', message);
+    file && data.append('file', file);
+
     try {
       setIsLoading(true);
 
-      const response = await axiosInstance.post('/feedback/issue', {
-        data: formData,
+      const response = await axiosInstance.post('/feedback/issue', data, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       setFormData(initialState);
@@ -253,6 +271,41 @@ export default function Support() {
               value={message}
               onChange={handleChange}
               placeholder='Tell us more'
+            />
+          </div>
+          <div className={styles.image_upload}>
+            <label htmlFor='image'>Image</label>
+            <div className={styles.upload}>
+              <div className={styles.upload_icon_and_text}>
+                <FiUpload />
+                <span>
+                  {file ? formatImageName(file.name) : 'Upload image'}
+                </span>
+              </div>
+              {file && (
+                <span
+                  className={styles.remove_upload}
+                  onClick={() =>
+                    setFormData((prevState) => ({
+                      ...prevState,
+                      file: undefined,
+                    }))
+                  }
+                >
+                  Remove <RiDeleteBinLine />
+                </span>
+              )}
+            </div>
+            <input
+              id='image'
+              type='file'
+              accept='image/*'
+              onChange={(e) =>
+                setFormData((prevState) => ({
+                  ...prevState,
+                  file: e.target.files?.[0],
+                }))
+              }
             />
           </div>
           <button
