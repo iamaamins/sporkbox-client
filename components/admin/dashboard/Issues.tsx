@@ -192,13 +192,15 @@ export default function Issues() {
                     <td className={styles.hide_on_mobile}>
                       {el.issue.message}
                     </td>
-                    {el.issue.image && (
-                      <td className={styles.hide_on_mobile}>
+                    <td className={styles.hide_on_mobile}>
+                      {el.issue.image ? (
                         <Link href={el.issue.image}>
                           <a target='_blank'>View image</a>
                         </Link>
-                      </td>
-                    )}
+                      ) : (
+                        'No image'
+                      )}
+                    </td>
                     <td
                       className={`${styles.issue_status} ${
                         (el.issue.isValidated || el.issue.isRejected) &&
