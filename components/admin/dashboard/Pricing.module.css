@@ -94,7 +94,7 @@
   flex-direction: column;
 }
 
-.items_count,
+.count_and_percentage,
 .average_price {
   display: flex;
   gap: 0.5rem;
@@ -108,9 +108,25 @@
   background-color: var(--teal);
 }
 
-.items_count span:last-child,
-.average_price span:last-child {
-  font-size: 32px;
+.count_and_percentage {
+  gap: 2rem;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.count,
+.percentage {
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  align-items: center;
+}
+
+.count p:last-child,
+.percentage p:last-child,
+.average_price p:last-child {
+  font-size: 2rem;
   font-weight: 700;
 }
 
