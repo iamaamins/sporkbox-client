@@ -6,59 +6,6 @@
   margin-bottom: 1rem;
 }
 
-.tables {
-  display: flex;
-  gap: 1rem;
-  flex-direction: column;
-}
-
-.container table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.container th {
-  text-align: left;
-  padding: 1rem;
-}
-
-.container th:last-child {
-  text-align: right;
-}
-
-.container thead tr {
-  background-color: var(--almost_white);
-}
-
-.container tbody tr {
-  border-bottom: 1px solid var(--border_color);
-}
-
-.container td {
-  padding: 1rem;
-  font-weight: 500;
-  color: var(--gray);
-}
-
-.hide_on_mobile {
-  display: none;
-}
-
-.issue_status {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.issue_status svg {
-  cursor: pointer;
-}
-
-.issue_status.updated svg {
-  cursor: default;
-}
-
 .period_and_range_selector {
   display: flex;
   gap: 0.75rem;
@@ -90,6 +37,53 @@
   padding: 0.5rem;
   border-radius: 0.5rem;
   border: 1px solid var(--border_color);
+}
+
+.tables {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.container th {
+  text-align: left;
+  padding: 1rem;
+}
+
+.container th:last-child,
+.container td:last-child {
+  text-align: right;
+}
+
+.container thead tr {
+  background-color: var(--almost_white);
+}
+
+.container tbody tr {
+  border-bottom: 1px solid var(--border_color);
+}
+
+.container td {
+  padding: 1rem;
+  font-weight: 500;
+  color: var(--gray);
+}
+
+.hide_on_mobile {
+  display: none;
+}
+
+.issue_status svg {
+  cursor: pointer;
+}
+
+.issue_status.updated svg {
+  cursor: default;
 }
 
 .issue_update_modal {
