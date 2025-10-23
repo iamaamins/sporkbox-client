@@ -301,6 +301,7 @@ export default function Profile() {
                   width={48}
                   height={48}
                   alt={`${tag} icon`}
+                  title={tag}
                   src={`/customer/${tag.toLowerCase().replace(' ', '-')}.png`}
                 />
               </div>
