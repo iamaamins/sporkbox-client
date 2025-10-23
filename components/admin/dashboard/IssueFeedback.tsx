@@ -8,15 +8,16 @@ import {
 } from '@lib/utils';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { CustomAxiosError } from 'types';
-import styles from './Issues.module.css';
+import styles from './IssueFeedback.module.css';
 import { useUser } from '@context/User';
 import { FaRegCircle } from 'react-icons/fa';
 import { FaCircleCheck } from 'react-icons/fa6';
 import { FaCircleXmark } from 'react-icons/fa6';
 import ModalContainer from '@components/layout/ModalContainer';
 import Link from 'next/link';
+import { ISSUE_CATEGORIES } from 'data/FEEDBACK';
 
-type Issue = {
+type IssueFeedback = {
   _id: string;
   customer: { _id: string; firstName: string; lastName: string };
   type: 'ISSUE';
@@ -30,24 +31,29 @@ type Issue = {
     isRejected: boolean;
   };
 };
-type IssueStat = { complaintRate: number; orderAccuracy: number };
 
-type Issues = {
+type IssueFeedbackStats = { complaintRate: number; orderAccuracy: number };
+
+type IssueFeedbackData = {
   isLoading: boolean;
-  stats: IssueStat | null;
-  data: Issue[] | null;
+  feedback: IssueFeedback[];
+  stats: IssueFeedbackStats;
 };
 
-export default function Issues() {
+export default function IssueFeedback() {
   const { isAdmin } = useUser();
   const { setAlerts } = useAlert();
-  const [issues, setIssues] = useState<Issues>({
-    stats: null,
-    data: null,
-    isLoading: true,
-  });
+  const [issueFeedbackData, setIssueFeedbackData] = useState<IssueFeedbackData>(
+    {
+      isLoading: true,
+      feedback: [],
+      stats: { complaintRate: 0, orderAccuracy: 0 },
+    }
+  );
   const [period, setPeriod] = useState('7d');
   const [range, setRange] = useState({ start: '', end: '' });
+  const [category, setCategory] = useState('All');
+  const [issueFeedback, setIssueFeedback] = useState<IssueFeedback[]>([]);
   const [issueUpdatePayload, setIssueUpdatePayload] = useState({
     id: '',
     user: '',
@@ -60,6 +66,18 @@ export default function Issues() {
     setShowIssueUpdateModal(true);
   }
 
+  // Filter issue feedback
+  useEffect(() => {
+    setIssueFeedback(
+      category === 'All'
+        ? issueFeedbackData.feedback
+        : issueFeedbackData.feedback.filter(
+            (feedback) => feedback.issue.category === category
+          )
+    );
+  }, [category]);
+
+  // Get issue feedback data
   useEffect(() => {
     async function getIssueStatAndData(start: string, end: string) {
       try {
@@ -67,16 +85,17 @@ export default function Issues() {
           `/feedback/issue/${start}/${end}`
         );
 
-        setIssues({
+        setIssueFeedbackData({
           isLoading: false,
-          stats: {
-            complaintRate: response.data.complaintRate,
-            orderAccuracy: response.data.orderAccuracy,
-          },
-          data: response.data.issues,
+          stats: response.data.stats,
+          feedback: response.data.feedback,
         });
+        setIssueFeedback(response.data.feedback);
       } catch (err) {
-        setIssues((prevState) => ({ ...prevState, isLoading: false }));
+        setIssueFeedbackData((prevState) => ({
+          ...prevState,
+          isLoading: false,
+        }));
         showErrorAlert(err as CustomAxiosError, setAlerts);
       }
     }
@@ -144,28 +163,38 @@ export default function Issues() {
             </div>
           </div>
         )}
+        <select
+          value={category}
+          className={styles.category_selector}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          {ISSUE_CATEGORIES.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+          <option value='All'>All</option>
+        </select>
       </form>
-      {issues.isLoading ? (
+      {issueFeedbackData.isLoading ? (
         <p className={styles.message}>Loading...</p>
       ) : (
         <div className={styles.tables}>
-          {issues.stats && (
-            <table>
-              <thead>
-                <tr>
-                  <th>Complaint rate</th>
-                  <th>Order accuracy</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{issues.stats.complaintRate}%</td>
-                  <td>{issues.stats.orderAccuracy}%</td>
-                </tr>
-              </tbody>
-            </table>
-          )}
-          {issues.data && issues.data.length > 0 && (
+          <table>
+            <thead>
+              <tr>
+                <th>Complaint rate</th>
+                <th>Order accuracy</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{issueFeedbackData.stats.complaintRate}%</td>
+                <td>{issueFeedbackData.stats.orderAccuracy}%</td>
+              </tr>
+            </tbody>
+          </table>
+          {issueFeedback.length > 0 && (
             <table>
               <thead>
                 <tr>
@@ -174,27 +203,29 @@ export default function Issues() {
                   <th className={styles.hide_on_mobile}>User</th>
                   <th>Category</th>
                   <th className={styles.hide_on_mobile}>Comment</th>
-                  {issues.data.some((el) => el.issue.image) && (
+                  {issueFeedback.some((feedback) => feedback.issue.image) && (
                     <th className={styles.hide_on_mobile}>Image</th>
                   )}
                   <th>Status</th>
                 </tr>
               </thead>
               <tbody>
-                {issues.data.map((el) => (
-                  <tr key={el._id}>
-                    <td>{dateToText(el.issue.date)}</td>
-                    <td>{el.issue.restaurant?.name || 'Not Applicable'}</td>
-                    <td className={styles.hide_on_mobile}>
-                      {el.customer.firstName} {el.customer.lastName}
-                    </td>
-                    <td>{el.issue.category}</td>
-                    <td className={styles.hide_on_mobile}>
-                      {el.issue.message}
+                {issueFeedback.map((feedback) => (
+                  <tr key={feedback._id}>
+                    <td>{dateToText(feedback.issue.date)}</td>
+                    <td>
+                      {feedback.issue.restaurant?.name || 'Not Applicable'}
                     </td>
                     <td className={styles.hide_on_mobile}>
-                      {el.issue.image ? (
-                        <Link href={el.issue.image}>
+                      {feedback.customer.firstName} {feedback.customer.lastName}
+                    </td>
+                    <td>{feedback.issue.category}</td>
+                    <td className={styles.hide_on_mobile}>
+                      {feedback.issue.message}
+                    </td>
+                    <td className={styles.hide_on_mobile}>
+                      {feedback.issue.image ? (
+                        <Link href={feedback.issue.image}>
                           <a target='_blank'>View image</a>
                         </Link>
                       ) : (
@@ -203,25 +234,26 @@ export default function Issues() {
                     </td>
                     <td
                       className={`${styles.issue_status} ${
-                        (el.issue.isValidated || el.issue.isRejected) &&
+                        (feedback.issue.isValidated ||
+                          feedback.issue.isRejected) &&
                         styles.updated
                       }`}
                       onClick={() =>
-                        !el.issue.isValidated &&
-                        !el.issue.isRejected &&
+                        !feedback.issue.isValidated &&
+                        !feedback.issue.isRejected &&
                         initiateIssueUpdate(
-                          el._id,
-                          `${el.customer.firstName} ${el.customer.lastName}`,
-                          el.issue.category
+                          feedback._id,
+                          `${feedback.customer.firstName} ${feedback.customer.lastName}`,
+                          feedback.issue.category
                         )
                       }
                     >
-                      {el.issue.isRejected ? (
+                      {feedback.issue.isRejected ? (
                         <FaCircleXmark color='red' />
-                      ) : el.issue.isValidated ? (
+                      ) : feedback.issue.isValidated ? (
                         <FaCircleCheck color='green' />
                       ) : (
-                        !el.issue.isValidated && <FaRegCircle />
+                        !feedback.issue.isValidated && <FaRegCircle />
                       )}
                     </td>
                   </tr>
@@ -235,7 +267,7 @@ export default function Issues() {
         component={
           <IssueUpdateModal
             issueUpdatePayload={issueUpdatePayload}
-            setIssues={setIssues}
+            setIssueFeedbackData={setIssueFeedbackData}
             setShowIssueUpdateModal={setShowIssueUpdateModal}
           />
         }
@@ -248,11 +280,11 @@ export default function Issues() {
 
 function IssueUpdateModal({
   issueUpdatePayload,
-  setIssues,
+  setIssueFeedbackData,
   setShowIssueUpdateModal,
 }: {
   issueUpdatePayload: { id: string; user: string; category: string };
-  setIssues: Dispatch<SetStateAction<Issues>>;
+  setIssueFeedbackData: Dispatch<SetStateAction<IssueFeedbackData>>;
   setShowIssueUpdateModal: Dispatch<SetStateAction<boolean>>;
 }) {
   const { setAlerts } = useAlert();
@@ -266,11 +298,11 @@ function IssueUpdateModal({
         `/feedback/issue/${issueId}/${action}`
       );
 
-      setIssues((prevState) => {
-        if (!prevState.data) return prevState;
+      setIssueFeedbackData((prevState) => {
+        if (!prevState.feedback) return prevState;
 
-        const updatedIssues = prevState.data.map((el) => {
-          if (el._id !== response.data._id) return el;
+        const updatedIssues = prevState.feedback.map((feedback) => {
+          if (feedback._id !== response.data._id) return feedback;
           return { ...response.data, issue: response.data.issue };
         });
 

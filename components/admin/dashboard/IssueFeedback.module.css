@@ -13,7 +13,8 @@
   flex-direction: column;
 }
 
-.period_selector {
+.period_selector,
+.category_selector {
   padding: 0.75rem 0.5rem;
   border-radius: 0.5rem;
   width: 12rem;
