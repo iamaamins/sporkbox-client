@@ -217,9 +217,9 @@ export default function Issues() {
                       }
                     >
                       {el.issue.isRejected ? (
-                        <FaCircleXmark />
+                        <FaCircleXmark color='red' />
                       ) : el.issue.isValidated ? (
-                        <FaCircleCheck />
+                        <FaCircleCheck color='green' />
                       ) : (
                         !el.issue.isValidated && <FaRegCircle />
                       )}
