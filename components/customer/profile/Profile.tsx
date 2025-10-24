@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { FaUserCircle } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Stars from '@components/layout/Stars';
+import { EXCLUDED } from 'data/PREFERENCE';
 
 type RecentOrders = {
   isLoading: boolean;
@@ -60,12 +61,38 @@ export default function Profile() {
   const isSubscribed =
     customer && Object.values(customer.subscribedTo).includes(true);
 
+  async function switchShift() {
+    try {
+      setIsSwitchingShift(true);
+
+      const response = await axiosInstance.patch(
+        `/customers/${customer?._id}/${customer?.companies[0].code}/update-shift`,
+        { shift: shift === 'night' ? 'day' : 'night' }
+      );
+
+      setCustomer(
+        (prevState) => prevState && { ...prevState, companies: response.data }
+      );
+
+      localStorage.removeItem(`discount-${customer?._id}`);
+      localStorage.removeItem(`cart-${customer?._id}`);
+
+      showSuccessAlert('Shift updated', setAlerts);
+    } catch (err) {
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      setIsSwitchingShift(false);
+    }
+  }
+
   async function updateDietaryPreferences(tag: string) {
     if (!customer) return;
 
     const updatedPreferences = preferences.includes(tag)
       ? preferences.filter((preference) => preference !== tag)
       : [...preferences, tag];
+
+    console.log(updatedPreferences);
 
     try {
       const response = await axiosInstance.patch(
@@ -83,7 +110,7 @@ export default function Profile() {
 
       localStorage.setItem(
         `filters-${customer._id}`,
-        JSON.stringify(preferences)
+        JSON.stringify(updatedPreferences)
       );
       setPreferences(updatedPreferences);
 
@@ -122,30 +149,6 @@ export default function Profile() {
     }
   }
 
-  async function switchShift() {
-    try {
-      setIsSwitchingShift(true);
-
-      const response = await axiosInstance.patch(
-        `/customers/${customer?._id}/${customer?.companies[0].code}/update-shift`,
-        { shift: shift === 'night' ? 'day' : 'night' }
-      );
-
-      setCustomer(
-        (prevState) => prevState && { ...prevState, companies: response.data }
-      );
-
-      localStorage.removeItem(`discount-${customer?._id}`);
-      localStorage.removeItem(`cart-${customer?._id}`);
-
-      showSuccessAlert('Shift updated', setAlerts);
-    } catch (err) {
-      showErrorAlert(err as CustomAxiosError, setAlerts);
-    } finally {
-      setIsSwitchingShift(false);
-    }
-  }
-
   const isMatchedTag = (tag: string) => preferences.includes(tag);
 
   // Set shift and dietary preferences
@@ -156,7 +159,12 @@ export default function Profile() {
       );
 
       if (activeCompany) setShift(activeCompany.shift);
-      if (customer.foodPreferences) setPreferences(customer.foodPreferences);
+      if (customer.foodPreferences)
+        setPreferences(
+          customer.foodPreferences.filter(
+            (preference) => !EXCLUDED.includes(preference)
+          )
+        );
     }
   }, [customer]);
 
@@ -289,23 +297,25 @@ export default function Profile() {
         <div className={styles.dietary_preferences}>
           <h2>My Dietary Preferences</h2>
           <div className={styles.preference_icons}>
-            {dietaryTags.data.map((tag, index) => (
-              <div
-                key={index}
-                onClick={() => updateDietaryPreferences(tag)}
-                className={`${styles.preference_icon} ${
-                  isMatchedTag(tag) && styles.matched
-                }`}
-              >
-                <Image
-                  width={48}
-                  height={48}
-                  alt={`${tag} icon`}
-                  title={tag}
-                  src={`/customer/${tag.toLowerCase().replace(' ', '-')}.png`}
-                />
-              </div>
-            ))}
+            {dietaryTags.data
+              .filter((tag) => !EXCLUDED.includes(tag))
+              .map((tag, index) => (
+                <div
+                  key={index}
+                  onClick={() => updateDietaryPreferences(tag)}
+                  className={`${styles.preference_icon} ${
+                    isMatchedTag(tag) && styles.matched
+                  }`}
+                >
+                  <Image
+                    width={48}
+                    height={48}
+                    alt={`${tag} icon`}
+                    title={tag}
+                    src={`/customer/${tag.toLowerCase().replace(' ', '-')}.png`}
+                  />
+                </div>
+              ))}
           </div>
           <p>
             Click the icon to toggle your meal preference on or off. These
