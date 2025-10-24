@@ -83,7 +83,7 @@
   cursor: pointer;
 }
 
-.issue_status.updated svg {
+.issue_status.default_cursor svg {
   cursor: default;
 }
 

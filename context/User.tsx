@@ -26,6 +26,7 @@ type UserContext = {
   isCustomer: boolean;
   isVendor: boolean;
   isDriver: boolean;
+  isCompanyAdmin?: boolean;
   isUserLoading: boolean;
   setVendor: Dispatch<SetStateAction<Vendor | null>>;
   setAdmin: Dispatch<SetStateAction<Admin | null>>;
@@ -72,6 +73,7 @@ export default function UserProvider({ children }: ContextProviderProps) {
   const isVendor = vendor?.role === 'VENDOR';
   const isCustomer = customer?.role === 'CUSTOMER';
   const isDriver = driver?.role === 'DRIVER';
+  const isCompanyAdmin = customer?.isCompanyAdmin;
 
   return (
     <UserContext.Provider
@@ -84,6 +86,7 @@ export default function UserProvider({ children }: ContextProviderProps) {
         isVendor,
         isCustomer,
         isDriver,
+        isCompanyAdmin,
         setAdmin,
         setVendor,
         setCustomer,

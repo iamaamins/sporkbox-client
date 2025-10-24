@@ -41,8 +41,8 @@ type IssueFeedbackData = {
 };
 
 export default function IssueFeedback() {
-  const { isAdmin } = useUser();
   const { setAlerts } = useAlert();
+  const { isAdmin, isCompanyAdmin } = useUser();
   const [issueFeedbackData, setIssueFeedbackData] = useState<IssueFeedbackData>(
     {
       isLoading: true,
@@ -110,8 +110,9 @@ export default function IssueFeedback() {
       end = range.end;
     }
 
-    if (isAdmin && start && end) getIssueStatAndData(start, end);
-  }, [isAdmin, period, range]);
+    if ((isAdmin || isCompanyAdmin) && start && end)
+      getIssueStatAndData(start, end);
+  }, [isAdmin, isCompanyAdmin, period, range]);
 
   return (
     <section className={styles.container}>
@@ -234,11 +235,13 @@ export default function IssueFeedback() {
                     </td>
                     <td
                       className={`${styles.issue_status} ${
-                        (feedback.issue.isValidated ||
+                        (isCompanyAdmin ||
+                          feedback.issue.isValidated ||
                           feedback.issue.isRejected) &&
-                        styles.updated
+                        styles.default_cursor
                       }`}
                       onClick={() =>
+                        !isCompanyAdmin &&
                         !feedback.issue.isValidated &&
                         !feedback.issue.isRejected &&
                         initiateIssueUpdate(
