@@ -92,8 +92,6 @@ export default function Profile() {
       ? preferences.filter((preference) => preference !== tag)
       : [...preferences, tag];
 
-    console.log(updatedPreferences);
-
     try {
       const response = await axiosInstance.patch(
         `/customers/${customer._id}/update-food-preferences`,
