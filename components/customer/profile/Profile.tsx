@@ -293,7 +293,7 @@ export default function Profile() {
           </button>
         </div>
         <div className={styles.dietary_preferences}>
-          <h2>My Dietary Preferences</h2>
+          <h2>Meal Preferences</h2>
           <div className={styles.preference_icons}>
             {dietaryTags.data
               .filter((tag) => !EXCLUDED.includes(tag))

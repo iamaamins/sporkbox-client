@@ -43,7 +43,7 @@ export default function Companies() {
           </table>
         </>
       )}
-      <LinkButton linkText='Add company' href='/admin/companies/add-company' />
+      <LinkButton linkText='Add company' href='/admin/companies/add' />
     </section>
   );
 }
