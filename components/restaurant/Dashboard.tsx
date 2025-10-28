@@ -79,7 +79,7 @@ export default function Dashboard() {
     try {
       setIsUpdatingScheduleStatus(true);
       const response = await axiosInstance.patch(
-        `/restaurants/${restaurant.data._id}/${statusUpdatePayload.date}/${statusUpdatePayload.companyCode}/change-schedule-status`,
+        `/restaurants/${restaurant.data._id}/${statusUpdatePayload.date}/${statusUpdatePayload.companyCode}/update-schedule-status`,
         {
           action: statusUpdatePayload.action,
         }
