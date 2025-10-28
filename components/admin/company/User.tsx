@@ -31,7 +31,7 @@ export default function User() {
   async function getDeliveredOrders() {
     try {
       const response = await axiosInstance.get<Order[]>(
-        `/orders/${router.query.user}/all-delivered-orders`
+        `/orders/${router.query.user}/delivered`
       );
       setUser((prevState) => ({
         ...prevState,
