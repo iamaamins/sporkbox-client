@@ -14,26 +14,19 @@
 .header {
   display: flex;
   gap: 1rem;
-  align-items: center;
+  flex-direction: column;
   margin-bottom: 1.5rem;
+}
+
+.title_and_sort {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
 .controller {
   display: flex;
   align-items: center;
-}
-
-.filter {
-  border-radius: 2rem;
-  padding: 2px 12px;
-  cursor: pointer;
-  color: var(--gray);
-  font-weight: 500;
-  border: 1px solid var(--border_color);
-}
-
-.filter.active {
-  border: 1px solid var(--orange);
 }
 
 .controller a {
@@ -245,6 +238,11 @@
 }
 
 @media (min-width: 768px) {
+  /* .header {
+    align-items: center;
+    flex-direction: row;
+  } */
+
   .restaurant_name {
     margin-bottom: 1.5rem;
   }

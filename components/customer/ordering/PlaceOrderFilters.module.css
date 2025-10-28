@@ -1,0 +1,22 @@
+.container p {
+  font-weight: 500;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--teal);
+}
+
+.preference_icons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.preference_icon {
+  cursor: pointer;
+}
+
+.preference_icon.matched img {
+  border-radius: 100%;
+  background-color: #ffd19b;
+}
