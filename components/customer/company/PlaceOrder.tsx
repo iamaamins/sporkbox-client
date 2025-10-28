@@ -20,13 +20,13 @@ import {
   UpcomingRestaurants,
 } from 'types';
 import styles from '@components/customer/ordering/PlaceOrder.module.css';
-import PlaceOrderSort from '@components/customer/ordering/PlaceOrderSort';
+import SortAndFilterByPrice from '@components/customer/ordering/SortAndFilterByPrice';
 import Link from 'next/link';
 import { RiShieldStarFill } from 'react-icons/ri';
 import { IoIosArrowUp } from 'react-icons/io';
 import Image from 'next/image';
 import { AiFillStar } from 'react-icons/ai';
-import PlaceOrderFilters from '@components/customer/ordering/PlaceOrderFilters';
+import FilterByDietaryTags from '@components/customer/ordering/FilterByDietaryTags';
 import CartIcon from '@components/layout/CartIcon';
 
 export default function PlaceOrder() {
@@ -47,10 +47,6 @@ export default function PlaceOrder() {
   >([]);
   const [user, setUser] = useState<Customer | Guest | null>(null);
   const [upcomingDates, setUpcomingDates] = useState<number[]>([]);
-  const [sorted, setSorted] = useState({
-    byLowToHigh: false,
-    byHighToLow: false,
-  });
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   function updateActiveRestaurants(restaurant: UpcomingRestaurant) {
@@ -194,12 +190,12 @@ export default function PlaceOrder() {
             <div className={styles.header}>
               <div className={styles.title_and_sort}>
                 <h2>Upcoming week</h2>
-                <PlaceOrderSort
-                  setSorted={setSorted}
-                  updatedRestaurants={updatedRestaurants}
+                <SortAndFilterByPrice
+                  restaurants={restaurants}
+                  setUpdatedRestaurants={setUpdatedRestaurants}
                 />
               </div>
-              <PlaceOrderFilters
+              <FilterByDietaryTags
                 isCompanyAdmin={true}
                 user={user}
                 restaurants={restaurants}

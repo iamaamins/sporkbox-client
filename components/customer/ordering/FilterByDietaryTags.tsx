@@ -1,6 +1,6 @@
 import { Customer, Guest, UpcomingRestaurant } from 'types';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import styles from './PlaceOrderFilters.module.css';
+import styles from './FilterByDietaryTags.module.css';
 import { useData } from '@context/Data';
 import Image from 'next/image';
 
@@ -12,7 +12,7 @@ type Props = {
   setUpdatedRestaurants: Dispatch<SetStateAction<UpcomingRestaurant[]>>;
 };
 
-export default function PlaceOrderFilters({
+export default function FilterByDietaryTags({
   isAdmin,
   isCompanyAdmin,
   user,

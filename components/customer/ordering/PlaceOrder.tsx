@@ -5,10 +5,10 @@ import { useData } from '@context/Data';
 import { useCart } from '@context/Cart';
 import { useEffect, useState } from 'react';
 import { getDay, getDate, dateToMS, numberToUSD } from '@lib/utils';
-import PlaceOrderSort from './PlaceOrderSort';
+import SortAndFilterByPrice from './SortAndFilterByPrice';
 import { Item, UpcomingRestaurant } from 'types';
 import { IoIosArrowUp } from 'react-icons/io';
-import PlaceOrderFilters from './PlaceOrderFilters';
+import FilterByDietaryTags from './FilterByDietaryTags';
 import styles from './PlaceOrder.module.css';
 import { AiFillStar } from 'react-icons/ai';
 import { useUser } from '@context/User';
@@ -18,10 +18,6 @@ export default function PlaceOrder() {
   const router = useRouter();
   const { cartItems } = useCart();
   const { customer } = useUser();
-  const [sorted, setSorted] = useState({
-    byLowToHigh: false,
-    byHighToLow: false,
-  });
   const [activeRestaurants, setActiveRestaurants] = useState<
     { id: string; show: boolean }[]
   >([]);
@@ -103,12 +99,12 @@ export default function PlaceOrder() {
             <div className={styles.header}>
               <div className={styles.title_and_sort}>
                 <h2>Upcoming week</h2>
-                <PlaceOrderSort
-                  setSorted={setSorted}
-                  updatedRestaurants={updatedRestaurants}
+                <SortAndFilterByPrice
+                  restaurants={restaurants}
+                  setUpdatedRestaurants={setUpdatedRestaurants}
                 />
               </div>
-              <PlaceOrderFilters
+              <FilterByDietaryTags
                 user={customer}
                 restaurants={restaurants}
                 setUpdatedRestaurants={setUpdatedRestaurants}
