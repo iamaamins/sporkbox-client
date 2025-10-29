@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styles from './FilterByDietaryTags.module.css';
 import { useData } from '@context/Data';
 import Image from 'next/image';
+import { EXCLUDED } from 'data/PREFERENCE';
 
 type Props = {
   isAdmin?: boolean;
@@ -84,23 +85,25 @@ export default function FilterByDietaryTags({
     <div className={styles.container}>
       <p>Meal preferences</p>
       <div className={styles.preference_icons}>
-        {dietaryTags.data.map((tag, index) => (
-          <div
-            key={index}
-            onClick={() => updateFilters(tag)}
-            className={`${styles.preference_icon} ${
-              isMatchedFilter(tag) && styles.matched
-            }`}
-          >
-            <Image
-              width={32}
-              height={32}
-              alt={`${tag} icon`}
-              title={tag}
-              src={`/customer/${tag.toLowerCase().replace(' ', '-')}.png`}
-            />
-          </div>
-        ))}
+        {dietaryTags.data
+          .filter((tag) => !EXCLUDED.includes(tag))
+          .map((tag, index) => (
+            <div
+              key={index}
+              onClick={() => updateFilters(tag)}
+              className={`${styles.preference_icon} ${
+                isMatchedFilter(tag) && styles.matched
+              }`}
+            >
+              <Image
+                width={32}
+                height={32}
+                alt={`${tag} icon`}
+                title={tag}
+                src={`/customer/${tag.toLowerCase().replace(' ', '-')}.png`}
+              />
+            </div>
+          ))}
       </div>
     </div>
   );
