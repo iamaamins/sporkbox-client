@@ -272,7 +272,7 @@ export default function MobileMenu({ isOpen, setIsOpen }: Props) {
       </ul>
 
       <p className={styles.copyright}>
-        Copyright &copy; {currentYear} Spork Bytes. <br /> All rights reserved
+        Copyright &copy; {currentYear} Spork Box. <br /> All rights reserved
       </p>
     </div>
   );
