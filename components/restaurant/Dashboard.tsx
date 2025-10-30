@@ -258,7 +258,7 @@ export default function Dashboard() {
           <h1>Welcome {vendor.firstName}</h1>
           <p>
             This is just a preview of the order. You will receive an email with
-            the total order from Spork Bytes soon.
+            the total order from Spork Box soon.
           </p>
         </div>
       )}
