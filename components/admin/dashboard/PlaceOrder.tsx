@@ -187,7 +187,7 @@ export default function PlaceOrder() {
           <div className={styles.header_and_controller}>
             <div className={styles.header}>
               <div className={styles.title_and_sort}>
-                <h2>Upcoming week</h2>
+                <h2>Upcoming meals</h2>
                 <SortAndFilterByPrice
                   restaurants={restaurants}
                   setUpdatedRestaurants={setUpdatedRestaurants}
