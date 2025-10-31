@@ -39,7 +39,7 @@ export const FAQ_DATA = [
   {
     question: "My meal didn't show up. What should I do?",
     answer: [
-      'Scroll to the bottom of this page and submit an issue report.',
+      'Navigate to the section above and report it there.',
       'Choose the category “Missing Meal” and provide as much detail as possible.',
       "We'll look into it promptly and issue a discount code for a future meal if we determine the meal was lost on our account.",
       ,
