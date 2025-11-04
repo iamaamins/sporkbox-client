@@ -291,7 +291,7 @@ function IssueUpdateModal({
   setShowIssueUpdateModal: Dispatch<SetStateAction<boolean>>;
 }) {
   const { setAlerts } = useAlert();
-  const [reason, setReason] = useState('');
+  const [auditNote, setAuditNote] = useState('');
   const [isUpdatingIssue, setIsUpdatingIssue] = useState(false);
 
   async function updateIssue(issueId: string, action: 'validate' | 'reject') {
@@ -300,7 +300,7 @@ function IssueUpdateModal({
 
       const response = await axiosInstance.patch(
         `/feedback/issue/${issueId}/${action}`,
-        { reason }
+        { auditNote }
       );
 
       setIssueFeedbackData((prevState) => {
@@ -325,7 +325,7 @@ function IssueUpdateModal({
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      setReason('');
+      setAuditNote('');
       setIsUpdatingIssue(false);
       setShowIssueUpdateModal(false);
     }
@@ -337,15 +337,15 @@ function IssueUpdateModal({
         Resolve {issueUpdatePayload.category} issue reported by{' '}
         {issueUpdatePayload.user}
       </p>
-      <div className={styles.reason}>
-        <label htmlFor='reason'>Resolution reason</label>
+      <div className={styles.audit_note}>
+        <label htmlFor='auditNote'>Audit note</label>
         <textarea
-          id='reason'
+          id='auditNote'
           rows={3}
           cols={40}
-          value={reason}
-          placeholder='Type resolution reason'
-          onChange={(e) => setReason(e.target.value)}
+          value={auditNote}
+          placeholder='Type audit note'
+          onChange={(e) => setAuditNote(e.target.value)}
         />
       </div>
       <div className={styles.buttons}>
