@@ -75,7 +75,7 @@ export default function IssueFeedback() {
             (feedback) => feedback.issue.category === category
           )
     );
-  }, [category]);
+  }, [category, issueFeedbackData.feedback]);
 
   // Get issue feedback data
   useEffect(() => {
@@ -291,6 +291,7 @@ function IssueUpdateModal({
   setShowIssueUpdateModal: Dispatch<SetStateAction<boolean>>;
 }) {
   const { setAlerts } = useAlert();
+  const [reason, setReason] = useState('');
   const [isUpdatingIssue, setIsUpdatingIssue] = useState(false);
 
   async function updateIssue(issueId: string, action: 'validate' | 'reject') {
@@ -298,24 +299,26 @@ function IssueUpdateModal({
       setIsUpdatingIssue(true);
 
       const response = await axiosInstance.patch(
-        `/feedback/issue/${issueId}/${action}`
+        `/feedback/issue/${issueId}/${action}`,
+        { reason }
       );
 
       setIssueFeedbackData((prevState) => {
         if (!prevState.feedback) return prevState;
 
-        const updatedIssues = prevState.feedback.map((feedback) => {
+        const updatedIssueFeedback = prevState.feedback.map((feedback) => {
           if (feedback._id !== response.data._id) return feedback;
-          return { ...response.data, issue: response.data.issue };
+          return { ...feedback, issue: response.data.issue };
         });
 
-        return { ...prevState, data: updatedIssues };
+        return { ...prevState, feedback: updatedIssueFeedback };
       });
 
       showSuccessAlert('Issue updated successfully.', setAlerts);
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
+      setReason('');
       setIsUpdatingIssue(false);
       setShowIssueUpdateModal(false);
     }
@@ -324,9 +327,20 @@ function IssueUpdateModal({
   return (
     <div className={styles.issue_update_modal}>
       <p>
-        Update {issueUpdatePayload.category} issue reported by{' '}
+        Resolve {issueUpdatePayload.category} issue reported by{' '}
         {issueUpdatePayload.user}
       </p>
+      <div className={styles.reason}>
+        <label htmlFor='reason'>Resolution reason</label>
+        <textarea
+          id='reason'
+          rows={3}
+          cols={40}
+          value={reason}
+          placeholder='Type resolution reason'
+          onChange={(e) => setReason(e.target.value)}
+        />
+      </div>
       <div className={styles.buttons}>
         <button
           disabled={isUpdatingIssue}

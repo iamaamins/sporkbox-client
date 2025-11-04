@@ -101,6 +101,28 @@
   text-align: center;
 }
 
+.issue_update_modal .reason {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.issue_update_modal .reason label {
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+
+.issue_update_modal .reason textarea {
+  padding: 12px;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border_color);
+}
+
+.issue_update_modal .reason textarea:focus {
+  outline: none;
+  border: 1px solid var(--teal);
+}
+
 .issue_update_modal .buttons {
   display: flex;
   gap: 1rem;
