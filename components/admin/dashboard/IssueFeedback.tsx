@@ -27,8 +27,8 @@ type IssueFeedback = {
     restaurant: { _id: string; name: string } | null;
     message: string;
     image?: string;
-    isValidated: boolean;
-    isRejected: boolean;
+    status: 'PENDING' | 'VALIDATED' | 'REJECTED';
+    audit?: { note: string };
   };
 };
 
@@ -75,7 +75,7 @@ export default function IssueFeedback() {
             (feedback) => feedback.issue.category === category
           )
     );
-  }, [category]);
+  }, [category, issueFeedbackData.feedback]);
 
   // Get issue feedback data
   useEffect(() => {
@@ -204,9 +204,8 @@ export default function IssueFeedback() {
                   <th className={styles.hide_on_mobile}>User</th>
                   <th>Category</th>
                   <th className={styles.hide_on_mobile}>Comment</th>
-                  {issueFeedback.some((feedback) => feedback.issue.image) && (
-                    <th className={styles.hide_on_mobile}>Image</th>
-                  )}
+                  <th className={styles.hide_on_mobile}>Image</th>
+                  <th className={styles.hide_on_mobile}>Reason</th>
                   <th>Status</th>
                 </tr>
               </thead>
@@ -233,17 +232,18 @@ export default function IssueFeedback() {
                         'No image'
                       )}
                     </td>
+                    <td className={styles.hide_on_mobile}>
+                      {feedback.issue.audit?.note || 'Not updated'}
+                    </td>
                     <td
                       className={`${styles.issue_status} ${
                         (isCompanyAdmin ||
-                          feedback.issue.isValidated ||
-                          feedback.issue.isRejected) &&
+                          feedback.issue.status !== 'PENDING') &&
                         styles.default_cursor
                       }`}
                       onClick={() =>
                         !isCompanyAdmin &&
-                        !feedback.issue.isValidated &&
-                        !feedback.issue.isRejected &&
+                        feedback.issue.status === 'PENDING' &&
                         initiateIssueUpdate(
                           feedback._id,
                           `${feedback.customer.firstName} ${feedback.customer.lastName}`,
@@ -251,12 +251,12 @@ export default function IssueFeedback() {
                         )
                       }
                     >
-                      {feedback.issue.isRejected ? (
+                      {feedback.issue.status === 'REJECTED' ? (
                         <FaCircleXmark color='red' />
-                      ) : feedback.issue.isValidated ? (
+                      ) : feedback.issue.status === 'VALIDATED' ? (
                         <FaCircleCheck color='green' />
                       ) : (
-                        !feedback.issue.isValidated && <FaRegCircle />
+                        feedback.issue.status === 'PENDING' && <FaRegCircle />
                       )}
                     </td>
                   </tr>
@@ -291,6 +291,7 @@ function IssueUpdateModal({
   setShowIssueUpdateModal: Dispatch<SetStateAction<boolean>>;
 }) {
   const { setAlerts } = useAlert();
+  const [reason, setReason] = useState('');
   const [isUpdatingIssue, setIsUpdatingIssue] = useState(false);
 
   async function updateIssue(issueId: string, action: 'validate' | 'reject') {
@@ -298,24 +299,33 @@ function IssueUpdateModal({
       setIsUpdatingIssue(true);
 
       const response = await axiosInstance.patch(
-        `/feedback/issue/${issueId}/${action}`
+        `/feedback/issue/${issueId}/${action}`,
+        { reason }
       );
 
       setIssueFeedbackData((prevState) => {
         if (!prevState.feedback) return prevState;
 
-        const updatedIssues = prevState.feedback.map((feedback) => {
+        const updatedIssueFeedback = prevState.feedback.map((feedback) => {
           if (feedback._id !== response.data._id) return feedback;
-          return { ...response.data, issue: response.data.issue };
+          return {
+            ...feedback,
+            issue: {
+              ...feedback.issue,
+              status: response.data.issue.status,
+              audit: { note: response.data.issue.audit.note },
+            },
+          };
         });
 
-        return { ...prevState, data: updatedIssues };
+        return { ...prevState, feedback: updatedIssueFeedback };
       });
 
       showSuccessAlert('Issue updated successfully.', setAlerts);
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
+      setReason('');
       setIsUpdatingIssue(false);
       setShowIssueUpdateModal(false);
     }
@@ -324,9 +334,20 @@ function IssueUpdateModal({
   return (
     <div className={styles.issue_update_modal}>
       <p>
-        Update {issueUpdatePayload.category} issue reported by{' '}
+        Resolve {issueUpdatePayload.category} issue reported by{' '}
         {issueUpdatePayload.user}
       </p>
+      <div className={styles.reason}>
+        <label htmlFor='reason'>Resolution reason</label>
+        <textarea
+          id='reason'
+          rows={3}
+          cols={40}
+          value={reason}
+          placeholder='Type resolution reason'
+          onChange={(e) => setReason(e.target.value)}
+        />
+      </div>
       <div className={styles.buttons}>
         <button
           disabled={isUpdatingIssue}
