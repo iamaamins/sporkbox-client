@@ -27,8 +27,8 @@ type IssueFeedback = {
     restaurant: { _id: string; name: string } | null;
     message: string;
     image?: string;
-    isValidated: boolean;
-    isRejected: boolean;
+    status: 'PENDING' | 'VALIDATED' | 'REJECTED';
+    audit?: { note: string };
   };
 };
 
@@ -204,9 +204,8 @@ export default function IssueFeedback() {
                   <th className={styles.hide_on_mobile}>User</th>
                   <th>Category</th>
                   <th className={styles.hide_on_mobile}>Comment</th>
-                  {issueFeedback.some((feedback) => feedback.issue.image) && (
-                    <th className={styles.hide_on_mobile}>Image</th>
-                  )}
+                  <th className={styles.hide_on_mobile}>Image</th>
+                  <th className={styles.hide_on_mobile}>Reason</th>
                   <th>Status</th>
                 </tr>
               </thead>
@@ -233,17 +232,18 @@ export default function IssueFeedback() {
                         'No image'
                       )}
                     </td>
+                    <td className={styles.hide_on_mobile}>
+                      {feedback.issue.audit?.note || 'Not updated'}
+                    </td>
                     <td
                       className={`${styles.issue_status} ${
                         (isCompanyAdmin ||
-                          feedback.issue.isValidated ||
-                          feedback.issue.isRejected) &&
+                          feedback.issue.status !== 'PENDING') &&
                         styles.default_cursor
                       }`}
                       onClick={() =>
                         !isCompanyAdmin &&
-                        !feedback.issue.isValidated &&
-                        !feedback.issue.isRejected &&
+                        feedback.issue.status === 'PENDING' &&
                         initiateIssueUpdate(
                           feedback._id,
                           `${feedback.customer.firstName} ${feedback.customer.lastName}`,
@@ -251,12 +251,12 @@ export default function IssueFeedback() {
                         )
                       }
                     >
-                      {feedback.issue.isRejected ? (
+                      {feedback.issue.status === 'REJECTED' ? (
                         <FaCircleXmark color='red' />
-                      ) : feedback.issue.isValidated ? (
+                      ) : feedback.issue.status === 'VALIDATED' ? (
                         <FaCircleCheck color='green' />
                       ) : (
-                        !feedback.issue.isValidated && <FaRegCircle />
+                        feedback.issue.status === 'PENDING' && <FaRegCircle />
                       )}
                     </td>
                   </tr>
@@ -308,7 +308,14 @@ function IssueUpdateModal({
 
         const updatedIssueFeedback = prevState.feedback.map((feedback) => {
           if (feedback._id !== response.data._id) return feedback;
-          return { ...feedback, issue: response.data.issue };
+          return {
+            ...feedback,
+            issue: {
+              ...feedback.issue,
+              status: response.data.issue.status,
+              audit: { note: response.data.issue.audit.note },
+            },
+          };
         });
 
         return { ...prevState, feedback: updatedIssueFeedback };
