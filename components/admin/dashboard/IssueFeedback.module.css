@@ -101,24 +101,24 @@
   text-align: center;
 }
 
-.issue_update_modal .reason {
+.issue_update_modal .audit_note {
   width: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.issue_update_modal .reason label {
+.issue_update_modal .audit_note label {
   font-weight: 500;
   margin-bottom: 0.75rem;
 }
 
-.issue_update_modal .reason textarea {
+.issue_update_modal .audit_note textarea {
   padding: 12px;
   border-radius: 0.5rem;
   border: 1px solid var(--border_color);
 }
 
-.issue_update_modal .reason textarea:focus {
+.issue_update_modal .audit_note textarea:focus {
   outline: none;
   border: 1px solid var(--teal);
 }
