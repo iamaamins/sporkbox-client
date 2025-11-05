@@ -79,7 +79,7 @@ export default function IssueFeedback() {
 
   // Get issue feedback data
   useEffect(() => {
-    async function getIssueStatAndData(start: string, end: string) {
+    async function getIssueFeedbackData(start: string, end: string) {
       try {
         const response = await axiosInstance.get(
           `/feedback/issue/${start}/${end}`
@@ -90,7 +90,6 @@ export default function IssueFeedback() {
           stats: response.data.stats,
           feedback: response.data.feedback,
         });
-        setIssueFeedback(response.data.feedback);
       } catch (err) {
         setIssueFeedbackData((prevState) => ({
           ...prevState,
@@ -111,161 +110,164 @@ export default function IssueFeedback() {
     }
 
     if ((isAdmin || isCompanyAdmin) && start && end)
-      getIssueStatAndData(start, end);
+      getIssueFeedbackData(start, end);
   }, [isAdmin, isCompanyAdmin, period, range]);
 
   return (
-    <section className={styles.container}>
-      <h2>Issues</h2>
-      <form className={styles.period_and_range_selector}>
-        <select
-          value={period}
-          onChange={(e) => {
-            setPeriod(e.target.value);
-            setRange({ start: '', end: '' });
-          }}
-          className={styles.period_selector}
-        >
-          <option value='7d'>Last 7 days</option>
-          <option value='30d'>Last 30 days</option>
-          <option value='3m'>Last 3 months</option>
-          <option value='custom'>Custom range</option>
-        </select>
-        {period === 'custom' && (
-          <div className={styles.range_selector}>
-            <div>
-              <label htmlFor='start'>From</label>
-              <input
-                type='date'
-                id='start'
-                value={range.start}
-                onChange={(e) =>
-                  setRange((prevState) => ({
-                    ...prevState,
-                    start: e.target.value,
-                  }))
-                }
-              />
+    <>
+      <section className={styles.container}>
+        <h2>Issues</h2>
+        <form className={styles.period_and_range_selector}>
+          <select
+            value={period}
+            onChange={(e) => {
+              setPeriod(e.target.value);
+              setRange({ start: '', end: '' });
+            }}
+            className={styles.period_selector}
+          >
+            <option value='7d'>Last 7 days</option>
+            <option value='30d'>Last 30 days</option>
+            <option value='3m'>Last 3 months</option>
+            <option value='custom'>Custom range</option>
+          </select>
+          {period === 'custom' && (
+            <div className={styles.range_selector}>
+              <div>
+                <label htmlFor='start'>From</label>
+                <input
+                  type='date'
+                  id='start'
+                  value={range.start}
+                  onChange={(e) =>
+                    setRange((prevState) => ({
+                      ...prevState,
+                      start: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+              <div>
+                <label htmlFor='end'>To</label>
+                <input
+                  type='date'
+                  id='end'
+                  value={range.end}
+                  max={getPastDate(0)}
+                  onChange={(e) =>
+                    setRange((prevState) => ({
+                      ...prevState,
+                      end: e.target.value,
+                    }))
+                  }
+                />
+              </div>
             </div>
-            <div>
-              <label htmlFor='end'>To</label>
-              <input
-                type='date'
-                id='end'
-                value={range.end}
-                max={getPastDate(0)}
-                onChange={(e) =>
-                  setRange((prevState) => ({
-                    ...prevState,
-                    end: e.target.value,
-                  }))
-                }
-              />
-            </div>
-          </div>
-        )}
-        <select
-          value={category}
-          className={styles.category_selector}
-          onChange={(e) => setCategory(e.target.value)}
-        >
-          {ISSUE_CATEGORIES.map((category) => (
-            <option key={category} value={category}>
-              {category}
-            </option>
-          ))}
-          <option value='All'>All</option>
-        </select>
-      </form>
-      {issueFeedbackData.isLoading ? (
-        <p className={styles.message}>Loading...</p>
-      ) : (
-        <div className={styles.tables}>
-          <table>
-            <thead>
-              <tr>
-                <th>Complaint rate</th>
-                <th>Order accuracy</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{issueFeedbackData.stats.complaintRate}%</td>
-                <td>{issueFeedbackData.stats.orderAccuracy}%</td>
-              </tr>
-            </tbody>
-          </table>
-          {issueFeedback.length > 0 && (
+          )}
+          <select
+            value={category}
+            className={styles.category_selector}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            {ISSUE_CATEGORIES.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+            <option value='All'>All</option>
+          </select>
+        </form>
+        {issueFeedbackData.isLoading ? (
+          <p className={styles.message}>Loading...</p>
+        ) : (
+          <div className={styles.tables}>
             <table>
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Restaurant</th>
-                  <th className={styles.hide_on_mobile}>User</th>
-                  <th>Category</th>
-                  <th className={styles.hide_on_mobile}>Comment</th>
-                  <th className={styles.hide_on_mobile}>Image</th>
-                  <th className={styles.hide_on_mobile}>Reason</th>
-                  <th>Status</th>
+                  <th>Complaint rate</th>
+                  <th>Order accuracy</th>
                 </tr>
               </thead>
               <tbody>
-                {issueFeedback.map((feedback) => (
-                  <tr key={feedback._id}>
-                    <td>{dateToText(feedback.issue.date)}</td>
-                    <td>
-                      {feedback.issue.restaurant?.name || 'Not Applicable'}
-                    </td>
-                    <td className={styles.hide_on_mobile}>
-                      {feedback.customer.firstName} {feedback.customer.lastName}
-                    </td>
-                    <td>{feedback.issue.category}</td>
-                    <td className={styles.hide_on_mobile}>
-                      {feedback.issue.message}
-                    </td>
-                    <td className={styles.hide_on_mobile}>
-                      {feedback.issue.image ? (
-                        <Link href={feedback.issue.image}>
-                          <a target='_blank'>View image</a>
-                        </Link>
-                      ) : (
-                        'No image'
-                      )}
-                    </td>
-                    <td className={styles.hide_on_mobile}>
-                      {feedback.issue.audit?.note || 'Not updated'}
-                    </td>
-                    <td
-                      className={`${styles.issue_status} ${
-                        (isCompanyAdmin ||
-                          feedback.issue.status !== 'PENDING') &&
-                        styles.default_cursor
-                      }`}
-                      onClick={() =>
-                        !isCompanyAdmin &&
-                        feedback.issue.status === 'PENDING' &&
-                        initiateIssueUpdate(
-                          feedback._id,
-                          `${feedback.customer.firstName} ${feedback.customer.lastName}`,
-                          feedback.issue.category
-                        )
-                      }
-                    >
-                      {feedback.issue.status === 'REJECTED' ? (
-                        <FaCircleXmark color='red' />
-                      ) : feedback.issue.status === 'VALIDATED' ? (
-                        <FaCircleCheck color='green' />
-                      ) : (
-                        feedback.issue.status === 'PENDING' && <FaRegCircle />
-                      )}
-                    </td>
-                  </tr>
-                ))}
+                <tr>
+                  <td>{issueFeedbackData.stats.complaintRate}%</td>
+                  <td>{issueFeedbackData.stats.orderAccuracy}%</td>
+                </tr>
               </tbody>
             </table>
-          )}
-        </div>
-      )}
+            {issueFeedback.length > 0 && (
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Restaurant</th>
+                    <th className={styles.hide_on_mobile}>User</th>
+                    <th>Category</th>
+                    <th className={styles.hide_on_mobile}>Comment</th>
+                    <th className={styles.hide_on_mobile}>Image</th>
+                    <th className={styles.hide_on_mobile}>Reason</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {issueFeedback.map((feedback) => (
+                    <tr key={feedback._id}>
+                      <td>{dateToText(feedback.issue.date)}</td>
+                      <td>
+                        {feedback.issue.restaurant?.name || 'Not Applicable'}
+                      </td>
+                      <td className={styles.hide_on_mobile}>
+                        {feedback.customer.firstName}{' '}
+                        {feedback.customer.lastName}
+                      </td>
+                      <td>{feedback.issue.category}</td>
+                      <td className={styles.hide_on_mobile}>
+                        {feedback.issue.message}
+                      </td>
+                      <td className={styles.hide_on_mobile}>
+                        {feedback.issue.image ? (
+                          <Link href={feedback.issue.image}>
+                            <a target='_blank'>View image</a>
+                          </Link>
+                        ) : (
+                          'No image'
+                        )}
+                      </td>
+                      <td className={styles.hide_on_mobile}>
+                        {feedback.issue.audit?.note || 'Not updated'}
+                      </td>
+                      <td
+                        className={`${styles.issue_status} ${
+                          (isCompanyAdmin ||
+                            feedback.issue.status !== 'PENDING') &&
+                          styles.default_cursor
+                        }`}
+                        onClick={() =>
+                          !isCompanyAdmin &&
+                          feedback.issue.status === 'PENDING' &&
+                          initiateIssueUpdate(
+                            feedback._id,
+                            `${feedback.customer.firstName} ${feedback.customer.lastName}`,
+                            feedback.issue.category
+                          )
+                        }
+                      >
+                        {feedback.issue.status === 'REJECTED' ? (
+                          <FaCircleXmark color='red' />
+                        ) : feedback.issue.status === 'VALIDATED' ? (
+                          <FaCircleCheck color='green' />
+                        ) : (
+                          feedback.issue.status === 'PENDING' && <FaRegCircle />
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        )}
+      </section>
       <ModalContainer
         component={
           <IssueUpdateModal
@@ -277,7 +279,7 @@ export default function IssueFeedback() {
         showModalContainer={showIssueUpdateModal}
         setShowModalContainer={setShowIssueUpdateModal}
       />
-    </section>
+    </>
   );
 }
 
