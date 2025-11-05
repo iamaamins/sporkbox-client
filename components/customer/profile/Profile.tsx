@@ -500,8 +500,8 @@ function EmailSubscriptionUpdateModal({
 
   return (
     <form className={styles.email_subscriptions} onSubmit={handleSubmit}>
-      {Object.entries(emailSubscriptions).map(([key, value]) => (
-        <div>
+      {Object.entries(emailSubscriptions).map(([key, value], index) => (
+        <div key={index}>
           <input
             type='checkbox'
             id={key}
