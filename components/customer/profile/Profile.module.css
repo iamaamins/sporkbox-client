@@ -140,6 +140,7 @@
 
 .tools {
   display: flex;
+  flex-direction: column;
   gap: 1rem;
   align-items: center;
   justify-content: center;
@@ -342,6 +343,10 @@
   .dietary_preferences h2,
   .food_stats h2 {
     font-size: 3.25rem;
+  }
+
+  .tools {
+    flex-direction: row;
   }
 
   .stats {
