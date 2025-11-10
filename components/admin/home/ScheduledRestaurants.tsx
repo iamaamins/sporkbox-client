@@ -197,7 +197,7 @@ export default function ScheduledRestaurants({
                   </td>
                   <td>{restaurant.name}</td>
                   <td>{restaurant.company.name}</td>
-                  <td className={styles.shift}>{restaurant.company.shift}</td>
+                  <td>{restaurant.company.shift}</td>
                   <td className={`${styles.actions} ${styles.hide_on_mobile}`}>
                     <span
                       className={styles.deactivate}

@@ -84,10 +84,6 @@
   color: var(--black);
 }
 
-.shift {
-  text-transform: capitalize;
-}
-
 .apply_discount_form {
   width: 15.5rem;
   display: flex;

@@ -105,7 +105,7 @@ export default function User() {
                   {user.data.firstName} {user.data.lastName}
                 </td>
                 <td>{user.data.company.name}</td>
-                <td className={styles.shift}>{user.data.company.shift}</td>
+                <td>{user.data.company.shift}</td>
                 <td>
                   {user.data.company.address.addressLine2 ? (
                     <>

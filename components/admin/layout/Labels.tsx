@@ -112,7 +112,7 @@ export default function Labels({ labels }: Props) {
           const nameShift = `${label.customer.firstName} ${
             label.customer.lastName
           } - ${
-            label.customer.shift === 'night'
+            label.customer.shift === 'NIGHT'
               ? label.customer.shift
               : categorizeLastName(label.customer.lastName)
           }`.trim();
@@ -150,7 +150,7 @@ export default function Labels({ labels }: Props) {
                     {label.customer.firstName} -{' '}
                   </Text>
                   <Text style={[styles.bold, styles.capitalize, { fontSize }]}>
-                    {label.customer.shift === 'night'
+                    {label.customer.shift === 'NIGHT'
                       ? label.customer.shift
                       : categorizeLastName(label.customer.lastName)}
                   </Text>

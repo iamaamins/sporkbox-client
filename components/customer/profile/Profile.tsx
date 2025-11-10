@@ -10,6 +10,7 @@ import { useUser } from '@context/User';
 import {
   axiosInstance,
   dateToText,
+  getCustomerShifts,
   showErrorAlert,
   showSuccessAlert,
 } from '@lib/utils';
@@ -75,7 +76,7 @@ export default function Profile() {
 
       const response = await axiosInstance.patch(
         `/customers/${customer?._id}/${customer?.companies[0].code}/update-shift`,
-        { shift: shift === 'night' ? 'day' : 'night' }
+        { shift: shift === 'NIGHT' ? 'DAY' : 'NIGHT' }
       );
 
       setCustomer(
@@ -236,42 +237,44 @@ export default function Profile() {
     <>
       <section className={styles.container}>
         <div className={styles.shift_preferences_tools}>
-          <div className={styles.shift}>
-            <h2>Shift</h2>
-            <button
-              disabled={isSwitchingShift}
-              onClick={switchShift}
-              className={`${styles.shift_switcher} ${
-                shift === 'night' ? styles.night : styles.day
-              }`}
-            >
-              <span
-                className={`${styles.label} ${styles.night} ${
-                  shift === 'night' ? styles.show : styles.hide
+          {customer && getCustomerShifts(customer).length > 1 && (
+            <div className={styles.shift}>
+              <h2>Shift</h2>
+              <button
+                disabled={isSwitchingShift}
+                onClick={switchShift}
+                className={`${styles.shift_switcher} ${
+                  shift === 'NIGHT' ? styles.night : styles.day
                 }`}
               >
-                NIGHT
-              </span>
-              <span
-                className={`${styles.label} ${styles.day} ${
-                  shift === 'night' ? styles.hide : styles.show
-                }`}
-              >
-                DAY
-              </span>
-              <div
-                className={`${styles.toggle} ${
-                  shift === 'night' ? styles.night : styles.day
-                }`}
-              >
-                {shift === 'night' ? (
-                  <PiMoonStarsFill size={28} />
-                ) : (
-                  <PiSunFill size={28} />
-                )}
-              </div>
-            </button>
-          </div>
+                <span
+                  className={`${styles.label} ${styles.night} ${
+                    shift === 'NIGHT' ? styles.show : styles.hide
+                  }`}
+                >
+                  NIGHT
+                </span>
+                <span
+                  className={`${styles.label} ${styles.day} ${
+                    shift === 'NIGHT' ? styles.hide : styles.show
+                  }`}
+                >
+                  DAY
+                </span>
+                <div
+                  className={`${styles.toggle} ${
+                    shift === 'NIGHT' ? styles.night : styles.day
+                  }`}
+                >
+                  {shift === 'NIGHT' ? (
+                    <PiMoonStarsFill size={28} />
+                  ) : (
+                    <PiSunFill size={28} />
+                  )}
+                </div>
+              </button>
+            </div>
+          )}
           <div className={styles.dietary_preferences}>
             <h2>Meal Preferences</h2>
             <div className={styles.preference_icons}>

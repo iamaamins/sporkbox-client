@@ -18,10 +18,6 @@
   padding: 1rem;
 }
 
-.shift {
-  text-transform: capitalize;
-}
-
 .container table th:last-child,
 .container table td:last-child {
   text-align: right;

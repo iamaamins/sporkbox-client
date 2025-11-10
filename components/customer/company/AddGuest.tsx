@@ -91,9 +91,7 @@ export default function AddGuest() {
             <option>Please select a shift</option>
             {customer?.companies.map((company) => (
               <option value={company._id} key={company._id}>
-                {`${company.shift
-                  .slice(0, 1)
-                  .toUpperCase()}${company.shift.slice(1)}`}
+                {company.shift}
               </option>
             ))}
           </select>
