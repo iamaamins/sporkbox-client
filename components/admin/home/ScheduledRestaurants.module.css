@@ -39,10 +39,6 @@
   color: var(--black);
 }
 
-.shift {
-  text-transform: capitalize;
-}
-
 .hide_on_mobile {
   display: none;
 }

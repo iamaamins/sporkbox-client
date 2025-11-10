@@ -32,10 +32,6 @@
   border-bottom: 1px solid var(--border_color);
 }
 
-.shift {
-  text-transform: capitalize;
-}
-
 .ingredients {
   text-transform: capitalize;
 }

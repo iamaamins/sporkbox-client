@@ -117,9 +117,7 @@ export const formatOrderDataToCSV = (orderGroup: OrderGroup) =>
       requiredAddonsTwo: curr.item.requiredAddonsTwo,
       removedIngredients: curr.item.removedIngredients,
       deliveryDate: dateToText(curr.delivery.date),
-      shift: `${curr.company.shift[0].toUpperCase()}${curr.company.shift.slice(
-        1
-      )}`,
+      shift: curr.company.shift,
     };
 
     if (order.quantity === 1) {
@@ -157,9 +155,7 @@ export const customerCSVHeaders = [
 ];
 
 export const createCustomerCSVFileName = (company: Company) =>
-  `Customer info - ${
-    company.name
-  } - ${company.shift[0].toUpperCase()}${company.shift.slice(1)} shift`;
+  `Customer info - ${company.name} - ${company.shift} shift`;
 
 export const formatCustomerDataToCSV = (customers: Customer[]) =>
   customers.map((customer) => ({

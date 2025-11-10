@@ -296,9 +296,7 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                   {groupIdenticalOrders(ordersByRestaurant.orders).map(
                     (group, index) => (
                       <tr key={index}>
-                        <td
-                          className={`${styles.hide_on_mobile} ${styles.shift}`}
-                        >
+                        <td className={styles.hide_on_mobile}>
                           {group.company.shift}
                         </td>
                         <td>{group.item.name}</td>
@@ -373,9 +371,7 @@ export default function OrderGroupDetails({ isLoading, orderGroups }: Props) {
                       <td className={styles.hide_on_mobile}>
                         {order.customer.email}
                       </td>
-                      <td
-                        className={`${styles.hide_on_mobile} ${styles.shift}`}
-                      >
+                      <td className={styles.hide_on_mobile}>
                         {order.company.shift}
                       </td>
                       <td>{order.item.name}</td>

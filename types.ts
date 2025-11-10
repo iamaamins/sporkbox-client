@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction, ReactNode } from 'react';
 
 export type UserRole = 'ADMIN' | 'VENDOR' | 'CUSTOMER' | 'GUEST' | 'DRIVER';
 export type UserStatus = 'ACTIVE' | 'ARCHIVED';
+export type Shift = 'DAY' | 'NIGHT' | 'GENERAL';
 
 interface User {
   _id: string;
@@ -22,7 +23,6 @@ export interface Customer extends User {
   subscribedTo: {
     orderReminder: boolean;
   };
-  shifts: Exclude<Shift, 'general'>[];
   isCompanyAdmin?: boolean;
 }
 
@@ -34,15 +34,10 @@ export interface Vendor extends User {
   restaurant: Restaurant;
 }
 
-export type Shift = 'day' | 'night' | 'general';
-
 export type Schedule = {
   _id: string;
   date: string;
-  company: {
-    code: string;
-    shift: Shift;
-  };
+  company: { code: string; shift: Shift };
   createdAt: string;
   status: 'ACTIVE' | 'INACTIVE';
 };

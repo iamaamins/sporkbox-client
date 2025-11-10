@@ -416,3 +416,8 @@ export function getPastDate(days: number) {
 
   return today.toISOString().split('T')[0];
 }
+
+export const getCustomerShifts = (customer: Customer) =>
+  customer.companies
+    .filter((company) => company.status === 'ACTIVE')
+    .map((company) => company.shift);

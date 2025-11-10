@@ -33,7 +33,7 @@ export default function Companies() {
                       <a>{company.name}</a>
                     </Link>
                   </td>
-                  <td className={styles.shift}>{company.shift}</td>
+                  <td>{company.shift}</td>
                   <td className={styles.hide_on_mobile}>{company.website}</td>
                   <td className={styles.hide_on_mobile}>{company.code}</td>
                   <td>${company.shiftBudget}</td>
