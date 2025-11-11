@@ -54,7 +54,7 @@ export default function CompanyForm({
             <option hidden>Please select a shift</option>
             <option value='DAY'>Day</option>
             <option value='NIGHT'>Night</option>
-            <option value='GENERAL'>Night</option>
+            <option value='GENERAL'>General</option>
           </select>
         </div>
       )}
