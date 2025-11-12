@@ -260,7 +260,7 @@ export default function Profile() {
               Update Email Preferences
             </button>
           </div>
-          {customer && getCustomerShifts(customer).length > 0 && (
+          {customer && getCustomerShifts(customer).length > 1 && (
             <div className={styles.shift}>
               <h2>Shift</h2>
               <button
