@@ -100,7 +100,7 @@ export default function FilterByDietaryTags({
                 height={32}
                 alt={`${tag} icon`}
                 title={tag}
-                src={`/customer/${tag.toLowerCase().replace(' ', '-')}.png`}
+                src={`/customer/meal-preferences/${tag.toLowerCase().replace(' ', '-')}.png`}
               />
             </div>
           ))}
