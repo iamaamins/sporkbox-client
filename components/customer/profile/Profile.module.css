@@ -7,11 +7,69 @@
   padding: var(--section_padding);
 }
 
-.shift_preferences_tools {
+.tools {
   display: flex;
-  gap: 2rem;
-  align-items: center;
   flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.slack_and_email_preference {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+}
+
+.slack_channel_link {
+  width: 15rem;
+  height: auto;
+  display: flex;
+  gap: 0.25rem;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: var(--black);
+}
+
+.slack_logo {
+  width: 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slack_channel_link p {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.update_email_preference_button {
+  cursor: pointer;
+  font-weight: 700;
+  border: none;
+  padding: 1rem 1.25rem;
+  border-radius: 2rem;
+  color: var(--white);
+  background-color: var(--global);
+}
+
+.email_subscriptions {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.email_subscriptions div {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.email_subscriptions div label {
+  font-weight: 500;
+  text-transform: capitalize;
 }
 
 .shift {
@@ -103,7 +161,28 @@
   transform: translateX(0);
 }
 
-.dietary_preferences {
+.avatar_and_change_password {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar_and_change_password svg {
+  border-radius: 100%;
+  border: 3px solid transparent;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-image: linear-gradient(var(--almost_white), var(--almost_white)),
+    linear-gradient(calc(2.25rad), #f6b046 20%, #893285 80%);
+}
+
+.change_password_link {
+  color: var(--black);
+  font-size: 1.25rem;
+  font-weight: 100;
+}
+
+.meal_preferences {
   display: flex;
   gap: 1rem;
   flex-direction: column;
@@ -112,8 +191,8 @@
   text-align: center;
 }
 
-.dietary_preferences h2,
-.dietary_preferences p {
+.meal_preferences h2,
+.meal_preferences p {
   color: var(--teal);
 }
 
@@ -134,91 +213,8 @@
   background-color: #ffd19b;
 }
 
-.dietary_preferences p {
+.meal_preferences p {
   max-width: 650px;
-}
-
-.tools {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  align-items: center;
-  justify-content: center;
-}
-
-.change_password_link {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: var(--black);
-  text-align: center;
-  font-size: 1.25rem;
-  font-weight: 100;
-}
-
-.update_email_preference_button {
-  cursor: pointer;
-  font-size: 1.25rem;
-  font-weight: 700;
-  border: none;
-  padding: 1rem 2rem;
-  border-radius: 5rem;
-  color: var(--white);
-  background-color: var(--global);
-}
-
-.email_subscriptions {
-  display: flex;
-  gap: 1rem;
-  flex-direction: column;
-}
-
-.email_subscriptions div {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.email_subscriptions div label {
-  font-weight: 500;
-  text-transform: capitalize;
-}
-
-.change_password_link svg {
-  border-radius: 100%;
-  border: 3px solid transparent;
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  background-image: linear-gradient(var(--almost_white), var(--almost_white)),
-    linear-gradient(calc(2.25rad), #f6b046 20%, #893285 80%);
-}
-
-.slack_channel_link {
-  width: 15rem;
-  height: auto;
-  display: flex;
-  gap: 0.25rem;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  color: var(--black);
-}
-
-.slack_channel_link p:first-child {
-  font-weight: 600;
-  line-height: 1.25;
-}
-
-.slack_logo {
-  width: 12rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.slack_channel_link p:last-child {
-  font-size: 1.25rem;
-  line-height: 1;
 }
 
 .food_stats {
@@ -340,13 +336,15 @@
 }
 
 @media (min-width: 768px) {
-  .dietary_preferences h2,
+  .meal_preferences h2,
   .food_stats h2 {
     font-size: 3.25rem;
   }
 
   .tools {
+    width: 100%;
     flex-direction: row;
+    justify-content: space-around;
   }
 
   .stats {

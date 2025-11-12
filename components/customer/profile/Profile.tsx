@@ -236,8 +236,28 @@ export default function Profile() {
   return (
     <>
       <section className={styles.container}>
-        <div className={styles.shift_preferences_tools}>
-          {customer && getCustomerShifts(customer).length > 1 && (
+        <div className={styles.tools}>
+          <div className={styles.slack_and_email_preference}>
+            <Link href='/'>
+              <a className={styles.slack_channel_link}>
+                <div className={styles.slack_logo}>
+                  <Image
+                    src='/customer/slack-logo.png'
+                    width={1600}
+                    height={407}
+                  />
+                </div>
+                <p className={styles.company_name}>Twist Wilsonville</p>
+              </a>
+            </Link>
+            <button
+              onClick={() => setShowEmailSubscriptionUpdateModal(true)}
+              className={styles.update_email_preference_button}
+            >
+              Update Email Preferences
+            </button>
+          </div>
+          {customer && getCustomerShifts(customer).length > 0 && (
             <div className={styles.shift}>
               <h2>Shift</h2>
               <button
@@ -275,67 +295,44 @@ export default function Profile() {
               </button>
             </div>
           )}
-          <div className={styles.dietary_preferences}>
-            <h2>Meal Preferences</h2>
-            <div className={styles.preference_icons}>
-              {dietaryTags.data
-                .filter((tag) => !EXCLUDED.includes(tag))
-                .map((tag, index) => (
-                  <div
-                    key={index}
-                    onClick={() => updateDietaryPreferences(tag)}
-                    className={`${styles.preference_icon} ${
-                      isMatchedTag(tag) && styles.matched
-                    }`}
-                  >
-                    <Image
-                      width={48}
-                      height={48}
-                      alt={`${tag} icon`}
-                      title={tag}
-                      src={`/customer/${tag
-                        .toLowerCase()
-                        .replace(' ', '-')}.png`}
-                    />
-                  </div>
-                ))}
-            </div>
-            <p>
-              Click the icon to toggle your meal preference on or off. These
-              filters will then apply whenever you are browsing available
-              restaurants.
-            </p>
-          </div>
-
-          <div className={styles.tools}>
+          <div className={styles.avatar_and_change_password}>
+            <FaUserCircle size={100} color='#cfcfcf' title='Update avatar' />
             <Link href='/change-password'>
               <a className={styles.change_password_link}>
-                <FaUserCircle size={100} color='#cfcfcf' />
                 <p>Change password</p>
               </a>
             </Link>
-            <button
-              onClick={() => setShowEmailSubscriptionUpdateModal(true)}
-              className={styles.update_email_preference_button}
-            >
-              Update Email <br /> Preferences
-            </button>
-            <Link href='/'>
-              <a className={styles.slack_channel_link}>
-                <p className={styles.join_slack}>
-                  Join the Slack channel for instant delivery notifications!
-                </p>
-                <div className={styles.slack_logo}>
+          </div>
+        </div>
+
+        <div className={styles.meal_preferences}>
+          <h2>Meal Preferences</h2>
+          <div className={styles.preference_icons}>
+            {dietaryTags.data
+              .filter((tag) => !EXCLUDED.includes(tag))
+              .map((tag, index) => (
+                <div
+                  key={index}
+                  onClick={() => updateDietaryPreferences(tag)}
+                  className={`${styles.preference_icon} ${
+                    isMatchedTag(tag) && styles.matched
+                  }`}
+                >
                   <Image
-                    src='/customer/slack-logo.png'
-                    width={1600}
-                    height={407}
+                    width={48}
+                    height={48}
+                    alt={`${tag} icon`}
+                    title={tag}
+                    src={`/customer/${tag.toLowerCase().replace(' ', '-')}.png`}
                   />
                 </div>
-                <p className={styles.company_name}>Twist Wilsonville</p>
-              </a>
-            </Link>
+              ))}
           </div>
+          <p>
+            Click the icon to toggle your meal preference on or off. These
+            filters will then apply whenever you are browsing available
+            restaurants.
+          </p>
         </div>
 
         {!foodStats.isLoading && (
