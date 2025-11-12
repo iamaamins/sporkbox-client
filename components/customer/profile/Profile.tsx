@@ -15,19 +15,19 @@ import {
   showSuccessAlert,
 } from '@lib/utils';
 import styles from './Profile.module.css';
-import { CustomAxiosError, Customer, CustomerOrder, Shift } from 'types';
+import { CustomAxiosError, CustomerOrder, Shift } from 'types';
 import { useAlert } from '@context/Alert';
 import { PiSunFill } from 'react-icons/pi';
 import { PiMoonStarsFill } from 'react-icons/pi';
 import { useData } from '@context/Data';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaUserCircle } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Stars from '@components/layout/Stars';
 import { EXCLUDED } from 'data/PREFERENCE';
 import ModalContainer from '@components/layout/ModalContainer';
 import SubmitButton from '@components/layout/SubmitButton';
+import { Avatar, AVATARS } from 'data/AVATARS';
 
 type RecentOrders = {
   isLoading: boolean;
@@ -40,6 +40,8 @@ type RecentOrders = {
     rating?: number;
   }[];
 };
+
+const formatAvatarId = (avatar: Avatar) => avatar.split('-').join(' ');
 
 export default function Profile() {
   const router = useRouter();
@@ -69,6 +71,7 @@ export default function Profile() {
     showEmailSubscriptionUpdateModal,
     setShowEmailSubscriptionUpdateModal,
   ] = useState(false);
+  const [showAvatarUpdateModal, setShowAvatarUpdateModal] = useState(false);
 
   async function switchShift() {
     try {
@@ -296,7 +299,22 @@ export default function Profile() {
             </div>
           )}
           <div className={styles.avatar_and_change_password}>
-            <FaUserCircle size={100} color='#cfcfcf' title='Update avatar' />
+            <div
+              className={`${styles.avatar} ${styles.profile_avatar}`}
+              onClick={() => setShowAvatarUpdateModal(true)}
+            >
+              <Image
+                width={80}
+                height={80}
+                title='Update avatar'
+                alt={`${formatAvatarId(
+                  customer?.avatar?.id || 'base-spork'
+                )} avatar`}
+                src={`/customer/avatars/${
+                  customer?.avatar?.id || 'base-spork'
+                }.png`}
+              />
+            </div>
             <Link href='/change-password'>
               <a className={styles.change_password_link}>
                 <p>Change password</p>
@@ -323,7 +341,9 @@ export default function Profile() {
                     height={48}
                     alt={`${tag} icon`}
                     title={tag}
-                    src={`/customer/${tag.toLowerCase().replace(' ', '-')}.png`}
+                    src={`/customer/meal-preferences/${tag
+                      .toLowerCase()
+                      .replace(' ', '-')}.png`}
                   />
                 </div>
               ))}
@@ -433,6 +453,16 @@ export default function Profile() {
         showModalContainer={showEmailSubscriptionUpdateModal}
         setShowModalContainer={setShowEmailSubscriptionUpdateModal}
       />
+      <ModalContainer
+        component={
+          <AvatarUpdateModal
+            currentAvatar={customer?.avatar?.id || 'base-spork'}
+            setShowAvatarUpdateModal={setShowAvatarUpdateModal}
+          />
+        }
+        showModalContainer={showAvatarUpdateModal}
+        setShowModalContainer={setShowAvatarUpdateModal}
+      />
     </>
   );
 }
@@ -513,5 +543,57 @@ function EmailSubscriptionUpdateModal({
       ))}
       <SubmitButton text='Update' isLoading={isUpdatingEmailSubscriptions} />
     </form>
+  );
+}
+
+function AvatarUpdateModal({
+  currentAvatar,
+  setShowAvatarUpdateModal,
+}: {
+  currentAvatar: Avatar;
+  setShowAvatarUpdateModal: Dispatch<SetStateAction<boolean>>;
+}) {
+  const { setAlerts } = useAlert();
+  const { customer, setCustomer } = useUser();
+
+  async function updateAvatar(avatar: Avatar) {
+    try {
+      const response = await axiosInstance.patch(
+        `/customers/${customer?._id}/update-avatar`,
+        { avatar }
+      );
+
+      setCustomer(
+        (prevState) =>
+          prevState && { ...prevState, avatar: response.data.avatar }
+      );
+      setShowAvatarUpdateModal(false);
+    } catch (err) {
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    }
+  }
+
+  return (
+    <div className={styles.avatar_update_modal}>
+      {AVATARS.map((avatar, index) => (
+        <div
+          key={index}
+          className={`${styles.avatar} ${
+            currentAvatar === avatar
+              ? styles.profile_avatar
+              : styles.modal_avatar
+          }`}
+          onClick={() => updateAvatar(avatar)}
+        >
+          <Image
+            width={60}
+            height={60}
+            alt={`${formatAvatarId(avatar)} avatar`}
+            src={`/customer/avatars/${avatar}.png`}
+            title={formatAvatarId(avatar)}
+          />
+        </div>
+      ))}
+    </div>
   );
 }

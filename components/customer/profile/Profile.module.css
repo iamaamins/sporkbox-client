@@ -167,13 +167,31 @@
   align-items: center;
 }
 
-.avatar_and_change_password svg {
+.avatar {
+  padding: 0.5rem;
+  cursor: pointer;
   border-radius: 100%;
+}
+
+.profile_avatar {
   border: 3px solid transparent;
   background-origin: border-box;
   background-clip: padding-box, border-box;
   background-image: linear-gradient(var(--almost_white), var(--almost_white)),
     linear-gradient(calc(2.25rad), #f6b046 20%, #893285 80%);
+}
+
+.avatar_update_modal {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.modal_avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--border_color);
 }
 
 .change_password_link {
@@ -345,6 +363,10 @@
     width: 100%;
     flex-direction: row;
     justify-content: space-around;
+  }
+
+  .avatar_update_modal {
+    grid-template-columns: repeat(6, 1fr);
   }
 
   .stats {
