@@ -15,19 +15,19 @@ import {
   showSuccessAlert,
 } from '@lib/utils';
 import styles from './Profile.module.css';
-import { CustomAxiosError, Customer, CustomerOrder, Shift } from 'types';
+import { CustomAxiosError, CustomerOrder, Shift } from 'types';
 import { useAlert } from '@context/Alert';
 import { PiSunFill } from 'react-icons/pi';
 import { PiMoonStarsFill } from 'react-icons/pi';
 import { useData } from '@context/Data';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaUserCircle } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Stars from '@components/layout/Stars';
 import { EXCLUDED } from 'data/PREFERENCE';
 import ModalContainer from '@components/layout/ModalContainer';
 import SubmitButton from '@components/layout/SubmitButton';
+import { Avatar, AVATARS } from 'data/AVATARS';
 
 type RecentOrders = {
   isLoading: boolean;
@@ -40,6 +40,8 @@ type RecentOrders = {
     rating?: number;
   }[];
 };
+
+const formatAvatarId = (avatar: Avatar) => avatar.split('-').join(' ');
 
 export default function Profile() {
   const router = useRouter();
@@ -69,6 +71,7 @@ export default function Profile() {
     showEmailSubscriptionUpdateModal,
     setShowEmailSubscriptionUpdateModal,
   ] = useState(false);
+  const [showAvatarUpdateModal, setShowAvatarUpdateModal] = useState(false);
 
   async function switchShift() {
     try {
@@ -236,7 +239,27 @@ export default function Profile() {
   return (
     <>
       <section className={styles.container}>
-        <div className={styles.shift_preferences_tools}>
+        <div className={styles.tools}>
+          <div className={styles.slack_and_email_preference}>
+            <Link href='/'>
+              <a className={styles.slack_channel_link}>
+                <div className={styles.slack_logo}>
+                  <Image
+                    src='/customer/slack-logo.png'
+                    width={1600}
+                    height={407}
+                  />
+                </div>
+                <p className={styles.company_name}>Twist Wilsonville</p>
+              </a>
+            </Link>
+            <button
+              onClick={() => setShowEmailSubscriptionUpdateModal(true)}
+              className={styles.update_email_preference_button}
+            >
+              Update Email Preferences
+            </button>
+          </div>
           {customer && getCustomerShifts(customer).length > 1 && (
             <div className={styles.shift}>
               <h2>Shift</h2>
@@ -275,67 +298,61 @@ export default function Profile() {
               </button>
             </div>
           )}
-          <div className={styles.dietary_preferences}>
-            <h2>Meal Preferences</h2>
-            <div className={styles.preference_icons}>
-              {dietaryTags.data
-                .filter((tag) => !EXCLUDED.includes(tag))
-                .map((tag, index) => (
-                  <div
-                    key={index}
-                    onClick={() => updateDietaryPreferences(tag)}
-                    className={`${styles.preference_icon} ${
-                      isMatchedTag(tag) && styles.matched
-                    }`}
-                  >
-                    <Image
-                      width={48}
-                      height={48}
-                      alt={`${tag} icon`}
-                      title={tag}
-                      src={`/customer/${tag
-                        .toLowerCase()
-                        .replace(' ', '-')}.png`}
-                    />
-                  </div>
-                ))}
+          <div className={styles.avatar_and_change_password}>
+            <div
+              className={`${styles.avatar} ${styles.profile_avatar}`}
+              onClick={() => setShowAvatarUpdateModal(true)}
+            >
+              <Image
+                width={80}
+                height={80}
+                title='Update avatar'
+                alt={`${formatAvatarId(
+                  customer?.avatar?.id || 'base-spork'
+                )} avatar`}
+                src={`/customer/avatars/${
+                  customer?.avatar?.id || 'base-spork'
+                }.png`}
+              />
             </div>
-            <p>
-              Click the icon to toggle your meal preference on or off. These
-              filters will then apply whenever you are browsing available
-              restaurants.
-            </p>
-          </div>
-
-          <div className={styles.tools}>
             <Link href='/change-password'>
               <a className={styles.change_password_link}>
-                <FaUserCircle size={100} color='#cfcfcf' />
                 <p>Change password</p>
               </a>
             </Link>
-            <button
-              onClick={() => setShowEmailSubscriptionUpdateModal(true)}
-              className={styles.update_email_preference_button}
-            >
-              Update Email <br /> Preferences
-            </button>
-            <Link href='/'>
-              <a className={styles.slack_channel_link}>
-                <p className={styles.join_slack}>
-                  Join the Slack channel for instant delivery notifications!
-                </p>
-                <div className={styles.slack_logo}>
+          </div>
+        </div>
+
+        <div className={styles.meal_preferences}>
+          <h2>Meal Preferences</h2>
+          <div className={styles.preference_icons}>
+            {dietaryTags.data
+              .filter((tag) => !EXCLUDED.includes(tag))
+              .map((tag, index) => (
+                <div
+                  key={index}
+                  onClick={() => updateDietaryPreferences(tag)}
+                  className={`${styles.preference_icon} ${
+                    isMatchedTag(tag) && styles.matched
+                  }`}
+                >
                   <Image
-                    src='/customer/slack-logo.png'
-                    width={1600}
-                    height={407}
+                    width={48}
+                    height={48}
+                    alt={`${tag} icon`}
+                    title={tag}
+                    src={`/customer/meal-preferences/${tag
+                      .toLowerCase()
+                      .replace(' ', '-')}.png`}
                   />
                 </div>
-                <p className={styles.company_name}>Twist Wilsonville</p>
-              </a>
-            </Link>
+              ))}
           </div>
+          <p>
+            Click the icon to toggle your meal preference on or off. These
+            filters will then apply whenever you are browsing available
+            restaurants.
+          </p>
         </div>
 
         {!foodStats.isLoading && (
@@ -436,6 +453,16 @@ export default function Profile() {
         showModalContainer={showEmailSubscriptionUpdateModal}
         setShowModalContainer={setShowEmailSubscriptionUpdateModal}
       />
+      <ModalContainer
+        component={
+          <AvatarUpdateModal
+            currentAvatar={customer?.avatar?.id || 'base-spork'}
+            setShowAvatarUpdateModal={setShowAvatarUpdateModal}
+          />
+        }
+        showModalContainer={showAvatarUpdateModal}
+        setShowModalContainer={setShowAvatarUpdateModal}
+      />
     </>
   );
 }
@@ -516,5 +543,57 @@ function EmailSubscriptionUpdateModal({
       ))}
       <SubmitButton text='Update' isLoading={isUpdatingEmailSubscriptions} />
     </form>
+  );
+}
+
+function AvatarUpdateModal({
+  currentAvatar,
+  setShowAvatarUpdateModal,
+}: {
+  currentAvatar: Avatar;
+  setShowAvatarUpdateModal: Dispatch<SetStateAction<boolean>>;
+}) {
+  const { setAlerts } = useAlert();
+  const { customer, setCustomer } = useUser();
+
+  async function updateAvatar(avatar: Avatar) {
+    try {
+      const response = await axiosInstance.patch(
+        `/customers/${customer?._id}/update-avatar`,
+        { avatar }
+      );
+
+      setCustomer(
+        (prevState) =>
+          prevState && { ...prevState, avatar: response.data.avatar }
+      );
+      setShowAvatarUpdateModal(false);
+    } catch (err) {
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    }
+  }
+
+  return (
+    <div className={styles.avatar_update_modal}>
+      {AVATARS.map((avatar, index) => (
+        <div
+          key={index}
+          className={`${styles.avatar} ${
+            currentAvatar === avatar
+              ? styles.profile_avatar
+              : styles.modal_avatar
+          }`}
+          onClick={() => updateAvatar(avatar)}
+        >
+          <Image
+            width={60}
+            height={60}
+            alt={`${formatAvatarId(avatar)} avatar`}
+            src={`/customer/avatars/${avatar}.png`}
+            title={formatAvatarId(avatar)}
+          />
+        </div>
+      ))}
+    </div>
   );
 }

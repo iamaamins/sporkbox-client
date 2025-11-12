@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios';
+import { Avatar } from 'data/AVATARS';
 import { Dispatch, SetStateAction, ReactNode } from 'react';
 
 export type UserRole = 'ADMIN' | 'VENDOR' | 'CUSTOMER' | 'GUEST' | 'DRIVER';
@@ -21,8 +22,11 @@ export interface Customer extends User {
   companies: Company[];
   foodPreferences?: string[];
   subscribedTo: {
+    deliveryNotification: boolean;
     orderReminder: boolean;
+    newsletter: boolean;
   };
+  avatar?: { id: Avatar };
   isCompanyAdmin?: boolean;
 }
 
