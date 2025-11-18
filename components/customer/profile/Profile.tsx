@@ -78,8 +78,10 @@ export default function Profile() {
       setIsSwitchingShift(true);
 
       const response = await axiosInstance.patch(
-        `/customers/${customer?._id}/${customer?.companies[0].code}/update-shift`,
-        { shift: shift === 'NIGHT' ? 'DAY' : 'NIGHT' }
+        `/customers/${customer?._id}/update-shift`,
+        {
+          shift: shift === 'NIGHT' ? 'DAY' : 'NIGHT',
+        }
       );
 
       setCustomer(
@@ -135,11 +137,11 @@ export default function Profile() {
   // Set shift and dietary preferences
   useEffect(() => {
     if (customer) {
-      const activeCompany = customer.companies.find(
-        (company) => company.status === 'ACTIVE'
+      const enrolledCompany = customer.companies.find(
+        (company) => company.isEnrolled
       );
 
-      if (activeCompany) setShift(activeCompany.shift);
+      if (enrolledCompany) setShift(enrolledCompany.shift);
       if (customer.foodPreferences)
         setPreferences(
           customer.foodPreferences.filter(

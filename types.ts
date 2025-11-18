@@ -18,8 +18,13 @@ interface User {
 
 export interface Admin extends User {}
 
+export interface UserCompany extends CompanyDetails {
+  isEnrolled: boolean;
+  isEnrollAble: boolean;
+}
+
 export interface Customer extends User {
-  companies: Company[];
+  companies: UserCompany[];
   foodPreferences?: string[];
   subscribedTo: {
     deliveryNotification: boolean;
@@ -31,7 +36,7 @@ export interface Customer extends User {
 }
 
 export interface Guest extends User {
-  companies: Company[];
+  companies: UserCompany[];
 }
 
 export interface Vendor extends User {
@@ -134,12 +139,11 @@ export type CustomerFavoriteItem = {
   };
 };
 
-export type Company = {
+interface CompanyDetails {
   _id: string;
   name: string;
   shift: Shift;
   code: string;
-  website: string;
   address: {
     city: string;
     state: string;
@@ -147,11 +151,15 @@ export type Company = {
     addressLine1: string;
     addressLine2?: string;
   };
-  createdAt: string;
   shiftBudget: number;
   status: 'ACTIVE' | 'ARCHIVED';
+}
+
+export interface Company extends CompanyDetails {
+  website: string;
   slackChannel?: string;
-};
+  createdAt: string;
+}
 
 export type DiscountCode = {
   _id: string;
@@ -457,7 +465,7 @@ export type RestaurantFormData = {
 };
 
 export interface UserWithCompany extends User {
-  company: Company;
+  company: UserCompany;
 }
 
 export interface Addons {
