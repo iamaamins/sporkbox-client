@@ -4,7 +4,7 @@ import { useAlert } from '@context/Alert';
 import { useEffect, useState } from 'react';
 import UserOrders from './UserOrders';
 import styles from './User.module.css';
-import { CustomAxiosError, Company, Order, UserWithCompany } from 'types';
+import { CustomAxiosError, Order, UserWithCompany, UserCompany } from 'types';
 import {
   axiosInstance,
   showErrorAlert,
@@ -57,15 +57,15 @@ export default function User() {
 
       if (user) {
         const { companies, ...rest } = user;
-        const customerWithCompany = {
+        const userWithCompany = {
           ...rest,
           company: companies.find(
             (company) => company._id === router.query.company
-          ) as Company,
+          ) as UserCompany,
         };
         setUser((prevState) => ({
           ...prevState,
-          data: customerWithCompany,
+          data: userWithCompany,
           upcomingOrders: allUpcomingOrders.data
             .filter(
               (upcomingOrder) =>

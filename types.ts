@@ -18,7 +18,7 @@ interface User {
 
 export interface Admin extends User {}
 
-interface UserCompany extends CompanyDetails {
+export interface UserCompany extends CompanyDetails {
   isEnrolled: boolean;
   isEnrollAble: boolean;
 }
@@ -465,7 +465,7 @@ export type RestaurantFormData = {
 };
 
 export interface UserWithCompany extends User {
-  company: Company;
+  company: UserCompany;
 }
 
 export interface Addons {
