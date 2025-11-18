@@ -370,10 +370,10 @@ export function getTotalPayable(
   });
 
   const cartItemDetails = getDateTotal(cartDateTotalDetails);
-  const company = user.companies.find((company) => company.status === 'ACTIVE');
+  const enrolledCompany = user.companies.find((company) => company.isEnrolled);
 
-  if (company) {
-    const shiftBudget = company.shiftBudget;
+  if (enrolledCompany) {
+    const shiftBudget = enrolledCompany.shiftBudget;
     const totalPayable = cartItemDetails
       .map((cartItemDetail) => {
         if (
@@ -421,7 +421,7 @@ export function getCustomerShifts(customer: Customer) {
   const shifts = [];
   for (const company of customer.companies) {
     if (company.shift === 'GENERAL') return [];
-    if (company.status === 'ACTIVE') shifts.push(company.shift);
+    if (company.isEnrollAble) shifts.push(company.shift);
   }
   return shifts;
 }

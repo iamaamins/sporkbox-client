@@ -43,12 +43,14 @@ export default function PlaceOrder() {
   }
 
   function isSoldOutItem(item: Item) {
-    const company = customer?.companies.find(
-      (company) => company.status === 'ACTIVE'
+    const enrolledCompany = customer?.companies.find(
+      (company) => company.isEnrolled
     );
+
     return item.soldOutStat?.some(
       (el) =>
-        upcomingDates.includes(dateToMS(el.date)) && company?._id === el.company
+        upcomingDates.includes(dateToMS(el.date)) &&
+        enrolledCompany?._id === el.company
     );
   }
 
