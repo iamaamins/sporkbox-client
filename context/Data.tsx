@@ -314,7 +314,6 @@ export default function DataProvider({ children }: ContextProviderProps) {
         const response = await axiosInstance.get(`/restaurants/me/upcoming`);
         setUpcomingRestaurants({ isLoading: false, data: response.data });
       } catch (err) {
-        console.log(err);
         setUpcomingRestaurants((prevState) => ({
           ...prevState,
           isLoading: false,
@@ -346,7 +345,7 @@ export default function DataProvider({ children }: ContextProviderProps) {
   useEffect(() => {
     async function getDriverOrders() {
       try {
-        const response = await axiosInstance.get('/orders/driver-orders');
+        const response = await axiosInstance.get('/orders/driver/today');
 
         setDriverOrders({ isLoading: false, data: response.data });
       } catch (err) {

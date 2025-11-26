@@ -5,6 +5,7 @@ import {
   dateToMS,
   getDate,
   getDay,
+  isRestaurantSoldOut,
   numberToUSD,
   showErrorAlert,
 } from '@lib/utils';
@@ -224,7 +225,7 @@ export default function PlaceOrder() {
                 <div
                   key={index}
                   className={`${styles.restaurant} ${
-                    restaurant.schedule.status === 'INACTIVE' && styles.sold_out
+                    isRestaurantSoldOut(restaurant) && styles.sold_out
                   }`}
                 >
                   <h3
@@ -235,7 +236,11 @@ export default function PlaceOrder() {
                     {restaurant.isFeatured && (
                       <RiShieldStarFill title='Featured restaurant' />
                     )}
-                    {restaurant.schedule.status === 'INACTIVE' && '- sold out'}
+                    {isRestaurantSoldOut(restaurant)
+                      ? ' - sold out'
+                      : ` - only ${
+                          restaurant.orderCapacity - restaurant.activeOrderCount
+                        } items left until sold out!`}
                     <IoIosArrowUp
                       className={`${styles.restaurant_name_arrow} ${
                         activeRestaurants.some(
@@ -256,7 +261,7 @@ export default function PlaceOrder() {
                         <Link
                           key={item._id}
                           href={
-                            restaurant.schedule.status !== 'ACTIVE'
+                            isRestaurantSoldOut(restaurant)
                               ? '#'
                               : `/admin/dashboard/${router.query.user}/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`
                           }

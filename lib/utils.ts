@@ -20,6 +20,7 @@ import {
   Guest,
   CustomerOrder,
   CartItem,
+  UpcomingRestaurant,
 } from 'types';
 
 export const currentYear = new Date().getFullYear();
@@ -425,3 +426,6 @@ export function getCustomerShifts(customer: Customer) {
   }
   return shifts;
 }
+
+export const isRestaurantSoldOut = (restaurant: UpcomingRestaurant) =>
+  restaurant.schedule.status === 'INACTIVE';

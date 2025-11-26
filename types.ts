@@ -72,14 +72,16 @@ export type Restaurant = {
 export interface ScheduledRestaurant {
   _id: string;
   name: string;
-  company: { _id: string; name: string; code: string; shift: string };
   schedule: Schedule;
+  company: { _id: string; name: string; code: string; shift: string };
 }
 
 export interface UpcomingRestaurant extends ScheduledRestaurant {
   logo: string;
   items: Item[];
   isFeatured: boolean;
+  orderCapacity: number;
+  activeOrderCount: number;
 }
 
 export type Review = {
