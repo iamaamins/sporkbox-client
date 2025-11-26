@@ -15,7 +15,6 @@ import {
   CustomAxiosError,
   Customer,
   Guest,
-  Item,
   UpcomingRestaurant,
   UpcomingRestaurants,
 } from 'types';
@@ -61,18 +60,6 @@ export default function PlaceOrder() {
           return activeRestaurant;
         }
       })
-    );
-  }
-
-  function isSoldOutItem(item: Item) {
-    const enrolledCompany = user?.companies.find(
-      (company) => company.isEnrolled
-    );
-
-    return item.soldOutStat?.some(
-      (el) =>
-        upcomingDates.includes(dateToMS(el.date)) &&
-        enrolledCompany?._id === el.company
     );
   }
 
@@ -272,17 +259,12 @@ export default function PlaceOrder() {
                         <Link
                           key={item._id}
                           href={
-                            !isSoldOutItem(item) &&
-                            restaurant.schedule.status === 'ACTIVE'
-                              ? `/company/${router.query.user}/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`
-                              : '#'
+                            restaurant.schedule.status !== 'ACTIVE'
+                              ? '#'
+                              : `/company/${router.query.user}/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`
                           }
                         >
-                          <a
-                            className={`${styles.item} ${
-                              isSoldOutItem(item) && styles.sold_out
-                            }`}
-                          >
+                          <a className={styles.item}>
                             <div className={styles.item_details}>
                               <p className={styles.item_name}>
                                 {item.name}

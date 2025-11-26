@@ -76,16 +76,13 @@
 
 .restaurant.sold_out .restaurant_name,
 .restaurant.sold_out .item_name span,
-.item.sold_out .item_name span {
+.restaurant.sold_out .quantity {
   background: var(--disabled);
 }
 
 .restaurant.sold_out .item_name,
 .restaurant.sold_out .item_price,
-.restaurant.sold_out .item_description,
-.item.sold_out .item_name,
-.item.sold_out .item_price,
-.item.sold_out .item_description {
+.restaurant.sold_out .item_description {
   color: var(--disabled);
 }
 
@@ -93,8 +90,7 @@
   display: none;
 }
 
-.restaurant.sold_out .item_image_overlay,
-.item.sold_out .item_image_overlay {
+.restaurant.sold_out .item_image_overlay {
   display: block;
   position: absolute;
   inset: 0;
@@ -107,8 +103,7 @@
   display: none;
 }
 
-.restaurant.sold_out .sold_out_text,
-.item.sold_out .sold_out_text {
+.restaurant.sold_out .sold_out_text {
   display: block;
   position: absolute;
   z-index: 2;
@@ -146,8 +141,7 @@
   justify-content: space-between;
 }
 
-.restaurant.sold_out .item,
-.item.sold_out .item {
+.restaurant.sold_out .item {
   cursor: not-allowed;
 }
 
@@ -225,11 +219,6 @@
   padding: 0px 4px;
   border-radius: 2px;
   background-color: #eef7f5;
-}
-
-.restaurant.sold_out .quantity,
-.item.sold_out .quantity {
-  background: var(--disabled);
 }
 
 .message {

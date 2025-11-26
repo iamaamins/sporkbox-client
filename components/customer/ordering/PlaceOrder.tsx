@@ -6,7 +6,7 @@ import { useCart } from '@context/Cart';
 import { useEffect, useState } from 'react';
 import { getDay, getDate, dateToMS, numberToUSD } from '@lib/utils';
 import SortAndFilterByPrice from './SortAndFilterByPrice';
-import { Item, UpcomingRestaurant } from 'types';
+import { UpcomingRestaurant } from 'types';
 import { IoIosArrowUp } from 'react-icons/io';
 import FilterByDietaryTags from './FilterByDietaryTags';
 import styles from './PlaceOrder.module.css';
@@ -39,18 +39,6 @@ export default function PlaceOrder() {
           return activeRestaurant;
         }
       })
-    );
-  }
-
-  function isSoldOutItem(item: Item) {
-    const enrolledCompany = customer?.companies.find(
-      (company) => company.isEnrolled
-    );
-
-    return item.soldOutStat?.some(
-      (el) =>
-        upcomingDates.includes(dateToMS(el.date)) &&
-        enrolledCompany?._id === el.company
     );
   }
 
@@ -170,17 +158,12 @@ export default function PlaceOrder() {
                         <Link
                           key={item._id}
                           href={
-                            !isSoldOutItem(item) &&
-                            restaurant.schedule.status === 'ACTIVE'
-                              ? `/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`
-                              : '#'
+                            restaurant.schedule.status !== 'ACTIVE'
+                              ? '#'
+                              : `/place-order/${router.query.date}/${restaurant.company.shift}/${restaurant._id}/${item._id}`
                           }
                         >
-                          <a
-                            className={`${styles.item} ${
-                              isSoldOutItem(item) && styles.sold_out
-                            }`}
-                          >
+                          <a className={styles.item}>
                             <div className={styles.item_details}>
                               <p className={styles.item_name}>
                                 {item.name}
