@@ -243,8 +243,8 @@ export default function Profile() {
       <section className={styles.container}>
         <div className={styles.tools}>
           <div className={styles.slack_and_email_preference}>
-            <Link href='/'>
-              <a className={styles.slack_channel_link}>
+            <Link href='https://join.slack.com/share/enQtOTk5NjE3MDkwNDI1OS05MjliZjE1MDBiM2Y5ZGIxMGY0YzkwNzA2N2M5NGUyZGQ5YWJjMDRmY2U0NmY3MjJhZjQyMmU5NDFmNDkxNmQ2'>
+              <a target='_blank' className={styles.slack_channel_link}>
                 <div className={styles.slack_logo}>
                   <Image
                     src='/customer/slack-logo.png'
@@ -532,17 +532,19 @@ function EmailSubscriptionUpdateModal({
 
   return (
     <form className={styles.email_subscriptions} onSubmit={handleSubmit}>
-      {Object.entries(emailSubscriptions).map(([key, value], index) => (
-        <div key={index}>
-          <input
-            type='checkbox'
-            id={key}
-            checked={value}
-            onChange={handleChange}
-          />
-          <label htmlFor={key}>{formatSubscriptionKey(key)}</label>
-        </div>
-      ))}
+      {Object.entries(emailSubscriptions)
+        .filter(([key]) => key !== 'newsletter')
+        .map(([key, value], index) => (
+          <div key={index}>
+            <input
+              type='checkbox'
+              id={key}
+              checked={value}
+              onChange={handleChange}
+            />
+            <label htmlFor={key}>{formatSubscriptionKey(key)}</label>
+          </div>
+        ))}
       <SubmitButton text='Update' isLoading={isUpdatingEmailSubscriptions} />
     </form>
   );
