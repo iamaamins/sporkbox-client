@@ -79,7 +79,7 @@ function Users() {
                 </td>
                 <td>{employee.email}</td>
                 <td className={styles.hide_on_mobile}>
-                  {employee.companies[0].code}
+                  {employee.companies[0]?.code}
                 </td>
                 <td>{employee.status}</td>
               </tr>

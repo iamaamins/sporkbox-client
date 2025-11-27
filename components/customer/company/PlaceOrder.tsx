@@ -231,29 +231,37 @@ export default function PlaceOrder() {
                     isRestaurantSoldOut(restaurant) && styles.sold_out
                   }`}
                 >
-                  <h3
-                    className={styles.restaurant_name}
-                    onClick={() => updateActiveRestaurants(restaurant)}
-                  >
-                    {restaurant.name}
-                    {restaurant.isFeatured && (
-                      <RiShieldStarFill title='Featured restaurant' />
-                    )}
-                    {isRestaurantSoldOut(restaurant)
-                      ? ' - sold out'
-                      : ` - only ${
-                          restaurant.orderCapacity - restaurant.activeOrderCount
-                        } items left until sold out!`}
-                    <IoIosArrowUp
-                      className={`${styles.restaurant_name_arrow} ${
-                        activeRestaurants.some(
-                          (activeRestaurant) =>
-                            !activeRestaurant.show &&
-                            activeRestaurant.id === restaurant._id
-                        ) && styles.rotate_arrow
-                      }`}
-                    />
-                  </h3>
+                  <div className={styles.restaurant_header}>
+                    <h3
+                      className={styles.restaurant_name}
+                      onClick={() => updateActiveRestaurants(restaurant)}
+                    >
+                      {restaurant.name}
+                      {restaurant.isFeatured && (
+                        <RiShieldStarFill title='Featured restaurant' />
+                      )}
+                      {isRestaurantSoldOut(restaurant) && '- sold out'}
+                      <IoIosArrowUp
+                        className={`${styles.restaurant_name_arrow} ${
+                          activeRestaurants.some(
+                            (activeRestaurant) =>
+                              !activeRestaurant.show &&
+                              activeRestaurant.id === restaurant._id
+                          ) && styles.rotate_arrow
+                        }`}
+                      />
+                    </h3>
+                    {restaurant.orderCapacity > 0 &&
+                      !isRestaurantSoldOut(restaurant) && (
+                        <p className={styles.items_left}>
+                          <span>
+                            {restaurant.orderCapacity -
+                              restaurant.activeOrderCount}
+                          </span>{' '}
+                          items left until sold out!
+                        </p>
+                      )}
+                  </div>
                   {activeRestaurants.some(
                     (activeRestaurant) =>
                       activeRestaurant.show &&

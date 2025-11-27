@@ -56,6 +56,13 @@
   margin-bottom: 2rem;
 }
 
+.restaurant_header {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
 .restaurant_name {
   display: flex;
   align-items: center;
@@ -64,7 +71,6 @@
   font-weight: 600;
   cursor: pointer;
   padding: 6px 8px;
-  margin-bottom: 1rem;
   border-radius: 0.25rem;
   background: var(--orange);
   color: var(--almost_white);
@@ -72,6 +78,10 @@
 
 .restaurant_name svg {
   margin: 0rem 0.25rem;
+}
+
+.items_left span {
+  font-weight: 700;
 }
 
 .restaurant.sold_out .restaurant_name,
@@ -232,7 +242,7 @@
     align-items: center;
   }
 
-  .restaurant_name {
+  .restaurant_header {
     margin-bottom: 1.5rem;
   }
 
