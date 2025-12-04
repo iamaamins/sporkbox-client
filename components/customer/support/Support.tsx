@@ -53,7 +53,10 @@ export default function Support() {
   });
   const [openQuestions, setOpenQuestions] = useState<number[]>([]);
   const [formData, setFormData] = useState<FormData>(initialState);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmittingIssue, setIsSubmittingIssue] = useState(false);
+  const [isSubmittingQuickMessage, setIsSubmittingQuickMessage] =
+    useState(false);
+  const [quickMessage, setQuickMessage] = useState('');
 
   const { category, date, restaurant, message, file } = formData;
 
@@ -65,7 +68,7 @@ export default function Support() {
     );
   }
 
-  function handleChange(
+  function handleChangeIssueForm(
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>
   ) {
     setFormData((prevState) => ({
@@ -86,6 +89,28 @@ export default function Support() {
     }
   }
 
+  async function submitQuickMessage(e: FormEvent) {
+    e.preventDefault();
+
+    if (!quickMessage.trim())
+      return showErrorAlert('Message is required.', setAlerts);
+
+    try {
+      setIsSubmittingQuickMessage(true);
+
+      const response = await axiosInstance.post('/feedback/quick-message', {
+        message: quickMessage,
+      });
+
+      setQuickMessage('');
+      showSuccessAlert(response.data, setAlerts);
+    } catch (err) {
+      showErrorAlert(err as CustomAxiosError, setAlerts);
+    } finally {
+      setIsSubmittingQuickMessage(false);
+    }
+  }
+
   async function submitIssueFeedback(e: FormEvent) {
     e.preventDefault();
 
@@ -97,7 +122,7 @@ export default function Support() {
     file && data.append('file', file);
 
     try {
-      setIsLoading(true);
+      setIsSubmittingIssue(true);
 
       const response = await axiosInstance.post('/feedback/issue', data, {
         headers: { 'Content-Type': 'multipart/form-data' },
@@ -108,7 +133,7 @@ export default function Support() {
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      setIsLoading(false);
+      setIsSubmittingIssue(false);
     }
   }
 
@@ -130,40 +155,58 @@ export default function Support() {
   return (
     <section className={styles.container}>
       <div className={styles.feedback}>
-        <h1>How are you feeling about Spork Box today?</h1>
-        <div className={styles.ratings}>
-          <MdOutlineSentimentVerySatisfied
-            size={48}
-            color='#56cd8c'
-            title='Very satisfied'
-            onClick={() => submitGeneralFeedback(5)}
-          />
-          <MdSentimentVerySatisfied
-            size={48}
-            color='#85d273'
-            title='Satisfied'
-            onClick={() => submitGeneralFeedback(4)}
-          />
-          <MdSentimentNeutral
-            size={48}
-            color='#fbe118'
-            title='Neither'
-            onClick={() => submitGeneralFeedback(3)}
-          />
-          <MdOutlineSentimentDissatisfied
-            size={48}
-            color='#fba831'
-            title='Somewhat unsatisfied'
-            onClick={() => submitGeneralFeedback(2)}
-          />
-          <MdOutlineSentimentVeryDissatisfied
-            size={48}
-            color='#ff6449'
-            title='Very unsatisfied'
-            onClick={() => submitGeneralFeedback(1)}
-          />
+        <div className={styles.general_feedback}>
+          <h1>How are you feeling about Spork Box today?</h1>
+          <div className={styles.ratings}>
+            <MdOutlineSentimentVerySatisfied
+              size={48}
+              color='#56cd8c'
+              title='Very satisfied'
+              onClick={() => submitGeneralFeedback(5)}
+            />
+            <MdSentimentVerySatisfied
+              size={48}
+              color='#85d273'
+              title='Satisfied'
+              onClick={() => submitGeneralFeedback(4)}
+            />
+            <MdSentimentNeutral
+              size={48}
+              color='#fbe118'
+              title='Neither'
+              onClick={() => submitGeneralFeedback(3)}
+            />
+            <MdOutlineSentimentDissatisfied
+              size={48}
+              color='#fba831'
+              title='Somewhat unsatisfied'
+              onClick={() => submitGeneralFeedback(2)}
+            />
+            <MdOutlineSentimentVeryDissatisfied
+              size={48}
+              color='#ff6449'
+              title='Very unsatisfied'
+              onClick={() => submitGeneralFeedback(1)}
+            />
+          </div>
+          <p>We want to hear what you think!</p>
         </div>
-        <p>We want to hear what you think!</p>
+        <form onSubmit={submitQuickMessage} className={styles.quick_message}>
+          <h2>Send us a quick message</h2>
+          <textarea
+            cols={30}
+            rows={5}
+            onChange={(e) => setQuickMessage(e.target.value)}
+            placeholder='If you experienced an issue with a meal, please use the “Have an issue?” form below.'
+          />
+          <button
+            type='submit'
+            disabled={isSubmittingQuickMessage}
+            className={`${isSubmittingQuickMessage ? styles.disabled : ''}`}
+          >
+            Submit
+          </button>
+        </form>
       </div>
 
       {customer && customer.companies[0].code === 'twist' && (
@@ -204,7 +247,7 @@ export default function Support() {
               required
               id='category'
               value={category}
-              onChange={handleChange}
+              onChange={handleChangeIssueForm}
             >
               <option hidden value='select'>
                 ---Select---
@@ -234,7 +277,7 @@ export default function Support() {
               type='date'
               id='date'
               value={date}
-              onChange={handleChange}
+              onChange={handleChangeIssueForm}
               max={getPastDate(0)}
             />
           </div>
@@ -247,7 +290,7 @@ export default function Support() {
                 required
                 id='restaurant'
                 value={restaurant}
-                onChange={handleChange}
+                onChange={handleChangeIssueForm}
               >
                 <option hidden value='select'>
                   --Select---
@@ -269,7 +312,7 @@ export default function Support() {
               rows={10}
               id='message'
               value={message}
-              onChange={handleChange}
+              onChange={handleChangeIssueForm}
               placeholder='Tell us more'
             />
           </div>
@@ -309,13 +352,11 @@ export default function Support() {
             />
           </div>
           <button
-            disabled={isLoading}
+            disabled={isSubmittingIssue}
             type='submit'
-            className={`${styles.submit_button} ${
-              isLoading && styles.disabled
-            }`}
+            className={`${isSubmittingIssue ? styles.disabled : ''}`}
           >
-            {isLoading ? <ButtonLoader /> : 'Submit'}
+            {isSubmittingIssue ? <ButtonLoader /> : 'Submit'}
           </button>
         </form>
       </div>
