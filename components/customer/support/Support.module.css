@@ -7,13 +7,20 @@
 
 .feedback {
   display: flex;
-  gap: 0.5rem;
+  gap: 1.5rem;
   align-items: center;
   flex-direction: column;
 }
 
-.feedback h1,
-.feedback p {
+.general_feedback {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-direction: column;
+}
+
+.general_feedback h1,
+.general_feedback p {
   text-align: center;
   color: var(--teal);
 }
@@ -26,6 +33,14 @@
 
 .ratings svg {
   cursor: pointer;
+}
+
+.quick_message {
+  display: flex;
+  gap: 0.75rem;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
 }
 
 .survey_and_slack {
@@ -104,6 +119,7 @@
   font-weight: 500;
 }
 
+.quick_message textarea,
 .issue form select,
 .issue form input,
 .issue form textarea {
@@ -164,6 +180,7 @@
   border: 1px solid var(--gray);
 }
 
+.quick_message button,
 .issue form button {
   border: none;
   width: 100%;
@@ -177,6 +194,7 @@
   transition: all 150ms ease-in-out;
 }
 
+.quick_message button.disabled,
 .issue form button.disabled {
   pointer-events: none;
 }
@@ -230,6 +248,10 @@
   .container {
     margin: 0 auto;
     max-width: 650px;
+  }
+
+  .quick_message {
+    width: 600px;
   }
 
   .survey_and_slack {
