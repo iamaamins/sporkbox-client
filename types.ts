@@ -33,6 +33,7 @@ export interface Customer extends User {
   };
   avatar?: { id: Avatar };
   isCompanyAdmin?: boolean;
+  foodVibe?: string;
 }
 
 export interface Guest extends User {

@@ -9,6 +9,7 @@ import {
   showErrorAlert,
   showSuccessAlert,
   getAddonIngredients,
+  sortOrders,
 } from '@lib/utils';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
@@ -243,7 +244,7 @@ export default function Dashboard() {
             date: key.split('-')[0],
             company: key.split('-')[1],
             totalQuantity: orderMap[key].totalQuantity,
-            orders: orderMap[key].orders,
+            orders: orderMap[key].orders.sort(sortOrders),
           });
         }
       }
