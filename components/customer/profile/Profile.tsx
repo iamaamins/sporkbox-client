@@ -240,210 +240,213 @@ export default function Profile() {
 
   return (
     <>
-      <section className={styles.container}>
-        <div className={styles.tools}>
-          <div className={styles.slack_and_email_preference}>
-            <Link href='https://join.slack.com/share/enQtOTk5NjE3MDkwNDI1OS05MjliZjE1MDBiM2Y5ZGIxMGY0YzkwNzA2N2M5NGUyZGQ5YWJjMDRmY2U0NmY3MjJhZjQyMmU5NDFmNDkxNmQ2'>
-              <a target='_blank' className={styles.slack_channel_link}>
-                <div className={styles.slack_logo}>
-                  <Image
-                    src='/customer/slack-logo.png'
-                    width={1600}
-                    height={407}
-                  />
-                </div>
-                <p className={styles.company_name}>Twist Wilsonville</p>
-              </a>
-            </Link>
-            <button
-              onClick={() => setShowEmailSubscriptionUpdateModal(true)}
-              className={styles.update_email_preference_button}
-            >
-              Update Email Preferences
-            </button>
-          </div>
-          {customer && getCustomerShifts(customer).length > 1 && (
-            <div className={styles.shift}>
-              <h2>Shift</h2>
+      {customer && (
+        <section className={styles.container}>
+          <div className={styles.tools}>
+            <div className={styles.slack_and_email_preference}>
+              <Link href='https://join.slack.com/share/enQtOTk5NjE3MDkwNDI1OS05MjliZjE1MDBiM2Y5ZGIxMGY0YzkwNzA2N2M5NGUyZGQ5YWJjMDRmY2U0NmY3MjJhZjQyMmU5NDFmNDkxNmQ2'>
+                <a target='_blank' className={styles.slack_channel_link}>
+                  <div className={styles.slack_logo}>
+                    <Image
+                      src='/customer/slack-logo.png'
+                      width={1600}
+                      height={407}
+                    />
+                  </div>
+                  <p className={styles.company_name}>Twist Wilsonville</p>
+                </a>
+              </Link>
               <button
-                disabled={isSwitchingShift}
-                onClick={switchShift}
-                className={`${styles.shift_switcher} ${
-                  shift === 'NIGHT' ? styles.night : styles.day
-                }`}
+                onClick={() => setShowEmailSubscriptionUpdateModal(true)}
+                className={styles.update_email_preference_button}
               >
-                <span
-                  className={`${styles.label} ${styles.night} ${
-                    shift === 'NIGHT' ? styles.show : styles.hide
-                  }`}
-                >
-                  NIGHT
-                </span>
-                <span
-                  className={`${styles.label} ${styles.day} ${
-                    shift === 'NIGHT' ? styles.hide : styles.show
-                  }`}
-                >
-                  DAY
-                </span>
-                <div
-                  className={`${styles.toggle} ${
+                Update Email Preferences
+              </button>
+            </div>
+            {getCustomerShifts(customer).length > 1 && (
+              <div className={styles.shift}>
+                <h2>Shift</h2>
+                <button
+                  disabled={isSwitchingShift}
+                  onClick={switchShift}
+                  className={`${styles.shift_switcher} ${
                     shift === 'NIGHT' ? styles.night : styles.day
                   }`}
                 >
-                  {shift === 'NIGHT' ? (
-                    <PiMoonStarsFill size={28} />
-                  ) : (
-                    <PiSunFill size={28} />
-                  )}
-                </div>
-              </button>
-            </div>
-          )}
-          <div className={styles.avatar_and_change_password}>
-            <div
-              className={`${styles.avatar} ${styles.profile_avatar}`}
-              onClick={() => setShowAvatarUpdateModal(true)}
-            >
-              <Image
-                width={80}
-                height={80}
-                title='Update avatar'
-                alt={`${formatAvatarId(
-                  customer?.avatar?.id || 'base-spork'
-                )} avatar`}
-                src={`/customer/avatars/${
-                  customer?.avatar?.id || 'base-spork'
-                }.png`}
-              />
-            </div>
-            <Link href='/change-password'>
-              <a className={styles.change_password_link}>
-                <p>Change password</p>
-              </a>
-            </Link>
-          </div>
-        </div>
-
-        <div className={styles.meal_preferences}>
-          <h2>Meal Preferences</h2>
-          <div className={styles.preference_icons}>
-            {dietaryTags.data
-              .filter((tag) => !EXCLUDED.includes(tag))
-              .map((tag, index) => (
-                <div
-                  key={index}
-                  onClick={() => updateDietaryPreferences(tag)}
-                  className={`${styles.preference_icon} ${
-                    isMatchedTag(tag) && styles.matched
-                  }`}
-                >
-                  <Image
-                    width={48}
-                    height={48}
-                    alt={`${tag} icon`}
-                    title={tag}
-                    src={`/customer/meal-preferences/${tag
-                      .toLowerCase()
-                      .replace(' ', '-')}.png`}
-                  />
-                </div>
-              ))}
-          </div>
-          <p>
-            Click the icon to toggle your meal preference on or off. These
-            filters will then apply whenever you are browsing available
-            restaurants.
-          </p>
-        </div>
-
-        {!foodStats.isLoading && (
-          <div className={styles.food_stats}>
-            <h2>My Food Stats</h2>
-            <div className={styles.stats}>
-              <div className={styles.stat}>
-                <h3>Orders Placed</h3>
-                <p>{foodStats.orderCount}</p>
-              </div>
-              <div className={styles.stat}>
-                <h3>Items Ordered</h3>
-                <p>{foodStats.itemCount}</p>
-              </div>
-              <div className={styles.stat}>
-                <h3>Restaurants Tried</h3>
-                <p>{foodStats.restaurantCount}</p>
-              </div>
-            </div>
-          </div>
-        )}
-        <div className={styles.food_vibe}>
-          <h2>My Food Vibe</h2>
-          <p>So Fresh, So Clean</p>
-        </div>
-
-        {!mostLiked.isLoading &&
-          mostLiked.restaurants.length > 0 &&
-          mostLiked.items.length > 0 && (
-            <div className={styles.most_liked}>
-              <div className={styles.most_liked_restaurants}>
-                <h3>Most Liked Restaurants</h3>
-                <ol>
-                  {mostLiked.restaurants.map((restaurant, index) => (
-                    <li key={index}>{restaurant}</li>
-                  ))}
-                </ol>
-              </div>
-              <div className={styles.most_liked_items}>
-                <h3>Most Liked Items</h3>
-                <ol>
-                  {mostLiked.items.map((item, index) => (
-                    <li key={index}>{item}</li>
-                  ))}
-                </ol>
-              </div>
-            </div>
-          )}
-
-        {!recentOrders.isLoading && (
-          <div className={styles.recent_orders}>
-            <h2>Recent Orders</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Restaurant</th>
-                  <th>Item</th>
-                  <th>Review</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentOrders.data.map((order) => (
-                  <tr key={order._id}>
-                    <td className={styles.important}>
-                      {dateToText(order.date)}
-                    </td>
-                    <td>{order.restaurant}</td>
-                    <td>{order.item}</td>
-                    {order.status === 'PROCESSING' ? (
-                      <td>PROCESSING</td>
-                    ) : order.rating ? (
-                      <td>
-                        <Stars rating={order.rating} />
-                      </td>
+                  <span
+                    className={`${styles.label} ${styles.night} ${
+                      shift === 'NIGHT' ? styles.show : styles.hide
+                    }`}
+                  >
+                    NIGHT
+                  </span>
+                  <span
+                    className={`${styles.label} ${styles.day} ${
+                      shift === 'NIGHT' ? styles.hide : styles.show
+                    }`}
+                  >
+                    DAY
+                  </span>
+                  <div
+                    className={`${styles.toggle} ${
+                      shift === 'NIGHT' ? styles.night : styles.day
+                    }`}
+                  >
+                    {shift === 'NIGHT' ? (
+                      <PiMoonStarsFill size={28} />
                     ) : (
-                      <td>
-                        <Link href={`/dashboard/${order._id}`}>
-                          <a className={styles.not_reviewed}>NOT REVIEWED</a>
-                        </Link>
-                      </td>
+                      <PiSunFill size={28} />
                     )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                  </div>
+                </button>
+              </div>
+            )}
+            <div className={styles.avatar_and_change_password}>
+              <div
+                className={`${styles.avatar} ${styles.profile_avatar}`}
+                onClick={() => setShowAvatarUpdateModal(true)}
+              >
+                <Image
+                  width={80}
+                  height={80}
+                  title='Update avatar'
+                  alt={`${formatAvatarId(
+                    customer?.avatar?.id || 'base-spork'
+                  )} avatar`}
+                  src={`/customer/avatars/${
+                    customer?.avatar?.id || 'base-spork'
+                  }.png`}
+                />
+              </div>
+              <Link href='/change-password'>
+                <a className={styles.change_password_link}>
+                  <p>Change password</p>
+                </a>
+              </Link>
+            </div>
           </div>
-        )}
-      </section>
+
+          <div className={styles.meal_preferences}>
+            <h2>Meal Preferences</h2>
+            <div className={styles.preference_icons}>
+              {dietaryTags.data
+                .filter((tag) => !EXCLUDED.includes(tag))
+                .map((tag, index) => (
+                  <div
+                    key={index}
+                    onClick={() => updateDietaryPreferences(tag)}
+                    className={`${styles.preference_icon} ${
+                      isMatchedTag(tag) && styles.matched
+                    }`}
+                  >
+                    <Image
+                      width={48}
+                      height={48}
+                      alt={`${tag} icon`}
+                      title={tag}
+                      src={`/customer/meal-preferences/${tag
+                        .toLowerCase()
+                        .replace(' ', '-')}.png`}
+                    />
+                  </div>
+                ))}
+            </div>
+            <p>
+              Click the icon to toggle your meal preference on or off. These
+              filters will then apply whenever you are browsing available
+              restaurants.
+            </p>
+          </div>
+
+          {!foodStats.isLoading && (
+            <div className={styles.food_stats}>
+              <h2>My Food Stats</h2>
+              <div className={styles.stats}>
+                <div className={styles.stat}>
+                  <h3>Orders Placed</h3>
+                  <p>{foodStats.orderCount}</p>
+                </div>
+                <div className={styles.stat}>
+                  <h3>Items Ordered</h3>
+                  <p>{foodStats.itemCount}</p>
+                </div>
+                <div className={styles.stat}>
+                  <h3>Restaurants Tried</h3>
+                  <p>{foodStats.restaurantCount}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className={styles.food_vibe}>
+            <h2>My Food Vibe</h2>
+            <p>{customer.foodVibe || 'So Fresh, So Clean'}</p>
+          </div>
+
+          {!mostLiked.isLoading &&
+            mostLiked.restaurants.length > 0 &&
+            mostLiked.items.length > 0 && (
+              <div className={styles.most_liked}>
+                <div className={styles.most_liked_restaurants}>
+                  <h3>Most Liked Restaurants</h3>
+                  <ol>
+                    {mostLiked.restaurants.map((restaurant, index) => (
+                      <li key={index}>{restaurant}</li>
+                    ))}
+                  </ol>
+                </div>
+                <div className={styles.most_liked_items}>
+                  <h3>Most Liked Items</h3>
+                  <ol>
+                    {mostLiked.items.map((item, index) => (
+                      <li key={index}>{item}</li>
+                    ))}
+                  </ol>
+                </div>
+              </div>
+            )}
+
+          {!recentOrders.isLoading && (
+            <div className={styles.recent_orders}>
+              <h2>Recent Orders</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Restaurant</th>
+                    <th>Item</th>
+                    <th>Review</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {recentOrders.data.map((order) => (
+                    <tr key={order._id}>
+                      <td className={styles.important}>
+                        {dateToText(order.date)}
+                      </td>
+                      <td>{order.restaurant}</td>
+                      <td>{order.item}</td>
+                      {order.status === 'PROCESSING' ? (
+                        <td>PROCESSING</td>
+                      ) : order.rating ? (
+                        <td>
+                          <Stars rating={order.rating} />
+                        </td>
+                      ) : (
+                        <td>
+                          <Link href={`/dashboard/${order._id}`}>
+                            <a className={styles.not_reviewed}>NOT REVIEWED</a>
+                          </Link>
+                        </td>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+      )}
       <ModalContainer
         component={
           <EmailSubscriptionUpdateModal
