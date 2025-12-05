@@ -429,3 +429,13 @@ export function getCustomerShifts(customer: Customer) {
 
 export const isRestaurantSoldOut = (restaurant: UpcomingRestaurant) =>
   restaurant.schedule.status === 'INACTIVE';
+
+export const itemsLeftUntilSoldOut = (restaurant: UpcomingRestaurant) =>
+  restaurant.orderCapacity - restaurant.activeOrderCount;
+
+export const showItemsLeftUntilSoldOutMessage = (
+  restaurant: UpcomingRestaurant
+) =>
+  restaurant.orderCapacity > 0 &&
+  !isRestaurantSoldOut(restaurant) &&
+  itemsLeftUntilSoldOut(restaurant) <= 20;

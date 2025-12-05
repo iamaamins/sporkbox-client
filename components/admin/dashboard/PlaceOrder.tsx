@@ -6,8 +6,10 @@ import {
   getDate,
   getDay,
   isRestaurantSoldOut,
+  itemsLeftUntilSoldOut,
   numberToUSD,
   showErrorAlert,
+  showItemsLeftUntilSoldOutMessage,
 } from '@lib/utils';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -248,16 +250,12 @@ export default function PlaceOrder() {
                         }`}
                       />
                     </h3>
-                    {restaurant.orderCapacity > 0 &&
-                      !isRestaurantSoldOut(restaurant) && (
-                        <p className={styles.items_left}>
-                          <span>
-                            {restaurant.orderCapacity -
-                              restaurant.activeOrderCount}
-                          </span>{' '}
-                          items left until sold out!
-                        </p>
-                      )}
+                    {showItemsLeftUntilSoldOutMessage(restaurant) && (
+                      <p className={styles.items_left}>
+                        <span>{itemsLeftUntilSoldOut(restaurant)}</span> items
+                        left until sold out!
+                      </p>
+                    )}
                   </div>
                   {activeRestaurants.some(
                     (activeRestaurant) =>
