@@ -36,8 +36,57 @@
   color: var(--gray);
 }
 
+.action {
+  padding: 4px 8px;
+  border-radius: 2rem;
+  color: var(--orange);
+  cursor: pointer;
+  background-color: transparent;
+  border: 1px solid var(--orange);
+}
+
 .hide_on_mobile {
   display: none;
+}
+
+.status_update_modal {
+  max-width: 350px;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+}
+
+.status_update_modal p {
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.status_update_modal .buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.status_update_modal .buttons button {
+  border: none;
+  width: 8rem;
+  height: 2.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  color: var(--almost_white);
+  background-color: var(--orange);
+}
+
+.status_update_modal .buttons button:first-child {
+  background: var(--black);
+}
+
+.disabled {
+  pointer-events: none;
 }
 
 @media (min-width: 768px) {
