@@ -7,6 +7,7 @@ import type { AppProps } from 'next/app';
 import AlertProvider from '@context/Alert';
 import Header from '@components/layout/Header';
 import Footer from '@components/layout/Footer';
+import PromoBanner from '@components/layout/PromoBanner';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -21,6 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <UserProvider>
           <DataProvider>
             <CartProvider>
+              <PromoBanner />
               <Header />
               <Component {...pageProps} />
               <Footer />

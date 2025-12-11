@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: var(--white);
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  background-color: var(--global);
+}
+
+.container a {
+  color: var(--white);
+  text-decoration: underline;
+}
+
+.container svg {
+  cursor: pointer;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
