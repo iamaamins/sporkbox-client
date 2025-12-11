@@ -46,14 +46,14 @@ export default function PromoBanner() {
   return (
     <div className={styles.container}>
       <p>
-        ✨ We've made some updates to Spork Box!{' '}
+        ✨ We&apos;ve made some updates to Spork Box!{' '}
         <a
           onClick={hideBanner}
           target='_blank'
           rel='noopener noreferrer'
           href='https://www.loom.com/share/31c1c0b1bb3e4ab5b14d03a125f6e7f9'
         >
-          See what's new →
+          See what&apos;s new →
         </a>
       </p>
 
