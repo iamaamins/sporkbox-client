@@ -76,4 +76,12 @@ export const FAQ_DATA = [
       "Where available, restaurants provide allergen and ingredient details. You can find them by clicking on a menu item's name before adding it to your cart. If you have a severe allergy, please also note it in the special instructions section during checkout.",
     ],
   },
+  {
+    question: 'Why do restaurants sell out on Spork Box?',
+    answer: [
+      'Most restaurants require us to finalize their orders 48 hours in advance of delivery. When that deadline passes, we “close” the restaurant for ordering — which makes it appear as sold out.',
+      "Additionally, some restaurants set a daily order limit based on what they can reliably produce. Once that limit is reached, they'll also show as sold out.",
+      "While these limits are set by the restaurants, they're a key part of offering meals from real, local kitchens. We stay flexible so our partners can deliver consistent, high-quality meals, and we appreciate your understanding!",
+    ],
+  },
 ] as const;
