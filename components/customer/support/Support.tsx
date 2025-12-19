@@ -1,15 +1,12 @@
-import Image from 'next/image';
 import styles from './Support.module.css';
 import { MdOutlineSentimentVerySatisfied } from 'react-icons/md';
 import { MdSentimentVerySatisfied } from 'react-icons/md';
 import { MdOutlineSentimentDissatisfied } from 'react-icons/md';
 import { MdSentimentNeutral } from 'react-icons/md';
 import { MdOutlineSentimentVeryDissatisfied } from 'react-icons/md';
-import { useUser } from '@context/User';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { FAQ_DATA } from 'data/FAQ';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
   axiosInstance,
@@ -45,7 +42,6 @@ export default function Support() {
     message: '',
   };
   const router = useRouter();
-  const { customer } = useUser();
   const { setAlerts } = useAlert();
   const [restaurants, setRestaurants] = useState<Restaurants>({
     isLoading: true,
