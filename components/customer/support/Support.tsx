@@ -267,11 +267,13 @@ export default function Support() {
                   --Select---
                 </option>
                 <option value='Not Applicable'>Not Applicable</option>
-                {restaurants.data.map((restaurant) => (
-                  <option value={restaurant._id} key={restaurant._id}>
-                    {restaurant.name}
-                  </option>
-                ))}
+                {restaurants.data
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((restaurant) => (
+                    <option value={restaurant._id} key={restaurant._id}>
+                      {restaurant.name}
+                    </option>
+                  ))}
               </select>
             </div>
           )}
