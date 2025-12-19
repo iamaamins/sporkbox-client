@@ -244,7 +244,7 @@ export default function Profile() {
         <section className={styles.container}>
           <div className={styles.tools}>
             <div className={styles.slack_and_email_preference}>
-              <Link href='https://join.slack.com/share/enQtOTk5NjE3MDkwNDI1OS05MjliZjE1MDBiM2Y5ZGIxMGY0YzkwNzA2N2M5NGUyZGQ5YWJjMDRmY2U0NmY3MjJhZjQyMmU5NDFmNDkxNmQ2'>
+              <Link href='https://join.slack.com/share/enQtMTAxNTU1NTM2NjU2ODItMGRjNzg5YWUyZGQyNjA0MTg0Mjg2ZjRhNDM2ZjRiMDQ1Yjc0MTYyOTZkZGQ1YjJlYTAyNjIyOWFjOWNjNmYwMw'>
                 <a target='_blank' className={styles.slack_channel_link}>
                   <div className={styles.slack_logo}>
                     <Image
