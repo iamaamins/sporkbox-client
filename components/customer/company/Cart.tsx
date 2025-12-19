@@ -104,7 +104,7 @@ export default function Cart() {
     try {
       setIsCheckingOut(true);
 
-      const response = await axiosInstance.post(`/orders/create-orders`, {
+      const response = await axiosInstance.post(`/orders/create`, {
         orderItems,
         discountCodeId,
         orderingForUser: { id: user._id },
@@ -260,7 +260,7 @@ export default function Cart() {
                     <p className={styles.date}>
                       Delivery date:{' '}
                       <span>{dateToText(cartItem.deliveryDate)}</span> -{' '}
-                      <span className={styles.shift}>{cartItem.shift}</span>
+                      <span>{cartItem.shift}</span>
                     </p>
                   </a>
                 </Link>

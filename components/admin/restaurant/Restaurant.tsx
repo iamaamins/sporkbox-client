@@ -57,7 +57,7 @@ export default function Restaurant() {
     try {
       setIsUpdatingVendorStatus(true);
       const response = await axiosInstance.patch(
-        `/vendors/${vendor?._id}/change-vendor-status`,
+        `/vendors/${vendor?._id}/update-status`,
         {
           action,
         }

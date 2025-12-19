@@ -145,25 +145,16 @@ function PaymentStat() {
 }
 
 type ItemStat = {
-  items: {
-    count: string;
-    isLoading: boolean;
-  };
-  average: {
-    price: string;
-    isLoading: boolean;
-  };
+  items: { count: string; percentage: string; isLoading: boolean };
+  average: { price: string; isLoading: boolean };
 };
 function ItemStat() {
   const { isAdmin } = useUser();
   const { setAlerts } = useAlert();
   const [price, setPrice] = useState('');
-  const [itemStat, setItemStat] = useState<ItemStat>({
-    items: { count: '', isLoading: false },
-    average: {
-      price: '',
-      isLoading: true,
-    },
+  const [activeItemStat, setActiveItemStat] = useState<ItemStat>({
+    items: { count: '', percentage: '', isLoading: false },
+    average: { price: '', isLoading: true },
   });
 
   async function getFilteredItemsCount(e: FormEvent) {
@@ -171,24 +162,25 @@ function ItemStat() {
     if (!price) return;
 
     try {
-      setItemStat((prevState) => ({
+      setActiveItemStat((prevState) => ({
         ...prevState,
         items: { ...prevState.items, isLoading: true },
       }));
       const response = await axiosInstance.get(
-        `/restaurants/items/count-and-average/${price}`
+        `/restaurants/items/active/count-percentage-and-average-price/${price}`
       );
-      setItemStat((prevState) => ({
+      setActiveItemStat((prevState) => ({
         ...prevState,
         items: {
           ...prevState.items,
-          count: response.data.itemsCount,
+          count: response.data.activeItemCountByPrice,
+          percentage: response.data.activeItemPercentageByPrice,
         },
       }));
     } catch (err) {
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
-      setItemStat((prevState) => ({
+      setActiveItemStat((prevState) => ({
         ...prevState,
         items: { ...prevState.items, isLoading: false },
       }));
@@ -200,19 +192,19 @@ function ItemStat() {
     async function getAverageItemPrice() {
       try {
         const response = await axiosInstance.get(
-          `/restaurants/items/count-and-average`
+          `/restaurants/items/active/count-percentage-and-average-price`
         );
-        setItemStat((prevState) => ({
+        setActiveItemStat((prevState) => ({
           ...prevState,
           average: {
             ...prevState.average,
-            price: response.data.averagePrice,
+            price: response.data.averageActiveItemPrice,
           },
         }));
       } catch (err) {
         showErrorAlert(err as CustomAxiosError, setAlerts);
       } finally {
-        setItemStat((prevState) => ({
+        setActiveItemStat((prevState) => ({
           ...prevState,
           average: { ...prevState.average, isLoading: false },
         }));
@@ -233,7 +225,7 @@ function ItemStat() {
           onChange={(e) => {
             setPrice(e.target.value);
             if (!e.target.value)
-              setItemStat((prevState) => ({
+              setActiveItemStat((prevState) => ({
                 ...prevState,
                 items: {
                   ...prevState.items,
@@ -243,25 +235,27 @@ function ItemStat() {
           }}
         />
       </form>
-      {itemStat.items.isLoading ? (
+      {activeItemStat.items.isLoading ? (
         <p className={styles.message}>Loading...</p>
       ) : (
-        itemStat.items.count && (
-          <p className={styles.items_count}>
-            <span>Number of active items</span>
-            <span>{itemStat.items.count}</span>
-          </p>
-        )
+        <div className={styles.count_and_percentage}>
+          <div className={styles.count}>
+            <p>Number of active items</p>
+            <p>{activeItemStat.items.count}</p>
+          </div>
+          <div className={styles.percentage}>
+            <p>Percentage of active items</p>
+            <p>{activeItemStat.items.percentage}%</p>
+          </div>
+        </div>
       )}
-      {itemStat.average.isLoading ? (
+      {activeItemStat.average.isLoading ? (
         <p className={styles.message}>Loading...</p>
       ) : (
-        itemStat.average.price && (
-          <p className={styles.average_price}>
-            <span>Average active item price</span>
-            <span>{numberToUSD(+itemStat.average.price)}</span>
-          </p>
-        )
+        <div className={styles.average_price}>
+          <p>Average active item price</p>
+          <p>{numberToUSD(+activeItemStat.average.price)}</p>
+        </div>
       )}
     </div>
   );

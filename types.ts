@@ -1,8 +1,10 @@
 import { AxiosError } from 'axios';
+import { Avatar } from 'data/AVATARS';
 import { Dispatch, SetStateAction, ReactNode } from 'react';
 
 export type UserRole = 'ADMIN' | 'VENDOR' | 'CUSTOMER' | 'GUEST' | 'DRIVER';
 export type UserStatus = 'ACTIVE' | 'ARCHIVED';
+export type Shift = 'DAY' | 'NIGHT' | 'GENERAL';
 
 interface User {
   _id: string;
@@ -16,33 +18,36 @@ interface User {
 
 export interface Admin extends User {}
 
+export interface UserCompany extends CompanyDetails {
+  isEnrolled: boolean;
+  isEnrollAble: boolean;
+}
+
 export interface Customer extends User {
-  companies: Company[];
+  companies: UserCompany[];
   foodPreferences?: string[];
   subscribedTo: {
+    deliveryNotification: boolean;
     orderReminder: boolean;
+    newsletter: boolean;
   };
-  shifts: Exclude<Shift, 'general'>[];
+  avatar?: { id: Avatar };
   isCompanyAdmin?: boolean;
+  foodVibe?: string;
 }
 
 export interface Guest extends User {
-  companies: Company[];
+  companies: UserCompany[];
 }
 
 export interface Vendor extends User {
   restaurant: Restaurant;
 }
 
-export type Shift = 'day' | 'night' | 'general';
-
 export type Schedule = {
   _id: string;
   date: string;
-  company: {
-    code: string;
-    shift: Shift;
-  };
+  company: { code: string; shift: Shift };
   createdAt: string;
   status: 'ACTIVE' | 'INACTIVE';
 };
@@ -68,30 +73,22 @@ export type Restaurant = {
 export interface ScheduledRestaurant {
   _id: string;
   name: string;
-  company: {
-    _id: string;
-    name: string;
-    code: string;
-    shift: string;
-  };
   schedule: Schedule;
+  company: { _id: string; name: string; code: string; shift: string };
 }
 
 export interface UpcomingRestaurant extends ScheduledRestaurant {
   logo: string;
   items: Item[];
   isFeatured: boolean;
+  orderCapacity: number;
+  activeOrderCount: number;
 }
 
 export type Review = {
   _id: string;
   rating: number;
   comment: string;
-};
-
-export type SoldOutStat = {
-  date: string;
-  company: string;
 };
 
 export type Item = {
@@ -102,45 +99,27 @@ export type Item = {
   image: string;
   status: string;
   description: string;
-  optionalAddons: {
-    addons: string;
-    addable: number;
-  };
-  requiredAddonsOne: {
-    addons: string;
-    addable: number;
-  };
-  requiredAddonsTwo: {
-    addons: string;
-    addable: number;
-  };
+  optionalAddons: { addons: string; addable: number };
+  requiredAddonsOne: { addons: string; addable: number };
+  requiredAddonsTwo: { addons: string; addable: number };
   reviews: Review[];
   averageRating?: number;
   popularityIndex?: number;
-  soldOutStat?: SoldOutStat[];
   removableIngredients?: string;
 };
 
 export type CustomerFavoriteItem = {
   _id: string;
-  item: {
-    _id: string;
-    name: string;
-    image: string;
-  };
+  item: { _id: string; name: string; image: string };
   customer: string;
-  restaurant: {
-    _id: string;
-    name: string;
-  };
+  restaurant: { _id: string; name: string };
 };
 
-export type Company = {
+interface CompanyDetails {
   _id: string;
   name: string;
   shift: Shift;
   code: string;
-  website: string;
   address: {
     city: string;
     state: string;
@@ -148,11 +127,15 @@ export type Company = {
     addressLine1: string;
     addressLine2?: string;
   };
-  createdAt: string;
   shiftBudget: number;
   status: 'ACTIVE' | 'ARCHIVED';
+}
+
+export interface Company extends CompanyDetails {
+  website: string;
   slackChannel?: string;
-};
+  createdAt: string;
+}
 
 export type DiscountCode = {
   _id: string;
@@ -178,19 +161,9 @@ export type VendorUpcomingOrderItem = {
 
 export type VendorUpcomingOrder = {
   _id: string;
-  customer: {
-    firstName: string;
-    lastName: string;
-  };
-  restaurant: {
-    _id: string;
-    name: string;
-  };
-  company: {
-    _id: string;
-    code: string;
-    shift: Shift;
-  };
+  customer: { firstName: string; lastName: string };
+  restaurant: { _id: string; name: string };
+  company: { _id: string; code: string; shift: Shift };
   delivery: { date: string };
   item: VendorUpcomingOrderItem;
 };
@@ -261,12 +234,7 @@ export interface DriverOrders extends IsLoading {
 
 export type OrderGroup = {
   orders: Order[];
-  company: {
-    _id: string;
-    name: string;
-    shift: Shift;
-    code: string;
-  };
+  company: { _id: string; name: string; shift: Shift; code: string };
   customers: string[];
   deliveryDate: string;
   restaurants: string[];
@@ -298,39 +266,15 @@ export interface InitialItem extends CartItem {}
 
 export type Order = {
   _id: string;
-  customer: {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-  };
-  restaurant: {
-    _id: string;
-    name: string;
-  };
-  company: {
-    _id: string;
-    name: string;
-    shift: Shift;
-    code: string;
-  };
-  delivery: {
-    date: string;
-    address: string;
-  };
+  customer: { _id: string; firstName: string; lastName: string; email: string };
+  restaurant: { _id: string; name: string };
+  company: { _id: string; name: string; shift: Shift; code: string };
+  delivery: { date: string; address: string };
   status: string;
-  payment?: {
-    intent: string;
-    distributed: number;
-  };
+  payment?: { intent: string; distributed: number };
   createdAt: string;
   isReviewed: boolean;
-  discount?: {
-    _id: string;
-    code: string;
-    value: number;
-    distributed: number;
-  };
+  discount?: { _id: string; code: string; value: number; distributed: number };
   item: {
     _id: string;
     name: string;
@@ -359,20 +303,10 @@ export interface CustomerOrder {
     requiredAddonsTwo: string;
     removedIngredients: string;
   };
-  payment?: {
-    distributed: number;
-  };
-  delivery: {
-    date: string;
-  };
-  company: {
-    _id: string;
-    shift: Shift;
-  };
-  restaurant: {
-    _id: string;
-    name: string;
-  };
+  payment?: { distributed: number };
+  delivery: { date: string };
+  company: { _id: string; shift: Shift };
+  restaurant: { _id: string; name: string };
   status: string;
   createdAt: string;
   isReviewed: boolean;
@@ -388,11 +322,7 @@ export type FormData = {
 };
 
 export type OrdersByRestaurant = {
-  company: {
-    name: string;
-    shift: Shift;
-    code: string;
-  };
+  company: { name: string; shift: Shift; code: string };
   orders: Order[];
   deliveryDate: string;
   restaurantName: string;
@@ -424,18 +354,9 @@ export interface ItemFormData {
   description: string;
   price: string | number;
   file?: File | undefined;
-  optionalAddons: {
-    addons: string;
-    addable: number;
-  };
-  requiredAddonsOne: {
-    addons: string;
-    addable: number;
-  };
-  requiredAddonsTwo: {
-    addons: string;
-    addable: number;
-  };
+  optionalAddons: { addons: string; addable: number };
+  requiredAddonsOne: { addons: string; addable: number };
+  requiredAddonsTwo: { addons: string; addable: number };
   removableIngredients?: string;
 }
 
@@ -458,7 +379,7 @@ export type RestaurantFormData = {
 };
 
 export interface UserWithCompany extends User {
-  company: Company;
+  company: UserCompany;
 }
 
 export interface Addons {
@@ -512,15 +433,9 @@ export type LabelFilters = {
 };
 
 export type IdenticalOrderGroup = {
-  company: {
-    shift: Shift;
-  };
-  restaurant: {
-    name: string;
-  };
-  delivery: {
-    date: string;
-  };
+  company: { shift: Shift };
+  restaurant: { name: string };
+  delivery: { date: string };
   item: {
     name: string;
     requiredAddonsOne: string;

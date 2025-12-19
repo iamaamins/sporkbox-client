@@ -106,7 +106,7 @@ export default function Cart() {
     try {
       setIsCheckingOut(true);
 
-      const response = await axiosInstance.post(`/orders/create-orders`, {
+      const response = await axiosInstance.post(`/orders/create`, {
         orderItems,
         discountCodeId,
         orderingForUser: { id: user._id },
@@ -158,9 +158,7 @@ export default function Cart() {
   useEffect(() => {
     async function getAllOrders(userId: string, allUpcomingOrders: Order[]) {
       try {
-        const response = await axiosInstance.get(
-          `/orders/${userId}/all-delivered-orders`
-        );
+        const response = await axiosInstance.get(`/orders/${userId}/delivered`);
 
         const deliveredOrders = response.data;
         const upcomingOrders = allUpcomingOrders.filter(
@@ -265,7 +263,7 @@ export default function Cart() {
                     <p className={styles.date}>
                       Delivery date:{' '}
                       <span>{dateToText(cartItem.deliveryDate)}</span> -{' '}
-                      <span className={styles.shift}>{cartItem.shift}</span>
+                      <span>{cartItem.shift}</span>
                     </p>
                   </a>
                 </Link>

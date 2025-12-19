@@ -50,7 +50,6 @@
 .discount_codes table td {
   font-weight: 500;
   color: var(--gray);
-  font-size: 0.9rem;
 }
 
 .hide_on_mobile {

@@ -49,7 +49,7 @@ export default function Order() {
 
   async function addItemToFavorite() {
     try {
-      const response = await axiosInstance.post(`/favorites/add-to-favorite`, {
+      const response = await axiosInstance.post(`/favorites/add`, {
         itemId: order?.item._id,
         restaurantId: order?.restaurant._id,
       });
@@ -71,7 +71,7 @@ export default function Order() {
     try {
       setIsLoading(true);
       const response = await axiosInstance.post(
-        `/restaurants/${order?.restaurant._id}/${order?.item._id}/add-a-review`,
+        `/restaurants/${order?.restaurant._id}/${order?.item._id}/review`,
         {
           rating,
           comment,

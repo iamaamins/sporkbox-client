@@ -33,16 +33,10 @@
 .scheduled_restaurants table tbody td {
   font-weight: 500;
   color: var(--gray);
-  font-size: 0.9rem;
 }
 
 .important a {
-  font-size: 1rem;
   color: var(--black);
-}
-
-.shift {
-  text-transform: capitalize;
 }
 
 .hide_on_mobile {

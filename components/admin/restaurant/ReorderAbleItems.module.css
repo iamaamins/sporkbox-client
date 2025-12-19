@@ -15,7 +15,6 @@
   display: flex;
   align-items: center;
   font-weight: 600;
-  font-size: 15px;
   margin-bottom: 0.5rem;
 }
 
@@ -32,7 +31,6 @@
 
 .price {
   font-weight: 500;
-  font-size: 13px;
   margin-bottom: 0.5rem;
 }
 

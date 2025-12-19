@@ -52,8 +52,9 @@ export default function CompanyForm({
         <div className={styles.item}>
           <select id='shift' value={shift} onChange={handleChange}>
             <option hidden>Please select a shift</option>
-            <option value='day'>Day</option>
-            <option value='night'>Night</option>
+            <option value='DAY'>Day</option>
+            <option value='NIGHT'>Night</option>
+            <option value='GENERAL'>General</option>
           </select>
         </div>
       )}

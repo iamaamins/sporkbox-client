@@ -46,10 +46,6 @@
   color: var(--almost_white);
 }
 
-.cover_image svg {
-  font-size: 16px;
-}
-
 .item_details {
   width: 65%;
 }
@@ -86,10 +82,6 @@
 .date {
   font-weight: 500;
   color: var(--black);
-}
-
-.shift {
-  text-transform: capitalize;
 }
 
 .apply_discount_form {
@@ -164,7 +156,7 @@
   min-width: 100%;
   cursor: pointer;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 1rem;
   margin-top: 1rem;
   padding: 0rem 1.15rem;
   border-radius: 0.25rem;

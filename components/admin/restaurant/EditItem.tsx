@@ -101,7 +101,7 @@ export default function EditItem() {
     try {
       setIsLoading(true);
       const response = await axiosInstance.patch(
-        `/restaurants/${router.query.restaurant}/${router.query.item}/update-item-details`,
+        `/restaurants/${router.query.restaurant}/${router.query.item}/update`,
         data,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );

@@ -20,6 +20,7 @@ import {
   Guest,
   CustomerOrder,
   CartItem,
+  UpcomingRestaurant,
 } from 'types';
 
 export const currentYear = new Date().getFullYear();
@@ -97,15 +98,15 @@ export const getDay = (date: number | string) =>
 
 export async function handleRemoveFromFavorite(
   setAlerts: Dispatch<SetStateAction<Alert[]>>,
-  itemId: string,
+  favoriteId: string,
   setCustomerFavoriteItems: Dispatch<SetStateAction<CustomerFavoriteItems>>
 ) {
   try {
-    await axiosInstance.delete(`/favorites/${itemId}/remove-from-favorite`);
+    await axiosInstance.delete(`/favorites/${favoriteId}/remove`);
     setCustomerFavoriteItems((prevState) => ({
       ...prevState,
       data: prevState.data.filter(
-        (customerFavoriteItem) => customerFavoriteItem._id !== itemId
+        (customerFavoriteItem) => customerFavoriteItem._id !== favoriteId
       ),
     }));
     showSuccessAlert('Favorite removed', setAlerts);
@@ -370,10 +371,10 @@ export function getTotalPayable(
   });
 
   const cartItemDetails = getDateTotal(cartDateTotalDetails);
-  const company = user.companies.find((company) => company.status === 'ACTIVE');
+  const enrolledCompany = user.companies.find((company) => company.isEnrolled);
 
-  if (company) {
-    const shiftBudget = company.shiftBudget;
+  if (enrolledCompany) {
+    const shiftBudget = enrolledCompany.shiftBudget;
     const totalPayable = cartItemDetails
       .map((cartItemDetail) => {
         if (
@@ -411,7 +412,30 @@ export function getTotalPayable(
 }
 
 export function getPastDate(days: number) {
-  return new Date(new Date().setDate(new Date().getDate() - days))
-    .toISOString()
-    .split('T')[0];
+  const today = new Date();
+  today.setDate(today.getDate() - days);
+
+  return today.toISOString().split('T')[0];
 }
+
+export function getCustomerShifts(customer: Customer) {
+  const shifts = [];
+  for (const company of customer.companies) {
+    if (company.shift === 'GENERAL') return [];
+    if (company.isEnrollAble) shifts.push(company.shift);
+  }
+  return shifts;
+}
+
+export const isRestaurantSoldOut = (restaurant: UpcomingRestaurant) =>
+  restaurant.schedule.status === 'INACTIVE';
+
+export const itemsLeftUntilSoldOut = (restaurant: UpcomingRestaurant) =>
+  restaurant.orderCapacity - restaurant.activeOrderCount;
+
+export const showItemsLeftUntilSoldOutMessage = (
+  restaurant: UpcomingRestaurant
+) =>
+  restaurant.orderCapacity > 0 &&
+  !isRestaurantSoldOut(restaurant) &&
+  itemsLeftUntilSoldOut(restaurant) <= 20;

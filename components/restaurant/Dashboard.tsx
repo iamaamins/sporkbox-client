@@ -9,6 +9,7 @@ import {
   showErrorAlert,
   showSuccessAlert,
   getAddonIngredients,
+  sortOrders,
 } from '@lib/utils';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAlert } from '@context/Alert';
@@ -79,7 +80,7 @@ export default function Dashboard() {
     try {
       setIsUpdatingScheduleStatus(true);
       const response = await axiosInstance.patch(
-        `/restaurants/${restaurant.data._id}/${statusUpdatePayload.date}/${statusUpdatePayload.companyCode}/change-schedule-status`,
+        `/restaurants/${restaurant.data._id}/${statusUpdatePayload.date}/${statusUpdatePayload.companyCode}/update-schedule-status`,
         {
           action: statusUpdatePayload.action,
         }
@@ -243,7 +244,7 @@ export default function Dashboard() {
             date: key.split('-')[0],
             company: key.split('-')[1],
             totalQuantity: orderMap[key].totalQuantity,
-            orders: orderMap[key].orders,
+            orders: orderMap[key].orders.sort(sortOrders),
           });
         }
       }
@@ -258,7 +259,7 @@ export default function Dashboard() {
           <h1>Welcome {vendor.firstName}</h1>
           <p>
             This is just a preview of the order. You will receive an email with
-            the total order from Spork Bytes soon.
+            the total order from Spork Box soon.
           </p>
         </div>
       )}

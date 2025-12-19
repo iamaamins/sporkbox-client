@@ -74,7 +74,7 @@ export default function ScheduledRestaurants({
       const response = await axiosInstance.patch(
         `/restaurants/${statusUpdatePayload.restaurant._id}/${dateToMS(
           statusUpdatePayload.date
-        )}/${statusUpdatePayload.companyCode}/change-schedule-status`,
+        )}/${statusUpdatePayload.companyCode}/update-schedule-status`,
         { action: statusUpdatePayload.action }
       );
       const schedule = response.data.find(
@@ -136,7 +136,7 @@ export default function ScheduledRestaurants({
     try {
       setIsRemovingSchedule(true);
       await axiosInstance.patch(
-        `/restaurants/${scheduleRemovalPayload.restaurant._id}/${scheduleRemovalPayload.schedule._id}/remove-schedule`
+        `/restaurants/${scheduleRemovalPayload.restaurant._id}/${scheduleRemovalPayload.schedule._id}/remove`
       );
       setScheduledRestaurants((prevState) => ({
         ...prevState,
@@ -197,7 +197,7 @@ export default function ScheduledRestaurants({
                   </td>
                   <td>{restaurant.name}</td>
                   <td>{restaurant.company.name}</td>
-                  <td className={styles.shift}>{restaurant.company.shift}</td>
+                  <td>{restaurant.company.shift}</td>
                   <td className={`${styles.actions} ${styles.hide_on_mobile}`}>
                     <span
                       className={styles.deactivate}

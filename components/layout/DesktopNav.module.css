@@ -28,16 +28,14 @@
   }
 
   .navigation li a {
-    opacity: 0.8;
     color: var(--grey);
-    font-size: 0.9rem;
     padding: 0.5rem 1rem;
     transition: 250ms ease-in-out;
   }
 
   .navigation li a:hover,
   .active {
-    font-weight: 500;
+    font-weight: 700;
     color: var(--black);
   }
 
@@ -50,7 +48,7 @@
   .sing_in,
   .sign_out {
     padding: 6px 16px;
-    font-size: 0.9rem;
+    font-size: 1rem;
     border-radius: 2rem;
     margin-left: 1.5rem;
     border: none;

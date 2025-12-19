@@ -82,7 +82,7 @@ export default function Footer() {
       </div>
 
       <p className={styles.copyright}>
-        Spork Bytes &copy; Copyright {currentYear} <br /> All rights reserved
+        Spork Box &copy; Copyright {currentYear} <br /> All rights reserved
       </p>
     </footer>
   );

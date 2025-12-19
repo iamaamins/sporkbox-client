@@ -29,12 +29,7 @@
   padding: 1rem;
   font-weight: 500;
   color: var(--gray);
-  font-size: 0.9rem;
   border-bottom: 1px solid var(--border_color);
-}
-
-.shift {
-  text-transform: capitalize;
 }
 
 .ingredients {
@@ -42,7 +37,6 @@
 }
 
 .total td {
-  font-size: 1rem;
   font-weight: 500;
   color: var(--black);
 }

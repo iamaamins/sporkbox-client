@@ -79,7 +79,7 @@ function Users() {
                 </td>
                 <td>{employee.email}</td>
                 <td className={styles.hide_on_mobile}>
-                  {employee.companies[0].code}
+                  {employee.companies[0]?.code}
                 </td>
                 <td>{employee.status}</td>
               </tr>
@@ -133,7 +133,7 @@ function Guests() {
           <thead>
             <tr>
               <th>Name</th>
-              <th>Email</th>
+              <th className={styles.hide_on_mobile}>Email</th>
               <th>Company code</th>
               <th>Status</th>
             </tr>
@@ -148,7 +148,7 @@ function Guests() {
                     </a>
                   </Link>
                 </td>
-                <td>{guest.email}</td>
+                <td className={styles.hide_on_mobile}>{guest.email}</td>
                 <td>{guest.companies[0].code}</td>
                 <td>{guest.status}</td>
               </tr>

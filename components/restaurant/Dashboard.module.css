@@ -15,7 +15,7 @@
 }
 
 .group_header h2 {
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .group_header button {
@@ -55,7 +55,6 @@
   padding: 1rem;
   font-weight: 500;
   color: var(--gray);
-  font-size: 0.9rem;
 }
 
 .group tbody td:nth-child(3),

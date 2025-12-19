@@ -1,0 +1,172 @@
+.container {
+  padding: var(--section_padding);
+}
+
+.container h2 {
+  margin-bottom: 1rem;
+}
+
+.period_and_range_selector {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  flex-direction: column;
+}
+
+.period_selector,
+.category_selector {
+  padding: 0.75rem 0.5rem;
+  border-radius: 0.5rem;
+  width: 12rem;
+  border: 1px solid var(--border_color);
+}
+
+.range_selector {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.range_selector div {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.range_selector div input {
+  width: 10rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border_color);
+}
+
+.tables {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.container th {
+  text-align: left;
+  padding: 1rem;
+}
+
+.container th:last-child,
+.container td:last-child {
+  text-align: right;
+}
+
+.container thead tr {
+  background-color: var(--almost_white);
+}
+
+.container tbody tr {
+  border-bottom: 1px solid var(--border_color);
+}
+
+.container td {
+  padding: 1rem;
+  font-weight: 500;
+  color: var(--gray);
+}
+
+.hide_on_mobile {
+  display: none;
+}
+
+.issue_status svg {
+  cursor: pointer;
+}
+
+.issue_status.default_cursor svg {
+  cursor: default;
+}
+
+.issue_update_modal {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex-direction: column;
+  max-width: 350px;
+}
+
+.issue_update_modal p {
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.issue_update_modal .audit_note {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.issue_update_modal .audit_note label {
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+
+.issue_update_modal .audit_note textarea {
+  padding: 12px;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border_color);
+}
+
+.issue_update_modal .audit_note textarea:focus {
+  outline: none;
+  border: 1px solid var(--teal);
+}
+
+.issue_update_modal .buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.issue_update_modal .buttons button {
+  border: none;
+  width: 8rem;
+  height: 2.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  color: var(--almost_white);
+  background-color: var(--orange);
+}
+
+.issue_update_modal .buttons button:first-child {
+  background: var(--black);
+}
+
+.disabled {
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: 85%;
+    margin: 0 auto;
+  }
+
+  .period_and_range_selector {
+    flex-direction: row;
+  }
+
+  .hide_on_mobile {
+    display: table-cell;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    width: 80%;
+    margin: 0 auto;
+  }
+}

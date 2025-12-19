@@ -24,7 +24,6 @@
   padding: 1rem;
   font-weight: 500;
   color: var(--gray);
-  font-size: 0.9rem;
 }
 
 .orders td:last-child {
@@ -33,11 +32,6 @@
 
 .important a {
   color: var(--black);
-  font-size: 1rem;
-}
-
-.shift {
-  text-transform: capitalize;
 }
 
 .hide_on_mobile {

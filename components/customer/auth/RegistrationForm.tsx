@@ -7,16 +7,15 @@ import SubmitButton from '@components/layout/SubmitButton';
 import { axiosInstance, showErrorAlert } from '@lib/utils';
 import styles from './RegistrationForm.module.css';
 
-const initialSate = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  password: '',
-  companyCode: '',
-  confirmPassword: '',
-};
-
 export default function RegistrationForm() {
+  const initialSate = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    companyCode: '',
+    confirmPassword: '',
+  };
   const { setAlerts } = useAlert();
   const { setCustomer } = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -39,13 +38,13 @@ export default function RegistrationForm() {
     try {
       setIsLoading(true);
       const response = await axiosInstance.post(
-        `/customers/register-customer`,
+        `/customers/register`,
         formData
       );
+
       setFormData(initialSate);
       setCustomer(response.data);
     } catch (err) {
-      console.log(err);
       showErrorAlert(err as CustomAxiosError, setAlerts);
     } finally {
       setIsLoading(false);
@@ -57,64 +56,76 @@ export default function RegistrationForm() {
       <p className={styles.title}>Create your account</p>
       <form onSubmit={handleSubmit}>
         <div className={styles.item}>
-          <label htmlFor='firstName'>First name</label>
+          <label htmlFor='firstName'>First name*</label>
           <input
+            required
             type='text'
             id='firstName'
             value={firstName}
             onChange={handleChange}
+            placeholder='Type your first name'
           />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor='lastName'>Last name</label>
+          <label htmlFor='lastName'>Last name*</label>
           <input
+            required
             type='text'
             id='lastName'
             value={lastName}
             onChange={handleChange}
+            placeholder='Type your last name'
           />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor='email'>Email</label>
+          <label htmlFor='email'>Email*</label>
           <input
+            required
             type='email'
             id='email'
             value={email}
             onChange={handleChange}
+            placeholder='Type your email address'
           />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor='companyCode'>Company code</label>
+          <label htmlFor='companyCode'>Company code*</label>
           <input
+            required
             type='text'
             id='companyCode'
             value={companyCode}
             onChange={handleChange}
+            placeholder='Type your company code'
           />
         </div>
 
         <div className={styles.item}>
-          <label htmlFor='password'>Password</label>
+          <label htmlFor='password'>Password*</label>
           <input
+            required
             type='password'
             id='password'
             value={password}
             onChange={handleChange}
+            placeholder='Type your password'
           />
         </div>
 
         <div className={styles.item}>
           <label htmlFor='confirmPassword'>
-            Confirm password {!passwordsMatch && " - Passwords don't match"}
+            Confirm password* {!passwordsMatch && " - Passwords don't match"}
           </label>
           <input
+            required
             type='password'
             id='confirmPassword'
             value={confirmPassword}
             onChange={handleChange}
+            placeholder='Type your password again'
           />
         </div>
 

@@ -76,7 +76,6 @@ export default function Review() {
         >
           <option value='7d'>Last 7 days</option>
           <option value='30d'>Last 30 days</option>
-          <option value='60d'>Last 60 days</option>
           <option value='3m'>Last 3 months</option>
           <option value='custom'>Custom range</option>
         </select>

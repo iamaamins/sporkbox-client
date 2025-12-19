@@ -1,0 +1,284 @@
+.container {
+  display: flex;
+  gap: 3rem;
+  flex-direction: column;
+  padding: var(--section_padding);
+}
+
+.feedback {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex-direction: column;
+}
+
+.general_feedback {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-direction: column;
+}
+
+.general_feedback h1,
+.general_feedback p {
+  text-align: center;
+  color: var(--teal);
+}
+
+.ratings {
+  gap: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.ratings svg {
+  cursor: pointer;
+}
+
+.quick_message {
+  display: flex;
+  gap: 0.75rem;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+
+.survey_and_slack {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.survey_button {
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  font-weight: 700;
+  border: none;
+  line-height: 1;
+  color: var(--white);
+  border-radius: 5rem;
+  background-image: linear-gradient(to right, #ff7f91, #ffdfa4);
+}
+
+.slack_channel_link {
+  width: 15rem;
+  height: auto;
+  display: flex;
+  gap: 0.25rem;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: var(--black);
+}
+
+.slack_channel_link p:first-child {
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.slack_logo {
+  width: 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slack_channel_link p:last-child {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.issue {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.issue form {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-direction: column;
+}
+
+.issue form .item,
+.issue form .image_upload {
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+  text-align: left;
+  flex-direction: column;
+}
+
+.issue form label {
+  font-weight: 500;
+}
+
+.quick_message textarea,
+.issue form select,
+.issue form input,
+.issue form textarea {
+  padding: 12px;
+  border-radius: 1rem;
+  width: 100%;
+  border: 1px solid var(--border_color);
+}
+
+.issue form .image_upload {
+  position: relative;
+}
+
+.issue form .image_upload input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  height: 8rem;
+  width: 100%;
+  cursor: pointer;
+}
+
+.issue form .upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--orange);
+  font-weight: 600;
+  height: 8rem;
+  width: 100%;
+  border-radius: 1rem;
+  border: 1px solid var(--border_color);
+}
+
+.issue form .upload_icon_and_text {
+  display: flex;
+  align-items: center;
+}
+
+.issue form .upload_icon_and_text svg {
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+
+.remove_upload {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-weight: 400;
+  cursor: pointer;
+  border-radius: 2rem;
+  z-index: 1;
+  color: var(--gray);
+  padding: 4px 12px;
+  margin-top: 1.25rem;
+  border: 1px solid var(--gray);
+}
+
+.quick_message button,
+.issue form button {
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  height: 3.25rem;
+  font-weight: 500;
+  font-size: 1.25rem;
+  border-radius: 1rem;
+  background: var(--teal);
+  color: var(--almost_white);
+  transition: all 150ms ease-in-out;
+}
+
+.quick_message button.disabled,
+.issue form button.disabled {
+  pointer-events: none;
+}
+
+.question {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 2rem;
+  margin: 0.75rem 0;
+  font-weight: 600;
+  background-color: #fdeacd;
+}
+
+.arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  rotate: 0deg;
+  transition: transform 0.3s ease-in-out;
+}
+
+.arrow.rotate {
+  transform: rotate(180deg);
+}
+
+.question p {
+  font-size: 1.5rem;
+}
+
+.answer {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  padding: 0 1.5rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.answer.open {
+  opacity: 90;
+  max-height: fit-content;
+}
+
+.answer.item {
+  padding-bottom: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    margin: 0 auto;
+    max-width: 650px;
+  }
+
+  .quick_message {
+    width: 600px;
+  }
+
+  .survey_and_slack {
+    gap: 2rem;
+    flex-direction: row;
+  }
+
+  .slack_channel_link {
+    width: 15rem;
+  }
+
+  .issue {
+    width: 500px;
+    margin: 0 auto;
+  }
+
+  .answer {
+    padding: 0 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 900px;
+  }
+
+  .answer {
+    padding: 0 5rem;
+  }
+}

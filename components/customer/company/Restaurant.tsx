@@ -53,7 +53,7 @@ function ScheduledRestaurants() {
     async function getScheduledRestaurants(customer: Customer) {
       try {
         const response = await axiosInstance.get(
-          `/restaurants/${customer.companies[0].code}/scheduled-restaurants`
+          `/restaurants/${customer.companies[0].code}/scheduled`
         );
         setScheduledRestaurants({ isLoading: false, data: response.data });
       } catch (err) {

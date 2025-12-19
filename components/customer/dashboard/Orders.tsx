@@ -28,7 +28,7 @@ export default function Orders({ orders }: Props) {
                 <a>{dateToText(order.delivery.date)}</a>
               </Link>
             </td>
-            <td className={styles.shift}>{order.company.shift}</td>
+            <td>{order.company.shift}</td>
             <td className={styles.hide_on_mobile}>{order.restaurant.name}</td>
             <td>{order.item.name}</td>
             <td>{order.item.quantity}</td>

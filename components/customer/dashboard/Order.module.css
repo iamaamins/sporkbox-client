@@ -13,7 +13,6 @@
   display: flex;
   cursor: pointer;
   align-items: center;
-  font-size: 0.9rem;
   padding: 1px 10px;
   border-radius: 2rem;
   border: 1px solid var(--gray);
@@ -71,7 +70,6 @@
 }
 
 .review_title {
-  font-size: 16px;
   font-weight: 700;
 }
 

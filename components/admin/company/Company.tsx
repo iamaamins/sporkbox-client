@@ -68,7 +68,7 @@ export default function Company() {
     try {
       setIsUpdatingCompanyStatus(true);
       const response = await axiosInstance.patch(
-        `/companies/${company?._id}/change-company-status`,
+        `/companies/${company?._id}/update-status`,
         {
           action,
         }
@@ -211,7 +211,7 @@ export default function Company() {
           <section className={styles.container}>
             <div className={styles.details}>
               <h2 className={styles.company_name}>{company.name}</h2>
-              <p className={styles.shift}>
+              <p>
                 <span>Shift:</span> {company.shift}
               </p>
               <p>
