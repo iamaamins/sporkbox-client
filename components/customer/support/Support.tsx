@@ -209,31 +209,6 @@ export default function Support() {
         </form>
       </div>
 
-      {customer && customer.companies[0].code === 'twist' && (
-        <div className={styles.survey_and_slack}>
-          <Link href='https://docs.google.com/forms/d/e/1FAIpQLSc7EbMUO3fGcU5R7Xe3YV98fsV9GBRSo4uHBdYgSCZdrvDCPA/viewform?usp=header'>
-            <a target='_blank' className={styles.survey_button}>
-              Take The Spork Box <br /> Satisfaction Survey
-            </a>
-          </Link>
-          <Link href='/'>
-            <a className={styles.slack_channel_link}>
-              <p className={styles.join_slack}>
-                Join the Slack channel for instant delivery notifications!
-              </p>
-              <div className={styles.slack_logo}>
-                <Image
-                  src='/customer/slack-logo.png'
-                  width={1600}
-                  height={407}
-                />
-              </div>
-              <p className={styles.company_name}>Twist Wilsonville</p>
-            </a>
-          </Link>
-        </div>
-      )}
-
       <div className={styles.issue}>
         <div>
           <h2>Have an issue?</h2>
