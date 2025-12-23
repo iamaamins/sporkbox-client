@@ -15,7 +15,7 @@ import {
   showSuccessAlert,
 } from '@lib/utils';
 import styles from './Profile.module.css';
-import { CustomAxiosError, CustomerOrder, Shift } from 'types';
+import { CustomAxiosError, CustomerOrder, Shift, UserCompany } from 'types';
 import { useAlert } from '@context/Alert';
 import { PiSunFill } from 'react-icons/pi';
 import { PiMoonStarsFill } from 'react-icons/pi';
@@ -50,7 +50,6 @@ export default function Profile() {
   const { dietaryTags, customerUpcomingOrders, customerDeliveredOrders } =
     useData();
   const [isSwitchingShift, setIsSwitchingShift] = useState(false);
-  const [shift, setShift] = useState<Shift | null>(null);
   const [preferences, setPreferences] = useState<string[]>([]);
   const [mostLiked, setMostLiked] = useState<{
     isLoading: boolean;
@@ -72,6 +71,9 @@ export default function Profile() {
     setShowEmailSubscriptionUpdateModal,
   ] = useState(false);
   const [showAvatarUpdateModal, setShowAvatarUpdateModal] = useState(false);
+  const [enrolledCompany, setEnrolledCompany] = useState<UserCompany | null>(
+    null
+  );
 
   async function switchShift() {
     try {
@@ -80,7 +82,7 @@ export default function Profile() {
       const response = await axiosInstance.patch(
         `/customers/${customer?._id}/update-shift`,
         {
-          shift: shift === 'NIGHT' ? 'DAY' : 'NIGHT',
+          shift: enrolledCompany?.shift === 'NIGHT' ? 'DAY' : 'NIGHT',
         }
       );
 
@@ -141,7 +143,7 @@ export default function Profile() {
         (company) => company.isEnrolled
       );
 
-      if (enrolledCompany) setShift(enrolledCompany.shift);
+      if (enrolledCompany) setEnrolledCompany(enrolledCompany);
       if (customer.foodPreferences)
         setPreferences(
           customer.foodPreferences.filter(
@@ -244,18 +246,22 @@ export default function Profile() {
         <section className={styles.container}>
           <div className={styles.tools}>
             <div className={styles.slack_and_email_preference}>
-              <Link href='https://join.slack.com/share/enQtMTAxNTU1NTM2NjU2ODItMGRjNzg5YWUyZGQyNjA0MTg0Mjg2ZjRhNDM2ZjRiMDQ1Yjc0MTYyOTZkZGQ1YjJlYTAyNjIyOWFjOWNjNmYwMw'>
-                <a target='_blank' className={styles.slack_channel_link}>
-                  <div className={styles.slack_logo}>
-                    <Image
-                      src='/customer/slack-logo.png'
-                      width={1600}
-                      height={407}
-                    />
-                  </div>
-                  <p className={styles.company_name}>Twist Wilsonville</p>
-                </a>
-              </Link>
+              {enrolledCompany?.slackChannel && (
+                <Link href={enrolledCompany.slackChannel}>
+                  <a target='_blank' className={styles.slack_channel_link}>
+                    <div className={styles.slack_logo}>
+                      <Image
+                        src='/customer/slack-logo.png'
+                        width={1600}
+                        height={407}
+                      />
+                    </div>
+                    <p className={styles.company_name}>
+                      {enrolledCompany.name}
+                    </p>
+                  </a>
+                </Link>
+              )}
               <button
                 onClick={() => setShowEmailSubscriptionUpdateModal(true)}
                 className={styles.update_email_preference_button}
@@ -270,29 +276,37 @@ export default function Profile() {
                   disabled={isSwitchingShift}
                   onClick={switchShift}
                   className={`${styles.shift_switcher} ${
-                    shift === 'NIGHT' ? styles.night : styles.day
+                    enrolledCompany?.shift === 'NIGHT'
+                      ? styles.night
+                      : styles.day
                   }`}
                 >
                   <span
                     className={`${styles.label} ${styles.night} ${
-                      shift === 'NIGHT' ? styles.show : styles.hide
+                      enrolledCompany?.shift === 'NIGHT'
+                        ? styles.show
+                        : styles.hide
                     }`}
                   >
                     NIGHT
                   </span>
                   <span
                     className={`${styles.label} ${styles.day} ${
-                      shift === 'NIGHT' ? styles.hide : styles.show
+                      enrolledCompany?.shift === 'NIGHT'
+                        ? styles.hide
+                        : styles.show
                     }`}
                   >
                     DAY
                   </span>
                   <div
                     className={`${styles.toggle} ${
-                      shift === 'NIGHT' ? styles.night : styles.day
+                      enrolledCompany?.shift === 'NIGHT'
+                        ? styles.night
+                        : styles.day
                     }`}
                   >
-                    {shift === 'NIGHT' ? (
+                    {enrolledCompany?.shift === 'NIGHT' ? (
                       <PiMoonStarsFill size={28} />
                     ) : (
                       <PiSunFill size={28} />
