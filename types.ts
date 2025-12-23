@@ -128,6 +128,7 @@ interface CompanyDetails {
     addressLine2?: string;
   };
   shiftBudget: number;
+  slackChannel?: string;
   status: 'ACTIVE' | 'ARCHIVED';
 }
 
